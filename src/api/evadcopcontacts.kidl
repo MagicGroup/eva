@@ -1,0 +1,130 @@
+<!DOCTYPE DCOP-IDL><DCOP-IDL>
+<SOURCE>./evadcopcontacts.h</SOURCE>
+<INCLUDE>dcopobject.h</INCLUDE>
+<INCLUDE>qstring.h</INCLUDE>
+<INCLUDE>qstringlist.h</INCLUDE>
+<CLASS>
+    <NAME>EvaDCOPContactsInterface</NAME>
+    <SUPER>DCOPObject</SUPER>
+    <FUNC>
+        <TYPE>int</TYPE>
+        <NAME>numFriends</NAME>
+     </FUNC>
+    <FUNC>
+        <TYPE>QStringList</TYPE>
+        <NAME>friends</NAME>
+     </FUNC>
+    <FUNC>
+        <TYPE>bool</TYPE>
+        <NAME>hasFriend</NAME>
+        <ARG><TYPE>unsigned int</TYPE><NAME>id</NAME></ARG>
+     </FUNC>
+    <FUNC>
+        <TYPE>QString</TYPE>
+        <NAME>nickOf</NAME>
+        <ARG><TYPE>unsigned int</TYPE><NAME>id</NAME></ARG>
+     </FUNC>
+    <FUNC>
+        <TYPE>QString</TYPE>
+        <NAME>faceOf</NAME>
+        <ARG><TYPE>unsigned int</TYPE><NAME>id</NAME></ARG>
+        <ARG><TYPE>bool</TYPE><NAME>isOff</NAME></ARG>
+     </FUNC>
+    <FUNC>
+        <TYPE>int</TYPE>
+        <NAME>genderOf</NAME>
+        <ARG><TYPE>unsigned int</TYPE><NAME>id</NAME></ARG>
+     </FUNC>
+    <FUNC>
+        <TYPE>int</TYPE>
+        <NAME>levelOf</NAME>
+        <ARG><TYPE>unsigned int</TYPE><NAME>id</NAME></ARG>
+     </FUNC>
+    <FUNC>
+        <TYPE>QString</TYPE>
+        <NAME>signatureOf</NAME>
+        <ARG><TYPE>unsigned int</TYPE></ARG>
+     </FUNC>
+    <FUNC>
+        <TYPE>int</TYPE>
+        <NAME>numGroups</NAME>
+     </FUNC>
+    <FUNC>
+        <TYPE>QString</TYPE>
+        <NAME>groupName</NAME>
+        <ARG><TYPE>int</TYPE><NAME>index</NAME></ARG>
+     </FUNC>
+    <FUNC>
+        <TYPE>int</TYPE>
+        <NAME>group</NAME>
+        <ARG><TYPE>unsigned int</TYPE><NAME>id</NAME></ARG>
+     </FUNC>
+    <FUNC>
+        <TYPE>int</TYPE>
+        <NAME>numQuns</NAME>
+     </FUNC>
+    <FUNC>
+        <TYPE>QStringList</TYPE>
+        <NAME>Quns</NAME>
+     </FUNC>
+    <FUNC>
+        <TYPE>QString</TYPE>
+        <NAME>QunName</NAME>
+        <ARG><TYPE>unsigned int</TYPE><NAME>ext</NAME></ARG>
+     </FUNC>
+    <FUNC>
+        <TYPE>QString</TYPE>
+        <NAME>QunNotice</NAME>
+        <ARG><TYPE>unsigned int</TYPE><NAME>ext</NAME></ARG>
+     </FUNC>
+    <FUNC>
+        <TYPE>QString</TYPE>
+        <NAME>QunDescription</NAME>
+        <ARG><TYPE>unsigned int</TYPE><NAME>ext</NAME></ARG>
+     </FUNC>
+    <FUNC>
+        <TYPE>int</TYPE>
+        <NAME>numQunMembers</NAME>
+        <ARG><TYPE>unsigned int</TYPE><NAME>ext</NAME></ARG>
+     </FUNC>
+    <FUNC>
+        <TYPE>QStringList</TYPE>
+        <NAME>QunMembers</NAME>
+        <ARG><TYPE>unsigned int</TYPE><NAME>ext</NAME></ARG>
+     </FUNC>
+    <FUNC>
+        <TYPE>QString</TYPE>
+        <NAME>QunMemberNick</NAME>
+        <ARG><TYPE>unsigned int</TYPE><NAME>ext</NAME></ARG>
+        <ARG><TYPE>unsigned int</TYPE><NAME>id</NAME></ARG>
+     </FUNC>
+    <FUNC>
+        <TYPE>QString</TYPE>
+        <NAME>QunMemberFace</NAME>
+        <ARG><TYPE>unsigned int</TYPE><NAME>ext</NAME></ARG>
+        <ARG><TYPE>unsigned int</TYPE><NAME>id</NAME></ARG>
+        <ARG><TYPE>bool</TYPE><NAME>isOff</NAME></ARG>
+     </FUNC>
+    <FUNC>
+        <TYPE>unsigned int</TYPE>
+        <NAME>myQQ</NAME>
+     </FUNC>
+    <FUNC>
+        <TYPE>int</TYPE>
+        <NAME>onlineStatus</NAME>
+        <ARG><TYPE>unsigned int</TYPE><NAME>id</NAME></ARG>
+     </FUNC>
+    <FUNC>
+        <TYPE>QString</TYPE>
+        <NAME>currentLoginIP</NAME>
+     </FUNC>
+    <FUNC>
+        <TYPE>QString</TYPE>
+        <NAME>lastLoginIP</NAME>
+     </FUNC>
+    <FUNC>
+        <TYPE>QString</TYPE>
+        <NAME>lastLoginTime</NAME>
+     </FUNC>
+</CLASS>
+</DCOP-IDL>

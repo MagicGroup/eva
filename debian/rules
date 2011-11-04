@@ -1,0 +1,63 @@
+#!/usr/bin/make -f
+#	Debian rules file for eva, requires the debhelper package.
+
+DEB_BUILD_GNU_TYPE = $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
+DEB_HOST_GNU_TYPE = $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
+ifneq ($(DEB_BUILD_GNU_TYPE),$(DEB_HOST_GNU_TYPE))
+CONFARGS = --host=$(DEB_HOST_GNU_TYPE)
+endif
+
+CFLAGS =" -g -O2 -Wall"
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+	./autogen.sh
+	CFLAGS=$(CFLAGS) ./configure \
+		--prefix=`kde-config --prefix` \
+		--infodir=`pwd`/debian/eva/usr/share/info \
+		--mandir=`pwd`/debian/eva/usr/share/man $(CONFARGS)
+	touch configure-stamp
+
+build: configure-stamp build-stamp
+build-stamp:
+	dh_testdir
+	$(MAKE)
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	-rm -f build-stamp configure-stamp
+	make distclean || exit 0
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+
+	make install prefix=`pwd`/debian/eva/usr bindir=`pwd`/debian/eva/usr/bin 
+
+binary-indep:	build install
+binary-arch:	build install
+	dh_testdir
+	dh_testroot
+	dh_installdocs README* TODO
+	dh_installmanpages
+	dh_installchangelogs
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+	# You may want to make some executables suid here.
+	dh_makeshlibs
+	dh_installdeb
+#	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install configure
+

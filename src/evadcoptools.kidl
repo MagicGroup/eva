@@ -1,0 +1,33 @@
+<!DOCTYPE DCOP-IDL><DCOP-IDL>
+<SOURCE>./evadcoptools.h</SOURCE>
+<INCLUDE>dcopobject.h</INCLUDE>
+<INCLUDE>qstring.h</INCLUDE>
+<CLASS>
+    <NAME>EvaDCOPToolsInterface</NAME>
+    <SUPER>DCOPObject</SUPER>
+    <FUNC>
+        <TYPE>bool</TYPE>
+        <NAME>stopScript</NAME>
+        <ARG><TYPE  qleft="const" qright="&amp;">QString</TYPE><NAME>name</NAME></ARG>
+     </FUNC>
+    <FUNC>
+        <TYPE>bool</TYPE>
+        <NAME>runScript</NAME>
+        <ARG><TYPE  qleft="const" qright="&amp;">QString</TYPE><NAME>name</NAME></ARG>
+        <ARG><TYPE>bool</TYPE><NAME>silent</NAME></ARG>
+     </FUNC>
+    <FUNC>
+        <TYPE>QString</TYPE>
+        <NAME>scriptDir</NAME>
+        <ARG><TYPE>bool</TYPE><NAME>isSystem</NAME></ARG>
+     </FUNC>
+    <FUNC>
+        <TYPE>int</TYPE>
+        <NAME>numScripts</NAME>
+     </FUNC>
+    <FUNC>
+        <TYPE>int</TYPE>
+        <NAME>numRunningScripts</NAME>
+     </FUNC>
+</CLASS>
+</DCOP-IDL>

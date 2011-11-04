@@ -1,0 +1,65 @@
+<!DOCTYPE DCOP-IDL><DCOP-IDL>
+<SOURCE>./evadcopactions.h</SOURCE>
+<INCLUDE>dcopobject.h</INCLUDE>
+<CLASS>
+    <NAME>EvaDCOPActionsInterface</NAME>
+    <SUPER>DCOPObject</SUPER>
+    <FUNC>
+        <TYPE>void</TYPE>
+        <NAME>changeToOnline</NAME>
+     </FUNC>
+    <FUNC>
+        <TYPE>void</TYPE>
+        <NAME>changeToOffline</NAME>
+     </FUNC>
+    <FUNC>
+        <TYPE>void</TYPE>
+        <NAME>changeToLeave</NAME>
+     </FUNC>
+    <FUNC>
+        <TYPE>void</TYPE>
+        <NAME>changeToInvisible</NAME>
+     </FUNC>
+    <FUNC>
+        <TYPE>void</TYPE>
+        <NAME>changeNick</NAME>
+        <ARG><TYPE>QString</TYPE><NAME>nick</NAME></ARG>
+     </FUNC>
+    <FUNC>
+        <TYPE>void</TYPE>
+        <NAME>changeSignature</NAME>
+        <ARG><TYPE>QString</TYPE><NAME>contents</NAME></ARG>
+     </FUNC>
+    <FUNC>
+        <TYPE>void</TYPE>
+        <NAME>sendToContact</NAME>
+        <ARG><TYPE>unsigned int</TYPE><NAME>id</NAME></ARG>
+        <ARG><TYPE>QString</TYPE><NAME>msg</NAME></ARG>
+     </FUNC>
+    <FUNC>
+        <TYPE>void</TYPE>
+        <NAME>sendToQun</NAME>
+        <ARG><TYPE>unsigned int</TYPE><NAME>ext</NAME></ARG>
+        <ARG><TYPE>QString</TYPE></ARG>
+     </FUNC>
+    <FUNC>
+        <TYPE>void</TYPE>
+        <NAME>textReady</NAME>
+        <ARG><TYPE>unsigned int</TYPE><NAME>id</NAME></ARG>
+        <ARG><TYPE>QString</TYPE><NAME>text</NAME></ARG>
+        <ARG><TYPE>bool</TYPE><NAME>isQun</NAME></ARG>
+     </FUNC>
+    <FUNC>
+        <TYPE>void</TYPE>
+        <NAME>imageReady</NAME>
+        <ARG><TYPE>unsigned int</TYPE><NAME>id</NAME></ARG>
+        <ARG><TYPE>QString</TYPE><NAME>path</NAME></ARG>
+        <ARG><TYPE>bool</TYPE><NAME>isQun</NAME></ARG>
+     </FUNC>
+    <FUNC>
+        <TYPE>void</TYPE>
+        <NAME>openAddFriendDialog</NAME>
+        <ARG><TYPE>unsigned int</TYPE><NAME>id</NAME></ARG>
+     </FUNC>
+</CLASS>
+</DCOP-IDL>

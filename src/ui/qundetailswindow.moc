@@ -1,0 +1,512 @@
+/****************************************************************************
+** QunDetailsWindow meta object code from reading C++ file 'qundetailswindow.h'
+**
+** Created: Tue Feb 8 23:49:45 2011
+**      by: The Qt MOC ($Id: qt/moc_yacc.cpp   3.3.8   edited Feb 2 14:59 $)
+**
+** WARNING! All changes made in this file will be lost!
+*****************************************************************************/
+
+#undef QT_NO_COMPAT
+#include "qundetailswindow.h"
+#include <qmetaobject.h>
+#include <qapplication.h>
+
+#include <private/qucomextra_p.h>
+#if !defined(Q_MOC_OUTPUT_REVISION) || (Q_MOC_OUTPUT_REVISION != 26)
+#error "This file was generated using the moc from 3.3.8b. It"
+#error "cannot be used with the include files from this version of Qt."
+#error "(The moc has changed too much.)"
+#endif
+
+const char *QunDetailsWindow::className() const
+{
+    return "QunDetailsWindow";
+}
+
+QMetaObject *QunDetailsWindow::metaObj = 0;
+static QMetaObjectCleanUp cleanUp_QunDetailsWindow( "QunDetailsWindow", &QunDetailsWindow::staticMetaObject );
+
+#ifndef QT_NO_TRANSLATION
+QString QunDetailsWindow::tr( const char *s, const char *c )
+{
+    if ( qApp )
+	return qApp->translate( "QunDetailsWindow", s, c, QApplication::DefaultCodec );
+    else
+	return QString::fromLatin1( s );
+}
+#ifndef QT_NO_TRANSLATION_UTF8
+QString QunDetailsWindow::trUtf8( const char *s, const char *c )
+{
+    if ( qApp )
+	return qApp->translate( "QunDetailsWindow", s, c, QApplication::UnicodeUTF8 );
+    else
+	return QString::fromUtf8( s );
+}
+#endif // QT_NO_TRANSLATION_UTF8
+
+#endif // QT_NO_TRANSLATION
+
+QMetaObject* QunDetailsWindow::staticMetaObject()
+{
+    if ( metaObj )
+	return metaObj;
+    QMetaObject* parentObject = QunDetailsUI::staticMetaObject();
+    static const QUParameter param_slot_0[] = {
+	{ "id", &static_QUType_ptr, "unsigned int", QUParameter::In },
+	{ "ok", &static_QUType_bool, 0, QUParameter::In },
+	{ "msg", &static_QUType_QString, 0, QUParameter::In }
+    };
+    static const QUMethod slot_0 = {"slotQunInfomationReady", 3, param_slot_0 };
+    static const QUParameter param_slot_1[] = {
+	{ "id", &static_QUType_ptr, "unsigned int", QUParameter::In },
+	{ "ok", &static_QUType_bool, 0, QUParameter::In }
+    };
+    static const QUMethod slot_1 = {"slotModifyQunInfo", 2, param_slot_1 };
+    static const QUParameter param_slot_2[] = {
+	{ "id", &static_QUType_ptr, "unsigned int", QUParameter::In },
+	{ "ok", &static_QUType_bool, 0, QUParameter::In },
+	{ "msg", &static_QUType_QString, 0, QUParameter::In }
+    };
+    static const QUMethod slot_2 = {"slotModifyQunInfo", 3, param_slot_2 };
+    static const QUParameter param_slot_3[] = {
+	{ "id", &static_QUType_ptr, "unsigned int", QUParameter::In },
+	{ "ok", &static_QUType_bool, 0, QUParameter::In },
+	{ "qq", &static_QUType_ptr, "unsigned int", QUParameter::In }
+    };
+    static const QUMethod slot_3 = {"slotModifyQunCardReply", 3, param_slot_3 };
+    static const QUParameter param_slot_4[] = {
+	{ "id", &static_QUType_ptr, "unsigned int", QUParameter::In },
+	{ "ok", &static_QUType_bool, 0, QUParameter::In },
+	{ "qq", &static_QUType_ptr, "unsigned int", QUParameter::In },
+	{ "msg", &static_QUType_QString, 0, QUParameter::In }
+    };
+    static const QUMethod slot_4 = {"slotModifyQunCardReply", 4, param_slot_4 };
+    static const QUParameter param_slot_5[] = {
+	{ "id", &static_QUType_ptr, "unsigned int", QUParameter::In },
+	{ "ok", &static_QUType_bool, 0, QUParameter::In },
+	{ "qq", &static_QUType_ptr, "unsigned int", QUParameter::In },
+	{ "isSetAdmin", &static_QUType_bool, 0, QUParameter::In }
+    };
+    static const QUMethod slot_5 = {"slotSetAdmin", 4, param_slot_5 };
+    static const QUParameter param_slot_6[] = {
+	{ "id", &static_QUType_ptr, "unsigned int", QUParameter::In },
+	{ "ok", &static_QUType_bool, 0, QUParameter::In },
+	{ "qq", &static_QUType_ptr, "unsigned int", QUParameter::In },
+	{ "isSetAdmin", &static_QUType_bool, 0, QUParameter::In },
+	{ "msg", &static_QUType_QString, 0, QUParameter::In }
+    };
+    static const QUMethod slot_6 = {"slotSetAdmin", 5, param_slot_6 };
+    static const QUParameter param_slot_7[] = {
+	{ "id", &static_QUType_ptr, "unsigned int", QUParameter::In },
+	{ "ok", &static_QUType_bool, 0, QUParameter::In },
+	{ "qq", &static_QUType_ptr, "unsigned int", QUParameter::In }
+    };
+    static const QUMethod slot_7 = {"slotTransferQun", 3, param_slot_7 };
+    static const QUParameter param_slot_8[] = {
+	{ "id", &static_QUType_ptr, "unsigned int", QUParameter::In },
+	{ "ok", &static_QUType_bool, 0, QUParameter::In },
+	{ "qq", &static_QUType_ptr, "unsigned int", QUParameter::In },
+	{ "msg", &static_QUType_QString, 0, QUParameter::In }
+    };
+    static const QUMethod slot_8 = {"slotTransferQun", 4, param_slot_8 };
+    static const QUParameter param_slot_9[] = {
+	{ "id", &static_QUType_ptr, "unsigned int", QUParameter::In },
+	{ "ok", &static_QUType_bool, 0, QUParameter::In }
+    };
+    static const QUMethod slot_9 = {"slotModifyQunMembers", 2, param_slot_9 };
+    static const QUParameter param_slot_10[] = {
+	{ "id", &static_QUType_ptr, "unsigned int", QUParameter::In },
+	{ "ok", &static_QUType_bool, 0, QUParameter::In },
+	{ "msg", &static_QUType_QString, 0, QUParameter::In }
+    };
+    static const QUMethod slot_10 = {"slotModifyQunMembers", 3, param_slot_10 };
+    static const QUParameter param_slot_11[] = {
+	{ "id", &static_QUType_ptr, "unsigned int", QUParameter::In },
+	{ "ok", &static_QUType_bool, 0, QUParameter::In },
+	{ "qq", &static_QUType_ptr, "unsigned int", QUParameter::In },
+	{ "realName", &static_QUType_QString, 0, QUParameter::In },
+	{ "gender", &static_QUType_ptr, "unsigned char", QUParameter::In },
+	{ "phone", &static_QUType_QString, 0, QUParameter::In },
+	{ "email", &static_QUType_QString, 0, QUParameter::In },
+	{ "memo", &static_QUType_QString, 0, QUParameter::In },
+	{ "msg", &static_QUType_QString, 0, QUParameter::In }
+    };
+    static const QUMethod slot_11 = {"slotReceivedQunCard", 9, param_slot_11 };
+    static const QUParameter param_slot_12[] = {
+	{ "id", &static_QUType_ptr, "unsigned int", QUParameter::In }
+    };
+    static const QUMethod slot_12 = {"slotMembersUpdated", 1, param_slot_12 };
+    static const QUMethod slot_13 = {"slotClose", 0, 0 };
+    static const QUMethod slot_14 = {"slotLoadMembers", 0, 0 };
+    static const QUMethod slot_15 = {"slotUpdateClicked", 0, 0 };
+    static const QUMethod slot_16 = {"slotModifyInfo", 0, 0 };
+    static const QUMethod slot_17 = {"slotModifyQunCard", 0, 0 };
+    static const QUParameter param_slot_18[] = {
+	{ "row", &static_QUType_int, 0, QUParameter::In },
+	{ "col", &static_QUType_int, 0, QUParameter::In },
+	{ "button", &static_QUType_int, 0, QUParameter::In },
+	{ "mousePos", &static_QUType_varptr, "\x0e", QUParameter::In }
+    };
+    static const QUMethod slot_18 = {"slotTableClicked", 4, param_slot_18 };
+    static const QUMethod slot_19 = {"slotSetMembersClicked", 0, 0 };
+    static const QUMethod slot_20 = {"slotAddToMeClicked", 0, 0 };
+    static const QUMethod slot_21 = {"slotDelMembersClicked", 0, 0 };
+    static const QUMethod slot_22 = {"slotSetAdminClicked", 0, 0 };
+    static const QUMethod slot_23 = {"slotUnsetAdminClicked", 0, 0 };
+    static const QUMethod slot_24 = {"slotTransferClicked", 0, 0 };
+    static const QUParameter param_slot_25[] = {
+	{ "id", &static_QUType_ptr, "unsigned int", QUParameter::In },
+	{ "isChecked", &static_QUType_bool, 0, QUParameter::In }
+    };
+    static const QUMethod slot_25 = {"slotPickerMemberClicked", 2, param_slot_25 };
+    static const QUMethod slot_26 = {"slotModifyMembers", 0, 0 };
+    static const QUMethod slot_27 = {"slotCategoryClicked", 0, 0 };
+    static const QUParameter param_slot_28[] = {
+	{ 0, &static_QUType_ptr, "unsigned short", QUParameter::In }
+    };
+    static const QUMethod slot_28 = {"slotCategorySelected", 1, param_slot_28 };
+    static const QUMethod slot_29 = {"slotUpdateMessageSetting", 0, 0 };
+    static const QMetaData slot_tbl[] = {
+	{ "slotQunInfomationReady(const unsigned int,const bool,QString)", &slot_0, QMetaData::Public },
+	{ "slotModifyQunInfo(const unsigned int,const bool)", &slot_1, QMetaData::Public },
+	{ "slotModifyQunInfo(const unsigned int,const bool,QString)", &slot_2, QMetaData::Public },
+	{ "slotModifyQunCardReply(const unsigned int,const bool,const unsigned int)", &slot_3, QMetaData::Public },
+	{ "slotModifyQunCardReply(const unsigned int,const bool,const unsigned int,QString)", &slot_4, QMetaData::Public },
+	{ "slotSetAdmin(const unsigned int,const bool,const unsigned int,const bool)", &slot_5, QMetaData::Public },
+	{ "slotSetAdmin(const unsigned int,const bool,const unsigned int,const bool,QString)", &slot_6, QMetaData::Public },
+	{ "slotTransferQun(const unsigned int,const bool,const unsigned int)", &slot_7, QMetaData::Public },
+	{ "slotTransferQun(const unsigned int,const bool,const unsigned int,QString)", &slot_8, QMetaData::Public },
+	{ "slotModifyQunMembers(const unsigned int,const bool)", &slot_9, QMetaData::Public },
+	{ "slotModifyQunMembers(const unsigned int,const bool,QString)", &slot_10, QMetaData::Public },
+	{ "slotReceivedQunCard(const unsigned int,const bool,const unsigned int,QString,const unsigned char,QString,QString,QString,QString)", &slot_11, QMetaData::Public },
+	{ "slotMembersUpdated(const unsigned int)", &slot_12, QMetaData::Public },
+	{ "slotClose()", &slot_13, QMetaData::Private },
+	{ "slotLoadMembers()", &slot_14, QMetaData::Private },
+	{ "slotUpdateClicked()", &slot_15, QMetaData::Private },
+	{ "slotModifyInfo()", &slot_16, QMetaData::Private },
+	{ "slotModifyQunCard()", &slot_17, QMetaData::Private },
+	{ "slotTableClicked(int,int,int,const QPoint&)", &slot_18, QMetaData::Private },
+	{ "slotSetMembersClicked()", &slot_19, QMetaData::Private },
+	{ "slotAddToMeClicked()", &slot_20, QMetaData::Private },
+	{ "slotDelMembersClicked()", &slot_21, QMetaData::Private },
+	{ "slotSetAdminClicked()", &slot_22, QMetaData::Private },
+	{ "slotUnsetAdminClicked()", &slot_23, QMetaData::Private },
+	{ "slotTransferClicked()", &slot_24, QMetaData::Private },
+	{ "slotPickerMemberClicked(const unsigned int,const bool)", &slot_25, QMetaData::Private },
+	{ "slotModifyMembers()", &slot_26, QMetaData::Private },
+	{ "slotCategoryClicked()", &slot_27, QMetaData::Private },
+	{ "slotCategorySelected(const unsigned short)", &slot_28, QMetaData::Private },
+	{ "slotUpdateMessageSetting()", &slot_29, QMetaData::Private }
+    };
+    static const QUParameter param_signal_0[] = {
+	{ "id", &static_QUType_ptr, "unsigned int", QUParameter::In }
+    };
+    static const QUMethod signal_0 = {"requestQunInfo", 1, param_signal_0 };
+    static const QUParameter param_signal_1[] = {
+	{ 0, &static_QUType_ptr, "unsigned int", QUParameter::In },
+	{ 0, &static_QUType_ptr, "unsigned int", QUParameter::In }
+    };
+    static const QUMethod signal_1 = {"requestQunCard", 2, param_signal_1 };
+    static const QUParameter param_signal_2[] = {
+	{ "id", &static_QUType_ptr, "unsigned int", QUParameter::In },
+	{ "auth", &static_QUType_ptr, "unsigned char", QUParameter::In },
+	{ "cate", &static_QUType_ptr, "unsigned short", QUParameter::In },
+	{ "name", &static_QUType_QString, 0, QUParameter::In },
+	{ "notice", &static_QUType_QString, 0, QUParameter::In },
+	{ "description", &static_QUType_QString, 0, QUParameter::In }
+    };
+    static const QUMethod signal_2 = {"requestModifyQunInfo", 6, param_signal_2 };
+    static const QUParameter param_signal_3[] = {
+	{ "id", &static_QUType_ptr, "unsigned int", QUParameter::In },
+	{ "qq", &static_QUType_ptr, "unsigned int", QUParameter::In },
+	{ "name", &static_QUType_QString, 0, QUParameter::In },
+	{ "gender", &static_QUType_ptr, "unsigned char", QUParameter::In },
+	{ "phone", &static_QUType_QString, 0, QUParameter::In },
+	{ "email", &static_QUType_QString, 0, QUParameter::In },
+	{ "memo", &static_QUType_QString, 0, QUParameter::In }
+    };
+    static const QUMethod signal_3 = {"requestModifyQunCard", 7, param_signal_3 };
+    static const QUParameter param_signal_4[] = {
+	{ "id", &static_QUType_ptr, "unsigned int", QUParameter::In },
+	{ "qq", &static_QUType_ptr, "unsigned int", QUParameter::In },
+	{ "isSetAdmin", &static_QUType_bool, 0, QUParameter::In }
+    };
+    static const QUMethod signal_4 = {"requestQunSetAdmin", 3, param_signal_4 };
+    static const QUParameter param_signal_5[] = {
+	{ "id", &static_QUType_ptr, "unsigned int", QUParameter::In },
+	{ "qq", &static_QUType_ptr, "unsigned int", QUParameter::In }
+    };
+    static const QUMethod signal_5 = {"requestQunTransfer", 2, param_signal_5 };
+    static const QUParameter param_signal_6[] = {
+	{ "id", &static_QUType_ptr, "unsigned int", QUParameter::In },
+	{ "list", &static_QUType_ptr, "std::list<unsigned int>", QUParameter::In },
+	{ "isAdd", &static_QUType_bool, 0, QUParameter::In }
+    };
+    static const QUMethod signal_6 = {"requestModifyQunMembers", 3, param_signal_6 };
+    static const QUParameter param_signal_7[] = {
+	{ "id", &static_QUType_ptr, "unsigned int", QUParameter::In },
+	{ "nick", &static_QUType_QString, 0, QUParameter::In },
+	{ "face", &static_QUType_ptr, "unsigned short", QUParameter::In }
+    };
+    static const QUMethod signal_7 = {"requestAddBuddy", 3, param_signal_7 };
+    static const QUParameter param_signal_8[] = {
+	{ "id", &static_QUType_ptr, "unsigned int", QUParameter::In },
+	{ "type", &static_QUType_ptr, "signed char", QUParameter::In }
+    };
+    static const QUMethod signal_8 = {"requestUpdateQunMessageSettings", 2, param_signal_8 };
+    static const QUParameter param_signal_9[] = {
+	{ "id", &static_QUType_ptr, "unsigned int", QUParameter::In }
+    };
+    static const QUMethod signal_9 = {"removeMember", 1, param_signal_9 };
+    static const QMetaData signal_tbl[] = {
+	{ "requestQunInfo(const unsigned int)", &signal_0, QMetaData::Public },
+	{ "requestQunCard(const unsigned int,const unsigned int)", &signal_1, QMetaData::Public },
+	{ "requestModifyQunInfo(const unsigned int,unsigned char,unsigned short,QString,QString,QString)", &signal_2, QMetaData::Public },
+	{ "requestModifyQunCard(const unsigned int,const unsigned int,QString,unsigned char,QString,QString,QString)", &signal_3, QMetaData::Public },
+	{ "requestQunSetAdmin(const unsigned int,const unsigned int,const bool)", &signal_4, QMetaData::Public },
+	{ "requestQunTransfer(const unsigned int,const unsigned int)", &signal_5, QMetaData::Public },
+	{ "requestModifyQunMembers(const unsigned int,const std::list<unsigned int>,const bool)", &signal_6, QMetaData::Public },
+	{ "requestAddBuddy(const unsigned int,const QString,const unsigned short)", &signal_7, QMetaData::Public },
+	{ "requestUpdateQunMessageSettings(const unsigned int,const signed char)", &signal_8, QMetaData::Public },
+	{ "removeMember(const unsigned int)", &signal_9, QMetaData::Public }
+    };
+    metaObj = QMetaObject::new_metaobject(
+	"QunDetailsWindow", parentObject,
+	slot_tbl, 30,
+	signal_tbl, 10,
+#ifndef QT_NO_PROPERTIES
+	0, 0,
+	0, 0,
+#endif // QT_NO_PROPERTIES
+	0, 0 );
+    cleanUp_QunDetailsWindow.setMetaObject( metaObj );
+    return metaObj;
+}
+
+void* QunDetailsWindow::qt_cast( const char* clname )
+{
+    if ( !qstrcmp( clname, "QunDetailsWindow" ) )
+	return this;
+    return QunDetailsUI::qt_cast( clname );
+}
+
+#include <qobjectdefs.h>
+#include <qsignalslotimp.h>
+
+// SIGNAL requestQunInfo
+void QunDetailsWindow::requestQunInfo( const unsigned int t0 )
+{
+    if ( signalsBlocked() )
+	return;
+    QConnectionList *clist = receivers( staticMetaObject()->signalOffset() + 0 );
+    if ( !clist )
+	return;
+    QUObject o[2];
+    static_QUType_ptr.set(o+1,&t0);
+    activate_signal( clist, o );
+}
+
+// SIGNAL requestQunCard
+void QunDetailsWindow::requestQunCard( const unsigned int t0, const unsigned int t1 )
+{
+    if ( signalsBlocked() )
+	return;
+    QConnectionList *clist = receivers( staticMetaObject()->signalOffset() + 1 );
+    if ( !clist )
+	return;
+    QUObject o[3];
+    static_QUType_ptr.set(o+1,&t0);
+    static_QUType_ptr.set(o+2,&t1);
+    activate_signal( clist, o );
+}
+
+// SIGNAL requestModifyQunInfo
+void QunDetailsWindow::requestModifyQunInfo( const unsigned int t0, unsigned char t1, unsigned short t2, QString t3, QString t4, QString t5 )
+{
+    if ( signalsBlocked() )
+	return;
+    QConnectionList *clist = receivers( staticMetaObject()->signalOffset() + 2 );
+    if ( !clist )
+	return;
+    QUObject o[7];
+    static_QUType_ptr.set(o+1,&t0);
+    static_QUType_ptr.set(o+2,&t1);
+    static_QUType_ptr.set(o+3,&t2);
+    static_QUType_QString.set(o+4,t3);
+    static_QUType_QString.set(o+5,t4);
+    static_QUType_QString.set(o+6,t5);
+    activate_signal( clist, o );
+}
+
+// SIGNAL requestModifyQunCard
+void QunDetailsWindow::requestModifyQunCard( const unsigned int t0, const unsigned int t1, QString t2, unsigned char t3, QString t4, QString t5, QString t6 )
+{
+    if ( signalsBlocked() )
+	return;
+    QConnectionList *clist = receivers( staticMetaObject()->signalOffset() + 3 );
+    if ( !clist )
+	return;
+    QUObject o[8];
+    static_QUType_ptr.set(o+1,&t0);
+    static_QUType_ptr.set(o+2,&t1);
+    static_QUType_QString.set(o+3,t2);
+    static_QUType_ptr.set(o+4,&t3);
+    static_QUType_QString.set(o+5,t4);
+    static_QUType_QString.set(o+6,t5);
+    static_QUType_QString.set(o+7,t6);
+    activate_signal( clist, o );
+}
+
+// SIGNAL requestQunSetAdmin
+void QunDetailsWindow::requestQunSetAdmin( const unsigned int t0, const unsigned int t1, const bool t2 )
+{
+    if ( signalsBlocked() )
+	return;
+    QConnectionList *clist = receivers( staticMetaObject()->signalOffset() + 4 );
+    if ( !clist )
+	return;
+    QUObject o[4];
+    static_QUType_ptr.set(o+1,&t0);
+    static_QUType_ptr.set(o+2,&t1);
+    static_QUType_bool.set(o+3,t2);
+    activate_signal( clist, o );
+}
+
+// SIGNAL requestQunTransfer
+void QunDetailsWindow::requestQunTransfer( const unsigned int t0, const unsigned int t1 )
+{
+    if ( signalsBlocked() )
+	return;
+    QConnectionList *clist = receivers( staticMetaObject()->signalOffset() + 5 );
+    if ( !clist )
+	return;
+    QUObject o[3];
+    static_QUType_ptr.set(o+1,&t0);
+    static_QUType_ptr.set(o+2,&t1);
+    activate_signal( clist, o );
+}
+
+// SIGNAL requestModifyQunMembers
+void QunDetailsWindow::requestModifyQunMembers( const unsigned int t0, const std::list<unsigned int> t1, const bool t2 )
+{
+    if ( signalsBlocked() )
+	return;
+    QConnectionList *clist = receivers( staticMetaObject()->signalOffset() + 6 );
+    if ( !clist )
+	return;
+    QUObject o[4];
+    static_QUType_ptr.set(o+1,&t0);
+    static_QUType_ptr.set(o+2,&t1);
+    static_QUType_bool.set(o+3,t2);
+    activate_signal( clist, o );
+}
+
+// SIGNAL requestAddBuddy
+void QunDetailsWindow::requestAddBuddy( const unsigned int t0, const QString t1, const unsigned short t2 )
+{
+    if ( signalsBlocked() )
+	return;
+    QConnectionList *clist = receivers( staticMetaObject()->signalOffset() + 7 );
+    if ( !clist )
+	return;
+    QUObject o[4];
+    static_QUType_ptr.set(o+1,&t0);
+    static_QUType_QString.set(o+2,t1);
+    static_QUType_ptr.set(o+3,&t2);
+    activate_signal( clist, o );
+}
+
+// SIGNAL requestUpdateQunMessageSettings
+void QunDetailsWindow::requestUpdateQunMessageSettings( const unsigned int t0, const signed char t1 )
+{
+    if ( signalsBlocked() )
+	return;
+    QConnectionList *clist = receivers( staticMetaObject()->signalOffset() + 8 );
+    if ( !clist )
+	return;
+    QUObject o[3];
+    static_QUType_ptr.set(o+1,&t0);
+    static_QUType_ptr.set(o+2,&t1);
+    activate_signal( clist, o );
+}
+
+// SIGNAL removeMember
+void QunDetailsWindow::removeMember( const unsigned int t0 )
+{
+    if ( signalsBlocked() )
+	return;
+    QConnectionList *clist = receivers( staticMetaObject()->signalOffset() + 9 );
+    if ( !clist )
+	return;
+    QUObject o[2];
+    static_QUType_ptr.set(o+1,&t0);
+    activate_signal( clist, o );
+}
+
+bool QunDetailsWindow::qt_invoke( int _id, QUObject* _o )
+{
+    switch ( _id - staticMetaObject()->slotOffset() ) {
+    case 0: slotQunInfomationReady((const unsigned int)(*((const unsigned int*)static_QUType_ptr.get(_o+1))),(const bool)static_QUType_bool.get(_o+2),(QString)static_QUType_QString.get(_o+3)); break;
+    case 1: slotModifyQunInfo((const unsigned int)(*((const unsigned int*)static_QUType_ptr.get(_o+1))),(const bool)static_QUType_bool.get(_o+2)); break;
+    case 2: slotModifyQunInfo((const unsigned int)(*((const unsigned int*)static_QUType_ptr.get(_o+1))),(const bool)static_QUType_bool.get(_o+2),(QString)static_QUType_QString.get(_o+3)); break;
+    case 3: slotModifyQunCardReply((const unsigned int)(*((const unsigned int*)static_QUType_ptr.get(_o+1))),(const bool)static_QUType_bool.get(_o+2),(const unsigned int)(*((const unsigned int*)static_QUType_ptr.get(_o+3)))); break;
+    case 4: slotModifyQunCardReply((const unsigned int)(*((const unsigned int*)static_QUType_ptr.get(_o+1))),(const bool)static_QUType_bool.get(_o+2),(const unsigned int)(*((const unsigned int*)static_QUType_ptr.get(_o+3))),(QString)static_QUType_QString.get(_o+4)); break;
+    case 5: slotSetAdmin((const unsigned int)(*((const unsigned int*)static_QUType_ptr.get(_o+1))),(const bool)static_QUType_bool.get(_o+2),(const unsigned int)(*((const unsigned int*)static_QUType_ptr.get(_o+3))),(const bool)static_QUType_bool.get(_o+4)); break;
+    case 6: slotSetAdmin((const unsigned int)(*((const unsigned int*)static_QUType_ptr.get(_o+1))),(const bool)static_QUType_bool.get(_o+2),(const unsigned int)(*((const unsigned int*)static_QUType_ptr.get(_o+3))),(const bool)static_QUType_bool.get(_o+4),(QString)static_QUType_QString.get(_o+5)); break;
+    case 7: slotTransferQun((const unsigned int)(*((const unsigned int*)static_QUType_ptr.get(_o+1))),(const bool)static_QUType_bool.get(_o+2),(const unsigned int)(*((const unsigned int*)static_QUType_ptr.get(_o+3)))); break;
+    case 8: slotTransferQun((const unsigned int)(*((const unsigned int*)static_QUType_ptr.get(_o+1))),(const bool)static_QUType_bool.get(_o+2),(const unsigned int)(*((const unsigned int*)static_QUType_ptr.get(_o+3))),(QString)static_QUType_QString.get(_o+4)); break;
+    case 9: slotModifyQunMembers((const unsigned int)(*((const unsigned int*)static_QUType_ptr.get(_o+1))),(const bool)static_QUType_bool.get(_o+2)); break;
+    case 10: slotModifyQunMembers((const unsigned int)(*((const unsigned int*)static_QUType_ptr.get(_o+1))),(const bool)static_QUType_bool.get(_o+2),(QString)static_QUType_QString.get(_o+3)); break;
+    case 11: slotReceivedQunCard((const unsigned int)(*((const unsigned int*)static_QUType_ptr.get(_o+1))),(const bool)static_QUType_bool.get(_o+2),(const unsigned int)(*((const unsigned int*)static_QUType_ptr.get(_o+3))),(QString)static_QUType_QString.get(_o+4),(const unsigned char)(*((const unsigned char*)static_QUType_ptr.get(_o+5))),(QString)static_QUType_QString.get(_o+6),(QString)static_QUType_QString.get(_o+7),(QString)static_QUType_QString.get(_o+8),(QString)static_QUType_QString.get(_o+9)); break;
+    case 12: slotMembersUpdated((const unsigned int)(*((const unsigned int*)static_QUType_ptr.get(_o+1)))); break;
+    case 13: slotClose(); break;
+    case 14: slotLoadMembers(); break;
+    case 15: slotUpdateClicked(); break;
+    case 16: slotModifyInfo(); break;
+    case 17: slotModifyQunCard(); break;
+    case 18: slotTableClicked((int)static_QUType_int.get(_o+1),(int)static_QUType_int.get(_o+2),(int)static_QUType_int.get(_o+3),(const QPoint&)*((const QPoint*)static_QUType_ptr.get(_o+4))); break;
+    case 19: slotSetMembersClicked(); break;
+    case 20: slotAddToMeClicked(); break;
+    case 21: slotDelMembersClicked(); break;
+    case 22: slotSetAdminClicked(); break;
+    case 23: slotUnsetAdminClicked(); break;
+    case 24: slotTransferClicked(); break;
+    case 25: slotPickerMemberClicked((const unsigned int)(*((const unsigned int*)static_QUType_ptr.get(_o+1))),(const bool)static_QUType_bool.get(_o+2)); break;
+    case 26: slotModifyMembers(); break;
+    case 27: slotCategoryClicked(); break;
+    case 28: slotCategorySelected((const unsigned short)(*((const unsigned short*)static_QUType_ptr.get(_o+1)))); break;
+    case 29: slotUpdateMessageSetting(); break;
+    default:
+	return QunDetailsUI::qt_invoke( _id, _o );
+    }
+    return TRUE;
+}
+
+bool QunDetailsWindow::qt_emit( int _id, QUObject* _o )
+{
+    switch ( _id - staticMetaObject()->signalOffset() ) {
+    case 0: requestQunInfo((const unsigned int)(*((const unsigned int*)static_QUType_ptr.get(_o+1)))); break;
+    case 1: requestQunCard((const unsigned int)(*((const unsigned int*)static_QUType_ptr.get(_o+1))),(const unsigned int)(*((const unsigned int*)static_QUType_ptr.get(_o+2)))); break;
+    case 2: requestModifyQunInfo((const unsigned int)(*((const unsigned int*)static_QUType_ptr.get(_o+1))),(unsigned char)(*((unsigned char*)static_QUType_ptr.get(_o+2))),(unsigned short)(*((unsigned short*)static_QUType_ptr.get(_o+3))),(QString)static_QUType_QString.get(_o+4),(QString)static_QUType_QString.get(_o+5),(QString)static_QUType_QString.get(_o+6)); break;
+    case 3: requestModifyQunCard((const unsigned int)(*((const unsigned int*)static_QUType_ptr.get(_o+1))),(const unsigned int)(*((const unsigned int*)static_QUType_ptr.get(_o+2))),(QString)static_QUType_QString.get(_o+3),(unsigned char)(*((unsigned char*)static_QUType_ptr.get(_o+4))),(QString)static_QUType_QString.get(_o+5),(QString)static_QUType_QString.get(_o+6),(QString)static_QUType_QString.get(_o+7)); break;
+    case 4: requestQunSetAdmin((const unsigned int)(*((const unsigned int*)static_QUType_ptr.get(_o+1))),(const unsigned int)(*((const unsigned int*)static_QUType_ptr.get(_o+2))),(const bool)static_QUType_bool.get(_o+3)); break;
+    case 5: requestQunTransfer((const unsigned int)(*((const unsigned int*)static_QUType_ptr.get(_o+1))),(const unsigned int)(*((const unsigned int*)static_QUType_ptr.get(_o+2)))); break;
+    case 6: requestModifyQunMembers((const unsigned int)(*((const unsigned int*)static_QUType_ptr.get(_o+1))),(const std::list<unsigned int>)(*((const std::list<unsigned int>*)static_QUType_ptr.get(_o+2))),(const bool)static_QUType_bool.get(_o+3)); break;
+    case 7: requestAddBuddy((const unsigned int)(*((const unsigned int*)static_QUType_ptr.get(_o+1))),(const QString)static_QUType_QString.get(_o+2),(const unsigned short)(*((const unsigned short*)static_QUType_ptr.get(_o+3)))); break;
+    case 8: requestUpdateQunMessageSettings((const unsigned int)(*((const unsigned int*)static_QUType_ptr.get(_o+1))),(const signed char)(*((const signed char*)static_QUType_ptr.get(_o+2)))); break;
+    case 9: removeMember((const unsigned int)(*((const unsigned int*)static_QUType_ptr.get(_o+1)))); break;
+    default:
+	return QunDetailsUI::qt_emit(_id,_o);
+    }
+    return TRUE;
+}
+#ifndef QT_NO_PROPERTIES
+
+bool QunDetailsWindow::qt_property( int id, int f, QVariant* v)
+{
+    return QunDetailsUI::qt_property( id, f, v);
+}
+
+bool QunDetailsWindow::qt_static_property( QObject* , int , int , QVariant* ){ return FALSE; }
+#endif // QT_NO_PROPERTIES

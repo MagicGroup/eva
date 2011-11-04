@@ -1,0 +1,15 @@
+Source: eva
+Section: net
+Priority: optional
+Maintainer: lemote.group 
+Build-Depends: debhelper, libqt3-mt-dev, kdelibs4-dev,c++-compiler,libsqlite3-dev 
+Standards-Version: 0.4.9-1
+
+Package: eva
+Architecture: any
+Pre-Depends: ${shlibs:Depends}
+Depends: libqt3-mt, kdelibs4c2a, kdelibs,libsqlite3-0
+Description: Eva is an instant message client software providing communication with Tencent QQ
+ or other clients. It is written for KDE envirenment. This software is released under
+ GPL lisence, for more details about the license, please see the content of file COPYING.
+

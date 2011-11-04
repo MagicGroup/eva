@@ -1,0 +1,115 @@
+eva (0.4.921bugfix59) stable; urgency=low
+
+  * update qun.msg+chat.mag to user.sqlite3.
+
+ -- liu shiwei <liushiwei@gmail.com>  Tue, 08 Feb 2011 22:42:26 +0800
+
+eva (0.4.921bugfix58) stable; urgency=low
+
+  * 17th, October, 2008 Yuking
+     1. Fixed: Do not insert Enter when using enter-to-send
+        Files: src/ui/evatextedit.cpp
+  * 7th, October, 2008 starkwong
+     1. Fixed: Long message damaged due to oldherl(lsz)'s patch in SVN #47.
+        Files: src/libeva/evaimreceive.cpp
+
+ -- liu shiwei <liushiwei@gmail.com>  Mon, 27 Oct 2008 08:25:47 +0800
+
+eva (0.4.921bugfix56) stable; urgency=low
+
+  * Non-maintainer upload.
+
+ -- liu shiwei <liushiwei@gmail.com>  Thu, 09 Oct 2008 18:48:00 +0800
+
+eva (0.4.921bugfix55) stable; urgency=low
+
+  * super qun.
+
+ -- liu shiwei <liushiwei@gmail.com>  Fri, 19 Sep 2008 01:19:29 +0800
+
+eva (0.4.921bugfix54) stable; urgency=low
+
+  * svn co https://evaq.svn.sourceforge.net/svnroot/evaq/branches/eva-qt3-bugfix/eva/ 
+
+ -- liu shiwei <liushiwei@gmail.com>  Sun, 29 Jun 2008 23:37:45 +0800
+
+eva (0.4.921bugfix50-1) stable; urgency=low
+
+  * fix login crash
+
+
+ -- liu shiwei <liushiwei@gmail.com>  Sat, 21 Jun 2008 21:37:32 +0800
+
+eva (0.4.921bugfix43) stable; urgency=low
+
+  *  New upstream released
+
+ -- liu shiwei <liushiwei@gmail.com>  Sun,  1 Jun 2008 01:30:37 +0800
+
+eva (0.4.921bugfix42) stable; urgency=low
+
+  * New upstream released
+
+ -- root <root@debian>  Wed, 13 Feb 2008 23:12:17 +0800
+
+eva (0.4.92) stable; urgency=low
+
+  * New upstream released
+    1、更新了头像处理的代码，头像大小的设置只会影响好友列表和最近联系人列表中图标的大小。
+      查看资料，设置，上线提示框和浮动提示框中，不论是自定义头像还是普通头像，均按照原始尺寸显示；（byakko）
+    2、修正了禁止提示系统广告后，然会在SystemTray闪烁系统消息图标的BUG。（byakko
+    的第8条更新）
+    3、默认不打开分组， 分组打开状态可以记忆。
+    4、修正脚本安全问题， Eva 的消息提示更改（具体参看script 版的置顶文档），
+    （由 bigsnake_net 指出的漏洞）
+    5、脚本管理的修正，包括规格文件的修正， 增加 caption，
+    用来指定在脚本管理器中脚本的显示名称， name 仅为系统使用名称，等等。
+    6、修正获取额外好友信息时，内存越界写入问题（可能直接导致Eva crash），
+    （感谢 zhz 报告，并帮助测试）
+    7、版本升级为 0.4.921
+    8、将登录窗口中的确定设成默认按钮，按回车可以直接登录（fundawang）
+    9、将QQ号码设成默认焦点。这样如果选择记住密码之后，用上下键选择QQ号码后可以直接按回车登录（fundawang）
+    10、其它个别小修正
+
+ -- liu shiwei <liushiwei@gmail.com>  Wed, 30 Jan 2008 17:41:25 +0800
+
+eva (0.4.91-1) stable; urgency=low
+
+  * add byakko patch
+    1、群公告可以被选中，这样群公告里的URL就可以复制出来了；
+    2、更新的好友浮动提示框的排版，使之更美观；
+    3、修正了列表中昵称含有换行符，导致昵称多行显示的BUG；
+    4、去掉了关闭群公告的功能，以防止打乱窗口控件的布局。
+    5、更新了某些URL和表情处理的冲突，进而导致不能通过点击打开URL的BUG。
+    
+
+ -- liu shiwei <liushiwei@gmail.com>  Tue, 22 Jan 2008 17:31:16 +0800
+
+eva (0.4.91) stable; urgency=low
+
+  * New upstream released 
+
+ -- liu shiwei <liushiwei@gmail.com>  Mon, 21 Jan 2008 17:08:49 +0800
+
+eva (0.4.9-2loongson2) stable; urgency=low
+
+  * loongson2 rebuild, proxy patch
+  * Arch any 
+
+ -- liu shiwei <liushiwei@gmail.com>  Mon, 10 Dec 2007 21:30:47 +0800
+
+eva (0.4.9-1) stable; urgency=low
+
+  * New upstream released
+
+ -- liu shiwei <liushiwei@gmail.com>  Mon, 01 Oct 2007 14:55:16 +0800
+
+eva (0.4.1-1) unstable; urgency=low
+
+    *Eva is an instant message client software providing communication with Tencent
+     QQ or other clients. It is written for KDE envirenment. This software is released
+     under GPL lisence, for more details about the license, please see the content of
+     file COPYING.
+
+
+ -- lemote.group <lemote@lemote.com>  Tue, 19 Sep 2006 06:35:26 -0600
