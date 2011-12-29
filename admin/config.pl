@@ -8,7 +8,7 @@
 # has to recompile the regexps every time.
 #
 # this script does better. It changes all Makefile.ins in one process.
-# in kdelibs the time for building Makefile went down from 2:59 min to 13 sec!
+# in tdelibs the time for building Makefile went down from 2:59 min to 13 sec!
 #
 # written by Michael Matz <matz@kde.org>
 # adapted by Dirk Mueller <mueller@kde.org>

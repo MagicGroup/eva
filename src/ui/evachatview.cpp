@@ -208,7 +208,7 @@ void EvaChatView::slotLinkClicked( const KURL & url, const KParts::URLArgs &/*ar
 	}else{
 		args<<"exec" <<cmd;
 	}
-	kapp->kdeinitExec("kfmclient",args);
+	kapp->tdeinitExec("kfmclient",args);
 }
 
 /*

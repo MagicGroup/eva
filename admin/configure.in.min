@@ -44,6 +44,8 @@ dnl generate the config header
 AM_CONFIG_HEADER(config.h) dnl at the distribution this done
 
 dnl Checks for programs.
+AC_PROG_CC
+AC_PROG_CXX
 AC_CHECK_COMPILERS
 AC_ENABLE_SHARED(yes)
 AC_ENABLE_STATIC(no)

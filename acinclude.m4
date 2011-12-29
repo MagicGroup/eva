@@ -2094,8 +2094,8 @@ if test $kde_qtver = 3; then
                *) lib_kded="" ;;
        esac
    AC_SUBST(LIB_KDED, $lib_kded)
-   AC_SUBST(LIB_KDECORE, "-lkdecore")
-   AC_SUBST(LIB_KDEUI, "-lkdeui")
+   AC_SUBST(LIB_TDECORE, "-lkdecore")
+   AC_SUBST(LIB_TDEUI, "-lkdeui")
    AC_SUBST(LIB_KIO, "-lkio")
    AC_SUBST(LIB_KJS, "-lkjs")
    AC_SUBST(LIB_SMB, "-lsmb")
@@ -2115,8 +2115,8 @@ if test $kde_qtver = 3; then
    AC_SUBST(LIB_KSYCOCA, "-lkio")
    AC_SUBST(LIB_KFILE, "-lkio")
 elif test $kde_qtver = 2; then
-   AC_SUBST(LIB_KDECORE, "-lkdecore")
-   AC_SUBST(LIB_KDEUI, "-lkdeui")
+   AC_SUBST(LIB_TDECORE, "-lkdecore")
+   AC_SUBST(LIB_TDEUI, "-lkdeui")
    AC_SUBST(LIB_KIO, "-lkio")
    AC_SUBST(LIB_KSYCOCA, "-lksycoca")
    AC_SUBST(LIB_SMB, "-lsmb")
@@ -2127,11 +2127,11 @@ elif test $kde_qtver = 2; then
    AC_SUBST(LIB_KPARTS, "-lkparts")
    AC_SUBST(LIB_KDEPRINT, "-lkdeprint")
 else
-   AC_SUBST(LIB_KDECORE, "-lkdecore -lXext $(LIB_QT)")
-   AC_SUBST(LIB_KDEUI, "-lkdeui $(LIB_KDECORE)")
-   AC_SUBST(LIB_KFM, "-lkfm $(LIB_KDECORE)")
-   AC_SUBST(LIB_KFILE, "-lkfile $(LIB_KFM) $(LIB_KDEUI)")
-   AC_SUBST(LIB_KAB, "-lkab $(LIB_KIMGIO) $(LIB_KDECORE)")
+   AC_SUBST(LIB_TDECORE, "-lkdecore -lXext $(LIB_QT)")
+   AC_SUBST(LIB_TDEUI, "-lkdeui $(LIB_TDECORE)")
+   AC_SUBST(LIB_KFM, "-lkfm $(LIB_TDECORE)")
+   AC_SUBST(LIB_KFILE, "-lkfile $(LIB_KFM) $(LIB_TDEUI)")
+   AC_SUBST(LIB_KAB, "-lkab $(LIB_KIMGIO) $(LIB_TDECORE)")
 fi
 ])
 

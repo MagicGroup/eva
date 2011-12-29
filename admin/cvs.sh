@@ -68,7 +68,7 @@ case $AUTOMAKE_STRING in
     echo "*** KDE requires automake $required_automake_version"
     exit 1
     ;;
-  automake*1.6.* | automake*1.7* | automake*1.8* | automake*1.9* | automake*1.10* |automake*1.11*)
+  automake*1.6.* | automake*1.7* | automake*1.8* | automake*1.9* | automake*1.10* | automake*1.11* | automake*1.12*)
     echo "*** $AUTOMAKE_STRING found."
     UNSERMAKE=no
     ;;
@@ -316,7 +316,7 @@ if test -f configure.in.in; then
    fi
 fi
 if test -z "$VERSION" || test "$VERSION" = "@VERSION@"; then
-     VERSION="\"3.5.8\""
+     VERSION="\"3.5.10\""
 fi
 if test -z "$modulename" || test "$modulename" = "@MODULENAME@"; then
    modulename=`pwd`; 
@@ -533,6 +533,7 @@ podir=${podir:-$PWD/po}
 files=`find . -name Makefile.am | xargs egrep -l '^messages:' `
 dirs=`for i in $files; do echo \`dirname $i\`; done`
 tmpname="$PWD/messages.log"
+export PATH=$PATH:/opt/trinity/bin:/opt/trinity/bin
 if test -z "$EXTRACTRC"; then EXTRACTRC=extractrc ; fi
 if test -z "$PREPARETIPS"; then PREPARETIPS=preparetips ; fi
 export EXTRACTRC PREPARETIPS

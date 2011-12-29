@@ -33,7 +33,7 @@
 
 #include <qmessagebox.h>
 #include <qapplication.h>
-#include <kwin.h>
+#include <twin.h>
 #include <klocale.h>
 		
 EvaChatWindowManager::EvaChatWindowManager(EvaImageResource *img, EvaUserSetting *setting, QString myNickname, const int id)

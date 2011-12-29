@@ -56,7 +56,7 @@
 #include <kcmdlineargs.h>
 #include <kaboutapplication.h>
 #include <kglobalaccel.h>
-#include <kwin.h>
+#include <twin.h>
 #include <kmessagebox.h>
 #include <khelpmenu.h>
 #include <kpopupmenu.h>

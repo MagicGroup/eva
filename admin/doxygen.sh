@@ -3,7 +3,7 @@
 # doxygen.sh Copyright (C) 2005 by Adriaan de Groot
 #            Based on some code from Doxyfile.am, among other things.
 # License:   GPL version 2.
-#            See file COPYING in kdelibs for details.
+#            See file COPYING in tdelibs for details.
 
 echo "*** doxygen.sh"
 
@@ -118,6 +118,7 @@ fi
 ###
 # top_srcdir="$1" # Already set by options processing
 module_name=`basename "$top_srcdir"`
+module_name=`echo "$module_name" | awk -F '-' '{print $1}'`
 subdir="$2"
 if test "x." = "x$subdir" ; then
 	subdir=""
@@ -843,7 +844,7 @@ if test "x." = "x$top_builddir" ; then
 	create_subdirs
 	create_installdox > installdox-slow
 	if test "x$recurse" = "x1" ; then
-		if test "x$module_name" = "xkdelibs" ; then
+		if test "x$module_name" = "xtdelibs" ; then
 			if test -z "$QTDOCTAG" && test -d "$QTDOCDIR" && \
 				test ! -f "qt/qt.tag" ; then
 				# Special case: create a qt tag file.

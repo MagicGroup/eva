@@ -46,7 +46,7 @@ void EvaSysBroadcastWindow::slotOpenURL()
 {
 	QStringList args;
 	args<<"exec"<< m_URL;
-	kapp->kdeinitExec("kfmclient",args);
+	kapp->tdeinitExec("kfmclient",args);
 
 	close();
 }

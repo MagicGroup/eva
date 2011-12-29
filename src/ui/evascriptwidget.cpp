@@ -335,7 +335,7 @@ void EvaScriptWidget::slotOpenExternalBrower()
 	}else{
 		args<<"exec" <<cmd;
 	}
-	kapp->kdeinitExec("kfmclient",args);
+	kapp->tdeinitExec("kfmclient",args);
 }
 
 void EvaScriptWidget::slotLinkClicked( const KURL & urls, const KParts::URLArgs & )

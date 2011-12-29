@@ -363,7 +363,7 @@ void EvaSearchWindow::slotPbSearchClicked()
 			case B_FRDCENTER:{
 				QStringList args;
 				args<<"exec"<< "http://love.qq.com/";
-				kapp->kdeinitExec("kfmclient",args);
+				kapp->tdeinitExec("kfmclient",args);
 				}
 				break;
 			}
@@ -415,13 +415,13 @@ void EvaSearchWindow::slotPbSearchClicked()
 				case Q_ALUMNI:{
 					QStringList args;
 					args<<"exec"<< "http://school.qq.com/";
-					kapp->kdeinitExec("kfmclient",args);
+					kapp->tdeinitExec("kfmclient",args);
 					}
 					break;
 				case Q_CATEGORY:{
 					QStringList args;
 					args << "exec" << "http://jump.qq.com/clienturl_simp_18";
-					kapp->kdeinitExec("kfmclient",args);
+					kapp->tdeinitExec("kfmclient",args);
 					//QString url = "http://group.qq.com/cgi-bin/group_classify?catalog="+QString::number(getCategoryCode()); 
 					//KRun::runCommand("konqueror \""+url+"\"");
 					}

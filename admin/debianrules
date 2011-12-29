@@ -12,10 +12,10 @@ $sysconfdir	=	"/etc";
 $kde_includedir	=	"$kde_prefix/include/kde";
 $infodir	=	"$kde_prefix/share/info";
 $mandir		=	"$kde_prefix/share/man";
-$qtdir		=	"/usr/share/qt3";
+$qtdir		=	"/usr/share/tqt3";
 
 $kde_cgidir	=	"$kde_prefix/lib/cgi-bin";
-$kde_confdir	=	"$sysconfdir/kde3";
+$kde_confdir	=	"$sysconfdir/trinity";
 $kde_htmldir	=	"$kde_prefix/share/doc/kde/HTML";
 
 if (defined $ENV{DEB_BUILD_OPTIONS} &&

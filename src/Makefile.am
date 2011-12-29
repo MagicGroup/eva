@@ -27,7 +27,7 @@ eva_SOURCES = main.cpp evachatwindowmanager.cpp evamain.cpp evadcopactions.skel 
 eva_LDFLAGS = $(KDE_RPATH) $(all_libraries)
 eva_LDADD = $(top_builddir)/src/ui/libevaui.la \
 	$(top_builddir)/src/libeva/libeva.la $(top_builddir)/src/api/libevaapi.la \
-	$(top_builddir)/src/api/filetrans/libapi_ft.la $(LIB_KDEUI) $(LIBXSS)
+	$(top_builddir)/src/api/filetrans/libapi_ft.la $(LIB_TDEUI) $(LIBXSS)
 
 # this is where the desktop file will go 
 shelldesktopdir = $(kde_appsdir)/Utilities

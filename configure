@@ -770,8 +770,8 @@ LIB_KAB
 LIB_SMB
 LIB_KJS
 LIB_KIO
-LIB_KDEUI
-LIB_KDECORE
+LIB_TDEUI
+LIB_TDECORE
 LIB_KDED
 kde_widgetdir
 kde_styledir
@@ -27861,9 +27861,9 @@ if test $kde_qtver = 3; then
        esac
    LIB_KDED=$lib_kded
 
-   LIB_KDECORE="-lkdecore"
+   LIB_TDECORE="-lkdecore"
 
-   LIB_KDEUI="-lkdeui"
+   LIB_TDEUI="-lkdeui"
 
    LIB_KIO="-lkio"
 
@@ -27901,9 +27901,9 @@ if test $kde_qtver = 3; then
    LIB_KFILE="-lkio"
 
 elif test $kde_qtver = 2; then
-   LIB_KDECORE="-lkdecore"
+   LIB_TDECORE="-lkdecore"
 
-   LIB_KDEUI="-lkdeui"
+   LIB_TDEUI="-lkdeui"
 
    LIB_KIO="-lkio"
 
@@ -27924,15 +27924,15 @@ elif test $kde_qtver = 2; then
    LIB_KDEPRINT="-lkdeprint"
 
 else
-   LIB_KDECORE="-lkdecore -lXext $(LIB_QT)"
+   LIB_TDECORE="-lkdecore -lXext $(LIB_QT)"
 
-   LIB_KDEUI="-lkdeui $(LIB_KDECORE)"
+   LIB_TDEUI="-lkdeui $(LIB_TDECORE)"
 
-   LIB_KFM="-lkfm $(LIB_KDECORE)"
+   LIB_KFM="-lkfm $(LIB_TDECORE)"
 
-   LIB_KFILE="-lkfile $(LIB_KFM) $(LIB_KDEUI)"
+   LIB_KFILE="-lkfile $(LIB_KFM) $(LIB_TDEUI)"
 
-   LIB_KAB="-lkab $(LIB_KIMGIO) $(LIB_KDECORE)"
+   LIB_KAB="-lkab $(LIB_KIMGIO) $(LIB_TDECORE)"
 
 fi
 

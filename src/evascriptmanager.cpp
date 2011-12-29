@@ -55,7 +55,7 @@
 #include <kstandarddirs.h>
 #include <ktar.h>
 #include <ktextedit.h>
-#include <kwin.h>
+#include <twin.h>
 #include <kdebug.h>
 
 class ScriptListViewItem : public KListViewItem

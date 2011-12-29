@@ -921,7 +921,7 @@ void EvaSysSettingWindow::slotLinkClicked( const QString & url)
 {
 	QStringList args;
 	args<<"exec"<< url;
-	kapp->kdeinitExec("kfmclient",args);
+	kapp->tdeinitExec("kfmclient",args);
 	//KRun::runCommand("konqueror \""+url+"\"");
 }
 
