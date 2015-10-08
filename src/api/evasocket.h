@@ -59,34 +59,34 @@
 
 
 
-#include <qhostaddress.h>
-#include <qcstring.h>
-#include <qobject.h>
-#include <qmap.h>
+#include <ntqhostaddress.h>
+#include <ntqcstring.h>
+#include <ntqobject.h>
+#include <ntqmap.h>
 
 // Implementing UDP & TCP connections to Tencent Server
 
-class QSocketDevice;
-class QSocketNotifier;
+class TQSocketDevice;
+class TQSocketNotifier;
  
-class EvaSocket : public QObject {
+class EvaSocket : public TQObject {
 	Q_OBJECT
 public:
 	enum Type { TCP, UDP};
 	enum Status { Init, Connecting, Ready, Failed, None, BytesReadWrong};
-	EvaSocket(const QHostAddress &host, const short port, const Type type = UDP);
+	EvaSocket(const TQHostAddress &host, const short port, const Type type = UDP);
 	~EvaSocket();
 	
 	const Type getConnectType() const { return connectionType; }
 		
-	void setHost( const QHostAddress &address, const short port);
-	const QHostAddress &getHostAddress() const { return server; }
+	void setHost( const TQHostAddress &address, const short port);
+	const TQHostAddress &getHostAddress() const { return server; }
 	const short getHostPort() const { return serverPort; }
 	const Status getStatus() const { return connectionStatus; }
 	
 	bool write(const char *buf, const int len);
 	bool read(char *buf, int len);
-	const QHostAddress getSocketAddress();
+	const TQHostAddress getSocketAddress();
 	const unsigned short getSocketPort();
 	void setWriteNotifierEnabled(bool enabled);
 
@@ -99,15 +99,15 @@ signals:
 	void exceptionEvent(int);      // emit whenever exception happens
 	void writeReady();
 protected:
-	QSocketDevice *connectSocket;
-	QSocketNotifier *socketReadNotifier; 
-	QSocketNotifier *socketWriteNotifier;
+	TQSocketDevice *connectSocket;
+	TQSocketNotifier *socketReadNotifier; 
+	TQSocketNotifier *socketWriteNotifier;
 	
 	int receivedLength;
 	char *receivedBuffer;
 private:
 	Type connectionType;
-	QHostAddress server;
+	TQHostAddress server;
 	short serverPort;
 	
 	Status connectionStatus;  //  connected or not
@@ -122,13 +122,13 @@ class EvaHttpProxy : public EvaSocket {
 public:
 	enum ProxyStatus { Proxy_None, Proxy_TCP_Ready, Proxy_Connecting, Proxy_Ready, 
 				Proxy_Need_Auth, Proxy_Read_Error, Proxy_Error};
-	EvaHttpProxy(const QHostAddress &proxyHost, const short proxyPort, const QString username = QString::null, 
-								const QString password = QString::null);
-	void setDestinationServer(const QString &server, const int port); // server could be IP or URL
-	const QString &getDestinationServer() const { return destinationAddress; }
-	void setAuthParameter(const QString &username, const QString &password);
-	const QCString &getBase64AuthParam() const { return base64AuthParam;}
-	void setBase64AuthParam(const QCString &param) { base64AuthParam = param;  status = Proxy_None; }
+	EvaHttpProxy(const TQHostAddress &proxyHost, const short proxyPort, const TQString username = TQString::null, 
+								const TQString password = TQString::null);
+	void setDestinationServer(const TQString &server, const int port); // server could be IP or URL
+	const TQString &getDestinationServer() const { return destinationAddress; }
+	void setAuthParameter(const TQString &username, const TQString &password);
+	const TQCString &getBase64AuthParam() const { return base64AuthParam;}
+	void setBase64AuthParam(const TQCString &param) { base64AuthParam = param;  status = Proxy_None; }
 	bool doInitConnecting();
 	bool doAuthConnecting();
 	
@@ -143,9 +143,9 @@ public slots:
 	void slotWriteReady();
 private:
 	ProxyStatus status;
-	QString destinationAddress;
-	QCString base64AuthParam;
-	QCString sentBuffer;
+	TQString destinationAddress;
+	TQCString base64AuthParam;
+	TQCString sentBuffer;
 	char *readBuffer;
 	void received(int len);
 private slots:
@@ -173,33 +173,33 @@ public:
 	/** used for parsing the HTTP header 
 	 *  \see parseHeader
 	 */
-	HttpHeader(const QByteArray &data);
+	HttpHeader(const TQByteArray &data);
 
 	/** parse http header
-	 *  \see HttpHeader(const QCString &data)
+	 *  \see HttpHeader(const TQCString &data)
 	 */
-	bool parseHeader(const QByteArray &data);
+	bool parseHeader(const TQByteArray &data);
 
 	/** get the ready-to-send string for sending
 	 *  or the string we got for receiving
 	 */
-	const QCString toCString();
+	const TQCString toCString();
 
-	QCString getProxyConnectHeader( const QString &destHost, const unsigned short port, const bool needAuth = false);
-	QCString getCmdGetHeader(const bool useProxy = false, const bool needAuth = false);
+	TQCString getProxyConnectHeader( const TQString &destHost, const unsigned short port, const bool needAuth = false);
+	TQCString getCmdGetHeader(const bool useProxy = false, const bool needAuth = false);
 
 	/** Also, provides some easy to use methods for sending/receiving header */
-	void setCookie(const QString &name, const QString &value);
-	void setGetURI(const QString &uri);
-	void setHost(const QString &host);
-	void setAuthInfo(const QString &user, const QString &password);
-	void setBase64AuthParam(const QCString &param);
+	void setCookie(const TQString &name, const TQString &value);
+	void setGetURI(const TQString &uri);
+	void setHost(const TQString &host);
+	void setAuthInfo(const TQString &user, const TQString &password);
+	void setBase64AuthParam(const TQCString &param);
 
-	const QString &getUsername() const { return m_Username; }
-	const QString &getPassword() const { return m_Password; }
-	const QString getReplyCode() const;
-	const QMap<QString, QString> &getCookies() const;
-	const QString getCookie(const QString &name) const;
+	const TQString &getUsername() const { return m_Username; }
+	const TQString &getPassword() const { return m_Password; }
+	const TQString getReplyCode() const;
+	const TQMap<TQString, TQString> &getCookies() const;
+	const TQString getCookie(const TQString &name) const;
 	const unsigned int getContentLength() ;
 
 	/** 
@@ -214,20 +214,20 @@ public:
 	const unsigned int getContentsOffset() const;
 protected:
 	/** set one field of the header */
-	void setMetaData(const QString &field, const QString &value);
+	void setMetaData(const TQString &field, const TQString &value);
 	/** get value of a specifed field */
-	const QString getMetaData(const QString &field) const;
+	const TQString getMetaData(const TQString &field) const;
 private:
 	unsigned int m_HeaderLen;
 	unsigned int m_ContentLen;
-	QMap<QString, QString> m_Fields;
-	QMap<QString, QString> m_Cookies;
-	QString m_Username, m_Password;
-	QCString m_Base64AuthParam;
+	TQMap<TQString, TQString> m_Fields;
+	TQMap<TQString, TQString> m_Cookies;
+	TQString m_Username, m_Password;
+	TQCString m_Base64AuthParam;
 };
 
 
-class QIODevice;
+class TQIODevice;
 /**
  * \brief A simple Http connection implemantation \n
  *         used for retrieve data by http connection \n
@@ -238,21 +238,21 @@ class QIODevice;
 class EvaHttp : public EvaSocket {
 	Q_OBJECT
 public:
-	EvaHttp(const QString &host = "", const unsigned short port=80);
+	EvaHttp(const TQString &host = "", const unsigned short port=80);
 
 	/** NOTE: parent EvaSocket has the same method */
-	void setHost(const QString &host, const unsigned short port=80);
+	void setHost(const TQString &host, const unsigned short port=80);
 	/** if use proxy, call the following two */
-	void setProxyServer(const QString &host, unsigned short port);
-	void setProxyAuthInfo(const QString &username, const QString &password);
-	void setBase64AuthParam(const QCString &param);
+	void setProxyServer(const TQString &host, unsigned short port);
+	void setProxyAuthInfo(const TQString &username, const TQString &password);
+	void setBase64AuthParam(const TQCString &param);
 
 	/** path can be the relative path like /index.html or /data/123.png. the path can also be the 
 	    absolute URI like www.myswear.net/forum/index.php
-	    if QIODevice to is 0, when data arrived, the raw data will write to this device directly.
+	    if TQIODevice to is 0, when data arrived, the raw data will write to this device directly.
 	    if to is not 0, the signal readReady() will be emitted
 	*/
-	void get(const QString & path, QIODevice * to = 0 );
+	void get(const TQString & path, TQIODevice * to = 0 );
 
 	/** return true if the received data contains a HTTP header,
 	    otherwise, false.
@@ -275,19 +275,19 @@ private:
 	bool m_UseProxy;
 	bool m_NeedAuth;
 	bool m_IsProxyReady;
-	QString m_ProxyHost;
+	TQString m_ProxyHost;
 	unsigned short m_ProxyPort;
-	//QString m_ProxyUsername;
-	//QString m_ProxyPassword;
-	//QCString m_Base64AuthParam;
+	//TQString m_ProxyUsername;
+	//TQString m_ProxyPassword;
+	//TQCString m_Base64AuthParam;
 
-	QString m_Host;
+	TQString m_Host;
 	unsigned short m_Port;
 	HttpHeader m_Header;
-	QIODevice *m_IODevice;
+	TQIODevice *m_IODevice;
 	long long m_BytesReceived;
 
-	void startDnsLookup(const QString &host);
+	void startDnsLookup(const TQString &host);
 private slots:
 	void tcpReady();
 	void slotWriteReady();

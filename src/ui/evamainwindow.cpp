@@ -21,23 +21,23 @@
 
 #include <stdlib.h>
 
-#include <qpushbutton.h>
-#include <qtoolbutton.h>
-#include <qlabel.h>
-#include <qheader.h>
-#include <qtooltip.h>
-#include <qimage.h>
-#include <qpixmap.h>
-#include <qlistview.h>
-#include <qmessagebox.h>
-#include <qtextcodec.h>
-#include <qevent.h>
-#include <qcursor.h>
+#include <ntqpushbutton.h>
+#include <ntqtoolbutton.h>
+#include <ntqlabel.h>
+#include <ntqheader.h>
+#include <ntqtooltip.h>
+#include <ntqimage.h>
+#include <ntqpixmap.h>
+#include <ntqlistview.h>
+#include <ntqmessagebox.h>
+#include <ntqtextcodec.h>
+#include <ntqevent.h>
+#include <ntqcursor.h>
 
-#include <klocale.h>
-#include <kpopupmenu.h>
-#include <khtmlview.h>
-#include <khtml_part.h>
+#include <tdelocale.h>
+#include <tdepopupmenu.h>
+#include <tdehtmlview.h>
+#include <tdehtml_part.h>
 #include <kdebug.h>
 
 #include "evafriendlist.h"
@@ -53,22 +53,22 @@
 #include "evachatwindowmanager.h"
 #include "evascriptwidget.h"
 
-MainWindowTip::MainWindowTip(QWidget *parent)
-	: QToolTip(parent) 
+MainWindowTip::MainWindowTip(TQWidget *parent)
+	: TQToolTip(parent) 
 {
 }
 
-void MainWindowTip::maybeTip(const QPoint &pos)
+void MainWindowTip::maybeTip(const TQPoint &pos)
 {
 	if(!parentWidget()->inherits("EvaMainWindow"))
 		return;
-	QRect r( ((EvaMainWindow *)parentWidget())->tipRect(pos) );
+	TQRect r( ((EvaMainWindow *)parentWidget())->tipRect(pos) );
 	if(!r.isValid()) 
 		return;
 	tip(r, ((EvaMainWindow *)parentWidget())->myInfoTip());
 }
 
-EvaMainWindow::EvaMainWindow(QWidget* parent, const char* name, WFlags fl)
+EvaMainWindow::EvaMainWindow(TQWidget* parent, const char* name, WFlags fl)
 	: DCOPObject("View")
 		, EvaMainUIBase(parent, name, fl)
 	, sysMenu(NULL), statusMenu(NULL)
@@ -82,9 +82,9 @@ EvaMainWindow::EvaMainWindow(QWidget* parent, const char* name, WFlags fl)
 	pixLeave = EvaMain::images->getIcon("LEAVE");
 	pixInvisible = EvaMain::images->getIcon("INVISIBLE");
 
-	statusBar->tbSearch->setIconSet(QIconSet(*EvaMain::images->getIcon("FIND")));
-	statusBar->tbSysMsg->setIconSet(QIconSet(*EvaMain::images->getIcon("SYSTEM_MSG")));
-	statusBar->tbSystem->setIconSet(QIconSet(*EvaMain::images->getIcon("SYSTEM_OPTIONS")));
+	statusBar->tbSearch->setIconSet(TQIconSet(*EvaMain::images->getIcon("FIND")));
+	statusBar->tbSysMsg->setIconSet(TQIconSet(*EvaMain::images->getIcon("SYSTEM_MSG")));
+	statusBar->tbSystem->setIconSet(TQIconSet(*EvaMain::images->getIcon("SYSTEM_OPTIONS")));
 
 	m_buddyLv = 0;
 	m_qunLv = 0;
@@ -97,11 +97,11 @@ EvaMainWindow::EvaMainWindow(QWidget* parent, const char* name, WFlags fl)
  	loadQuns();
  	loadRecentContacts();
 
-	QObject::connect(statusBar->tbSearch, SIGNAL(clicked()), this, SLOT(slotSearch()));
-	QObject::connect(statusBar->tbSysMsg, SIGNAL(clicked()), this, SLOT(slotSystemMessages()));
-	QObject::connect(statusBar->tbSystem, SIGNAL(clicked()), this, SLOT(slotSystemClicked()));
-	QObject::connect(statusBar->tbStatus, SIGNAL(clicked()), this, SLOT(slotStatusClicked()));
-	QObject::connect(tbMyFace, SIGNAL(clicked()), this, SLOT(slotTbMyFace()));
+	TQObject::connect(statusBar->tbSearch, SIGNAL(clicked()), this, SLOT(slotSearch()));
+	TQObject::connect(statusBar->tbSysMsg, SIGNAL(clicked()), this, SLOT(slotSystemMessages()));
+	TQObject::connect(statusBar->tbSystem, SIGNAL(clicked()), this, SLOT(slotSystemClicked()));
+	TQObject::connect(statusBar->tbStatus, SIGNAL(clicked()), this, SLOT(slotStatusClicked()));
+	TQObject::connect(tbMyFace, SIGNAL(clicked()), this, SLOT(slotTbMyFace()));
 
 	offline();
 }
@@ -111,10 +111,10 @@ EvaMainWindow::~EvaMainWindow()
 	m_customTabs.clear();
 }
 
-void EvaMainWindow::setMainInfo(const unsigned int id, const QString &nick, QPixmap *pix)
+void EvaMainWindow::setMainInfo(const unsigned int id, const TQString &nick, TQPixmap *pix)
 {
 	qqNum = id;
-	QString name = nick;
+	TQString name = nick;
 	if(strlen(nick.ascii()) > 12 )
 		name = nick.left(9) + "...";
 	EvaHtmlParser parser;
@@ -124,7 +124,7 @@ void EvaMainWindow::setMainInfo(const unsigned int id, const QString &nick, QPix
 	slotUpdateBuddyStat();
 
 	if(pix)
-		tbMyFace->setIconSet( QIconSet(*pix));
+		tbMyFace->setIconSet( TQIconSet(*pix));
 //
 //
 //	loadContacts();
@@ -136,10 +136,10 @@ void EvaMainWindow::slotUpdateBuddyStat()
 {
 	int all = EvaMain::user->getFriendList().numberOfFriends();
 	int onlines = EvaMain::user->getFriendList().numberOfOnlines();
-	tlQQ->setText(" ( "+ QString::number(onlines) + "/" + QString::number(all) + ")");
+	tlQQ->setText(" ( "+ TQString::number(onlines) + "/" + TQString::number(all) + ")");
 }
 
-void EvaMainWindow::setSystemMenu( KPopupMenu *sys)
+void EvaMainWindow::setSystemMenu( TDEPopupMenu *sys)
 {
 	if(sys){
 		sysMenu = sys;
@@ -147,7 +147,7 @@ void EvaMainWindow::setSystemMenu( KPopupMenu *sys)
 	}
 }
 
-void EvaMainWindow::setStatusMenu( KPopupMenu *status)
+void EvaMainWindow::setStatusMenu( TDEPopupMenu *status)
 {
 	if(status){
 		statusMenu = status;
@@ -167,14 +167,14 @@ void EvaMainWindow::updateBuddy(const unsigned int id)
 	/*
 	EvaUser *user = EvaMain::user;
 	if(user && id == user->getQQ()){
-		//QString myNick = codec->toUnicode(user->getDetails().at(ContactInfo::Info_nick).c_str());
-		QString myNick = GB2Unicode(user->getDetails().at(ContactInfo::Info_nick).c_str());
+		//TQString myNick = codec->toUnicode(user->getDetails().at(ContactInfo::Info_nick).c_str());
+		TQString myNick = GB2Unicode(user->getDetails().at(ContactInfo::Info_nick).c_str());
 		if(myNick.isNull()) myNick = "";
 		setCaption(myNick + " - Eva");
 		int myFaceId = atoi(user->getDetails().at(ContactInfo::Info_face).c_str());
-		QPixmap *face = EvaMain::images->getFaceByID(myFaceId);
+		TQPixmap *face = EvaMain::images->getFaceByID(myFaceId);
 		if(user->hasUserHead()){
-			QPixmap *uhPic = EvaMain::images->getUserHeadPixmap(user->getQQ()); // color pixmap
+			TQPixmap *uhPic = EvaMain::images->getUserHeadPixmap(user->getQQ()); // color pixmap
 			if(uhPic) face = uhPic;
 		}
 		setIcon(*face);
@@ -189,15 +189,15 @@ void EvaMainWindow::updateMyInfo()
 {
 	EvaUser *user = EvaMain::user;
 	if(user){
-		QString myNick = GB2Unicode(user->getDetails().at(ContactInfo::Info_nick).c_str());
+		TQString myNick = GB2Unicode(user->getDetails().at(ContactInfo::Info_nick).c_str());
 		if(myNick.isNull()) myNick = "";
 		setCaption(myNick + " - Eva");
-		QString faceIdStr = user->getDetails().at(ContactInfo::Info_face).c_str();
+		TQString faceIdStr = user->getDetails().at(ContactInfo::Info_face).c_str();
 		if( faceIdStr.isNull() ) faceIdStr = "0";
 		int myFaceId = faceIdStr.toInt();
-		QPixmap *face = EvaMain::images->getFaceByID(myFaceId);
+		TQPixmap *face = EvaMain::images->getFaceByID(myFaceId);
 		if(user->hasUserHead()){
-			QPixmap *uhPic = EvaMain::images->getUserHeadPixmap(user->getQQ()); // color pixmap
+			TQPixmap *uhPic = EvaMain::images->getUserHeadPixmap(user->getQQ()); // color pixmap
 			if(uhPic) face = uhPic;
 		}
 		setIcon(*face);
@@ -303,25 +303,25 @@ void EvaMainWindow::deleteBuddy(unsigned int id)
 
 void EvaMainWindow::online()
 {
-	if(pixOnline) statusBar->tbStatus->setIconSet(QIconSet(*pixOnline));
+	if(pixOnline) statusBar->tbStatus->setIconSet(TQIconSet(*pixOnline));
 	//statusBar->tbStatus->setText(i18n( "Online"));
 }
 
 void EvaMainWindow::offline()
 {
-	if(pixOffline) statusBar->tbStatus->setIconSet(QIconSet(*pixOffline));
+	if(pixOffline) statusBar->tbStatus->setIconSet(TQIconSet(*pixOffline));
 	//pbStatus->setText(i18n( "Offline"));
 }
 
 void EvaMainWindow::leave()
 {
-	if(pixLeave) statusBar->tbStatus->setIconSet(QIconSet(*pixLeave));
+	if(pixLeave) statusBar->tbStatus->setIconSet(TQIconSet(*pixLeave));
 	//pbStatus->setText(i18n( "Leave"));
 }
 
 void EvaMainWindow::invisible()
 {
-	if(pixInvisible) statusBar->tbStatus->setIconSet(QIconSet(*pixInvisible));
+	if(pixInvisible) statusBar->tbStatus->setIconSet(TQIconSet(*pixInvisible));
 	//pbStatus->setText(i18n( "Invisible"));
 }
 
@@ -346,53 +346,53 @@ void EvaMainWindow::clearQunList( )
 	if(m_qunLv) m_qunLv->clear();
 }
 
-QRect EvaMainWindow::tipRect( const QPoint & /*pos*/ )
+TQRect EvaMainWindow::tipRect( const TQPoint & /*pos*/ )
 {
 	// at the moment we only have one button which has tooltip, so just return the rect of the button
 	return tbMyFace->rect();
 }
 
-QString EvaMainWindow::myInfoTip( )
+TQString EvaMainWindow::myInfoTip( )
 {
-	//const QQFriend *frd = (EvaMain::user->getFriendList()).getFriend(qqNum); 
-// 	if(!EvaMain::user->loginManager()->isCommandFinished(QQ_CMD_GET_USER_INFO))
+	//const TQQFriend *frd = (EvaMain::user->getFriendList()).getFriend(qqNum); 
+// 	if(!EvaMain::user->loginManager()->isCommandFinished(TQQ_CMD_GET_USER_INFO))
 // 		return "Eva";
 	if(!GetLoginManager()->isLoggedIn())
 		return "Eva";
-	QString tip = "<qt>";
+	TQString tip = "<qt>";
 	//EvaIPSeeker ipAddr(EvaGlobal::getDirPath().latin1());
-	QTextCodec *codec = QTextCodec::codecForName("GB18030");
-	QString nickName = codec->toUnicode(EvaMain::user->getDetails().at(ContactInfo::Info_nick).c_str());
-	//QString addr = codec->toUnicode(ipAddr.getIPLocation(frd->getIP()).c_str());
+	TQTextCodec *codec = TQTextCodec::codecForName("GB18030");
+	TQString nickName = codec->toUnicode(EvaMain::user->getDetails().at(ContactInfo::Info_nick).c_str());
+	//TQString addr = codec->toUnicode(ipAddr.getIPLocation(frd->getIP()).c_str());
 	//if(addr.length()<4) addr = "0.0.0.0";
 	
-	QString htmlName = nickName;
+	TQString htmlName = nickName;
 	EvaHtmlParser parser;
 	parser.setAbsImagePath(EvaMain::images->getSmileyPath());
 	parser.convertToHtml(htmlName, false, true);
 	
-	QString signature = codec->toUnicode(EvaMain::user->getSignature().c_str());
+	TQString signature = codec->toUnicode(EvaMain::user->getSignature().c_str());
 	if(signature.length() > 40)
 		signature = signature.left(37) + "...";
 	if(!signature.isEmpty())
 		signature = "[" + signature + "]";
 	
-	QString facePath = "<img src=\"" + EvaMain::images->getFacePath() + "/" +
-			QString::number(EvaMain::images->getFaceFileIndex(atoi(EvaMain::user->getDetails().at(ContactInfo::Info_face).c_str()))) + 
+	TQString facePath = "<img src=\"" + EvaMain::images->getFacePath() + "/" +
+			TQString::number(EvaMain::images->getFaceFileIndex(atoi(EvaMain::user->getDetails().at(ContactInfo::Info_face).c_str()))) + 
 			".png\"></img>";
 			
 	if(EvaMain::user->hasUserHead() && EvaMain::uhManager){
-		QString uhFileName = EvaMain::uhManager->getFileName(EvaMain::user->getQQ());
+		TQString uhFileName = EvaMain::uhManager->getFileName(EvaMain::user->getQQ());
 		if(!uhFileName.isEmpty())
 			facePath = "<img src=\"" + uhFileName + "\"></img>";
 	}
 	
 	int suns, moons, stars;
 	EvaUtil::calcSuns(EvaMain::user->getLevel(), &suns, &moons, &stars);
-	QString strSun =  "<img src=\"" + EvaMain::images->getIconFullPath("TIME_SUN") + "\"></img>";
-	QString strMoon = "<img src=\"" + EvaMain::images->getIconFullPath("TIME_MOON") + "\"></img>";
-	QString strStar = "<img src=\"" + EvaMain::images->getIconFullPath("TIME_STAR") + "\"></img>";
-	QString level;
+	TQString strSun =  "<img src=\"" + EvaMain::images->getIconFullPath("TIME_SUN") + "\"></img>";
+	TQString strMoon = "<img src=\"" + EvaMain::images->getIconFullPath("TIME_MOON") + "\"></img>";
+	TQString strStar = "<img src=\"" + EvaMain::images->getIconFullPath("TIME_STAR") + "\"></img>";
+	TQString level;
 	for(int i=0; i<suns; i++){
 		level += strSun;
 	}
@@ -405,26 +405,26 @@ QString EvaMainWindow::myInfoTip( )
 	int seconds = EvaMain::user->getOnlineTime();
 	tip += "<table width = 260><tr><td width=60 align = center valign = middle>" + facePath + 
 		"</td><td align = left valign = middle><b><font color = blue>"+
-		i18n("QQ") +": </font></b>"+ QString::number(EvaMain::user->getQQ()) +"<br><b><font color = blue>"+
+		i18n("QQ") +": </font></b>"+ TQString::number(EvaMain::user->getQQ()) +"<br><b><font color = blue>"+
 		i18n("Nickname:") + " </font></b>"+htmlName +"<br>" + signature + "<br><b><font color = blue>"+ 
-		i18n("Level") +": </font></b>"+ level + "  (" + QString::number(EvaMain::user->getLevel()) +")<br><b><font color = blue>"+
-		i18n("Online Time") +": </font></b>"+ QString::number(seconds/3600)+
-			i18n(" Hours ")+QString::number((seconds%3600)/60)+i18n(" min ")+"<br><b><font color = blue>";
-	//	i18n("Level Up") +": </font></b>"+ QString::number(EvaMain::user->getHoursToLevelUp())+
+		i18n("Level") +": </font></b>"+ level + "  (" + TQString::number(EvaMain::user->getLevel()) +")<br><b><font color = blue>"+
+		i18n("Online Time") +": </font></b>"+ TQString::number(seconds/3600)+
+			i18n(" Hours ")+TQString::number((seconds%3600)/60)+i18n(" min ")+"<br><b><font color = blue>";
+	//	i18n("Level Up") +": </font></b>"+ TQString::number(EvaMain::user->getHoursToLevelUp())+
 //							" Hours<br><b><font color = blue>" + "</td></tr></table>"; 
 	tip += "</qt>";
 	return tip;
 }
 
-void EvaMainWindow::resizeEvent( QResizeEvent * event )
+void EvaMainWindow::resizeEvent( TQResizeEvent * event )
 {
-	QSize s = event->size();
+	TQSize s = event->size();
 	if(m_buddyLv) m_buddyLv->setColumnWidth(0, s.width());
 	if(m_qunLv) m_qunLv->setColumnWidth(0, s.width());
 	if(m_recentLv) m_recentLv->setColumnWidth(0, s.width());
 }
 
-void EvaMainWindow::moveEvent( QMoveEvent * /*event*/ )
+void EvaMainWindow::moveEvent( TQMoveEvent * /*event*/ )
 {
         setPosAndSize();
 }
@@ -450,9 +450,9 @@ void EvaMainWindow::loadContacts( )
 // 	}
 	mainDisplay->tab->removeTab( m_buddyTabKey );
 	m_buddyLv = new EvaContactListView(mainDisplay->tab, "lv");
-	QString name = i18n("Buddy List");
-	//QPixmap *p= EvaMain::images->getIcon("ONLINE");
-	QPixmap *p= EvaMain::images->getIcon("CONTACT");
+	TQString name = i18n("Buddy List");
+	//TQPixmap *p= EvaMain::images->getIcon("ONLINE");
+	TQPixmap *p= EvaMain::images->getIcon("CONTACT");
 	m_buddyTabKey = mainDisplay->tab->addTab(name, *p, name, m_buddyLv);
 
 	m_buddyLv->loadContacts();
@@ -460,20 +460,20 @@ void EvaMainWindow::loadContacts( )
 	if(m_buddyLv) m_buddyLv->setColumnWidth(0, width());
 	mainDisplay->tab->changeTabTo( m_buddyTabKey );
 
-	QObject::connect(m_buddyLv, SIGNAL(groupDeleted(const int)), this, SIGNAL(groupDeleted(const int)));
-	//QObject::connect(m_buddyLv, SIGNAL(groupAdded(QString, int)), this, SIGNAL(groupAdded(QString, int)));
-	QObject::connect(m_buddyLv, SIGNAL(groupChanged(const unsigned int, int)), this, SIGNAL(groupChanged(const unsigned int, int)));
-	QObject::connect(m_buddyLv, SIGNAL(groupRenamed(QString, int)), this, SIGNAL(groupRenamed(QString, int)));
+	TQObject::connect(m_buddyLv, SIGNAL(groupDeleted(const int)), this, SIGNAL(groupDeleted(const int)));
+	//TQObject::connect(m_buddyLv, SIGNAL(groupAdded(TQString, int)), this, SIGNAL(groupAdded(TQString, int)));
+	TQObject::connect(m_buddyLv, SIGNAL(groupChanged(const unsigned int, int)), this, SIGNAL(groupChanged(const unsigned int, int)));
+	TQObject::connect(m_buddyLv, SIGNAL(groupRenamed(TQString, int)), this, SIGNAL(groupRenamed(TQString, int)));
 
-	QObject::connect(m_buddyLv, SIGNAL(deleteMeFrom(const unsigned int )), this, SIGNAL(deleteMeFrom(const unsigned int)));
-	QObject::connect(m_buddyLv, SIGNAL(requestDelete(const unsigned int)), this, SIGNAL(requestDelete(const unsigned int)));
+	TQObject::connect(m_buddyLv, SIGNAL(deleteMeFrom(const unsigned int )), this, SIGNAL(deleteMeFrom(const unsigned int)));
+	TQObject::connect(m_buddyLv, SIGNAL(requestDelete(const unsigned int)), this, SIGNAL(requestDelete(const unsigned int)));
 
-	QObject::connect(m_buddyLv, SIGNAL(requestChat(const unsigned int)), this, SIGNAL(requestChat(const unsigned int)));
-	QObject::connect(m_buddyLv, SIGNAL(requestSendFile(const unsigned int)), this, SIGNAL(requestSendFile(const unsigned int)));
-	QObject::connect(m_buddyLv, SIGNAL(requestLevel(const unsigned int)), this, SIGNAL(requestLevel(const unsigned int)));
-	QObject::connect(m_buddyLv, SIGNAL(requestDetails(const unsigned int)), this, SIGNAL(requestDetails(const unsigned int)));
-	QObject::connect(m_buddyLv, SIGNAL(requestHistory(const unsigned int)), this, SIGNAL(requestHistory(const unsigned int)));
-	QObject::connect(m_buddyLv, SIGNAL(requestModifyMemo(const unsigned int)), this, SIGNAL(requestModifyMemo(const unsigned int)));
+	TQObject::connect(m_buddyLv, SIGNAL(requestChat(const unsigned int)), this, SIGNAL(requestChat(const unsigned int)));
+	TQObject::connect(m_buddyLv, SIGNAL(requestSendFile(const unsigned int)), this, SIGNAL(requestSendFile(const unsigned int)));
+	TQObject::connect(m_buddyLv, SIGNAL(requestLevel(const unsigned int)), this, SIGNAL(requestLevel(const unsigned int)));
+	TQObject::connect(m_buddyLv, SIGNAL(requestDetails(const unsigned int)), this, SIGNAL(requestDetails(const unsigned int)));
+	TQObject::connect(m_buddyLv, SIGNAL(requestHistory(const unsigned int)), this, SIGNAL(requestHistory(const unsigned int)));
+	TQObject::connect(m_buddyLv, SIGNAL(requestModifyMemo(const unsigned int)), this, SIGNAL(requestModifyMemo(const unsigned int)));
 	
 }
 
@@ -491,20 +491,20 @@ void EvaMainWindow::loadQuns( )
 // 	}
 	mainDisplay->tab->removeTab( m_qunTabKey );
 	m_qunLv = new EvaQunsListView(mainDisplay->tab, "qunLv");
-	QString name = i18n("Qun List");
-	//QPixmap *p= EvaMain::images->getIcon("QUN");
-	QPixmap *p= EvaMain::images->getIcon("QUNS");
+	TQString name = i18n("Qun List");
+	//TQPixmap *p= EvaMain::images->getIcon("TQUN");
+	TQPixmap *p= EvaMain::images->getIcon("TQUNS");
 	m_qunTabKey = mainDisplay->tab->addTab(name, *p, name, m_qunLv);
 	m_qunLv->loadAllQuns();
 
 	m_qunLv->setColumnWidth(0, width());
 
 
-	QObject::connect(m_qunLv, SIGNAL(requestQunChat(const unsigned int)), this, SIGNAL(requestQunChat(const unsigned int)));
-	QObject::connect(m_qunLv, SIGNAL(requestQunDetails(const unsigned int)), this, SIGNAL(requestQunDetails(const unsigned int)));
-	QObject::connect(m_qunLv, SIGNAL(requestQunExit(const unsigned int)), this, SIGNAL(requestQunExit(const unsigned int)));
-	QObject::connect(m_qunLv, SIGNAL(requestQunCreate()), this, SIGNAL(requestQunCreate()));
-	QObject::connect(m_qunLv, SIGNAL(requestQunHistory(const unsigned int)), this, SIGNAL(requestQunHistory(const unsigned int)));
+	TQObject::connect(m_qunLv, SIGNAL(requestQunChat(const unsigned int)), this, SIGNAL(requestQunChat(const unsigned int)));
+	TQObject::connect(m_qunLv, SIGNAL(requestQunDetails(const unsigned int)), this, SIGNAL(requestQunDetails(const unsigned int)));
+	TQObject::connect(m_qunLv, SIGNAL(requestQunExit(const unsigned int)), this, SIGNAL(requestQunExit(const unsigned int)));
+	TQObject::connect(m_qunLv, SIGNAL(requestQunCreate()), this, SIGNAL(requestQunCreate()));
+	TQObject::connect(m_qunLv, SIGNAL(requestQunHistory(const unsigned int)), this, SIGNAL(requestQunHistory(const unsigned int)));
 }
 
 void EvaMainWindow::loadRecentContacts( )
@@ -516,8 +516,8 @@ void EvaMainWindow::loadRecentContacts( )
 // 	}
 	mainDisplay->tab->removeTab( m_recentTabKey );
 	m_recentLv = new EvaRecentContactsListView(mainDisplay->tab, "recentLv");
-	QString name = i18n("Recent Contacts List");
-	QPixmap *p= EvaMain::images->getIcon("MSG");
+	TQString name = i18n("Recent Contacts List");
+	TQPixmap *p= EvaMain::images->getIcon("MSG");
 	m_recentTabKey = mainDisplay->tab->addTab(name, *p, name, m_recentLv);
 
 	m_recentLv->loadRecentContacts();
@@ -525,29 +525,29 @@ void EvaMainWindow::loadRecentContacts( )
 	m_recentLv->setColumnWidth(0, width());
 
 	if(m_qunLv){
-		QObject::connect(m_qunLv, SIGNAL(requestQunChat(const unsigned int)), m_recentLv, SLOT(getQunMessage(const unsigned int)));
-		QObject::connect(m_recentLv, SIGNAL(requestQunChat(const unsigned int)), m_qunLv, SLOT(getMessage(const unsigned int)));
+		TQObject::connect(m_qunLv, SIGNAL(requestQunChat(const unsigned int)), m_recentLv, SLOT(getQunMessage(const unsigned int)));
+		TQObject::connect(m_recentLv, SIGNAL(requestQunChat(const unsigned int)), m_qunLv, SLOT(getMessage(const unsigned int)));
 	}
 
 	if(m_buddyLv){
-		QObject::connect(m_buddyLv, SIGNAL(requestChat(const unsigned int)), m_recentLv, SLOT(getMessage(const unsigned int)));
-		QObject::connect(m_recentLv, SIGNAL(requestChat(const unsigned int)), m_buddyLv, SLOT(getMessage(const unsigned int)));
+		TQObject::connect(m_buddyLv, SIGNAL(requestChat(const unsigned int)), m_recentLv, SLOT(getMessage(const unsigned int)));
+		TQObject::connect(m_recentLv, SIGNAL(requestChat(const unsigned int)), m_buddyLv, SLOT(getMessage(const unsigned int)));
 	}
 
-	QObject::connect(m_recentLv, SIGNAL(requestDelete(const unsigned int)), this, SIGNAL(requestDelete(const unsigned int)));
+	TQObject::connect(m_recentLv, SIGNAL(requestDelete(const unsigned int)), this, SIGNAL(requestDelete(const unsigned int)));
 
-	QObject::connect(m_recentLv, SIGNAL(requestChat(const unsigned int)), this, SIGNAL(requestChat(const unsigned int)));
-	QObject::connect(m_recentLv, SIGNAL(requestSendFile(const unsigned int)), this, SIGNAL(requestSendFile(const unsigned int)));
-	QObject::connect(m_recentLv, SIGNAL(requestLevel(const unsigned int)), this, SIGNAL(requestLevel(const unsigned int)));
-	QObject::connect(m_recentLv, SIGNAL(requestDetails(const unsigned int)), this, SIGNAL(requestDetails(const unsigned int)));
-	QObject::connect(m_recentLv, SIGNAL(requestHistory(const unsigned int)), this, SIGNAL(requestHistory(const unsigned int)));
-	QObject::connect(m_recentLv, SIGNAL(requestModifyMemo(const unsigned int)), this, SIGNAL(requestModifyMemo(const unsigned int)));
+	TQObject::connect(m_recentLv, SIGNAL(requestChat(const unsigned int)), this, SIGNAL(requestChat(const unsigned int)));
+	TQObject::connect(m_recentLv, SIGNAL(requestSendFile(const unsigned int)), this, SIGNAL(requestSendFile(const unsigned int)));
+	TQObject::connect(m_recentLv, SIGNAL(requestLevel(const unsigned int)), this, SIGNAL(requestLevel(const unsigned int)));
+	TQObject::connect(m_recentLv, SIGNAL(requestDetails(const unsigned int)), this, SIGNAL(requestDetails(const unsigned int)));
+	TQObject::connect(m_recentLv, SIGNAL(requestHistory(const unsigned int)), this, SIGNAL(requestHistory(const unsigned int)));
+	TQObject::connect(m_recentLv, SIGNAL(requestModifyMemo(const unsigned int)), this, SIGNAL(requestModifyMemo(const unsigned int)));
 
-	QObject::connect(m_recentLv, SIGNAL(requestQunChat(const unsigned int)), this, SIGNAL(requestQunChat(const unsigned int)));
-	QObject::connect(m_recentLv, SIGNAL(requestQunDetails(const unsigned int)), this, SIGNAL(requestQunDetails(const unsigned int)));
-	QObject::connect(m_recentLv, SIGNAL(requestQunExit(const unsigned int)), this, SIGNAL(requestQunExit(const unsigned int)));
-	QObject::connect(m_recentLv, SIGNAL(requestQunCreate()), this, SIGNAL(requestQunCreate()));
-	QObject::connect(m_recentLv, SIGNAL(requestQunHistory(const unsigned int)), this, SIGNAL(requestQunHistory(const unsigned int)));
+	TQObject::connect(m_recentLv, SIGNAL(requestQunChat(const unsigned int)), this, SIGNAL(requestQunChat(const unsigned int)));
+	TQObject::connect(m_recentLv, SIGNAL(requestQunDetails(const unsigned int)), this, SIGNAL(requestQunDetails(const unsigned int)));
+	TQObject::connect(m_recentLv, SIGNAL(requestQunExit(const unsigned int)), this, SIGNAL(requestQunExit(const unsigned int)));
+	TQObject::connect(m_recentLv, SIGNAL(requestQunCreate()), this, SIGNAL(requestQunCreate()));
+	TQObject::connect(m_recentLv, SIGNAL(requestQunHistory(const unsigned int)), this, SIGNAL(requestQunHistory(const unsigned int)));
 
 }
 
@@ -606,7 +606,7 @@ void EvaMainWindow::showInfoFrame( bool showInfo )
 	}
 }
 
-void EvaMainWindow::UpdateLoginInfo( int value, const QString & msg )
+void EvaMainWindow::UpdateLoginInfo( int value, const TQString & msg )
 {
 	if(mainDisplay){
 		mainDisplay->loginPage->update(value, msg);
@@ -616,44 +616,44 @@ void EvaMainWindow::UpdateLoginInfo( int value, const QString & msg )
 
 void EvaMainWindow::slotSystemClicked( )
 {
-	sysMenu->popup(QCursor::pos());
+	sysMenu->popup(TQCursor::pos());
 }
 
 void EvaMainWindow::slotStatusClicked( )
 {
-	statusMenu->popup(QCursor::pos());
+	statusMenu->popup(TQCursor::pos());
 }
 
 //DCOP functions
-int EvaMainWindow::addTab( QString scriptName, QString name, QString image, QString contents )
+int EvaMainWindow::addTab( TQString scriptName, TQString name, TQString image, TQString contents )
 {
 	EvaScriptWidget *view = new EvaScriptWidget(mainDisplay->tab, name);
 	view->setJScriptEnabled( true);
 	view->setJavaEnabled( true);
 	view->setMetaRefreshEnabled( true);
 	view->setPluginsEnabled( true);
-// 	QObject::connect(view->browserExtension(), 
+// 	TQObject::connect(view->browserExtension(), 
 // 									 SIGNAL(openURLRequest(const KURL &, const KParts::URLArgs &)),
 // 										view,
 // 									SLOT(openURL( const KURL &)));
-	QPixmap p(image);
+	TQPixmap p(image);
 	int id = mainDisplay->tab->addTab(name, p, name, view->view());
 	m_customTabs[id] = view;
 	m_tabScriptMap[id] = scriptName;
 	view->begin();
 	view->write(contents);
 	view->end();
-// 	QString script = "var browser=navigator.appName\n var b_version=navigator.appVersion\n var version=parseFloat(b_version)\n document.write(\"Browser name: \"+ browser)\n document.write(\"<br />\")\n document.write(\"Browser version: \"+ version)\n";
+// 	TQString script = "var browser=navigator.appName\n var b_version=navigator.appVersion\n var version=parseFloat(b_version)\n document.write(\"Browser name: \"+ browser)\n document.write(\"<br />\")\n document.write(\"Browser version: \"+ version)\n";
 // 	bool result = (view->executeScript(DOM::Node(), script)).toBool();
 // 	if(result) printf("script true\n");
 // 	else printf("script false\n");
 	return id;
 }
 
-bool EvaMainWindow::updateTab( int id, QString contents )
+bool EvaMainWindow::updateTab( int id, TQString contents )
 {
-	//KHTMLView *view = (KHTMLPart *)mainDisplay->tab->getWidget( id);
-	QMap<int, EvaScriptWidget *>::Iterator it = m_customTabs.find( id);
+	//TDEHTMLView *view = (TDEHTMLPart *)mainDisplay->tab->getWidget( id);
+	TQMap<int, EvaScriptWidget *>::Iterator it = m_customTabs.find( id);
 	if(it == m_customTabs.end()) return false;
 	EvaScriptWidget *view = it.data();
 	if(view){
@@ -689,29 +689,29 @@ void EvaMainWindow::openChatWindow( unsigned int id, bool isQun )
 	}
 }
 
-void EvaMainWindow::addButton( QString scriptName, QString buttonName, QString image, QString tip )
+void EvaMainWindow::addButton( TQString scriptName, TQString buttonName, TQString image, TQString tip )
 {
 	EvaMain::g_ChatWindowManager->addButton(scriptName, buttonName, image, tip);
 }
 
-void EvaMainWindow::removeButton( QString scriptName, QString buttonName )
+void EvaMainWindow::removeButton( TQString scriptName, TQString buttonName )
 {
 	EvaMain::g_ChatWindowManager->removeButton(scriptName, buttonName);
 }
 
-void EvaMainWindow::removeButtons(QString scriptName)
+void EvaMainWindow::removeButtons(TQString scriptName)
 {
 	EvaMain::g_ChatWindowManager->removeButton(scriptName);
 }
 
-void EvaMainWindow::updateStatusBar( QString message )
+void EvaMainWindow::updateStatusBar( TQString message )
 {
 	statusBar->lblNotification->setText(message);
 }
 
-void EvaMainWindow::removeTabs( QString scriptName )
+void EvaMainWindow::removeTabs( TQString scriptName )
 {
-	QMap<int, QString>::Iterator it = m_tabScriptMap.begin();
+	TQMap<int, TQString>::Iterator it = m_tabScriptMap.begin();
 	for(it = m_tabScriptMap.begin(); it != m_tabScriptMap.end(); it++){
 		if(it.data() == scriptName)
 			removeTab(it.key());
@@ -724,7 +724,7 @@ void EvaMainWindow::removeTabs( QString scriptName )
 	}
 }
 
-void EvaMainWindow::openUrl( int id, QString _url )
+void EvaMainWindow::openUrl( int id, TQString _url )
 {
 	if(_url.isEmpty()) return;
 	EvaScriptWidget *part = getCustomTab(id);
@@ -737,7 +737,7 @@ void EvaMainWindow::openUrl( int id, QString _url )
 
 EvaScriptWidget * EvaMainWindow::getCustomTab( int id )
 {
-	QMap<int, EvaScriptWidget *>::Iterator it = m_customTabs.find( id);
+	TQMap<int, EvaScriptWidget *>::Iterator it = m_customTabs.find( id);
 	if(it == m_customTabs.end()) return NULL;
 	return it.data();
 }

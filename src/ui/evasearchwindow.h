@@ -30,13 +30,13 @@
 #include <list>
 #include <map>
 #include <string>
-#include <qvaluestack.h>
+#include <ntqvaluestack.h>
 
 class EvaImageResource;
 
 typedef struct CityListElement{
 	unsigned short city;
-	QString name;
+	TQString name;
 } CityListElement;
 
 class CityList
@@ -57,18 +57,18 @@ class EvaSearchWindow : public EvaSearchUIBase
 	Q_OBJECT
 
 public:
-	EvaSearchWindow(EvaImageResource *res = NULL, const int onlineUsers = 0, QWidget* parent = 0, const char* name = 0, WFlags fl = 0);
+	EvaSearchWindow(EvaImageResource *res = NULL, const int onlineUsers = 0, TQWidget* parent = 0, const char* name = 0, WFlags fl = 0);
 	~EvaSearchWindow();
 
 public slots:
 	void slotSearchUsersReady(const bool, const std::list<OnlineUser>);
 	void slotAdvancedSearchReady(const int, const bool, const std::list<AdvancedUser>);
-	void slotQunSearchReady(const std::list<QunInfo>, QString);
+	void slotQunSearchReady(const std::list<QunInfo>, TQString);
 	const short unsigned int getCategoryCode();
 signals:
-	//void requestBuddyAuthStatus(const int, const short, const QString&);
-	//void requestAddBuddy(const unsigned int, const QString, const unsigned short); // id, nick, faceid, to be removed
-	void requestSearchUsers(const bool, const QString, const QString, const QString, const QString, const bool);
+	//void requestBuddyAuthStatus(const int, const short, const TQString&);
+	//void requestAddBuddy(const unsigned int, const TQString, const unsigned short); // id, nick, faceid, to be removed
+	void requestSearchUsers(const bool, const TQString, const TQString, const TQString, const TQString, const bool);
 	void requestUserInfo(const unsigned int);
 	void requestAdvancedSearch(const int, const bool, const bool, const int, const int, const int, const int); 
 	void requestQunSearch(const unsigned int);
@@ -84,7 +84,7 @@ private:
 	std::map<int, unsigned short> thirdIndexCodeMap;
 		
 	enum BSearchType{ B_ONLINE, B_CUSTOM, B_FRDCENTER };
-	enum QSearchType{ Q_ALUMNI, Q_CATEGORY, Q_ACCURATE };//B = Basic, A = Advanced, Q = Qun
+	enum TQSearchType{ Q_ALUMNI, Q_CATEGORY, Q_ACCURATE };//B = Basic, A = Advanced, Q = Qun
 	
 	BSearchType m_BSearchType;	//basic search type
 	std::map<int, std::list<OnlineUser> > m_BasicUserPages;  // <page num:base search user list>
@@ -92,7 +92,7 @@ private:
 	bool m_BSearchFinished;		//if the basic search finished
 	bool  m_ShowAllBasicUsers;	//if show all the users we found by basic search
 	OnlineUser m_SelectedBasicUser;	//seclected user in basic search result list
-	QString m_Id, m_Nick, m_Email;	//basic search parma: QQ num, nick name and email
+	TQString m_Id, m_Nick, m_Email;	//basic search parma: QQ num, nick name and email
 	std::map<int, std::list<AdvancedUser> > m_AdvancedUserPages;// <page num:advanced search user iist>
 	unsigned int m_ACurrentPage;	//current page of advanced search
 	bool m_ASearchFinished;		//if the advanced search finished
@@ -105,9 +105,9 @@ private:
 	int m_AgeIndex;
 	int m_GenderIndex;
 	
-	QSearchType m_QSearchType;	//qun search type 
+	TQSearchType m_QSearchType;	//qun search type 
 	unsigned int m_QCurrentPage;	//current page of qun search
-	QString m_QunNum;		//qun num
+	TQString m_QunNum;		//qun num
 	QunInfo m_SelectedQun;
 
 
@@ -115,9 +115,9 @@ private:
 	void displayBasicUsers();
 	void displayAdvancedUsers();
 	
-	void processBasicSearch(const bool, const QString, const QString, const QString);
+	void processBasicSearch(const bool, const TQString, const TQString, const TQString);
 	void processAdvancedSearch(const bool, const bool, const int, const int, const int, const int);
-	void processQunSearch(const QString&);
+	void processQunSearch(const TQString&);
 
 private slots:
 	void slotRbSearchOnlineClicked();
@@ -138,7 +138,7 @@ private slots:
 	
 	void slotBasicUserSelected(int);
 	void slotBasicResultTableDBClicked(int);
-	void slotCurrentChanged(QWidget*);
+	void slotCurrentChanged(TQWidget*);
 	
 	
 	
@@ -159,7 +159,7 @@ private slots:
 	
 	void slotQunSelected(int);
 	void slotQunResultTableDBClicked(int);
-	void slotTbQSDetailsClicked();
+	void slotTbTQSDetailsClicked();
 
 	
 };

@@ -55,7 +55,7 @@ std::string ReceiveIMPacket::convertToShow(const std::string &src, const unsigne
 	std::string converted = "";
 	unsigned int start = 0;
 	char *uuid = NULL; // uuid format: {12345678-1234-1234-1234-123456789ABC}
-	if(type == QQ_IM_IMAGE_REPLY){
+	if(type == TQQ_IM_IMAGE_REPLY){
 		uuid = new char[39]; // 38 + 1
 		memcpy(uuid, src.c_str(), 38);
 		uuid[38] = 0x00; // just make it as a string
@@ -247,7 +247,7 @@ ReceivedNormalIM::ReceivedNormalIM(const ReceivedNormalIM &rhs)
 
 const bool ReceivedNormalIM::isNormalReply() const
 {
-	return replyType == QQ_IM_NORMAL_REPLY;
+	return replyType == TQQ_IM_NORMAL_REPLY;
 }
 
 ReceivedNormalIM &ReceivedNormalIM::operator=(const ReceivedNormalIM &rhs)
@@ -370,7 +370,7 @@ void ReceivedSystemIM::parseData(const unsigned char *buf, const int /*len*/)
 /* =========================================================== */
 
 ReceiveIMReplyPacket::ReceiveIMReplyPacket(const char *key) 
-	: OutPacket(QQ_CMD_RECV_IM, false)
+	: OutPacket(TQQ_CMD_RECV_IM, false)
 {
         memcpy(replyKey, key, 16);
 }
@@ -452,7 +452,7 @@ void ReceivedQunIM::parseData( const unsigned char * buf, const int len )
 	
 	type = buf[pos++];  // type of the Qun
 
-	if(source == QQ_RECV_IM_TEMP_QUN_IM){ // internal ID of temporary Qun
+	if(source == TQQ_RECV_IM_TEMP_QUN_IM){ // internal ID of temporary Qun
 		qunID = ntohl( *(int*)(buf+pos) );
 		pos+=4;
 	}
@@ -475,7 +475,7 @@ void ReceivedQunIM::parseData( const unsigned char * buf, const int len )
         pos+=2; // ignore 2 bytes;  Luma QQ says it's the length for the following data.
 
 	// 10 unknown bytes
-	if(source != QQ_RECV_IM_UNKNOWN_QUN_IM) {
+	if(source != TQQ_RECV_IM_UNKNOWN_QUN_IM) {
 		pos+=2;
 		
 		numFragments = buf[pos++];
@@ -504,7 +504,7 @@ void ReceivedQunIM::parseData( const unsigned char * buf, const int len )
 #endif
 	memcpy(str, buf+(pos-i-1), i+1);
 	str[i+1]= 0x00;
-	message = ReceiveIMPacket::convertToShow(str, QQ_IM_NORMAL_REPLY);
+	message = ReceiveIMPacket::convertToShow(str, TQQ_IM_NORMAL_REPLY);
 	
 	mHasFontAttribute = (len > pos);
         if(mHasFontAttribute) {
@@ -578,45 +578,45 @@ ReceivedQunIMJoinRequest::ReceivedQunIMJoinRequest(const unsigned short imType, 
 
 
 	switch(imType){
-		case QQ_RECV_IM_ADDED_TO_QUN:
-		case QQ_RECV_IM_DELETED_FROM_QUN:
+		case TQQ_RECV_IM_ADDED_TO_QUN:
+		case TQQ_RECV_IM_DELETED_FROM_QUN:
 			sender = READ32(buf+pos);
 			pos+=4;
 			exttype=buf[pos++];
 			
-			// LumaQQ disregard value of exttype(rootCause) when deal with QQ_RECV_IM_ADDED_TO_QUN
-			// Values for exttype (For QQ_RECV_IM_DELETED_FROM_QUN, from LumaQQ Mac)
-			// static const char kQQExitClusterDismissed = 0x01;
-			// static const char kQQExitClusterActive = 0x02;
-			// static const char kQQExitClusterPassive = 0x03;
-			if(imType == QQ_RECV_IM_ADDED_TO_QUN || exttype == 3) {
+			// LumaQQ disregard value of exttype(rootCause) when deal with TQQ_RECV_IM_ADDED_TO_QUN
+			// Values for exttype (For TQQ_RECV_IM_DELETED_FROM_QUN, from LumaQQ Mac)
+			// static const char kTQQExitClusterDismissed = 0x01;
+			// static const char kTQQExitClusterActive = 0x02;
+			// static const char kTQQExitClusterPassive = 0x03;
+			if(imType == TQQ_RECV_IM_ADDED_TO_QUN || exttype == 3) {
 				commander = READ32(buf+pos);
 				pos+=4;
 			}
 			break;
-		case QQ_RECV_IM_REQUEST_JOIN_QUN:
+		case TQQ_RECV_IM_REQUEST_JOIN_QUN:
 			sender = READ32(buf+pos);
 			pos+=4;
 			break;
-		case QQ_RECV_IM_APPROVE_JOIN_QUN:
-		case QQ_RECV_IM_REJECT_JOIN_QUN:
+		case TQQ_RECV_IM_APPROVE_JOIN_QUN:
+		case TQQ_RECV_IM_REJECT_JOIN_QUN:
 			commander = READ32(buf+pos);
 			pos+=4;
 			break;
-		case QQ_RECV_IM_SET_QUN_ADMIN:
+		case TQQ_RECV_IM_SET_QUN_ADMIN:
 			commander = buf[pos++]; // just use the commander variable to save the action. 0:unset, 1:set
 			sender = READ32(buf + pos); // sender is the persion which the action performed on
 			pos += 4;
 			pos++;// unknonw, probably the admin value of the above member
 			break;
-		case QQ_RECV_IM_CREATE_QUN:
+		case TQQ_RECV_IM_CREATE_QUN:
 		default:
 			sender = READ32(buf+pos);
 			pos+=4;
 			break;
 	}
 
-	if(imType != QQ_RECV_IM_DELETED_FROM_QUN || exttype == 3){
+	if(imType != TQQ_RECV_IM_DELETED_FROM_QUN || exttype == 3){
 		if(len == pos) {
 			message = "";
 			return;
@@ -636,7 +636,7 @@ ReceivedQunIMJoinRequest::ReceivedQunIMJoinRequest(const unsigned short imType, 
 	setCode(buf+pos, m_CodeLen);
 	pos += m_CodeLen;
 
-	if(imType == QQ_RECV_IM_REQUEST_JOIN_QUN){
+	if(imType == TQQ_RECV_IM_REQUEST_JOIN_QUN){
 		m_TokenLen = READ16(buf + pos);
 		pos +=2;
 	
@@ -767,14 +767,14 @@ void ReceivedFileIM::parseContents( const unsigned char * buf, const int len )
 {
 	int pos = 27; // ignore 27 bytes
 	m_TransferType = buf[pos++];
-	if(m_TransferType != QQ_TRANSFER_FILE && m_TransferType != QQ_TRANSFER_IMAGE) return;
-	if(getNormalIMType() == QQ_IM_REQUEST_CANCELED) return;
+	if(m_TransferType != TQQ_TRANSFER_FILE && m_TransferType != TQQ_TRANSFER_IMAGE) return;
+	if(getNormalIMType() == TQQ_IM_REQUEST_CANCELED) return;
 
 	m_ConnectMode = buf[pos++];
-	if(getNormalIMType() != QQ_IM_TCP_REQUEST){  
+	if(getNormalIMType() != TQQ_IM_TCP_REQUEST){  
 		// this part actually is for UDP only(maybe Request cancellation as well)
 		pos++; // unknown bytes, 0x66 or 0x67
-		if(getNormalIMType() != QQ_IM_EX_REQUEST_CANCELLED)
+		if(getNormalIMType() != TQQ_IM_EX_REQUEST_CANCELLED)
 			pos+=2; // unknown 2 bytes, 0x0000
 		pos+=4; // unknown 4 bytes, 0x00000001, or all 0x0s
 
@@ -782,7 +782,7 @@ void ReceivedFileIM::parseContents( const unsigned char * buf, const int len )
 //		m_SessionId = EvaUtil::read16(buf+pos); pos+=2;
 		m_SessionId = EvaUtil::read32(buf+pos); pos+=4;
 
-		if(getNormalIMType() == QQ_IM_NOTIFY_FILE_AGENT_INFO)
+		if(getNormalIMType() == TQQ_IM_NOTIFY_FILE_AGENT_INFO)
 			pos++; // 0x00, and all above after m_ConnectionMode are 0x00s
 	}
 
@@ -790,7 +790,7 @@ void ReceivedFileIM::parseContents( const unsigned char * buf, const int len )
 	m_WanIp = EvaUtil::read32(buf+pos); pos+=4; // if is cancellation, 0x00000001
 	m_WanPort = EvaUtil::read16(buf+pos); pos+=2; // if is UDP_EX request, 0x00000000
 	
-	if(getNormalIMType() == QQ_IM_NOTIFY_FILE_AGENT_INFO){
+	if(getNormalIMType() == TQQ_IM_NOTIFY_FILE_AGENT_INFO){
 		m_SessionId = EvaUtil::read32(buf+pos); pos+=4;
 		memcpy(m_AgentServerKey, buf+pos, 16);
 		pos++; // last byte always be 0x01
@@ -800,34 +800,34 @@ void ReceivedFileIM::parseContents( const unsigned char * buf, const int len )
 	pos+=2;
 	// request cancellation finished, actually, there are still 2 bytes(0x0000) afterwards
 	// we just ignore them :)
-	if(getNormalIMType() == QQ_IM_EX_REQUEST_CANCELLED) return; 
+	if(getNormalIMType() == TQQ_IM_EX_REQUEST_CANCELLED) return; 
 
 	// request acceptation finished, actually, there are still 16 bytes afterwards
 	// they are all unknown, we just ignore them :)
-	if(getNormalIMType() == QQ_IM_EX_REQUEST_ACCEPTED) return;
+	if(getNormalIMType() == TQQ_IM_EX_REQUEST_ACCEPTED) return;
 
-	if(getNormalIMType() != QQ_IM_TCP_REQUEST){
+	if(getNormalIMType() != TQQ_IM_TCP_REQUEST){
 		pos+=4; // unknown, 0x00000000
 		pos++; // unknown, 0x02 or 0x04
 	}
 
 	pos+=2; // if UDP request: 0x0000, if TCP request: 0x0102
-	if(getNormalIMType() != QQ_IM_TCP_REQUEST)
+	if(getNormalIMType() != TQQ_IM_TCP_REQUEST)
 		pos+=4; // unknown, 0x00000000 or 0x00000001
 
 	pos+=2; // unknown 2 bytes, 0x0000
 
-	if(getNormalIMType() != QQ_IM_TCP_REQUEST){
+	if(getNormalIMType() != TQQ_IM_TCP_REQUEST){
 		pos+=2; //FIXME the length of the following part, we should check this
 		pos++; // unknown, 0x01
 		pos+=2; //FIXME the length of the following part, we should check this, again!
 	}
 
-	if(getNormalIMType() == QQ_IM_ACCEPT_UDP_REQUEST ||
-		getNormalIMType() == QQ_IM_NOTIFY_IP)
+	if(getNormalIMType() == TQQ_IM_ACCEPT_UDP_REQUEST ||
+		getNormalIMType() == TQQ_IM_NOTIFY_IP)
 		return;
 
-	// now type should be QQ_IM_UDP_REQUEST or QQ_IM_TCP_REQUEST
+	// now type should be TQQ_IM_UDP_REQUEST or TQQ_IM_TCP_REQUEST
 	pos+=2; //FIXME we should check if they space and 0x1F, they should be 0x201f
 
 	int strLen = 0;
@@ -956,7 +956,7 @@ void ReceivedFileExIpIM::parseContents( const unsigned char * buf, const int len
 
 
 
-ReceivedQQNews::ReceivedQQNews( const unsigned char * buf, const int len )
+ReceivedTQQNews::ReceivedTQQNews( const unsigned char * buf, const int len )
 	: m_Title(""),
 	m_Brief(""),
 	m_URL("")
@@ -964,7 +964,7 @@ ReceivedQQNews::ReceivedQQNews( const unsigned char * buf, const int len )
 	parseData(buf, len);
 }
 
-ReceivedQQNews::ReceivedQQNews( const ReceivedQQNews & rhs )
+ReceivedTQQNews::ReceivedTQQNews( const ReceivedTQQNews & rhs )
 	: m_Title(""),
 	m_Brief(""),
 	m_URL("")
@@ -972,7 +972,7 @@ ReceivedQQNews::ReceivedQQNews( const ReceivedQQNews & rhs )
 	*this = rhs;
 }
 
-ReceivedQQNews & ReceivedQQNews::operator =( const ReceivedQQNews & rhs )
+ReceivedTQQNews & ReceivedTQQNews::operator =( const ReceivedTQQNews & rhs )
 {
 	m_Title = rhs.getTitle();
 	m_Brief = rhs.getBrief();
@@ -980,7 +980,7 @@ ReceivedQQNews & ReceivedQQNews::operator =( const ReceivedQQNews & rhs )
 	return *this;
 }
 
-void ReceivedQQNews::parseData( const unsigned char * buf, const int /*len*/ )
+void ReceivedTQQNews::parseData( const unsigned char * buf, const int /*len*/ )
 {
 	int pos = 4; // ignore unknown 4 bytes
 	unsigned char slen = buf[pos++];
@@ -1143,7 +1143,7 @@ void TempSessionOpReplyPacket::parseData( const unsigned char * buf, const int l
 
 	subCommand = buf[pos++];
 	switch(subCommand) {
-			case QQ_SUB_CMD_SEND_TEMP_SESSION_IM:
+			case TQQ_SUB_CMD_SEND_TEMP_SESSION_IM:
 				receiver = htonl(*(int*)(buf+pos));
 				pos+=4;
 				replyCode = buf[pos++];
@@ -1161,22 +1161,22 @@ void TempSessionOpReplyPacket::parseData( const unsigned char * buf, const int l
 /** ====================================================================== */
 
 
-ReceivedQQMailPacket::ReceivedQQMailPacket( const unsigned char * buf, const int len )
+ReceivedTQQMailPacket::ReceivedTQQMailPacket( const unsigned char * buf, const int len )
 {
 	parseData(buf, len);
 }
 
-ReceivedQQMailPacket::ReceivedQQMailPacket( const ReceivedQQMailPacket & rhs )
+ReceivedTQQMailPacket::ReceivedTQQMailPacket( const ReceivedTQQMailPacket & rhs )
 {
 	*this = rhs;
 }
 
-ReceivedQQMailPacket & ReceivedQQMailPacket::operator =( const ReceivedQQMailPacket & rhs )
+ReceivedTQQMailPacket & ReceivedTQQMailPacket::operator =( const ReceivedTQQMailPacket & rhs )
 {
 	return *this;
 }
 
-void ReceivedQQMailPacket::parseData( const unsigned char * buf, const int len )
+void ReceivedTQQMailPacket::parseData( const unsigned char * buf, const int len )
 {
 	int pos=1;
 	int len2=0;

@@ -31,12 +31,12 @@
 #include "evahtmlparser.h"
 #include "evascriptmanager.h"
 
-#include <qmessagebox.h>
-#include <qapplication.h>
+#include <ntqmessagebox.h>
+#include <ntqapplication.h>
 #include <twin.h>
-#include <klocale.h>
+#include <tdelocale.h>
 		
-EvaChatWindowManager::EvaChatWindowManager(EvaImageResource *img, EvaUserSetting *setting, QString myNickname, const int id)
+EvaChatWindowManager::EvaChatWindowManager(EvaImageResource *img, EvaUserSetting *setting, TQString myNickname, const int id)
 {
 	EvaChatWindow::setupImages(img);
 	EvaChatWindow::myQQ = id;
@@ -60,7 +60,7 @@ EvaChatWindowManager::~EvaChatWindowManager()
 	//closeAllWindows();
 }
 
-void EvaChatWindowManager::setMyName(QString myName, const unsigned int id)
+void EvaChatWindowManager::setMyName(TQString myName, const unsigned int id)
 {
 	EvaChatWindow::myQQ = id;
 	EvaChatWindow::myName = myName;
@@ -82,7 +82,7 @@ bool EvaChatWindowManager::isChatWindowExisted(const unsigned int id)
 	}	
 }
 	
-EvaChatWindow * EvaChatWindowManager::openChatWindow(QQFriend * frd, const bool isSendingFile)
+EvaChatWindow * EvaChatWindowManager::openChatWindow(TQQFriend * frd, const bool isSendingFile)
 {
 	if(!frd) return NULL;
 	EvaChatWindow *win = getWindow(frd->getQQ());
@@ -155,7 +155,7 @@ void EvaChatWindowManager::graphicChanged()
 	}	
 }
 
-void EvaChatWindowManager::slotReceivedMessage(unsigned int sender, bool isNormal, QString message, QDateTime time, const char size, 
+void EvaChatWindowManager::slotReceivedMessage(unsigned int sender, bool isNormal, TQString message, TQDateTime time, const char size, 
 		const bool u, const bool i, const bool b, 
 		const char blue, const char green, const char red)
 {	
@@ -195,54 +195,54 @@ void EvaChatWindowManager::slotSendResult(unsigned int id, bool ok)
 		win->slotSendResult(ok);
 	}else{
 		if(!ok)
-			QMessageBox::information(0, i18n("Send Message"), QString(i18n("Send message to \"%1\" failed.")).arg(id));
+			TQMessageBox::information(0, i18n("Send Message"), TQString(i18n("Send message to \"%1\" failed.")).arg(id));
 	}
 }
 
-void EvaChatWindowManager::slotBuddyQQShowReady(const unsigned int id)
+void EvaChatWindowManager::slotBuddyTQQShowReady(const unsigned int id)
 {
 	EvaChatWindow *win = getWindow(id);
 	if(win && win->isVisible())
-		win->slotBuddyQQShowReady(id);	
+		win->slotBuddyTQQShowReady(id);	
 }
 
-void EvaChatWindowManager::slotMyQQShowReady()
+void EvaChatWindowManager::slotMyTQQShowReady()
 {
 	for(uint i=0; i<windowList.count();i++){
 		if(windowList.at(i)->isVisible())
-			windowList.at(i)->slotMyQQShowReady();
+			windowList.at(i)->slotMyTQQShowReady();
 	}	
 }
 
-EvaChatWindow *EvaChatWindowManager::newWindow(QQFriend *frd)
+EvaChatWindow *EvaChatWindowManager::newWindow(TQQFriend *frd)
 {
 	EvaChatWindow::setQuickReplyMessages(userSetting->getQuickReplyList());
 	EvaChatWindow::isSentByEnter = userSetting->isSendKeyEnterEnabled();
 	EvaChatWindow *win = new EvaChatWindow(frd);
 	addBtnsToBuddyWin(win);
 	windowList.append(win);
-	QObject::connect(win, SIGNAL(requestDetails(const unsigned int)), this, SIGNAL(requestDetails(const unsigned int)));
-	QObject::connect(win, SIGNAL(sendMessage(const unsigned int , const bool, QString &, const char , 
+	TQObject::connect(win, SIGNAL(requestDetails(const unsigned int)), this, SIGNAL(requestDetails(const unsigned int)));
+	TQObject::connect(win, SIGNAL(sendMessage(const unsigned int , const bool, TQString &, const char , 
 		const bool , const bool , const bool , 
 		const char, const char , const char)), this, 
-		SIGNAL(sendMessage(const unsigned int , const bool, QString &, const char, 
+		SIGNAL(sendMessage(const unsigned int , const bool, TQString &, const char, 
 		const bool , const bool , const bool , 
 		const char , const char, const char)));	
-	QObject::connect(win, SIGNAL(requestHistory(const unsigned int )), this, SIGNAL(requestHistory(const unsigned int )));
-	QObject::connect(win, SIGNAL(requestBuddyQQShow(const unsigned int)), this, SIGNAL(requestBuddyQQShow(const unsigned int)));
-	QObject::connect(win, SIGNAL(requestMyQQShow()), this, SIGNAL(requestMyQQShow()));
+	TQObject::connect(win, SIGNAL(requestHistory(const unsigned int )), this, SIGNAL(requestHistory(const unsigned int )));
+	TQObject::connect(win, SIGNAL(requestBuddyTQQShow(const unsigned int)), this, SIGNAL(requestBuddyTQQShow(const unsigned int)));
+	TQObject::connect(win, SIGNAL(requestMyTQQShow()), this, SIGNAL(requestMyTQQShow()));
 
-	QObject::connect(win, SIGNAL(fileTransferSend(const unsigned int, const unsigned int, const QValueList<QString>,
-							const QValueList<unsigned int>, const unsigned char)),
-				SIGNAL(fileTransferSend(const unsigned int, const unsigned int, const QValueList<QString>,
-							const QValueList<unsigned int>, const unsigned char)));
-	QObject::connect(win, SIGNAL(fileTransferAccept(const unsigned int, const unsigned int, const QString,
+	TQObject::connect(win, SIGNAL(fileTransferSend(const unsigned int, const unsigned int, const TQValueList<TQString>,
+							const TQValueList<unsigned int>, const unsigned char)),
+				SIGNAL(fileTransferSend(const unsigned int, const unsigned int, const TQValueList<TQString>,
+							const TQValueList<unsigned int>, const unsigned char)));
+	TQObject::connect(win, SIGNAL(fileTransferAccept(const unsigned int, const unsigned int, const TQString,
 							const unsigned char )),
-				SIGNAL(fileTransferAccept(const unsigned int, const unsigned int, const QString,
+				SIGNAL(fileTransferAccept(const unsigned int, const unsigned int, const TQString,
 							const unsigned char )));
-	QObject::connect(win, SIGNAL(fileTransferCancel(const unsigned int, const unsigned int)),
+	TQObject::connect(win, SIGNAL(fileTransferCancel(const unsigned int, const unsigned int)),
 				SIGNAL(fileTransferCancel(const unsigned int, const unsigned int)));
-	QObject::connect(win, SIGNAL(fileTransferResume(const unsigned int, const unsigned int, const bool)),
+	TQObject::connect(win, SIGNAL(fileTransferResume(const unsigned int, const unsigned int, const bool)),
 				SIGNAL(fileTransferResume(const unsigned int, const unsigned int, const bool)));
 
 	return win;
@@ -257,7 +257,7 @@ EvaChatWindow *EvaChatWindowManager::getWindow(const unsigned int id)
 	return NULL;
 }
 
-void EvaChatWindowManager::slotReceivedQunMessage( unsigned int qunID, unsigned int senderQQ, QString message, QDateTime time, const char size, 
+void EvaChatWindowManager::slotReceivedQunMessage( unsigned int qunID, unsigned int senderQQ, TQString message, TQDateTime time, const char size, 
 						const bool u, const bool i, const bool b, 
 						const char blue, const char green, const char red )
 {
@@ -291,25 +291,25 @@ void EvaChatWindowManager::slotReceivedQunMessage( unsigned int qunID, unsigned 
 	qunMessageQueue.append(msg);
 	
 	EvaHtmlParser parser;
-	QString cachesPath = EvaMain::user->getSetting()->getPictureCacheDir();
+	TQString cachesPath = EvaMain::user->getSetting()->getPictureCacheDir();
 	parser.setAbsImagePath(EvaMain::images->getSmileyPath(), cachesPath);
 	std::list<CustomizedPic> picList = parser.convertToHtml(message, true, true);
 	if(picList.size()){
 		EvaAskForCustomizedPicEvent *event = new EvaAskForCustomizedPicEvent();
 		event->setPicList(picList);
 		event->setQunID(qunID);
-		QApplication::postEvent((QObject *)EvaMain::picManager, event);
+		TQApplication::postEvent((TQObject *)EvaMain::picManager, event);
 	}
 }
 
-void EvaChatWindowManager::slotQunSendResult( unsigned int id, bool ok ,QString msg)
+void EvaChatWindowManager::slotQunSendResult( unsigned int id, bool ok ,TQString msg)
 {
 	EvaQunChatWindow *win = getQunWindow(id);
 	if(win && win->isVisible()) {
 		win->slotSendResult(ok);
 	}else{
 		if(!ok)
-			QMessageBox::information(0, i18n("Send Message Failed"), msg);
+			TQMessageBox::information(0, i18n("Send Message Failed"), msg);
 	}
 }
 
@@ -320,22 +320,22 @@ void EvaChatWindowManager::slotQunJoinEvent(const unsigned int qunID,
 {
 	EvaQunChatWindow *win = getQunWindow(qunID);
 	if(win ) {
-		QString info;
+		TQString info;
 		switch(imType){
-			case QQ_RECV_IM_APPROVE_JOIN_QUN:
-				info = QString(i18n("%1 has joined this Qun approved by %2."))
+			case TQQ_RECV_IM_APPROVE_JOIN_QUN:
+				info = TQString(i18n("%1 has joined this Qun approved by %2."))
 								.arg(sender).arg(commander);
 				break;
-			case QQ_RECV_IM_ADDED_TO_QUN:
-				info = QString(i18n("%1 has joined this Qun added by %2."))
+			case TQQ_RECV_IM_ADDED_TO_QUN:
+				info = TQString(i18n("%1 has joined this Qun added by %2."))
 								.arg(sender).arg(commander);
 				break;
-			case QQ_RECV_IM_DELETED_FROM_QUN:
-				info = QString(i18n("%1 has quit this Qun.")
+			case TQQ_RECV_IM_DELETED_FROM_QUN:
+				info = TQString(i18n("%1 has quit this Qun.")
 								.arg(sender));
 				break;
 			default:
-				info = QString(i18n("%1 has done some unknown action on %2."))
+				info = TQString(i18n("%1 has done some unknown action on %2."))
 								.arg(commander).arg(sender);
 		}
 		
@@ -359,20 +359,20 @@ EvaQunChatWindow * EvaChatWindowManager::newQunWindow( Qun * qun )
 	EvaQunChatWindow *win = new EvaQunChatWindow(qun);
 	addBtnsToQinWin(win);
 	qunWindowList.append(win);
-	QObject::connect(win, SIGNAL(requestQunDetails(const unsigned int)), this, SIGNAL(requestQunDetails(const unsigned int)));
-	QObject::connect(win, SIGNAL(sendQunMessage(const unsigned int, QString &, const char , 
+	TQObject::connect(win, SIGNAL(requestQunDetails(const unsigned int)), this, SIGNAL(requestQunDetails(const unsigned int)));
+	TQObject::connect(win, SIGNAL(sendQunMessage(const unsigned int, TQString &, const char , 
 			const bool, const bool, const bool, 
 			const char, const char, const char)), this, 
-		SIGNAL(sendQunMessage(const unsigned int, QString &, const char , 
+		SIGNAL(sendQunMessage(const unsigned int, TQString &, const char , 
 			const bool, const bool, const bool, 
 			const char, const char, const char)));	
-	QObject::connect(win, SIGNAL(requestHistory(const unsigned int )), this, SIGNAL(requestQunHistory(const unsigned int )));
-	QObject::connect(win, SIGNAL(requestDetails(const unsigned int)), this, SIGNAL(requestDetails(const unsigned int )));
-	QObject::connect(win, SIGNAL(requestQunOnlineList(const unsigned int)), this, SIGNAL(requestQunOnlineList(const unsigned int)));
-	QObject::connect(win, SIGNAL(requestQunCard(const unsigned int, const unsigned int)),
+	TQObject::connect(win, SIGNAL(requestHistory(const unsigned int )), this, SIGNAL(requestQunHistory(const unsigned int )));
+	TQObject::connect(win, SIGNAL(requestDetails(const unsigned int)), this, SIGNAL(requestDetails(const unsigned int )));
+	TQObject::connect(win, SIGNAL(requestQunOnlineList(const unsigned int)), this, SIGNAL(requestQunOnlineList(const unsigned int)));
+	TQObject::connect(win, SIGNAL(requestQunCard(const unsigned int, const unsigned int)),
 			this, SIGNAL(requestQunCard(const unsigned int, const unsigned int)));
-	//QObject::connect(win, SIGNAL(requestQunMembers(const unsigned int)), this, SIGNAL(requestQunMembers(const unsigned int)));
-	QObject::connect(win, SIGNAL(requestQunRealNames(const unsigned int)), this, SIGNAL(requestQunRealNames(const unsigned int)));
+	//TQObject::connect(win, SIGNAL(requestQunMembers(const unsigned int)), this, SIGNAL(requestQunMembers(const unsigned int)));
+	TQObject::connect(win, SIGNAL(requestQunRealNames(const unsigned int)), this, SIGNAL(requestQunRealNames(const unsigned int)));
 
 	return win;
 }
@@ -429,7 +429,7 @@ void EvaChatWindowManager::slotQunOnlineMembers(const unsigned int id)
 		win->slotUpdateOnlineMembers();
 }
 
-void EvaChatWindowManager::slotQunPicReady( const unsigned int id, const QString fileName , const QString tmpFileName)
+void EvaChatWindowManager::slotQunPicReady( const unsigned int id, const TQString fileName , const TQString tmpFileName)
 {
 	EvaQunChatWindow *win = getQunWindow(id);
 	if(win)
@@ -443,7 +443,7 @@ void EvaChatWindowManager::slotQunPicSent( const int unsigned id, const unsigned
 		win->slotSendImageDone(sessionID, ip, port);
 }
 
-void EvaChatWindowManager::slotSendImageError( const unsigned int id, const QString message )
+void EvaChatWindowManager::slotSendImageError( const unsigned int id, const TQString message )
 {
 	EvaQunChatWindow *win = getQunWindow(id);
 	if(win)
@@ -472,8 +472,8 @@ void EvaChatWindowManager::slotQunListUpdated()
 	}
 }
 
-void EvaChatWindowManager::slotReceivedFileRequest(QQFriend * frd, const unsigned int session,
-						const QString fileName, const int size,
+void EvaChatWindowManager::slotReceivedFileRequest(TQQFriend * frd, const unsigned int session,
+						const TQString fileName, const int size,
 						const unsigned char transferType )
 {
 	EvaChatWindow *win = openChatWindow(frd);
@@ -494,7 +494,7 @@ void EvaChatWindowManager::slotChangeFileSessionTo(const unsigned int id, const 
 }
 
 void EvaChatWindowManager::slotFileNotifyNormalInfo( const unsigned int id, const unsigned int session, 
-			EvaFileStatus status, const QString dir, const QString filename, const unsigned int size,
+			EvaFileStatus status, const TQString dir, const TQString filename, const unsigned int size,
 			const unsigned char transferType)
 {
 	EvaChatWindow *win = getWindow(id);
@@ -508,7 +508,7 @@ void EvaChatWindowManager::slotFileStatusNotification( const unsigned int id, co
 	if(win) win->slotFileStatusNotification(session, url, size, bytes, time);
 }
 
-void EvaChatWindowManager::addButton( QString &scriptName, QString &buttonName, QString &image, QString &tip)
+void EvaChatWindowManager::addButton( TQString &scriptName, TQString &buttonName, TQString &image, TQString &tip)
 {
 	CustomButton btn;
 	btn.script = scriptName;
@@ -526,7 +526,7 @@ void EvaChatWindowManager::addButton( QString &scriptName, QString &buttonName, 
 	m_btnList.push_back(btn);
 }
 
-void EvaChatWindowManager::removeButton( QString &scriptName, const QString &buttonName )
+void EvaChatWindowManager::removeButton( TQString &scriptName, const TQString &buttonName )
 {
 	std::list<CustomButton>::iterator it;
 	for(it = m_btnList.begin(); it != m_btnList.end(); it++){

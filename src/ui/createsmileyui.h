@@ -10,54 +10,54 @@
 #ifndef CREATESMILEYUI_H
 #define CREATESMILEYUI_H
 
-#include <qvariant.h>
-#include <qwidget.h>
+#include <ntqvariant.h>
+#include <ntqwidget.h>
 
-class QVBoxLayout;
-class QHBoxLayout;
-class QGridLayout;
-class QSpacerItem;
-class QLabel;
-class QPushButton;
-class QLineEdit;
-class QComboBox;
+class TQVBoxLayout;
+class TQHBoxLayout;
+class TQGridLayout;
+class TQSpacerItem;
+class TQLabel;
+class TQPushButton;
+class TQLineEdit;
+class TQComboBox;
 
-class CreateSmileyUI : public QWidget
+class CreateSmileyUI : public TQWidget
 {
     Q_OBJECT
 
 public:
-    CreateSmileyUI( QWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
+    CreateSmileyUI( TQWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
     ~CreateSmileyUI();
 
-    QLabel* lblTop;
-    QLabel* lblStep1;
-    QLabel* lblSelect;
-    QPushButton* btnSelect;
-    QLabel* lblStep2;
-    QLineEdit* leShortcut;
-    QLabel* lblStep2_2;
-    QComboBox* cbbGroup;
-    QLabel* lblStep3;
-    QLineEdit* leTip;
-    QLabel* lblCommends;
-    QPushButton* btnOK;
-    QPushButton* btnCancel;
+    TQLabel* lblTop;
+    TQLabel* lblStep1;
+    TQLabel* lblSelect;
+    TQPushButton* btnSelect;
+    TQLabel* lblStep2;
+    TQLineEdit* leShortcut;
+    TQLabel* lblStep2_2;
+    TQComboBox* cbbGroup;
+    TQLabel* lblStep3;
+    TQLineEdit* leTip;
+    TQLabel* lblCommends;
+    TQPushButton* btnOK;
+    TQPushButton* btnCancel;
 
 protected:
-    QGridLayout* CreateSmileyUILayout;
-    QVBoxLayout* layout21;
-    QHBoxLayout* layout16;
-    QSpacerItem* spacer6;
-    QHBoxLayout* layout19;
-    QSpacerItem* spacer6_3;
-    QSpacerItem* spacer9;
-    QHBoxLayout* layout17;
-    QSpacerItem* spacer6_2;
-    QHBoxLayout* layout20;
-    QSpacerItem* spacer6_2_2;
-    QHBoxLayout* layout14;
-    QSpacerItem* spacer5;
+    TQGridLayout* CreateSmileyUILayout;
+    TQVBoxLayout* layout21;
+    TQHBoxLayout* layout16;
+    TQSpacerItem* spacer6;
+    TQHBoxLayout* layout19;
+    TQSpacerItem* spacer6_3;
+    TQSpacerItem* spacer9;
+    TQHBoxLayout* layout17;
+    TQSpacerItem* spacer6_2;
+    TQHBoxLayout* layout20;
+    TQSpacerItem* spacer6_2_2;
+    TQHBoxLayout* layout14;
+    TQSpacerItem* spacer5;
 
 protected slots:
     virtual void languageChange();

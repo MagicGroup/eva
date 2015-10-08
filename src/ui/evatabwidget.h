@@ -21,59 +21,59 @@
 #ifndef EVA_TABWIDGET_H
 #define EVA_TABWIDGET_H
 
-#include <qwidget.h>
-#include <qstring.h>
-#include <qpoint.h>
-#include <qrect.h>
-#include <qmap.h>
-#include <qpixmap.h>
-#include <qcolor.h>
-#include <qwidgetstack.h>
+#include <ntqwidget.h>
+#include <ntqstring.h>
+#include <ntqpoint.h>
+#include <ntqrect.h>
+#include <ntqmap.h>
+#include <ntqpixmap.h>
+#include <ntqcolor.h>
+#include <ntqwidgetstack.h>
 
 class EvaTabToolTip;
-class QMouseEvent;
-class QWheelEvent;
-class QPaintEvent;
+class TQMouseEvent;
+class TQWheelEvent;
+class TQPaintEvent;
 class EvaTabWidget;
 
-class EvaTabBar : public QWidget
+class EvaTabBar : public TQWidget
 {
     Q_OBJECT
 public:
-    EvaTabBar( QWidget *parent = 0, const char * name = 0, WFlags f = 0 );
+    EvaTabBar( TQWidget *parent = 0, const char * name = 0, WFlags f = 0 );
     virtual ~EvaTabBar();
 
     // return the key of the just created tab
-    int addTab(QString &name, QPixmap icon, QString &tip);
+    int addTab(TQString &name, TQPixmap icon, TQString &tip);
     bool removeTab(int key);
 
     void changeTabTo(int key);
     const int numTabs() const { return m_d.size(); }
 
-    void setGridColor(const QColor &c) { m_gridColor = c; }
-    void setSelectedColor(const QColor &c) { m_selectedColor = c; }
+    void setGridColor(const TQColor &c) { m_gridColor = c; }
+    void setSelectedColor(const TQColor &c) { m_selectedColor = c; }
 signals:
     void clicked(int key);
 
 protected:
-    void mousePressEvent(QMouseEvent *e);
-    void mouseReleaseEvent( QMouseEvent *e);
-    void mouseMoveEvent( QMouseEvent *e);
-    void wheelEvent ( QWheelEvent * e );
-    void paintEvent( QPaintEvent *e);
+    void mousePressEvent(TQMouseEvent *e);
+    void mouseReleaseEvent( TQMouseEvent *e);
+    void mouseMoveEvent( TQMouseEvent *e);
+    void wheelEvent ( TQWheelEvent * e );
+    void paintEvent( TQPaintEvent *e);
 private:
 
     class TabData{
     public:
         TabData() : name(""), tip(""), icon(0L){}
-        TabData(QString &n, QPixmap i, QString t = QString::null){
+        TabData(TQString &n, TQPixmap i, TQString t = TQString::null){
             name = n;
             tip = t;
             icon = i;
         }
         ~TabData(){
         }
-        void setData(QString &n, QPixmap i, QString t = QString::null){
+        void setData(TQString &n, TQPixmap i, TQString t = TQString::null){
             name = n;
             tip = t;
             icon = i;
@@ -84,20 +84,20 @@ private:
             icon = rhs.icon;
             return *this;
         }
-        QString name;
-        QString tip;
-        QPixmap icon;
+        TQString name;
+        TQString tip;
+        TQPixmap icon;
     };
     int m_CurrentTab;
     int m_Counter;
-    QMap<int, TabData> m_d;
-    QMap<int, int> m_index; // key: seq, data: the key of TabData
+    TQMap<int, TabData> m_d;
+    TQMap<int, int> m_index; // key: seq, data: the key of TabData
     EvaTabToolTip *m_toolTip;
 
-    QColor m_gridColor;
-    QColor m_selectedColor;
-    QPixmap m_Buffer;
-    QPixmap m_BasePixmap;
+    TQColor m_gridColor;
+    TQColor m_selectedColor;
+    TQPixmap m_Buffer;
+    TQPixmap m_BasePixmap;
 
     void updateBasePixmap();
     // return the vertical sequence based on the tab key. return -1 if key doesn't exist
@@ -109,8 +109,8 @@ private:
     int getTabKey(int x, int y);
 
     void update();
-    QRect itemRect(const QPoint &p);
-    QString tip(const QPoint &p);
+    TQRect itemRect(const TQPoint &p);
+    TQString tip(const TQPoint &p);
 
     friend class EvaTabWidget;
     friend class EvaTabToolTip;
@@ -118,26 +118,26 @@ private:
 
 
 
-// class EvaTabWidget : public QWidget
+// class EvaTabWidget : public TQWidget
 // {
 //     Q_OBJECT
 // 
 // };
 
-class EvaWidgetStack : public QWidgetStack
+class EvaWidgetStack : public TQWidgetStack
 {
     Q_OBJECT
     friend class EvaTabWidget;
 public:
-    EvaWidgetStack( QWidget *parent = 0, const char * name = 0, WFlags f = 0 );
+    EvaWidgetStack( TQWidget *parent = 0, const char * name = 0, WFlags f = 0 );
 
 protected:
-    void paintEvent(QPaintEvent *e);
+    void paintEvent(TQPaintEvent *e);
 
 private:
     int m_CurrentSeq;
-    QColor m_gridColor;
-    QColor m_tabSelectedColor;
+    TQColor m_gridColor;
+    TQColor m_tabSelectedColor;
 
 public slots:
     void raiseWidget(int id, int seq);
@@ -145,29 +145,29 @@ public slots:
 };
 
 
-class QHBoxLayout;
-class QGridLayout;
+class TQHBoxLayout;
+class TQGridLayout;
 
-class EvaTabWidget : public QWidget
+class EvaTabWidget : public TQWidget
 {
     Q_OBJECT
 
 public:
-    EvaTabWidget( QWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
+    EvaTabWidget( TQWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
     ~EvaTabWidget();
 
     EvaTabBar* evaTabBar;
     EvaWidgetStack* wsView;
-    //QWidget* WStackPage;
+    //TQWidget* WStackPage;
 
-    int addTab(QString &name, QPixmap icon, QString &tip, QWidget *w);
-		QWidget *getWidget(int id);
+    int addTab(TQString &name, TQPixmap icon, TQString &tip, TQWidget *w);
+		TQWidget *getWidget(int id);
     bool removeTab(int key);
-    void setGridColor(const QColor &c);
-    void setSelectedColor(const QColor &c);
+    void setGridColor(const TQColor &c);
+    void setSelectedColor(const TQColor &c);
 protected:
-    QGridLayout* EvaTabWidgetLayout;
-    QHBoxLayout* layout;
+    TQGridLayout* EvaTabWidgetLayout;
+    TQHBoxLayout* layout;
 
 public slots:
     void changeTabTo(int key);

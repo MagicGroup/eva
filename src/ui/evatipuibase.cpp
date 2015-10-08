@@ -20,60 +20,60 @@
 
 #include "evatipuibase.h"
 
-#include <qvariant.h>
-#include <qpushbutton.h>
-#include <qframe.h>
-#include <qlabel.h>
-#include <qlayout.h>
-#include <qtooltip.h>
-#include <qwhatsthis.h>
-#include <qimage.h>
-#include <qpixmap.h>
+#include <ntqvariant.h>
+#include <ntqpushbutton.h>
+#include <ntqframe.h>
+#include <ntqlabel.h>
+#include <ntqlayout.h>
+#include <ntqtooltip.h>
+#include <ntqwhatsthis.h>
+#include <ntqimage.h>
+#include <ntqpixmap.h>
 #include <twin.h>
-#include <klocale.h>
+#include <tdelocale.h>
 
-EvaTipUIBase::EvaTipUIBase( QWidget* parent, const char* name, WFlags fl )
-    : QWidget( parent, name, fl )
+EvaTipUIBase::EvaTipUIBase( TQWidget* parent, const char* name, WFlags fl )
+    : TQWidget( parent, name, fl )
 {
     if ( !name )
 	setName( "EvaTipUIBase" );
-    EvaTipUIBaseLayout = new QGridLayout( this, 1, 1, 0, 0, "EvaTipUIBaseLayout"); 
+    EvaTipUIBaseLayout = new TQGridLayout( this, 1, 1, 0, 0, "EvaTipUIBaseLayout"); 
 
-    fraMain = new QFrame( this, "fraMain" );
-    fraMain->setFrameShape( QFrame::StyledPanel );
-    fraMain->setFrameShadow( QFrame::Sunken );
+    fraMain = new TQFrame( this, "fraMain" );
+    fraMain->setFrameShape( TQFrame::StyledPanel );
+    fraMain->setFrameShadow( TQFrame::Sunken );
     fraMain->setLineWidth( 3 );
     fraMain->setMargin( 0 );
     fraMain->setMidLineWidth( 0 );
-    fraMain->setCursor( QCursor( 13 ) );
-    fraMainLayout = new QGridLayout( fraMain, 1, 1, 0, 0, "fraMainLayout"); 
+    fraMain->setCursor( TQCursor( 13 ) );
+    fraMainLayout = new TQGridLayout( fraMain, 1, 1, 0, 0, "fraMainLayout"); 
 
-    layout2 = new QHBoxLayout( 0, 0, 0, "layout2"); 
+    layout2 = new TQHBoxLayout( 0, 0, 0, "layout2"); 
 
-    lblPixmap = new QLabel( fraMain, "lblPixmap" );
-    lblPixmap->setSizePolicy( QSizePolicy( (QSizePolicy::SizeType)0, (QSizePolicy::SizeType)0, 0, 0, lblPixmap->sizePolicy().hasHeightForWidth() ) );
-    lblPixmap->setMinimumSize( QSize( 81, 121 ) );
-    lblPixmap->setMaximumSize( QSize( 81, 121 ) );
-    lblPixmap->setFrameShape( QLabel::NoFrame );
-    lblPixmap->setFrameShadow( QLabel::Plain );
-    lblPixmap->setAlignment( int( QLabel::AlignCenter ) );
-    lblPixmap->setCursor( QCursor( 13 ) );
+    lblPixmap = new TQLabel( fraMain, "lblPixmap" );
+    lblPixmap->setSizePolicy( TQSizePolicy( (TQSizePolicy::SizeType)0, (TQSizePolicy::SizeType)0, 0, 0, lblPixmap->sizePolicy().hasHeightForWidth() ) );
+    lblPixmap->setMinimumSize( TQSize( 81, 121 ) );
+    lblPixmap->setMaximumSize( TQSize( 81, 121 ) );
+    lblPixmap->setFrameShape( TQLabel::NoFrame );
+    lblPixmap->setFrameShadow( TQLabel::Plain );
+    lblPixmap->setAlignment( int( TQLabel::AlignCenter ) );
+    lblPixmap->setCursor( TQCursor( 13 ) );
     layout2->addWidget( lblPixmap );
 
-    layout1 = new QVBoxLayout( 0, 6, 0, "layout1"); 
+    layout1 = new TQVBoxLayout( 0, 6, 0, "layout1"); 
 
-    lblNick = new QLabel( fraMain, "lblNick" );
-    lblNick->setSizePolicy( QSizePolicy( (QSizePolicy::SizeType)0, (QSizePolicy::SizeType)1, 0, 0, lblNick->sizePolicy().hasHeightForWidth() ) );
-    lblNick->setMinimumSize( QSize( 120, 30 ) );
-    lblNick->setMaximumSize( QSize( 120, 30 ) );
-    lblNick->setCursor( QCursor( 13 ) );
+    lblNick = new TQLabel( fraMain, "lblNick" );
+    lblNick->setSizePolicy( TQSizePolicy( (TQSizePolicy::SizeType)0, (TQSizePolicy::SizeType)1, 0, 0, lblNick->sizePolicy().hasHeightForWidth() ) );
+    lblNick->setMinimumSize( TQSize( 120, 30 ) );
+    lblNick->setMaximumSize( TQSize( 120, 30 ) );
+    lblNick->setCursor( TQCursor( 13 ) );
     layout1->addWidget( lblNick );
 
-    lblMessage = new QLabel( fraMain, "lblMessage" );
-    lblMessage->setAlignment( int( QLabel::WordBreak | QLabel::AlignTop ) );
-    lblMessage->setMinimumSize( QSize( 120, 81 ) );
-    lblMessage->setMaximumSize( QSize( 120, 81 ) );
-    lblMessage->setCursor( QCursor( 13 ) );
+    lblMessage = new TQLabel( fraMain, "lblMessage" );
+    lblMessage->setAlignment( int( TQLabel::WordBreak | TQLabel::AlignTop ) );
+    lblMessage->setMinimumSize( TQSize( 120, 81 ) );
+    lblMessage->setMaximumSize( TQSize( 120, 81 ) );
+    lblMessage->setCursor( TQCursor( 13 ) );
     layout1->addWidget( lblMessage );
     layout2->addLayout( layout1 );
 
@@ -81,14 +81,14 @@ EvaTipUIBase::EvaTipUIBase( QWidget* parent, const char* name, WFlags fl )
 
     EvaTipUIBaseLayout->addWidget( fraMain, 0, 0 );
     languageChange();
-    resize( QSize(227, 135).expandedTo(minimumSizeHint()) );
+    resize( TQSize(227, 135).expandedTo(minimumSizeHint()) );
     clearWState( WState_Polished );
 }
 
 
 EvaTipUIBase::~EvaTipUIBase()
 {
-    // no need to delete child widgets, Qt does it all for us
+    // no need to delete child widgets, TQt does it all for us
 }
 
 void EvaTipUIBase::languageChange()

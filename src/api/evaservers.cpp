@@ -19,21 +19,21 @@
  ***************************************************************************/
 #include "evaservers.h"
 #include <stdlib.h>      // rand() function
-#include <qdns.h>
-#include <qfile.h>
-#include <qdatastream.h>
-#include <qdatetime.h>   // seed for rand()
-#include <qtimer.h>
-#include <qdir.h>
+#include <ntqdns.h>
+#include <ntqfile.h>
+#include <ntqdatastream.h>
+#include <ntqdatetime.h>   // seed for rand()
+#include <ntqtimer.h>
+#include <ntqdir.h>
 
 #include <kdebug.h>
-#include <kconfig.h>
+#include <tdeconfig.h>
 
 #include "evamain.h"
 #include "evauser.h"
 #include "evausersetting.h"
 
-EvaServers::EvaServers(QString &dataRoot):
+EvaServers::EvaServers(TQString &dataRoot):
 	gotIP(false),
 	isLoaded(false),
 	m_StopDns(false),
@@ -42,7 +42,7 @@ EvaServers::EvaServers(QString &dataRoot):
 	m_bIsFirst(true)
 {
 	filename = dataRoot + "/servers";
-	QTime t = QTime::currentTime();
+	TQTime t = TQTime::currentTime();
 	srand( t.hour()*12+t.minute()*60+t.second()*60 );
 	isLoaded = this->loadServers();
 	//dns = NULL;
@@ -60,11 +60,11 @@ void EvaServers::fetchAddress( bool isUdp )
 	int num = 0;
 	if(m_bIsFirst){
 		m_bIsFirst = false;
-		KConfig* config = new KConfig( (QDir::homeDirPath() + "/.eva/eva.cfg") );
+		TDEConfig* config = new TDEConfig( (TQDir::homeDirPath() + "/.eva/eva.cfg") );
 		config->setGroup("General");
-		QString type = config->readEntry("Server Type");
+		TQString type = config->readEntry("Server Type");
 		if(!type.isEmpty()){
-			QHostAddress addr(config->readEntry("Server IP"));
+			TQHostAddress addr(config->readEntry("Server IP"));
 			if(!addr.isNull()) {
 				if( (type == "UDP" && isUdp) ||
 						(type == "TCP" && !isUdp)){
@@ -98,30 +98,30 @@ void EvaServers::fetchAddress( bool isUdp )
 		addr = TCPServers[m_CurrAddrIndex++];
 	
 	if(addr.type == Addr_IP){
-		emit isReady(QHostAddress(addr.addr.latin1())); // this way, Red hat 9 might work properly
+		emit isReady(TQHostAddress(addr.addr.latin1())); // this way, Red hat 9 might work properly
 		return;
 	}
 	
 	// the address should be a URL now, so we try to get the IP
-	QDns * dns =  new QDns(addr.addr, QDns::A);
-	QObject::connect(dns, SIGNAL(resultsReady()), this, SLOT(getResultsSlot()));
+	TQDns * dns =  new TQDns(addr.addr, TQDns::A);
+	TQObject::connect(dns, SIGNAL(resultsReady()), this, SLOT(getResultsSlot()));
 
 
-	m_Timeout = new QTimer(this, "dns timer");
-	QObject::connect(m_Timeout, SIGNAL(timeout()), SLOT(slotTimeout()));
+	m_Timeout = new TQTimer(this, "dns timer");
+	TQObject::connect(m_Timeout, SIGNAL(timeout()), SLOT(slotTimeout()));
 	m_Timeout->start(30000, true);
 }
 
 bool EvaServers::loadServers( )
 {
-	QFile file(filename);    
+	TQFile file(filename);    
 	if(!file.open(IO_ReadOnly)){
 		return false;
 	}
 
-	QTextStream stream(&file);
-	QString line;
-	QStringList lineList;
+	TQTextStream stream(&file);
+	TQString line;
+	TQStringList lineList;
 	int nextType = 0; 
 	while(!stream.atEnd()){
 		line = stream.readLine().stripWhiteSpace();
@@ -136,7 +136,7 @@ bool EvaServers::loadServers( )
 				continue;
 			}
 
-        	lineList = QStringList::split(":", line);
+        	lineList = TQStringList::split(":", line);
 
         	if(lineList.size() != 2)
 			continue;
@@ -169,26 +169,26 @@ bool EvaServers::loadServers( )
 void EvaServers::defaultAddress()
 {    
     if(fetchType == TCP){
-        emit isReady(QHostAddress("218.17.209.23"));
+        emit isReady(TQHostAddress("218.17.209.23"));
     }else{
-        emit isReady(QHostAddress("219.133.60.28")); //218.17.209.20
+        emit isReady(TQHostAddress("219.133.60.28")); //218.17.209.20
     }    
 }
 
 void EvaServers::getResultsSlot( )
 {
-	QDns *dns = (QDns *)(QObject::sender());
+	TQDns *dns = (TQDns *)(TQObject::sender());
 	if(dns == 0 ){
         	defaultAddress();
         	return;
 	}
-	QValueList<QHostAddress> list = dns->addresses();
+	TQValueList<TQHostAddress> list = dns->addresses();
 	if(list.count() == 0 ){
 		defaultAddress();
 		return;
 	}
 	
-	QHostAddress addr = list[0];
+	TQHostAddress addr = list[0];
 	kdDebug() << "[DNS reply] " << dns->label() << " ---> " << addr.toString() << endl;
 	emit isReady(addr);
 }

@@ -18,13 +18,13 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef EVAQUNSYSMSGWINDOW_H 
-#define EVAQUNSYSMSGWINDOW_H
+#ifndef EVATQUNSYSMSGWINDOW_H 
+#define EVATQUNSYSMSGWINDOW_H
 
 #include "evaqunsysmsguibase.h"
 
 #include "evapacketmanager.h"
-#include <qmemarray.h>
+#include <ntqmemarray.h>
 
 class EvaQunSysMsgWindow : public EvaQunSysMsgUIBase
 {
@@ -33,7 +33,7 @@ public:
 	EvaQunSysMsgWindow(EvaPacketManager *packetManager);
 
 	void setMessage(const unsigned short msgType, const unsigned char type, const unsigned int sender, const unsigned int extQunID,
-					const QString message, const unsigned int internalQunID, const unsigned int commander);
+					const TQString message, const unsigned int internalQunID, const unsigned int commander);
 
 	void setCode(const unsigned char* code, const unsigned short len);
 	void setToken(const unsigned char* token, const unsigned short len);
@@ -50,13 +50,13 @@ private:
 	unsigned int m_Commander;
 	unsigned short m_MsgType;
 	unsigned char m_QunType;
-	QString m_Message;
-	QByteArray m_Code;
-	QByteArray m_Token;
+	TQString m_Message;
+	TQByteArray m_Code;
+	TQByteArray m_Token;
 
-	virtual void closeEvent( QCloseEvent *e);
+	virtual void closeEvent( TQCloseEvent *e);
 private slots:
-	void slotQQClicked();
+	void slotTQQClicked();
 	void slotQunClicked();
 	void slotOkClicked();
 	void slotRejectClicked();

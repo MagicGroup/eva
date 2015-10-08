@@ -31,8 +31,8 @@
 #include <cstdlib>
 
 QunInfo::QunInfo()
-	: qunID(0), externalID(0), type(QQ_QUN_TYPE_PERMANENT),
-	creator(0), authType(QQ_QUN_NEED_AUTH), category(0),
+	: qunID(0), externalID(0), type(TQQ_QUN_TYPE_PERMANENT),
+	creator(0), authType(TQQ_QUN_NEED_AUTH), category(0),
 	versionID(0), name(""), description(""), notice(""),
 	m_UnknownTokenLength(0),
 	m_UnknownToken(0)
@@ -40,8 +40,8 @@ QunInfo::QunInfo()
 }
 
 QunInfo::QunInfo(const QunInfo &rhs)
-	: qunID(0), externalID(0), type(QQ_QUN_TYPE_PERMANENT),
-	creator(0), authType(QQ_QUN_NEED_AUTH), category(0),
+	: qunID(0), externalID(0), type(TQQ_QUN_TYPE_PERMANENT),
+	creator(0), authType(TQQ_QUN_NEED_AUTH), category(0),
 	versionID(0), name(""), description(""), notice(""),
 	m_UnknownTokenLength(0),
 	m_UnknownToken(0)
@@ -59,9 +59,9 @@ void QunInfo::clearInfo()
 {
 	qunID = 0;
 	externalID = 0;
-	type = QQ_QUN_TYPE_PERMANENT;
+	type = TQQ_QUN_TYPE_PERMANENT;
 	creator = 0;
-	authType = QQ_QUN_NEED_AUTH;
+	authType = TQQ_QUN_NEED_AUTH;
 	category = 0;
 	versionID = 0;
 	name = "";
@@ -236,7 +236,7 @@ int QunInfo::readQunInfoFromSearchReply(unsigned char *buf)
 	
 	type = buf[pos++];
 	
-	if (QQ_CLIENT_VERSION>=QQ_CLIENT_0D51)
+	if (TQQ_CLIENT_VERSION>=TQQ_CLIENT_0D51)
 		pos+=4;
 
 	memcpy(&tmp4, buf+pos, 4);
@@ -288,13 +288,13 @@ int QunInfo::readQunInfoFromSearchReply(unsigned char *buf)
 /**********************************************************************************************************************/
 
 QunPacket::QunPacket(const char qunCmd)
-	: OutPacket(QQ_CMD_QUN_CMD, true)
+	: OutPacket(TQQ_CMD_QUN_CMD, true)
 {
 	qunCommand = qunCmd;
 }
 
 QunPacket::QunPacket(const char qunCmd, const unsigned int id)
-	: OutPacket(QQ_CMD_QUN_CMD, true)
+	: OutPacket(TQQ_CMD_QUN_CMD, true)
 {
 	qunCommand = qunCmd;
 	qunID = id;
@@ -352,7 +352,7 @@ QunReplyPacket &QunReplyPacket::operator=(const QunReplyPacket &rhs)
 	searchType = rhs.getSearchType();
 	info = rhs.getQunInfo();
 	qunInfoList = rhs.getQunInfoList();
-	qunQQNumberList = rhs.getQQNumberList();
+	qunTQQNumberList = rhs.getTQQNumberList();
 	memberList = rhs.getMemberList();
 	memberInfoList = rhs.getMemberInfoList();
 	joinReply = rhs.getJoinReply();
@@ -380,78 +380,78 @@ void QunReplyPacket::parseBody()
 	qunCommand = decryptedBuf[pos++];
 	replyCode = decryptedBuf[pos++];
 	switch(qunCommand){
-	case QQ_QUN_CMD_SEND_IM:
-	case QQ_QUN_CMD_SEND_IM_EX:
+	case TQQ_QUN_CMD_SEND_IM:
+	case TQQ_QUN_CMD_SEND_IM_EX:
 		pos += parseSendIMReply(decryptedBuf + pos, bodyLength - pos);
 		break;
-	case QQ_QUN_CMD_SEND_TEMP_QUN_IM:
+	case TQQ_QUN_CMD_SEND_TEMP_QUN_IM:
 		pos += parseSendTempQunIMReply(decryptedBuf + pos, bodyLength - pos);
 		break;
-	case QQ_QUN_CMD_CREATE_QUN:
+	case TQQ_QUN_CMD_CREATE_QUN:
 		pos += parseCreateReply(decryptedBuf + pos, bodyLength - pos);
 		break;
-	case QQ_QUN_CMD_CREATE_TEMP_QUN:
+	case TQQ_QUN_CMD_CREATE_TEMP_QUN:
 		pos += parseCreateTempQun(decryptedBuf + pos, bodyLength - pos);
 		break;
-	case QQ_QUN_CMD_ACTIVATE_QUN:
+	case TQQ_QUN_CMD_ACTIVATE_QUN:
 		pos += parseActivateReply(decryptedBuf + pos, bodyLength - pos);
 		break;
-	case QQ_QUN_CMD_MODIFY_MEMBER:
+	case TQQ_QUN_CMD_MODIFY_MEMBER:
 		pos += parseModifyMemberReply(decryptedBuf + pos, bodyLength - pos);
 		break;
-	case QQ_QUN_CMD_GET_QUN_INFO:
+	case TQQ_QUN_CMD_GET_QUN_INFO:
 		pos += parseGetInfoReply(decryptedBuf + pos, bodyLength - pos);
 		break;
-	case QQ_QUN_CMD_EXIT_QUN:
+	case TQQ_QUN_CMD_EXIT_QUN:
 		pos += parseExitReply(decryptedBuf + pos, bodyLength - pos);
 		break;
-	case QQ_QUN_CMD_GET_MEMBER_INFO:
+	case TQQ_QUN_CMD_GET_MEMBER_INFO:
 		pos += parseGetMemberInfoReply(decryptedBuf + pos, bodyLength - pos);
 		break;
-	case QQ_QUN_CMD_GET_ONLINE_MEMBER:
+	case TQQ_QUN_CMD_GET_ONLINE_MEMBER:
 		pos += parseGetOnlineMemberReply(decryptedBuf + pos, bodyLength - pos);
 		break;
-	case QQ_QUN_CMD_JOIN_QUN:
+	case TQQ_QUN_CMD_JOIN_QUN:
 		pos += parseJoinReply(decryptedBuf + pos, bodyLength - pos);
 		break;
-	case QQ_QUN_CMD_JOIN_QUN_AUTH:
+	case TQQ_QUN_CMD_JOIN_QUN_AUTH:
 		pos += parseJoinAuthReply(decryptedBuf + pos, bodyLength - pos);
 		break;
-	case QQ_QUN_CMD_MODIFY_QUN_INFO:
+	case TQQ_QUN_CMD_MODIFY_QUN_INFO:
 		pos += parseModifyInfoReply(decryptedBuf + pos, bodyLength - pos);
 		break;
-	case QQ_QUN_CMD_SEARCH_QUN:
+	case TQQ_QUN_CMD_SEARCH_QUN:
 		pos += parseSearchReply(decryptedBuf + pos, bodyLength - pos);
 		break;
-	case QQ_QUN_CMD_GET_TEMP_QUN_INFO:
+	case TQQ_QUN_CMD_GET_TEMP_QUN_INFO:
 		pos += parseGetTempQunInfoReply(decryptedBuf + pos, bodyLength - pos);
 		break;
-	case QQ_QUN_CMD_EXIT_TEMP_QUN:
+	case TQQ_QUN_CMD_EXIT_TEMP_QUN:
 		pos += parseExitTempQunReply(decryptedBuf + pos, bodyLength - pos);
 		break;
-	case QQ_QUN_CMD_GET_TEMP_QUN_MEMBERS:
+	case TQQ_QUN_CMD_GET_TEMP_QUN_MEMBERS:
 		pos += parseGetTempQunMembers(decryptedBuf + pos, bodyLength - pos);
 		break;
-	case QQ_QUN_CMD_MODIFY_CARD:
+	case TQQ_QUN_CMD_MODIFY_CARD:
 		pos += parseModifyQunCard(decryptedBuf + pos, bodyLength - pos);
 		break;
-	case QQ_QUN_CMD_REQUEST_ALL_REALNAMES:
+	case TQQ_QUN_CMD_REQUEST_ALL_REALNAMES:
 		pos += parseRequestAllRealNames(decryptedBuf + pos, bodyLength - pos);
 		break;
-	case QQ_QUN_CMD_REQUEST_CARD:
+	case TQQ_QUN_CMD_REQUEST_CARD:
 		pos += parseRequestQunCard(decryptedBuf + pos, bodyLength - pos);
 		break;
-	case QQ_QUN_CMD_ADMIN:
+	case TQQ_QUN_CMD_ADMIN:
 		pos += parseQunAdminOperation(decryptedBuf + pos, bodyLength - pos);
 		break;
-	case QQ_QUN_CMD_TRANSFER:
+	case TQQ_QUN_CMD_TRANSFER:
 		pos += parseQunTransfer(decryptedBuf + pos, bodyLength - pos);
 		break;
 	default:
 		printf("unknown Qun command:0x%2x\n", (char)qunCommand);
 	}
 	
-	if(replyCode != QQ_QUN_CMD_REPLY_OK) {
+	if(replyCode != TQQ_QUN_CMD_REPLY_OK) {
 		/* operation failed */
 		char * errorChar = (char *)malloc((bodyLength-pos+1) * sizeof(char));
 		errorChar[bodyLength-pos] = 0x00;
@@ -465,14 +465,14 @@ void QunReplyPacket::parseBody()
 
 const bool QunReplyPacket::isReplyOK() const
 {
-	return replyCode == QQ_QUN_CMD_REPLY_OK;
+	return replyCode == TQQ_QUN_CMD_REPLY_OK;
 }
 
 // useful variable: qunID
 int QunReplyPacket::parseSendIMReply(unsigned char *buf, int)
 {
 	int pos = 0;
-	if(replyCode == QQ_QUN_CMD_REPLY_OK){
+	if(replyCode == TQQ_QUN_CMD_REPLY_OK){
 		int tmp4;
 		memcpy(&tmp4, buf + pos, 4);
 		qunID = ntohl(tmp4);
@@ -485,7 +485,7 @@ int QunReplyPacket::parseSendIMReply(unsigned char *buf, int)
 int QunReplyPacket::parseSendTempQunIMReply(unsigned char *buf, int)
 {
 	int pos = 0;
-	if(replyCode == QQ_QUN_CMD_REPLY_OK) {    
+	if(replyCode == TQQ_QUN_CMD_REPLY_OK) {    
 		type = buf[pos++];    
 		int tmp4;
 		memcpy(&tmp4, buf + pos, 4);
@@ -502,7 +502,7 @@ int QunReplyPacket::parseSendTempQunIMReply(unsigned char *buf, int)
 int QunReplyPacket::parseCreateReply(unsigned char *buf, int)
 {
 	int pos = 0;
-	if(replyCode == QQ_QUN_CMD_REPLY_OK){
+	if(replyCode == TQQ_QUN_CMD_REPLY_OK){
 		int tmp4;
 		memcpy(&tmp4, buf + pos, 4);
 		qunID = ntohl(tmp4);
@@ -519,7 +519,7 @@ int QunReplyPacket::parseCreateReply(unsigned char *buf, int)
 int QunReplyPacket::parseCreateTempQun(unsigned char *buf, int)
 {
 	int pos = 0;
-	if(replyCode == QQ_QUN_CMD_REPLY_OK) {		    
+	if(replyCode == TQQ_QUN_CMD_REPLY_OK) {		    
 		type = buf[pos++];    
 		int tmp4;
 		memcpy(&tmp4, buf + pos, 4);
@@ -536,7 +536,7 @@ int QunReplyPacket::parseCreateTempQun(unsigned char *buf, int)
 int QunReplyPacket::parseActivateReply(unsigned char *buf, int)
 {
 	int pos = 0;
-	if(replyCode == QQ_QUN_CMD_REPLY_OK){
+	if(replyCode == TQQ_QUN_CMD_REPLY_OK){
 		int tmp4;
 		memcpy(&tmp4, buf + pos, 4);
 		qunID = ntohl(tmp4);
@@ -549,7 +549,7 @@ int QunReplyPacket::parseActivateReply(unsigned char *buf, int)
 int QunReplyPacket::parseModifyMemberReply(unsigned char *buf, int )
 {
 	int pos = 0;
-	if(replyCode == QQ_QUN_CMD_REPLY_OK){
+	if(replyCode == TQQ_QUN_CMD_REPLY_OK){
 		int tmp4;
 		memcpy(&tmp4, buf + pos, 4);
 		qunID = ntohl(tmp4);
@@ -573,7 +573,7 @@ int QunReplyPacket::parseGetInfoReply(unsigned char *buf, int len)
 // 			}
 // 			printf("\n");
 	int pos=0;
-	if(replyCode == QQ_QUN_CMD_REPLY_OK) {
+	if(replyCode == TQQ_QUN_CMD_REPLY_OK) {
 		int pos = info.readQunInfo(buf);
 		qunID = info.getQunID();
 		externalID = info.getExtID();
@@ -599,7 +599,7 @@ int QunReplyPacket::parseGetInfoReply(unsigned char *buf, int len)
 int QunReplyPacket::parseExitReply(unsigned char *buf, int )
 {
 	int pos = 0;
-	if(replyCode == QQ_QUN_CMD_REPLY_OK){
+	if(replyCode == TQQ_QUN_CMD_REPLY_OK){
 		int tmp4;
 		memcpy(&tmp4, buf + pos, 4);
 		qunID = ntohl(tmp4);
@@ -619,7 +619,7 @@ int QunReplyPacket::parseGetMemberInfoReply(unsigned char *buf, int len)
 // 			}
 // 			printf("\n");
 	int pos=0;
-	if(replyCode == QQ_QUN_CMD_REPLY_OK) {
+	if(replyCode == TQQ_QUN_CMD_REPLY_OK) {
 		int tmp4;
 		memcpy(&tmp4, buf+pos, 4);
 		qunID = ntohl(tmp4);
@@ -636,11 +636,11 @@ int QunReplyPacket::parseGetMemberInfoReply(unsigned char *buf, int len)
 	return pos;
 }
 
-// useful variables: qunID and qunQQNumberList
+// useful variables: qunID and qunTQQNumberList
 int QunReplyPacket::parseGetOnlineMemberReply(unsigned char *buf, int len)
 {
 	int pos=0;
-	if(replyCode == QQ_QUN_CMD_REPLY_OK) {
+	if(replyCode == TQQ_QUN_CMD_REPLY_OK) {
 		int tmp4;
 		memcpy(&tmp4, buf + pos, 4);
 		qunID = ntohl(tmp4);
@@ -648,7 +648,7 @@ int QunReplyPacket::parseGetOnlineMemberReply(unsigned char *buf, int len)
 		pos++; // ignore one unknow byte, always be 0x3c;
 		while(pos < len ) {
 			memcpy(&tmp4, buf+pos, 4);
-			qunQQNumberList.push_back(ntohl(tmp4));
+			qunTQQNumberList.push_back(ntohl(tmp4));
 			pos+=4;
 		}
 	}
@@ -659,7 +659,7 @@ int QunReplyPacket::parseGetOnlineMemberReply(unsigned char *buf, int len)
 int QunReplyPacket::parseJoinReply(unsigned char *buf, int )
 {
 	int pos = 0;
-	if(replyCode == QQ_QUN_CMD_REPLY_OK){
+	if(replyCode == TQQ_QUN_CMD_REPLY_OK){
 		int tmp4;
 		memcpy(&tmp4, buf + pos, 4);
 		qunID = ntohl(tmp4);
@@ -673,7 +673,7 @@ int QunReplyPacket::parseJoinReply(unsigned char *buf, int )
 int QunReplyPacket::parseJoinAuthReply(unsigned char *buf, int )
 {
 	int pos = 0;
-	if(replyCode == QQ_QUN_CMD_REPLY_OK){
+	if(replyCode == TQQ_QUN_CMD_REPLY_OK){
 		int tmp4;
 		memcpy(&tmp4, buf + pos, 4);
 		qunID = ntohl(tmp4);
@@ -686,7 +686,7 @@ int QunReplyPacket::parseJoinAuthReply(unsigned char *buf, int )
 int QunReplyPacket::parseModifyInfoReply(unsigned char *buf, int )
 {
 	int pos = 0;
-	//if(replyCode == QQ_QUN_CMD_REPLY_OK){
+	//if(replyCode == TQQ_QUN_CMD_REPLY_OK){
 	int tmp4;
 	memcpy(&tmp4, buf + pos, 4);
 	qunID = ntohl(tmp4);
@@ -706,8 +706,8 @@ int QunReplyPacket::parseSearchReply(unsigned char *buf, int len)
 			}
 			printf("\n");
 	int pos=0;
-	if(replyCode == QQ_QUN_CMD_REPLY_OK) {
-		searchType = buf[pos++]; // actually, In new QQ, all types except QQ_SEARCH_QUN_BY_ID are searched by Web Explorer
+	if(replyCode == TQQ_QUN_CMD_REPLY_OK) {
+		searchType = buf[pos++]; // actually, In new QQ, all types except TQQ_SEARCH_QUN_BY_ID are searched by Web Explorer
 		while(pos < len ) {
 			QunInfo info;
 			pos+=info.readQunInfoFromSearchReply(buf+pos);
@@ -721,12 +721,12 @@ int QunReplyPacket::parseSearchReply(unsigned char *buf, int len)
 /*
          for this part, the useful variables are:
 	 type, qunID,  parentID and
-	 info,  qunQQNumberList (actually these two contain all information)
+	 info,  qunTQQNumberList (actually these two contain all information)
 */
 int QunReplyPacket::parseGetTempQunInfoReply(unsigned char *buf, int len)
 {
 	int pos=0;
-	if(replyCode == QQ_QUN_CMD_REPLY_OK) {
+	if(replyCode == TQQ_QUN_CMD_REPLY_OK) {
 		pos = info.readTempQunInfo(buf);
 		type = info.getType();
 		qunID = info.getQunID();
@@ -735,7 +735,7 @@ int QunReplyPacket::parseGetTempQunInfoReply(unsigned char *buf, int len)
 		int tmp4;
 		while(pos < len ) {
 			memcpy(&tmp4, buf+pos, 4);
-			qunQQNumberList.push_back(ntohl(tmp4));
+			qunTQQNumberList.push_back(ntohl(tmp4));
 			pos+=5; // note that we ignore one unknow byte, maybe just the seperator byte
 		}
 	}
@@ -745,7 +745,7 @@ int QunReplyPacket::parseGetTempQunInfoReply(unsigned char *buf, int len)
 int QunReplyPacket::parseExitTempQunReply(unsigned char *buf, int )
 {
 	int pos = 0;
-	if(replyCode == QQ_QUN_CMD_REPLY_OK) {
+	if(replyCode == TQQ_QUN_CMD_REPLY_OK) {
 		type = buf[pos++];  
 		  
 		int tmp4;
@@ -760,11 +760,11 @@ int QunReplyPacket::parseExitTempQunReply(unsigned char *buf, int )
 	return pos;
 }
 
-// useful variables: type, parentQunID, qunID and qunQQNumberList
+// useful variables: type, parentQunID, qunID and qunTQQNumberList
 int QunReplyPacket::parseGetTempQunMembers(unsigned char *buf, int len)
 {
 	int pos=0;
-	if(replyCode == QQ_QUN_CMD_REPLY_OK) {
+	if(replyCode == TQQ_QUN_CMD_REPLY_OK) {
 		type = buf[pos++];
 		
 		int tmp4;
@@ -778,7 +778,7 @@ int QunReplyPacket::parseGetTempQunMembers(unsigned char *buf, int len)
 		
 		while(pos < len ) {
 			memcpy(&tmp4, buf+pos, 4);
-			qunQQNumberList.push_back(ntohl(tmp4));
+			qunTQQNumberList.push_back(ntohl(tmp4));
 			pos+=4; 
 		}
 	}
@@ -789,7 +789,7 @@ int QunReplyPacket::parseGetTempQunMembers(unsigned char *buf, int len)
 int QunReplyPacket::parseModifyQunCard(unsigned char *buf, int /*len*/)
 {
 	int pos=0;
-	//if(replyCode == QQ_QUN_CMD_REPLY_OK) {
+	//if(replyCode == TQQ_QUN_CMD_REPLY_OK) {
 	int tmp4;
 	memcpy(&tmp4, buf+pos, 4);
 	qunID = ntohl(tmp4);
@@ -804,7 +804,7 @@ int QunReplyPacket::parseModifyQunCard(unsigned char *buf, int /*len*/)
 
 int QunReplyPacket::parseRequestAllRealNames(unsigned char *buf, int len)
 {
-	if(replyCode != QQ_QUN_CMD_REPLY_OK) {
+	if(replyCode != TQQ_QUN_CMD_REPLY_OK) {
 		printf("Qun real name reply code is NOT ok.\n");
 		return 0;
 	}
@@ -841,7 +841,7 @@ int QunReplyPacket::parseRequestQunCard(unsigned char *buf, int /*len*/)
 	targetQQ = ntohl(tmp4);
 	pos+=4;
 	
-	if(replyCode == QQ_QUN_CMD_REPLY_OK) {
+	if(replyCode == TQQ_QUN_CMD_REPLY_OK) {
 		unsigned char strLen;
 		char *str;
 		strLen = buf[pos++];
@@ -887,7 +887,7 @@ int QunReplyPacket::parseQunAdminOperation(unsigned char *buf, int /*len*/)
 	qunID = ntohl(tmp4);
 	pos+=4;
 		
-	if(replyCode == QQ_QUN_CMD_REPLY_OK) {
+	if(replyCode == TQQ_QUN_CMD_REPLY_OK) {
 		memcpy(&tmp4, buf + pos, 4);
 		versionID = ntohl(tmp4);
 		pos+=4;	
@@ -914,7 +914,7 @@ int QunReplyPacket::parseQunTransfer(unsigned char *buf, int /*len*/)
 	targetQQ = ntohl(tmp4);
 	pos+=4;
 	
-	if(replyCode == QQ_QUN_CMD_REPLY_OK) {
+	if(replyCode == TQQ_QUN_CMD_REPLY_OK) {
 		memcpy(&tmp4, buf + pos, 4);
 		versionID = ntohl(tmp4);
 		pos+=4;
@@ -926,7 +926,7 @@ int QunReplyPacket::parseQunTransfer(unsigned char *buf, int /*len*/)
  
 
 QunGetInfoPacket::QunGetInfoPacket(const int id)
-	: QunPacket(QQ_QUN_CMD_GET_QUN_INFO, id)
+	: QunPacket(TQQ_QUN_CMD_GET_QUN_INFO, id)
 {
 }
 
@@ -953,7 +953,7 @@ int QunGetInfoPacket::putBody(unsigned char *buf)
 
 
 QunGetMemberInfoPacket::QunGetMemberInfoPacket(const int id)
-	: QunPacket(QQ_QUN_CMD_GET_MEMBER_INFO, id)
+	: QunPacket(TQQ_QUN_CMD_GET_MEMBER_INFO, id)
 {
 }
 
@@ -1002,7 +1002,7 @@ int QunGetMemberInfoPacket::putBody( unsigned char * buf )
 /***************************************************************************************************************/
  
 QunGetOnlineMemberPacket::QunGetOnlineMemberPacket(const unsigned int id)
-	: QunPacket(QQ_QUN_CMD_GET_ONLINE_MEMBER, id)
+	: QunPacket(TQQ_QUN_CMD_GET_ONLINE_MEMBER, id)
 {
 }
 
@@ -1028,7 +1028,7 @@ int QunGetOnlineMemberPacket::putBody(unsigned char *buf)
 /***************************************************************************************************************/
  
 QunActivatePacket::QunActivatePacket(const unsigned int id)
-	: QunPacket(QQ_QUN_CMD_ACTIVATE_QUN, id)
+	: QunPacket(TQQ_QUN_CMD_ACTIVATE_QUN, id)
 {
 }
 
@@ -1055,7 +1055,7 @@ int QunActivatePacket::putBody(unsigned char *buf)
 
 QunAuthPacket::QunAuthPacket()
 	: QunPacket(),
-	type(QQ_QUN_AUTH_REQUEST),
+	type(TQQ_QUN_AUTH_REQUEST),
 	receiver(0),
 	m_Code(0),
 	m_CodeLen(0),
@@ -1064,7 +1064,7 @@ QunAuthPacket::QunAuthPacket()
 }
 
 QunAuthPacket::QunAuthPacket( const unsigned int id, unsigned char authType )
-	: QunPacket(QQ_QUN_CMD_JOIN_QUN_AUTH, id),
+	: QunPacket(TQQ_QUN_CMD_JOIN_QUN_AUTH, id),
 	type(authType),
 	receiver(0),
 	m_Code(0),
@@ -1123,7 +1123,7 @@ int QunAuthPacket::putBody( unsigned char * buf )
 	
 	buf[pos++]=type;
 
-	if(type == QQ_QUN_AUTH_REQUEST){
+	if(type == TQQ_QUN_AUTH_REQUEST){
 		WRITE16(buf+pos, m_CodeLen);
 		pos+=2;
 	
@@ -1141,8 +1141,8 @@ int QunAuthPacket::putBody( unsigned char * buf )
 	memcpy(buf+pos, message.c_str(), len);
 	pos+=len;
 
-	if(type == QQ_QUN_AUTH_APPROVE ||
-		type == QQ_QUN_AUTH_REJECT){
+	if(type == TQQ_QUN_AUTH_APPROVE ||
+		type == TQQ_QUN_AUTH_REJECT){
 		WRITE16(buf+pos, m_CodeLen);
 		pos+=2;
 	
@@ -1164,8 +1164,8 @@ int QunAuthPacket::putBody( unsigned char * buf )
 /***************************************************************************************************************/
 
 QunSendIMPacket::QunSendIMPacket( const unsigned int id )
-	: QunPacket(QQ_QUN_CMD_SEND_IM, id),
-	encoding(QQ_IM_ENCODING_GB),
+	: QunPacket(TQQ_QUN_CMD_SEND_IM, id),
+	encoding(TQQ_IM_ENCODING_GB),
 	red(0),green(0),blue(0),
 	bold(false),italic(false),underline(false),
 	fontSize(0x09),
@@ -1317,13 +1317,13 @@ int QunSendIMPacket::putBody( unsigned char * buf )
 /***************************************************************************************************************/
 
 QunSearchPacket::QunSearchPacket()
-	: QunPacket(QQ_QUN_CMD_SEARCH_QUN), 
-	type(QQ_SEARCH_QUN_BY_ID)
+	: QunPacket(TQQ_QUN_CMD_SEARCH_QUN), 
+	type(TQQ_SEARCH_QUN_BY_ID)
 {
 }
 
 QunSearchPacket::QunSearchPacket( int type )
-	: QunPacket(QQ_QUN_CMD_SEARCH_QUN)
+	: QunPacket(TQQ_QUN_CMD_SEARCH_QUN)
 {
 	this->type = type;
 }
@@ -1349,7 +1349,7 @@ int QunSearchPacket::putBody( unsigned char * buf )
 	buf[pos++] = type;       // qun type
 	
 	int tmp4;
-	if(type == QQ_SEARCH_DEMO_QUN){
+	if(type == TQQ_SEARCH_DEMO_QUN){
 		memset(buf+pos, 0, 4);
 	}else{
 		tmp4 = htonl(externalID);
@@ -1365,7 +1365,7 @@ int QunSearchPacket::putBody( unsigned char * buf )
 /***************************************************************************************************************/
  
 QunJoinPacket::QunJoinPacket(const unsigned int id)
-	: QunPacket(QQ_QUN_CMD_JOIN_QUN, id)
+	: QunPacket(TQQ_QUN_CMD_JOIN_QUN, id)
 {
 }
 
@@ -1391,7 +1391,7 @@ int QunJoinPacket::putBody(unsigned char *buf)
 /***************************************************************************************************************/
  
 QunModifyPacket::QunModifyPacket( const QunInfo & inf )
-	: QunPacket( QQ_QUN_CMD_MODIFY_QUN_INFO, inf.getQunID())
+	: QunPacket( TQQ_QUN_CMD_MODIFY_QUN_INFO, inf.getQunID())
 {
 	info = inf;
 }
@@ -1456,7 +1456,7 @@ int QunModifyPacket::putBody( unsigned char * buf )
  
 
 QunModifyCardPacket::QunModifyCardPacket( const unsigned int qunID, const unsigned int qqID )
-	: QunPacket(QQ_QUN_CMD_MODIFY_CARD, qunID), qqNum(qqID)
+	: QunPacket(TQQ_QUN_CMD_MODIFY_CARD, qunID), qqNum(qqID)
 {
 	m_AllowAdminChange = 0x02;// admin cannot change my Qun card
 }
@@ -1526,13 +1526,13 @@ int QunModifyCardPacket::putBody( unsigned char * buf )
  
 
 QunAdminOpPacket::QunAdminOpPacket( const int id, const int qqID, const bool isSetAdmin )
-	: QunPacket(QQ_QUN_CMD_ADMIN, id)
+	: QunPacket(TQQ_QUN_CMD_ADMIN, id)
 {
 	qqNum = qqID;
 	if(isSetAdmin)
-		action = QQ_QUN_SET_ADMIN;
+		action = TQQ_QUN_SET_ADMIN;
 	else
-		action = QQ_QUN_UNSET_ADMIN;
+		action = TQQ_QUN_UNSET_ADMIN;
 }
 
 QunAdminOpPacket::QunAdminOpPacket( const QunAdminOpPacket & rhs )
@@ -1574,7 +1574,7 @@ int QunAdminOpPacket::putBody( unsigned char * buf )
 
 
 QunTransferPacket::QunTransferPacket( const unsigned int id, const unsigned int qqID )
-	: QunPacket(QQ_QUN_CMD_TRANSFER, id), qqNum(qqID)
+	: QunPacket(TQQ_QUN_CMD_TRANSFER, id), qqNum(qqID)
 {
 }
 
@@ -1612,7 +1612,7 @@ int QunTransferPacket::putBody( unsigned char * buf )
 
 
 QunModifyMemberPacket::QunModifyMemberPacket( const unsigned int id, const bool isAdd )
-	: QunPacket(QQ_QUN_CMD_MODIFY_MEMBER, id), mIsAdd(isAdd)
+	: QunPacket(TQQ_QUN_CMD_MODIFY_MEMBER, id), mIsAdd(isAdd)
 {
 }
 
@@ -1641,9 +1641,9 @@ int QunModifyMemberPacket::putBody( unsigned char * buf )
 	pos+=4;
 	
 	if(mIsAdd)
-		buf[pos++] = QQ_QUN_MEMBER_ADD;
+		buf[pos++] = TQQ_QUN_MEMBER_ADD;
 	else
-		buf[pos++] = QQ_QUN_MEMBER_REMOVE;
+		buf[pos++] = TQQ_QUN_MEMBER_REMOVE;
 	
 	std::list<unsigned int>::iterator iter;
 	for(iter=members.begin(); iter!= members.end(); ++iter){
@@ -1663,7 +1663,7 @@ short QunSendIMExPacket::messageID = 0;
 QunSendIMExPacket::QunSendIMExPacket( const unsigned int id )
 	: QunSendIMPacket(id)
 {
-	qunCommand = QQ_QUN_CMD_SEND_IM_EX;
+	qunCommand = TQQ_QUN_CMD_SEND_IM_EX;
 	numFragments = 1;
 	seqFragments = 0;
 	messageID++;
@@ -1754,7 +1754,7 @@ int QunSendIMExPacket::putBody( unsigned char * buf )
 /***************************************************************************************************************/
 
 QunRequestCardPacket::QunRequestCardPacket( const unsigned int qunID, const unsigned int qqID )
-	: QunPacket(QQ_QUN_CMD_REQUEST_CARD, qunID), qqNum(qqID)
+	: QunPacket(TQQ_QUN_CMD_REQUEST_CARD, qunID), qqNum(qqID)
 {
 }
 
@@ -1791,7 +1791,7 @@ int QunRequestCardPacket::putBody( unsigned char * buf )
 /***************************************************************************************************************/
 
 QunExitPacket::QunExitPacket( const unsigned int id )
-	: QunPacket(QQ_QUN_CMD_EXIT_QUN, id)
+	: QunPacket(TQQ_QUN_CMD_EXIT_QUN, id)
 {
 }
 
@@ -1825,7 +1825,7 @@ int QunExitPacket::putBody( unsigned char * buf )
 
 QunCreatePacket::QunCreatePacket( const std::string &name, const unsigned short category, 
 				const unsigned char auth)
-	: QunPacket(QQ_QUN_CMD_CREATE_QUN), qunAuth(auth), qunCategory(category),
+	: QunPacket(TQQ_QUN_CMD_CREATE_QUN), qunAuth(auth), qunCategory(category),
 	 qunName(name), qunNotice(""), qunDescription("")
 {
 }
@@ -1854,7 +1854,7 @@ int QunCreatePacket::putBody( unsigned char * buf )
 	
 	buf[pos++] = qunCommand;
 	
-	buf[pos++] = QQ_QUN_TYPE_PERMANENT; 
+	buf[pos++] = TQQ_QUN_TYPE_PERMANENT; 
 	
 	buf[pos++] = qunAuth;
 	
@@ -1899,7 +1899,7 @@ int QunCreatePacket::putBody( unsigned char * buf )
 /***************************************************************************************************************/
 
 QunActivePacket::QunActivePacket( const unsigned int id )
-	: QunPacket(QQ_QUN_CMD_ACTIVATE_QUN, id)
+	: QunPacket(TQQ_QUN_CMD_ACTIVATE_QUN, id)
 {
 }
 
@@ -1932,7 +1932,7 @@ int QunActivePacket::putBody( unsigned char * buf )
 /***************************************************************************************************************/
 
 QunRequestAllRealNames::QunRequestAllRealNames( const unsigned int id )
-	: QunPacket(QQ_QUN_CMD_REQUEST_ALL_REALNAMES, id),
+	: QunPacket(TQQ_QUN_CMD_REQUEST_ALL_REALNAMES, id),
 	m_StartIndex(0)
 {
 }

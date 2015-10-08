@@ -18,16 +18,16 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef EVAADDQUNWINDOW_H
-#define  EVAADDQUNWINDOW_H
+#ifndef EVAADDTQUNWINDOW_H
+#define  EVAADDTQUNWINDOW_H
 
 #include "evaaddqunuibase.h"
 
 #include "evaqun.h"
 
-#include <qpixmap.h>
+#include <ntqpixmap.h>
 
-class QCloseEvent;
+class TQCloseEvent;
 
 class EvaAddingQunWindow : public EvaAddQunUIBase
 {
@@ -39,7 +39,7 @@ public:
 
 	void AddingRejected();
 	void AddingNeedAuth();
-	void updateGraphic(QPixmap &p);
+	void updateGraphic(TQPixmap &p);
 	void AddingNoAuthReady();
 
 signals:
@@ -59,7 +59,7 @@ private slots:
 	void slotCreatorDetailsClicked();
 	void slotSendClicked();
 
-	virtual void closeEvent(QCloseEvent *e);
+	virtual void closeEvent(TQCloseEvent *e);
 };
 
 #endif

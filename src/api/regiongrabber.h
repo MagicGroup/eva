@@ -20,22 +20,22 @@
 #ifndef REGIONGRABBER_H
 #define REGIONGRABBER_H
 
-#include <qlabel.h>
-#include <qpixmap.h>
+#include <ntqlabel.h>
+#include <ntqpixmap.h>
 
-//class QTimer;
+//class TQTimer;
 
-class SizeTip : public QLabel
+class SizeTip : public TQLabel
 {
   public:
-    SizeTip( QWidget *parent, const char *name=0 );
+    SizeTip( TQWidget *parent, const char *name=0 );
     ~SizeTip() {}
 
-  void setTip( const QRect &rect );
-  void positionTip( const QRect &rect );
+  void setTip( const TQRect &rect );
+  void positionTip( const TQRect &rect );
 };
 
-class RegionGrabber : public QWidget
+class RegionGrabber : public TQWidget
 {
   Q_OBJECT
 
@@ -48,22 +48,22 @@ class RegionGrabber : public QWidget
     void updateSizeTip();
 
   signals:
-    void regionGrabbed( const QPixmap & );
+    void regionGrabbed( const TQPixmap & );
 
   protected:
-    void mousePressEvent( QMouseEvent *e );
-    void mouseReleaseEvent( QMouseEvent *e );
-    void mouseMoveEvent( QMouseEvent *e );
-    void keyPressEvent( QKeyEvent *e );
+    void mousePressEvent( TQMouseEvent *e );
+    void mouseReleaseEvent( TQMouseEvent *e );
+    void mouseMoveEvent( TQMouseEvent *e );
+    void keyPressEvent( TQKeyEvent *e );
 
     void drawRubber();
 
     bool mouseDown;
-    QRect grabRect;
-    QPixmap pixmap;
+    TQRect grabRect;
+    TQPixmap pixmap;
 
     SizeTip *sizeTip;
-    //QTimer *tipTimer;
+    //TQTimer *tipTimer;
 };
 
 #endif // REGIONGRABBER_H

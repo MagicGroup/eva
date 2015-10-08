@@ -22,7 +22,7 @@
 #include <cstring>
 
 EvaMemoPacket::EvaMemoPacket( const int id, const unsigned char type )
-	:OutPacket( QQ_CMD_MEMO_OP, true ), m_Id( id ), m_Type( type )
+	:OutPacket( TQQ_CMD_MEMO_OP, true ), m_Id( id ), m_Type( type )
 {
 }
 
@@ -59,12 +59,12 @@ int EvaMemoPacket::putBody( unsigned char *buf )
 	setDetails(m_Memo);
 	switch(m_Type){
 	case 0x01:{
-		buf[pos++] = QQ_MEMO_UPLOAD; //0x01 is the upload memo option
+		buf[pos++] = TQQ_MEMO_UPLOAD; //0x01 is the upload memo option
 		buf[pos++] = 0x00; //unknow byte
 		pos += EvaUtil::write32( buf+pos, m_Id);//qq number
 		buf[pos++] = 0x00; //unknow byte
 		
-		for(int i=0; i<QQ_MEMO_FIELDS; i++){
+		for(int i=0; i<TQQ_MEMO_FIELDS; i++){
 			len = m_Infos.at(i).length();
 			buf[pos++] = 0xff & len;
 			memcpy(buf+pos, m_Infos.at(i).c_str(), len);
@@ -73,12 +73,12 @@ int EvaMemoPacket::putBody( unsigned char *buf )
 		}
 		break;
 	case 0x02:{
-		buf[pos++] = QQ_MEMO_REMOVE; //0x02 is the remove memo option
+		buf[pos++] = TQQ_MEMO_REMOVE; //0x02 is the remove memo option
 		pos += EvaUtil::write32( buf+pos,m_Id);//qq number
 		}
 		break;
 	case 0x03:{
-		buf[pos++] = QQ_MEMO_DOWNLOAD; //0x03 is the download memo option
+		buf[pos++] = TQQ_MEMO_DOWNLOAD; //0x03 is the download memo option
 		pos += EvaUtil::write32( buf+pos,m_Id);//qq number
 		}
 		break;
@@ -126,20 +126,20 @@ void EvaMemoReplyPacket::parseBody()
 	switch(decryptedBuf[pos++]){
 	case 0x01:
 		
-		m_Type = QQ_MEMO_UPLOAD;
+		m_Type = TQQ_MEMO_UPLOAD;
 		m_ReplyCode = decryptedBuf[pos];
 		break;
 	case 0x02:
-		m_Type = QQ_MEMO_REMOVE;
+		m_Type = TQQ_MEMO_REMOVE;
 		m_ReplyCode = decryptedBuf[pos];
 		break;
 	case 0x03:{
-		m_Type = QQ_MEMO_DOWNLOAD;
+		m_Type = TQQ_MEMO_DOWNLOAD;
 		if(bodyLength>1){
 			m_Id = EvaUtil::read32(decryptedBuf+pos);//get the qq number
 			pos += 5; //included an ignored unknow byte
 		
-			for( int i=0; i<QQ_MEMO_FIELDS; i++ ){
+			for( int i=0; i<TQQ_MEMO_FIELDS; i++ ){
 				len = decryptedBuf[pos++];
 				char *str = new char[len+1];
 				memcpy(str, decryptedBuf+pos, len); pos += len;

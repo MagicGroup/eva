@@ -25,43 +25,43 @@
 #include "evauser.h"
 
 #include <stdlib.h>
-#include <qapplication.h>
-#include <qhttp.h>
-#include <qdir.h>
-#include <qfileinfo.h>
-#include <qdatastream.h>
+#include <ntqapplication.h>
+#include <ntqhttp.h>
+#include <ntqdir.h>
+#include <ntqfileinfo.h>
+#include <ntqdatastream.h>
 #include <kaudioplayer.h>
-#include <kglobal.h>
+#include <tdeglobal.h>
 #include <kstandarddirs.h>
 
 
 EvaImageResource::EvaImageResource()
 {
-	//imageRoot = qApp->applicationDirPath() + "/images";
+	//imageRoot = tqApp->applicationDirPath() + "/images";
 	themePath = "";
 	imageRoot = EvaGlobal::getDirPath() + "/image";
-	isDownloadingQQShow = false;
+	isDownloadingTQQShow = false;
 	http = new EvaHttp();
-	connect ( http, SIGNAL(requestFinished(bool)), SLOT(slotQQShowDone(bool))); 
+	connect ( http, SIGNAL(requestFinished(bool)), SLOT(slotTQQShowDone(bool))); 
 }
 
 EvaImageResource::~EvaImageResource()
 {
 }
 
-const QString EvaImageResource::getFacePath() const
+const TQString EvaImageResource::getFacePath() const
 {
 	return imageRoot + "/face";
 }
 
-const QString EvaImageResource::getIconPath()
+const TQString EvaImageResource::getIconPath()
 {
 	if(themePath == "" )
 		themePath = imageRoot + "/theme";
 	return themePath;
 }
 
-const QString EvaImageResource::getSmileyPath() const
+const TQString EvaImageResource::getSmileyPath() const
 {
 	return imageRoot + "/smiley";
 }
@@ -80,45 +80,45 @@ const int EvaImageResource::getFaceFileIndex(const int faceId)
 	return index;
 }
 
-QPixmap *EvaImageResource::getFace(const int fileIndex, const bool on)
+TQPixmap *EvaImageResource::getFace(const int fileIndex, const bool on)
 {
-	QString key = QString::number((fileIndex>0)?fileIndex:1);
+	TQString key = TQString::number((fileIndex>0)?fileIndex:1);
 	if(!on) key+="off";
-	QMap<QString, QPixmap>::Iterator iter = faceList.find(key);
+	TQMap<TQString, TQPixmap>::Iterator iter = faceList.find(key);
 	if(iter== faceList.end()) return NULL;
 	return &(iter.data());
 }
 
-QPixmap *EvaImageResource::getFaceByID( const unsigned short faceId, const bool on)
+TQPixmap *EvaImageResource::getFaceByID( const unsigned short faceId, const bool on)
 {
 	return getFace(getFaceFileIndex(faceId), on);
 }
 
-QPixmap *EvaImageResource::getIcon(QString name)
+TQPixmap *EvaImageResource::getIcon(TQString name)
 {
-	QMap<QString, QPixmap>::Iterator iter = iconList.find(name);
+	TQMap<TQString, TQPixmap>::Iterator iter = iconList.find(name);
 	if(iter== iconList.end()) return NULL;
 	return &(iter.data());
 }
 
-const QString EvaImageResource::getIconFullPath(QString name)
+const TQString EvaImageResource::getIconFullPath(TQString name)
 {
-	QMap<QString, QString>::Iterator iter = iconFileNameMap.find(name);
+	TQMap<TQString, TQString>::Iterator iter = iconFileNameMap.find(name);
 	if(iter== iconFileNameMap.end()) return "";
 	return getIconPath() + "/" + iter.data();
 }
 
-const QString EvaImageResource::getSmiley(const int fileIndex)
+const TQString EvaImageResource::getSmiley(const int fileIndex)
 {
-	return getSmileyPath() + QString("/%1.gif").arg(fileIndex);
+	return getSmileyPath() + TQString("/%1.gif").arg(fileIndex);
 	
-//	QString key = QString::number(fileIndex);
-//	QMap<QString, QMovie>::Iterator iter = smileyList.find(key);
+//	TQString key = TQString::number(fileIndex);
+//	TQMap<TQString, TQMovie>::Iterator iter = smileyList.find(key);
 //	if(iter== smileyList.end()) return NULL;
 //	return &(iter.data());
 }
 
-const QMovie *EvaImageResource::getLoginMovie()
+const TQMovie *EvaImageResource::getLoginMovie()
 {
 	return &loginMng;
 }
@@ -130,27 +130,27 @@ const bool EvaImageResource::loadImage()
 	//return (loadFace() && loadIcon() && loadSmiley());
 }
 
-bool EvaImageResource::loadFace(const QSize &/*size*/)
+bool EvaImageResource::loadFace(const TQSize &/*size*/)
 {
-	QString path = getFacePath();
-	QFile file( path + "/face.theme");    
+	TQString path = getFacePath();
+	TQFile file( path + "/face.theme");    
 	if(!file.open(IO_ReadOnly)){
 		return false;
 	}
 	faceList.clear();
-	QTextStream stream(&file);
-	QString line, imagePath;
-	QStringList lineList;
+	TQTextStream stream(&file);
+	TQString line, imagePath;
+	TQStringList lineList;
 	while(!stream.atEnd()){
 		line = stream.readLine().stripWhiteSpace();
 			
-		lineList = QStringList::split(":", line);
+		lineList = TQStringList::split(":", line);
 		if(lineList.size() != 2)
 			continue;
 		
 		lineList[0].stripWhiteSpace();
 		imagePath = path + "/" + lineList[1].stripWhiteSpace();
-		QPixmap img(imagePath);
+		TQPixmap img(imagePath);
 		if(!img.isNull()){
 //			faceList[lineList[0]] = img.convertToImage().smoothScale(size);
 			faceList[lineList[0]] = img;
@@ -167,25 +167,25 @@ bool EvaImageResource::loadFace(const QSize &/*size*/)
 
 bool EvaImageResource::loadIcon()
 {
-	QString path = getIconPath() + "/eva.theme";
-	QDir d;
+	TQString path = getIconPath() + "/eva.theme";
+	TQDir d;
 	if(!d.exists(path)){
 		themePath = ""; // if theme not exist, load default one
 		path = getIconPath() + "/eva.theme";
 	}
-	QFile file( path);
+	TQFile file( path);
 	if(!file.open(IO_ReadOnly)){
 		return false;
 	}
 	
-	QTextStream stream(&file);
-	QString line, imagePath;
-	QStringList lineList;
+	TQTextStream stream(&file);
+	TQString line, imagePath;
+	TQStringList lineList;
 	
 	while(!stream.atEnd()){
 		line = stream.readLine().stripWhiteSpace();
 			
-		lineList = QStringList::split(":", line);
+		lineList = TQStringList::split(":", line);
 		
 		if(lineList.size() != 2)
 			continue;
@@ -193,10 +193,10 @@ bool EvaImageResource::loadIcon()
 		lineList[0].stripWhiteSpace();
 		imagePath = getIconPath() + "/" + lineList[1].stripWhiteSpace();
 		if(lineList[0] == "LOGIN_MNG"){
-			loginMng = QMovie(imagePath);
+			loginMng = TQMovie(imagePath);
 			continue;
 		}
-		QPixmap img(imagePath);
+		TQPixmap img(imagePath);
 		if(!img.isNull()){
 			iconList[lineList[0]] = img;
 			iconFileNameMap[lineList[0]] = lineList[1].stripWhiteSpace();
@@ -209,27 +209,27 @@ bool EvaImageResource::loadIcon()
 
 bool EvaImageResource::loadSmiley()
 {
-	QString path = getSmileyPath();
-	QFile file( path + "/smiley.theme");    
+	TQString path = getSmileyPath();
+	TQFile file( path + "/smiley.theme");    
 	if(!file.open(IO_ReadOnly)){
 		return false;
 	}
 	
-	QTextStream stream(&file);
-	QString line, imagePath;
-	QStringList lineList;
+	TQTextStream stream(&file);
+	TQString line, imagePath;
+	TQStringList lineList;
 	
 	while(!stream.atEnd()){
 		line = stream.readLine().stripWhiteSpace();
 			
-		lineList = QStringList::split(":", line);
+		lineList = TQStringList::split(":", line);
 		
 		if(lineList.size() != 2)
 			continue;
 		
 		lineList[0].stripWhiteSpace();
 		imagePath = path + "/" + lineList[1].stripWhiteSpace();
-		QMovie m(imagePath);
+		TQMovie m(imagePath);
 		if(!m.isNull())
 			smileyList[lineList[0]] = m;
 	}
@@ -238,38 +238,38 @@ bool EvaImageResource::loadSmiley()
 	return true;  
 }
 
-const QString EvaImageResource::getQQShowPath() const
+const TQString EvaImageResource::getTQQShowPath() const
 {
-	QString evaHome = QDir::homeDirPath() + "/.eva";		
-	QDir d;
+	TQString evaHome = TQDir::homeDirPath() + "/.eva";		
+	TQDir d;
 	if(!d.exists(evaHome)){
 		return "";
 	}
 	if(!d.cd(evaHome)) return "";
-	if(!d.exists("QQShow")){
-		if(!d.mkdir("QQShow", false))	return "";
+	if(!d.exists("TQQShow")){
+		if(!d.mkdir("TQQShow", false))	return "";
 	}
-	return evaHome + "/QQShow";	
+	return evaHome + "/TQQShow";	
 }
 
-QPixmap *EvaImageResource::getQQShow(const unsigned int id)
+TQPixmap *EvaImageResource::getTQQShow(const unsigned int id)
 {
-	QString path = getQQShowPath() +"/"+ QString::number(id) + ".gif";
-	QDir d;
+	TQString path = getTQQShowPath() +"/"+ TQString::number(id) + ".gif";
+	TQDir d;
 	if(d.exists(path))
-		return new QPixmap(path);	
+		return new TQPixmap(path);	
 	return NULL;
 }
 
-void EvaImageResource::requestQQShow(const unsigned int id)
+void EvaImageResource::requestTQQShow(const unsigned int id)
 {
-	if(isDownloadingQQShow) return;	
-	QString path = getQQShowPath();
+	if(isDownloadingTQQShow) return;	
+	TQString path = getTQQShowPath();
 	if(path == "") return;
 	EvaUser *user = EvaMain::user;
 	if(!user) return;
 	
-	qqshowFile.setName(path +"/"+ QString::number(id) + ".gif" );
+	qqshowFile.setName(path +"/"+ TQString::number(id) + ".gif" );
 	if(qqshowFile.exists()){
 		qqshowFile.remove();
 	}
@@ -281,47 +281,47 @@ void EvaImageResource::requestQQShow(const unsigned int id)
 
 	EvaSetting *sysSetting = EvaMain::global->getEvaSetting();
 	if(sysSetting->getConnectType(user->getQQ()) == 2){
-		http->setProxyServer( QHostAddress(sysSetting->getServer( user->getQQ())).toString(), 
+		http->setProxyServer( TQHostAddress(sysSetting->getServer( user->getQQ())).toString(), 
 					sysSetting->getPort( user->getQQ() ));
 		http->setBase64AuthParam( sysSetting->getProxyParam( user->getQQ()));
 	}
 	http->setHost( "qqshow-user.tencent.com" );
 	unsigned int picNum = rand()*100;
-	QString remoteFile = "/"+QString::number(id) + "/10/00/" + QString::number(picNum) +".gif";
+	TQString remoteFile = "/"+TQString::number(id) + "/10/00/" + TQString::number(picNum) +".gif";
 	downloadID = id;	
 	http->get( remoteFile, &qqshowFile  );
 }
 
-void EvaImageResource::slotQQShowDone( bool error )
+void EvaImageResource::slotTQQShowDone( bool error )
 {
 	qqshowFile.close();
 	if(error){
 		printf("download error: %d\n",error);
-		isDownloadingQQShow = false;
+		isDownloadingTQQShow = false;
 		return;
 	}		
-	isDownloadingQQShow = false;
+	isDownloadingTQQShow = false;
 	emit qqShowReady(downloadID);
 }
 
-void EvaImageResource::setUserHeadImage(QMap<unsigned int, QImage> imageOnList, QMap<unsigned int, QImage> imageOffList)
+void EvaImageResource::setUserHeadImage(TQMap<unsigned int, TQImage> imageOnList, TQMap<unsigned int, TQImage> imageOffList)
 {
-	QMap<unsigned int, QImage>::Iterator it = imageOnList.begin();
+	TQMap<unsigned int, TQImage>::Iterator it = imageOnList.begin();
 	while(it != imageOnList.end()){
-		imgOnList[it.key()] = QPixmap(it.data());
+		imgOnList[it.key()] = TQPixmap(it.data());
 		++it;
 	}
 	it = imageOffList.begin();
 	while(it != imageOffList.end()){
-		imgOffList[it.key()] = QPixmap(it.data());
+		imgOffList[it.key()] = TQPixmap(it.data());
 		++it;
 	}
 }
 
-QPixmap *EvaImageResource::getUserHeadPixmap(const unsigned int id, bool isGrayscale)
+TQPixmap *EvaImageResource::getUserHeadPixmap(const unsigned int id, bool isGrayscale)
 {
-	QPixmap * result;
-	QMap<int, QPixmap>::Iterator it;
+	TQPixmap * result;
+	TQMap<int, TQPixmap>::Iterator it;
 	if(isGrayscale){
 		it = imgOffList.find(id);
 		if(it == imgOffList.end())
@@ -338,10 +338,10 @@ QPixmap *EvaImageResource::getUserHeadPixmap(const unsigned int id, bool isGrays
 	return result;
 }
 
-void EvaImageResource::addUserHeadImage(const unsigned int id, QImage imgOn, QImage imgOff)
+void EvaImageResource::addUserHeadImage(const unsigned int id, TQImage imgOn, TQImage imgOff)
 {
-	imgOnList[id] = QPixmap(imgOn);
-	imgOffList[id] = QPixmap(imgOff);
+	imgOnList[id] = TQPixmap(imgOn);
+	imgOffList[id] = TQPixmap(imgOff);
 }
 
 /*  ---------------------------------------------------------------------------------------------- */
@@ -366,10 +366,10 @@ void EvaSoundResource::playOnlineSound()
 	playSound("online.wav");
 }
 
-void EvaSoundResource::playSound(const QString &filename)
+void EvaSoundResource::playSound(const TQString &filename)
 {
-	QString absPath = soundRoot + "/" + filename;
-	QDir d;
+	TQString absPath = soundRoot + "/" + filename;
+	TQDir d;
 	if(!d.exists(absPath)){
 		absPath = EvaGlobal::getDirPath() + "/sound" + "/" + filename;
 	}
@@ -382,7 +382,7 @@ void EvaSoundResource::playSound(const QString &filename)
 
 /*  ---------------------------------------------------------------------------------------------- */
 
-QString EvaGlobal::dirPath = "~/eva";
+TQString EvaGlobal::dirPath = "~/eva";
 
 EvaGlobal::EvaGlobal()
 {
@@ -397,7 +397,7 @@ EvaGlobal::~EvaGlobal()
 	delete servers;
 }
 
-QString &EvaGlobal::getDirPath() 
+TQString &EvaGlobal::getDirPath() 
 { 
 	return dirPath; 
 }
@@ -428,16 +428,16 @@ const bool EvaGlobal::loadEvaSetting()
 
 void EvaGlobal::initialize()
 {
-	dirPath = KGlobal::dirs()->findResource("data", QString::fromLatin1("eva/servers"));
-// 	QStringList dirs = KGlobal::dirs()->findDirs("data", QString::fromLatin1("eva"));
+	dirPath = TDEGlobal::dirs()->findResource("data", TQString::fromLatin1("eva/servers"));
+// 	TQStringList dirs = TDEGlobal::dirs()->findDirs("data", TQString::fromLatin1("eva"));
 // 	for(uint i=0; i<dirs.size(); i++){
 // 		//printf("dir %i:%s\n", i, dirs[i].ascii());
 // 		//dirPath = dirs[0];
 // 		break;
 // 	}
-	if(dirPath == QString::null){
-		QFileInfo fi;
-		fi.setFile(QString(getenv("_")));
+	if(dirPath == TQString::null){
+		TQFileInfo fi;
+		fi.setFile(TQString(getenv("_")));
 		dirPath = fi.dirPath(true);
 	}else
 		dirPath = dirPath.left(dirPath.length() - strlen("/servers"));
@@ -469,12 +469,12 @@ void EvaGlobal::initServers( )
 	servers = new EvaServers(dirPath);
 }
 
-const QSize &EvaGlobal::getFaceSize() const
+const TQSize &EvaGlobal::getFaceSize() const
 {
     return faceSize;
 }
 
-void EvaGlobal::setFaceSize( const QSize size)
+void EvaGlobal::setFaceSize( const TQSize size)
 {
     faceSize = size;
     if(imgResource)

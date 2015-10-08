@@ -22,16 +22,16 @@
 #define EVA_DCOP_TOOLS_INTERFACE_H
 
 #include <dcopobject.h>
-#include <qstring.h>
+#include <ntqstring.h>
 
 class EvaDCOPToolsInterface : virtual public DCOPObject
 {
 	K_DCOP
 	k_dcop:
 
-	virtual bool stopScript(const QString &name) = 0;
-	virtual bool runScript(const QString &name, bool silent = false) = 0;
-	virtual QString scriptDir( bool isSystem ) = 0;
+	virtual bool stopScript(const TQString &name) = 0;
+	virtual bool runScript(const TQString &name, bool silent = false) = 0;
+	virtual TQString scriptDir( bool isSystem ) = 0;
 	virtual int numScripts() = 0;
 	virtual int numRunningScripts() = 0;
 };

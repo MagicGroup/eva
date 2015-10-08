@@ -13,7 +13,7 @@ configure-stamp:
 	dh_testdir
 	./autogen.sh
 	CFLAGS=$(CFLAGS) ./configure \
-		--prefix=`kde-config --prefix` \
+		--prefix=`tde-config --prefix` \
 		--infodir=`pwd`/debian/eva/usr/share/info \
 		--mandir=`pwd`/debian/eva/usr/share/man $(CONFARGS)
 	touch configure-stamp

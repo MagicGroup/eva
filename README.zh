@@ -40,7 +40,7 @@ Eva 是在KDE桌面下，基于Qt库开发的软件， 本程序在 GPL v2 的条款下分发，具体内容
 原代码的编译，运行
 ==============================================
 1.进入eva目录，输入
-    ./configure --prefix=`kde-config --prefix`
+    ./configure --prefix=`tde-config --prefix`
 2.成功后，输入
     make
   开始编译，这大概要7，8分钟的样子，取决于机器的性能  

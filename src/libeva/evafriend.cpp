@@ -92,13 +92,13 @@ void FriendItem::parseData(const unsigned char *buf, int *len)
 /*  ======================================================= */
 
 GetFriendListPacket::GetFriendListPacket() 
-	: OutPacket(QQ_CMD_GET_FRIEND_LIST, true),
-	  startPosition(QQ_FRIEND_LIST_POSITION_START)
+	: OutPacket(TQQ_CMD_GET_FRIEND_LIST, true),
+	  startPosition(TQQ_FRIEND_LIST_POSITION_START)
 { 
 }
 
 GetFriendListPacket::GetFriendListPacket(const unsigned short startPosition)
-	: OutPacket(QQ_CMD_GET_FRIEND_LIST, true),
+	: OutPacket(TQQ_CMD_GET_FRIEND_LIST, true),
 	  startPosition(startPosition)
 {
 }
@@ -121,7 +121,7 @@ int GetFriendListPacket::putBody(unsigned char *buf)
 	unsigned short pos = htons(startPosition);
 	memcpy(buf, &pos, 2);
 	
-	buf[2] = QQ_FRIEND_LIST_UNSORTED;
+	buf[2] = TQQ_FRIEND_LIST_UNSORTED;
 	buf[3] = 0x00;
 	buf[4] = 0x00;
 	return 5;

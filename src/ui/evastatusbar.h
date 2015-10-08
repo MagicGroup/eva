@@ -21,35 +21,35 @@
 #ifndef EVA_STATUSBAR_H
 #define EVA_STATUSBAR_H
 
-#include <qframe.h>
+#include <ntqframe.h>
 
-class QVBoxLayout;
-class QHBoxLayout;
-class QGridLayout;
-class QSpacerItem;
-class QLabel;
-class QToolButton;
+class TQVBoxLayout;
+class TQHBoxLayout;
+class TQGridLayout;
+class TQSpacerItem;
+class TQLabel;
+class TQToolButton;
 
-class EvaStatusBar : public QFrame
+class EvaStatusBar : public TQFrame
 {
 public:
-	EvaStatusBar( QWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
+	EvaStatusBar( TQWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
 	~EvaStatusBar();
 	
-	QLabel* lblNotification;
-	QFrame* fraSystem;
-	QToolButton* tbSearch;
-	QToolButton* tbSysMsg;
-	QToolButton* tbSystem;
-	QFrame* fraStatus;
-	QToolButton* tbStatus;
+	TQLabel* lblNotification;
+	TQFrame* fraSystem;
+	TQToolButton* tbSearch;
+	TQToolButton* tbSysMsg;
+	TQToolButton* tbSystem;
+	TQFrame* fraStatus;
+	TQToolButton* tbStatus;
 protected:
-	QGridLayout* frame4Layout;
-	QHBoxLayout* layout4;
-	QSpacerItem* spacer2;
-	QGridLayout* fraSystemLayout;
-	QHBoxLayout* layout3;
-	QGridLayout* fraStatusLayout;
+	TQGridLayout* frame4Layout;
+	TQHBoxLayout* layout4;
+	TQSpacerItem* spacer2;
+	TQGridLayout* fraSystemLayout;
+	TQHBoxLayout* layout3;
+	TQGridLayout* fraStatusLayout;
 };
 
 #endif //EVA_STATUSBAR_H

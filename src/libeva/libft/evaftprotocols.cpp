@@ -26,7 +26,7 @@
 #include <cstring>
 
 EvaFTAgentCreate::EvaFTAgentCreate()
-	: EvaFTAgentPacket(QQ_FILE_AGENT_CMD_CREATE),
+	: EvaFTAgentPacket(TQQ_FILE_AGENT_CMD_CREATE),
 	m_Token(NULL), m_TokenLength(0), m_Id(0), m_Ip(0)
 {
 }
@@ -72,7 +72,7 @@ const int EvaFTAgentCreate::fillBody(unsigned char *buf)
 
 EvaFTAgentCreateReply::EvaFTAgentCreateReply(const unsigned char *buf, const int len)
 	: EvaFTAgentPacket(buf, len),
-	m_ReplyCode(QQ_FILE_AGENT_CREATE_REDIRECT),
+	m_ReplyCode(TQQ_FILE_AGENT_CREATE_REDIRECT),
 	m_Ip(0), m_Port(0)
 {
 }
@@ -91,19 +91,19 @@ const bool EvaFTAgentCreateReply::parseBody( unsigned char *buf, const int len)
 	int pos = 0;
 	m_ReplyCode = EvaUtil::read16(raw); pos+=2;
 	switch(m_ReplyCode){
-	case QQ_FILE_AGENT_CREATE_OK:
+	case TQQ_FILE_AGENT_CREATE_OK:
 		memcpy(&m_Ip, raw+pos, 4); pos+=4;   // ip in little endian format
 		m_Port = EvaUtil::read16(raw+pos); pos+=2;
 		m_Session = EvaUtil::read32(raw+pos); pos+=4;
 		// all following are 0x00s, 8 more bytes
 		break;
-	case QQ_FILE_AGENT_CREATE_REDIRECT:
+	case TQQ_FILE_AGENT_CREATE_REDIRECT:
 		pos+=10; // 10 bytes 0x000
 		memcpy(&m_Ip, raw+pos, 4); pos+=4;   // ip in little endian format
 		m_Port = EvaUtil::read16(raw+pos); pos+=2;
 		// actually, there still 2 more bytes(0x0000)
 		break;
-	case QQ_FILE_AGENT_CREATE_ERROR:{
+	case TQQ_FILE_AGENT_CREATE_ERROR:{
 		pos+=2; // unknown 2 bytes
 		memcpy(&m_Ip, raw+pos, 4); pos+=4;   // ip in little endian format, unknown ip
 		pos+=10; // 10 bytes 0x000
@@ -129,7 +129,7 @@ const bool EvaFTAgentCreateReply::parseBody( unsigned char *buf, const int len)
 /** ========================================================================================== */
 
 EvaFTAgentLogin::EvaFTAgentLogin()
-	: EvaFTAgentPacket(QQ_FILE_AGENT_CMD_LOGIN),
+	: EvaFTAgentPacket(TQQ_FILE_AGENT_CMD_LOGIN),
 	m_Token(NULL), m_TokenLength(0)
 {
 }
@@ -198,7 +198,7 @@ const bool EvaFTAgentLoginReply::parseBody(unsigned char *buf, const int len)
 /** ========================================================================================== */
 
 EvaFTAgentTransfer::EvaFTAgentTransfer(const int type)
-	: EvaFTAgentPacket(QQ_FILE_AGENT_CMD_TRANSFER),
+	: EvaFTAgentPacket(TQQ_FILE_AGENT_CMD_TRANSFER),
 	m_Type(type), m_FileName(""), m_FMd5(NULL),
 	m_FileSize(0), m_Data(NULL),
 	m_DataLength(0), m_StartOffset(0)
@@ -241,7 +241,7 @@ const int EvaFTAgentTransfer::fillBody(unsigned char *buf)
 	pos+=2; // the following data length, set it at last
 	
 	switch(m_Type){
-	case QQ_FILE_AGENT_TRANSFER_INFO:
+	case TQQ_FILE_AGENT_TRANSFER_INFO:
 		pos+=2; // the whole part length including these 2 bytes(save as 2 bytes ahead)
 		memcpy(buf+pos, m_FMd5, 16); pos+=16;
 		memcpy(buf+pos, EvaUtil::doMd5((char *)m_FileName.c_str(), m_FileName.length()), 16); pos+=16;
@@ -252,13 +252,13 @@ const int EvaFTAgentTransfer::fillBody(unsigned char *buf)
 		pos+=8; // unknown 8 bytes;
 		EvaUtil::write16(buf+start+2, pos-start-2); // write back length of this part
 		break;
-	case QQ_FILE_AGENT_TRANSFER_DATA:
+	case TQQ_FILE_AGENT_TRANSFER_DATA:
 		memcpy(buf+pos, m_Data, m_DataLength); pos+=m_DataLength;
 		break;
-	case QQ_FILE_AGENT_TRANSFER_REPLY:
+	case TQQ_FILE_AGENT_TRANSFER_REPLY:
 		buf[pos++] = 0x02; // always 0x02
 		break;
-	case QQ_FILE_AGENT_TRANSFER_START:
+	case TQQ_FILE_AGENT_TRANSFER_START:
 		pos+=EvaUtil::write32(buf+pos, m_StartOffset);
 		break;
 	default:
@@ -307,7 +307,7 @@ const bool EvaFTAgentTransferReply::parseBody( unsigned char *buf, const int len
 	if(contentsLen != (len - 6)) return false;
 
 	switch(m_Type){
-	case QQ_FILE_AGENT_TRANSFER_INFO:{
+	case TQQ_FILE_AGENT_TRANSFER_INFO:{
 		if(EvaUtil::read16(buf+pos) != contentsLen) return false;
 		pos+=2;
 		if(!m_FileMd5) m_FileMd5 = new unsigned char[16];
@@ -326,16 +326,16 @@ const bool EvaFTAgentTransferReply::parseBody( unsigned char *buf, const int len
 		delete strFile;
 		}
 		break;
-	case QQ_FILE_AGENT_TRANSFER_DATA:
+	case TQQ_FILE_AGENT_TRANSFER_DATA:
 		m_DataLength = contentsLen;
 		m_Data = new unsigned char[m_DataLength];
 		memcpy(m_Data, buf+pos, m_DataLength); pos+=m_DataLength;
 		break;
-	case QQ_FILE_AGENT_TRANSFER_REPLY:
+	case TQQ_FILE_AGENT_TRANSFER_REPLY:
 		m_NextReplyCode = buf[pos++];
 		printf("EvaFTAgentTransferReply::parseBody -- m_NextReplyCode: 0x%2x\n", m_NextReplyCode);
 		break;
-	case QQ_FILE_AGENT_TRANSFER_START:
+	case TQQ_FILE_AGENT_TRANSFER_START:
 		m_ReplyCode = EvaUtil::read32(buf+pos); pos += 4;
 		break;
 	default:
@@ -350,7 +350,7 @@ const bool EvaFTAgentTransferReply::parseBody( unsigned char *buf, const int len
 /** ========================================================================================== */
 
 EvaFTAgentAckReady::EvaFTAgentAckReady()
-	: EvaFTAgentPacket(QQ_FILE_AGENT_CMD_READY)
+	: EvaFTAgentPacket(TQQ_FILE_AGENT_CMD_READY)
 {
 }
 
@@ -403,7 +403,7 @@ const bool EvaFTAgentAskReady::parseBody(unsigned char *buf, const int len)
 /** ========================================================================================== */
 
 EvaFTAgentStart::EvaFTAgentStart()
-	: EvaFTAgentPacket(QQ_FILE_AGENT_CMD_START)
+	: EvaFTAgentPacket(TQQ_FILE_AGENT_CMD_START)
 {
 }
 
@@ -470,7 +470,7 @@ const bool EvaFTAgentStartReply::parseBody(unsigned char *buf, const int len)
 /** =================================================================================================== */
 
 EvaFTSynCreate::EvaFTSynCreate()
-	: EvaFTSynPacket(QQ_FILE_SYN_CMD_CREATE),
+	: EvaFTSynPacket(TQQ_FILE_SYN_CMD_CREATE),
 	m_Token(NULL), m_TokenLength(0), m_BuddyId(0)
 {
 }
@@ -515,7 +515,7 @@ const int EvaFTSynCreate::fillBody(unsigned char *buf)
 
 EvaFTSynCreateReply::EvaFTSynCreateReply(const unsigned char *buf, const int len)
 	: EvaFTSynPacket(buf, len),
-	m_ReplyCode(QQ_FILE_AGENT_CREATE_REDIRECT),
+	m_ReplyCode(TQQ_FILE_AGENT_CREATE_REDIRECT),
 	m_Ip(0), m_Port(0)
 {
 }
@@ -534,7 +534,7 @@ const bool EvaFTSynCreateReply::parseBody( unsigned char *buf, const int len)
 	int pos = 0;
 	m_ReplyCode = EvaUtil::read16(raw); pos+=2;
 	switch(m_ReplyCode){
-	case QQ_FILE_AGENT_CREATE_OK:
+	case TQQ_FILE_AGENT_CREATE_OK:
 		m_Session = EvaUtil::read32(raw+pos); pos+=4;
 		m_Ip  = EvaUtil::read32(raw+pos); pos+=4;
 		m_Port = EvaUtil::read16(raw+pos); pos+=2;

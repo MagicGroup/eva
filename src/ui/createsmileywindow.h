@@ -23,32 +23,32 @@
 #include "createsmileyui.h"
 #include "customfacemanagerui.h"
 #include "customface.h"
-#include <qdialog.h>
+#include <ntqdialog.h>
 
 class CustomFaceConfig;
-class QCloseEvent;
+class TQCloseEvent;
 
 class CreateSmileyWindow : public CreateSmileyUI
 {
 	Q_OBJECT
 
 public:
-	CreateSmileyWindow(const QString &url = QString::null, const int groupIndex = 0 );
+	CreateSmileyWindow(const TQString &url = TQString::null, const int groupIndex = 0 );
 	virtual ~CreateSmileyWindow();
 
 signals:
 	void addCustomSmileyReady( bool );  // adding ok or not
 
 private:
-	QString m_FileName;
+	TQString m_FileName;
 	bool m_MultiFiles;
-	QStringList m_FileNames;
+	TQStringList m_FileNames;
 	CustomFaceConfig *m_Config;
 	int m_DefaultGroup;
 
 	void init();
 
-	virtual void closeEvent ( QCloseEvent *e);
+	virtual void closeEvent ( TQCloseEvent *e);
 private slots:
 
 	void slotSelectImagesClicked();
@@ -57,42 +57,42 @@ private slots:
 
 class GroupActionPrivate;
 
-class QVBoxLayout;
-class QHBoxLayout;
-class QGridLayout;
-class QSpacerItem;
-class QPushButton;
-class QRadioButton;
-class QLabel;
-class QComboBox;
+class TQVBoxLayout;
+class TQHBoxLayout;
+class TQGridLayout;
+class TQSpacerItem;
+class TQPushButton;
+class TQRadioButton;
+class TQLabel;
+class TQComboBox;
 
-class RmSmileyGroupDialog : public QDialog
+class RmSmileyGroupDialog : public TQDialog
 {
     Q_OBJECT
 
 public:
-	RmSmileyGroupDialog( int indexOfRm, CustomFaceConfig *config, QWidget* parent = 0, const char* name = 0, bool modal = true, WFlags fl = 0 );
+	RmSmileyGroupDialog( int indexOfRm, CustomFaceConfig *config, TQWidget* parent = 0, const char* name = 0, bool modal = true, WFlags fl = 0 );
 	virtual ~RmSmileyGroupDialog();
 	
-	QPushButton* btnOK;
-	QPushButton* btnCancel;
-	QRadioButton* rbtnRmAll;
-	QRadioButton* rbtnRmMv;
-	QLabel* lblGroupTip;
-	QComboBox* cbbGroups;
+	TQPushButton* btnOK;
+	TQPushButton* btnCancel;
+	TQRadioButton* rbtnRmAll;
+	TQRadioButton* rbtnRmMv;
+	TQLabel* lblGroupTip;
+	TQComboBox* cbbGroups;
 
 	// return     -2: above this operation, -1: remove all,  otherwise the group index all sub smiley will be moved into
 	int m_Result;
-	static int QueryDialog(int indexOfRm, CustomFaceConfig *config, QWidget* parent = 0);
+	static int QueryDialog(int indexOfRm, CustomFaceConfig *config, TQWidget* parent = 0);
 
 private:
-	QGridLayout* RmSmileyGroupUILayout;
-	QHBoxLayout* layout3;
-	QSpacerItem* spacer3;
-	QVBoxLayout* layout7;
-	QVBoxLayout* layout6;
-	QHBoxLayout* layout4;
-	QSpacerItem* spacer4;
+	TQGridLayout* RmSmileyGroupUILayout;
+	TQHBoxLayout* layout3;
+	TQSpacerItem* spacer3;
+	TQVBoxLayout* layout7;
+	TQVBoxLayout* layout6;
+	TQHBoxLayout* layout4;
+	TQSpacerItem* spacer4;
 
 	int m_IndexOfRm;
 	CustomFaceConfig *m_Config;
@@ -106,7 +106,7 @@ private slots:
 	void slotCancelClicked();
 };
 
-class QPopupMenu;
+class TQPopupMenu;
 
 class CustomSmileyManager : public CustomFaceManagerUI
 {
@@ -123,9 +123,9 @@ private:
 	CustomFaceConfig *m_Config;
 	bool m_IsChanged;
 	GroupActionPrivate *d;
-	QPopupMenu *m_MoveToMenu;
+	TQPopupMenu *m_MoveToMenu;
 
-	virtual void closeEvent ( QCloseEvent *e);
+	virtual void closeEvent ( TQCloseEvent *e);
 
 	void init();
 
@@ -142,8 +142,8 @@ private slots:
 	void slotEditGroupClicked();
 	void slotRemoveGroupClicked();
 
-	void slotGroupRenamed(QListViewItem*, int, const QString &);
-	void slotGroupSelectionChanged( QListViewItem *);
+	void slotGroupRenamed(TQListViewItem*, int, const TQString &);
+	void slotGroupSelectionChanged( TQListViewItem *);
 
 	void slotFaceSelectionChanged( );
 	void slotFaceValueChanged(int row, int col);

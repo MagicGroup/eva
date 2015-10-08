@@ -3,7 +3,7 @@
 #---------------------------------------------------------------------------
 # Project related configuration options
 #---------------------------------------------------------------------------
-PROJECT_NAME           = eva.kdevelop
+PROJECT_NAME           = eva.tdevelop
 PROJECT_NUMBER         = 0.3.0
 OUTPUT_DIRECTORY       = 
 CREATE_SUBDIRS         = NO

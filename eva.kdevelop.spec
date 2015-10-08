@@ -2,7 +2,7 @@
 # Please report any problem to KDevelop Team <kdevelop-devel@kdevelop.org> 
 # Thanks to Matthias Saou for his explanations on http://freshrpms.net/docs/fight.html
 
-Name: eva.kdevelop
+Name: eva.tdevelop
 Version: 0.3.0
 Release: 
 Vendor: 

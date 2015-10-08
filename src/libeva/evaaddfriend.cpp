@@ -37,7 +37,7 @@ AddFriendPacket::AddFriendPacket( )
 }
 
 AddFriendPacket::AddFriendPacket( const int id )
-	: OutPacket(QQ_CMD_ADD_FRIEND, true),
+	: OutPacket(TQQ_CMD_ADD_FRIEND, true),
 	qqNum(id)
 {
 }
@@ -106,15 +106,15 @@ void AddFriendReplyPacket::parseBody()
 /* =========================================================== */
 
 AddFriendAuthPacket::AddFriendAuthPacket( )
-	: OutPacket( QQ_CMD_ADD_FRIEND_AUTH, true),
+	: OutPacket( TQQ_CMD_ADD_FRIEND_AUTH, true),
 	message("")
 {
 }
 
 AddFriendAuthPacket::AddFriendAuthPacket( const int id , const uint8_t type )
-	: OutPacket( QQ_CMD_ADD_FRIEND_AUTH, true),
+	: OutPacket( TQQ_CMD_ADD_FRIEND_AUTH, true),
 	type(type),
-	buddyQQNum(id),
+	buddyTQQNum(id),
 	message("")
 {
 }
@@ -123,7 +123,7 @@ AddFriendAuthPacket::AddFriendAuthPacket( AddFriendAuthPacket & rhs )
 	: OutPacket(rhs)
 {
 	type = rhs.getType();
-	buddyQQNum = rhs.getBuddyQQ();
+	buddyTQQNum = rhs.getBuddyQQ();
 	message = rhs.getMessage();
 }
 
@@ -131,7 +131,7 @@ AddFriendAuthPacket & AddFriendAuthPacket::operator =( const AddFriendAuthPacket
 {
 	*((OutPacket *)this) = (OutPacket)rhs;
 	type = rhs.getType();
-	buddyQQNum = rhs.getBuddyQQ();
+	buddyTQQNum = rhs.getBuddyQQ();
 	message = rhs.getMessage();
 	return *this;
 }
@@ -139,7 +139,7 @@ AddFriendAuthPacket & AddFriendAuthPacket::operator =( const AddFriendAuthPacket
 int AddFriendAuthPacket::putBody( unsigned char * buf )
 {	
 	char qq[20];
-	sprintf(qq,"%d", buddyQQNum);
+	sprintf(qq,"%d", buddyTQQNum);
 	int offset = strlen(qq);
 	memcpy(buf, qq, offset);
 	buf[offset++] = DIVIDER;
@@ -170,7 +170,7 @@ AddFriendAuthReplyPacket & AddFriendAuthReplyPacket::operator =( const AddFriend
 
 const bool AddFriendAuthReplyPacket::isSentOK( ) const
 {
-	return replyCode == QQ_ADD_FRIEND_AUTH_REPLY_OK;
+	return replyCode == TQQ_ADD_FRIEND_AUTH_REPLY_OK;
 }
 
 void AddFriendAuthReplyPacket::parseBody( )
@@ -181,35 +181,35 @@ void AddFriendAuthReplyPacket::parseBody( )
 /* =========================================================== */
 
 DeleteFriendPacket::DeleteFriendPacket( )
-	: OutPacket(QQ_CMD_DELETE_FRIEND, true),
-	buddyQQNum(0)
+	: OutPacket(TQQ_CMD_DELETE_FRIEND, true),
+	buddyTQQNum(0)
 {
 }
 
 DeleteFriendPacket::DeleteFriendPacket( const int id )
-	: OutPacket(QQ_CMD_DELETE_FRIEND, true),
-	buddyQQNum(id)
+	: OutPacket(TQQ_CMD_DELETE_FRIEND, true),
+	buddyTQQNum(id)
 {
 }
 
 DeleteFriendPacket::DeleteFriendPacket( const DeleteFriendPacket & rhs )
 	: OutPacket(rhs)
 {
-	buddyQQNum = rhs.getBuddyQQ();
+	buddyTQQNum = rhs.getBuddyQQ();
 }
 
 DeleteFriendPacket & DeleteFriendPacket::operator =( const DeleteFriendPacket & rhs )
 {
 	*((OutPacket *)this) = (OutPacket)rhs;
-	buddyQQNum = rhs.getBuddyQQ();
+	buddyTQQNum = rhs.getBuddyQQ();
 	return *this;
 }
 
 int DeleteFriendPacket::putBody( unsigned char * buf )
 {
-	if(buddyQQNum==0) return 0;
+	if(buddyTQQNum==0) return 0;
 	char qq[20];
-	sprintf(qq,"%d", buddyQQNum);
+	sprintf(qq,"%d", buddyTQQNum);
 	memcpy(buf, qq, strlen(qq));
 	return strlen(qq);
 }
@@ -236,7 +236,7 @@ DeleteFriendReplyPacket & DeleteFriendReplyPacket::operator =( const DeleteFrien
 
 const bool DeleteFriendReplyPacket::isDeleted( ) const
 {
-	return replyCode == QQ_DELETE_FRIEND_REPLY_OK;
+	return replyCode == TQQ_DELETE_FRIEND_REPLY_OK;
 }
 
 void DeleteFriendReplyPacket::parseBody( )
@@ -248,34 +248,34 @@ void DeleteFriendReplyPacket::parseBody( )
 
 
 DeleteMePacket::DeleteMePacket( )
-	: OutPacket(QQ_CMD_DELETE_ME, true),
-	buddyQQNum(0)
+	: OutPacket(TQQ_CMD_DELETE_ME, true),
+	buddyTQQNum(0)
 {
 }
 
 DeleteMePacket::DeleteMePacket( const int id )
-	: OutPacket(QQ_CMD_DELETE_ME, true),
-	buddyQQNum(id)
+	: OutPacket(TQQ_CMD_DELETE_ME, true),
+	buddyTQQNum(id)
 {
 }
 
 DeleteMePacket::DeleteMePacket( const DeleteMePacket & rhs )
 	: OutPacket(rhs)
 {
-	buddyQQNum = rhs.getBuddyQQ();
+	buddyTQQNum = rhs.getBuddyQQ();
 }
 
 DeleteMePacket & DeleteMePacket::operator =( const DeleteMePacket & rhs )
 {
 	*((OutPacket *)this) = (OutPacket)rhs;
-	buddyQQNum = rhs.getBuddyQQ();
+	buddyTQQNum = rhs.getBuddyQQ();
 	return *this;
 }
 
 int DeleteMePacket::putBody( unsigned char * buf )
 {
-	if(buddyQQNum==0) return 0;
-	int qq = htonl(buddyQQNum);
+	if(buddyTQQNum==0) return 0;
+	int qq = htonl(buddyTQQNum);
 	memcpy(buf, &qq, 4);
 	return 4;
 }
@@ -303,7 +303,7 @@ DeleteMeReplyPacket & DeleteMeReplyPacket::operator =( const DeleteMeReplyPacket
 
 const bool DeleteMeReplyPacket::isDeleted( ) const
 {
-	return replyCode == QQ_DELETE_ME_REPLY_OK;
+	return replyCode == TQQ_DELETE_ME_REPLY_OK;
 }
 
 void DeleteMeReplyPacket::parseBody( )
@@ -397,7 +397,7 @@ void SystemNotificationPacket::parseBody( )
 	}
 
 	switch(type){
-		case QQ_MSG_SYS_ADD_FRIEND_APPROVED:{
+		case TQQ_MSG_SYS_ADD_FRIEND_APPROVED:{
 			/// should be  0x30 then the last part diveded by 0x1f
 			message = "";
 			start += 2; /// ignore 0x30 and 0x1f
@@ -407,7 +407,7 @@ void SystemNotificationPacket::parseBody( )
 			start += m_CodeLen;
 			}
 			break;
-		case QQ_MSG_SYS_ADD_FRIEND_REJECTED:{
+		case TQQ_MSG_SYS_ADD_FRIEND_REJECTED:{
 			int len = offset - start;
 			memcpy(buf, decryptedBuf+start, len);
 			buf[len]=0x00;
@@ -420,14 +420,14 @@ void SystemNotificationPacket::parseBody( )
 			start += m_CodeLen;
 			}
 			break;
-		case QQ_MSG_SYS_ADD_FRIEND_REQUEST_EX:{
+		case TQQ_MSG_SYS_ADD_FRIEND_REQUEST_EX:{
 			int len = decryptedBuf[start++] & 0xff;
 			memcpy(buf, decryptedBuf+start, len);
 			buf[len]=0x00;printf("buf: %s\n", buf);
 			message = buf;
 			start += len;
 
-			m_AllowReverse = (decryptedBuf[start++] == QQ_MSG_SYS_ADDING_ALLOW_REVERSE);
+			m_AllowReverse = (decryptedBuf[start++] == TQQ_MSG_SYS_ADDING_ALLOW_REVERSE);
 			printf("start : %d\n", start);
 			m_CodeLen = ntohs(*((unsigned short *)(decryptedBuf + start)));
 			start+=2;
@@ -435,7 +435,7 @@ void SystemNotificationPacket::parseBody( )
 			start += m_CodeLen;
 			}
 			break;
-		case QQ_MSG_SYS_ADD_FRIEND_APPROVED_AND_ADD:{
+		case TQQ_MSG_SYS_ADD_FRIEND_APPROVED_AND_ADD:{
 			int len = decryptedBuf[start++] & 0xff;
 			memcpy(buf, decryptedBuf+start, len);
 			buf[len]=0x00;
@@ -448,9 +448,9 @@ void SystemNotificationPacket::parseBody( )
 			start += m_CodeLen;
 			}
 			break;
-		case QQ_MSG_SYS_ADDED_BY_CORRECT_ANSWER:
-		case QQ_MSG_SYS_BEING_ADDED_EX:{
-			m_AllowReverse = (decryptedBuf[start++] == QQ_MSG_SYS_ADDING_ALLOW_REVERSE);
+		case TQQ_MSG_SYS_ADDED_BY_CORRECT_ANSWER:
+		case TQQ_MSG_SYS_BEING_ADDED_EX:{
+			m_AllowReverse = (decryptedBuf[start++] == TQQ_MSG_SYS_ADDING_ALLOW_REVERSE);
 			m_CodeLen = ntohs(*((unsigned short *)(decryptedBuf + start)));
 			start+=2;
 			setCode(decryptedBuf + start, m_CodeLen);
@@ -484,16 +484,16 @@ void SystemNotificationPacket::setCode( const unsigned char * code, const unsign
 
 
 VerifyAddingMsgPacket::VerifyAddingMsgPacket( )
-	: OutPacket(QQ_CMD_VERIFY_ADDING_MSG, true),
-	m_BuddyQQNum(0),
+	: OutPacket(TQQ_CMD_VERIFY_ADDING_MSG, true),
+	m_BuddyTQQNum(0),
 	m_Code(0),
 	m_CodeLen(0)
 {
 }
 
 VerifyAddingMsgPacket::VerifyAddingMsgPacket( const unsigned int id )
-	: OutPacket(QQ_CMD_VERIFY_ADDING_MSG, true),
-	m_BuddyQQNum(id),
+	: OutPacket(TQQ_CMD_VERIFY_ADDING_MSG, true),
+	m_BuddyTQQNum(id),
 	m_Code(0),
 	m_CodeLen(0)
 {
@@ -514,7 +514,7 @@ VerifyAddingMsgPacket::~ VerifyAddingMsgPacket( )
 VerifyAddingMsgPacket & VerifyAddingMsgPacket::operator =( const VerifyAddingMsgPacket & rhs )
 {
 	*((OutPacket *)this) = (OutPacket)rhs;
-	m_BuddyQQNum = rhs.getBuddyQQ();
+	m_BuddyTQQNum = rhs.getBuddyQQ();
 	setCode(rhs.getCode(), rhs.getCodeLength());
 	return *this;
 }
@@ -535,8 +535,8 @@ int VerifyAddingMsgPacket::putBody( unsigned char * buf )
 	buf[pos++] = 0x01; /// might be sub of subcommand,
 
 	
-	//*((unsigned int *)(buf+pos)) = htonl(m_BuddyQQNum);
-	WRITE32(buf+pos, m_BuddyQQNum);
+	//*((unsigned int *)(buf+pos)) = htonl(m_BuddyTQQNum);
+	WRITE32(buf+pos, m_BuddyTQQNum);
 	pos+=4;
 	
 	if(!m_CodeLen || !m_Code){
@@ -561,7 +561,7 @@ int VerifyAddingMsgPacket::putBody( unsigned char * buf )
 
 VerifyAddingMsgReplyPacket::VerifyAddingMsgReplyPacket( unsigned char * buf, int len )
 	: InPacket(buf, len),
-	m_BuddyQQNum(0),
+	m_BuddyTQQNum(0),
 	m_Flag1(0),
 	m_Flag2(0)
 {
@@ -569,7 +569,7 @@ VerifyAddingMsgReplyPacket::VerifyAddingMsgReplyPacket( unsigned char * buf, int
 
 VerifyAddingMsgReplyPacket::VerifyAddingMsgReplyPacket( const VerifyAddingMsgReplyPacket & rhs )
 	: InPacket(rhs),
-	m_BuddyQQNum(0),
+	m_BuddyTQQNum(0),
 	m_Flag1(0),
 	m_Flag2(0)
 {
@@ -579,7 +579,7 @@ VerifyAddingMsgReplyPacket::VerifyAddingMsgReplyPacket( const VerifyAddingMsgRep
 VerifyAddingMsgReplyPacket & VerifyAddingMsgReplyPacket::operator =( const VerifyAddingMsgReplyPacket & rhs )
 {
 	*((InPacket *)this) = (InPacket)rhs;
-	m_BuddyQQNum = rhs.getBuddyQQ();
+	m_BuddyTQQNum = rhs.getBuddyQQ();
 	m_Flag1 = rhs.getFlag1();
 	m_Flag2 = rhs.getFlag2();
 	m_ReplyCode = rhs.getReplyCode();
@@ -594,7 +594,7 @@ void VerifyAddingMsgReplyPacket::parseBody( )
 
 	if(m_ReplyCode == 0x00) return;
 	
-	m_BuddyQQNum = READ32(decryptedBuf + offset);
+	m_BuddyTQQNum = READ32(decryptedBuf + offset);
 	offset += 4;
 	m_Flag1 = decryptedBuf[offset++];
 	m_Flag2 = decryptedBuf[offset++];

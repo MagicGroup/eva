@@ -36,13 +36,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 WeatherOpPacket::WeatherOpPacket( )
 : OutPacket(),
-subCommand(QQ_SUB_CMD_GET_WEATHER)
+subCommand(TQQ_SUB_CMD_GET_WEATHER)
 {
 }
 
 WeatherOpPacket::WeatherOpPacket( const unsigned int ip )
-: OutPacket(QQ_CMD_WEATHER, true),
-subCommand(QQ_SUB_CMD_GET_WEATHER), ip(ip)
+: OutPacket(TQQ_CMD_WEATHER, true),
+subCommand(TQQ_SUB_CMD_GET_WEATHER), ip(ip)
 {
 }
 

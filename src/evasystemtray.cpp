@@ -23,27 +23,27 @@
 #include "evauhmanager.h"
 #include "evamain.h"
 #include "evahtmlparser.h"
-#include <kpopupmenu.h>
-#include <qimage.h>
-#include <qpixmap.h>
-#include <qevent.h>
-#include <qtimer.h>
-#include <qtooltip.h>
-#include <qcursor.h>
-#include <qapplication.h>
-#include <kaction.h>
-#include <klocale.h>
+#include <tdepopupmenu.h>
+#include <ntqimage.h>
+#include <ntqpixmap.h>
+#include <ntqevent.h>
+#include <ntqtimer.h>
+#include <ntqtooltip.h>
+#include <ntqcursor.h>
+#include <ntqapplication.h>
+#include <tdeaction.h>
+#include <tdelocale.h>
 
  
-EvaSystemTray::EvaSystemTray(QWidget* parent, const char* name) 
+EvaSystemTray::EvaSystemTray(TQWidget* parent, const char* name) 
 	: KSystemTray(parent, name), 
 	images(NULL), sysMenu(NULL), statusMenu(NULL), isBlinkOn(false)
 {
-	blinkTimer = new QTimer(this);
-	QObject::connect(blinkTimer, SIGNAL(timeout()), SLOT(slotTimeout()));
+	blinkTimer = new TQTimer(this);
+	TQObject::connect(blinkTimer, SIGNAL(timeout()), SLOT(slotTimeout()));
 
-	clickTimer = new QTimer(this);
-	QObject::connect(clickTimer, SIGNAL(timeout()), SLOT(slotClickTimeout()));
+	clickTimer = new TQTimer(this);
+	TQObject::connect(clickTimer, SIGNAL(timeout()), SLOT(slotClickTimeout()));
 }
 
 EvaSystemTray::~EvaSystemTray()
@@ -63,7 +63,7 @@ void EvaSystemTray::setImagesResource(EvaImageResource *res)
 	setIconTo(images->getIcon("OFFLINE"));
 }
 
-void EvaSystemTray::setupMenus(KPopupMenu *sys, KPopupMenu *status)
+void EvaSystemTray::setupMenus(TDEPopupMenu *sys, TDEPopupMenu *status)
 {
 	sysMenu = sys;
 	statusMenu = status;
@@ -80,26 +80,26 @@ void EvaSystemTray::reset()
 	setOffline();
 }
 
-void EvaSystemTray::changeToolTip(const unsigned int id, const QString &nick, const short face)
+void EvaSystemTray::changeToolTip(const unsigned int id, const TQString &nick, const short face)
 {
 	if(!images) return;
-	QString picName = "";
+	TQString picName = "";
 	if(EvaMain::uhManager){
 		picName = EvaMain::uhManager->getFileName(id);
 	}
 	if(picName.isEmpty()){
 		picName = images->getFacePath() +
-			"/" + QString::number(images->getFaceFileIndex(face)) + ".png";
+			"/" + TQString::number(images->getFaceFileIndex(face)) + ".png";
 	}
 	EvaHtmlParser parser;
 	parser.setAbsImagePath(images->getSmileyPath());
-	QString htmlNick = nick;
+	TQString htmlNick = nick;
 	parser.convertToHtml( htmlNick,  false, true);
-	QString tip = "<qt><table><tr><td><img src =\"" + picName + "\"></td><td><nobr><font color=blue><b>EVA</b> </font> - " +
+	TQString tip = "<qt><table><tr><td><img src =\"" + picName + "\"></td><td><nobr><font color=blue><b>EVA</b> </font> - " +
 			i18n("IM Client")+ "</nobr><br>" + htmlNick +
-			"<br>" + QString::number(id) + "</td></tr></table></qt>";
-	QToolTip::remove(this);
-	QToolTip::add(this, tip);
+			"<br>" + TQString::number(id) + "</td></tr></table></qt>";
+	TQToolTip::remove(this);
+	TQToolTip::add(this, tip);
 }
 
 void EvaSystemTray::setOnline()
@@ -137,7 +137,7 @@ void EvaSystemTray::setLoginWaiting()
 	if(!images) return;
 	if(blinkTimer->isActive())
 		blinkTimer->stop();
-	QLabel::setMovie(*(images->getLoginMovie()));
+	TQLabel::setMovie(*(images->getLoginMovie()));
 }
 
 void EvaSystemTray::newTxtMessage(const unsigned int id, short face)
@@ -146,7 +146,7 @@ void EvaSystemTray::newTxtMessage(const unsigned int id, short face)
 	messageStack.push(id);
 	iconStack.push(face);
 	if(!blinkTimer->isActive()){
-		//statusPix =  *QLabel::pixmap();
+		//statusPix =  *TQLabel::pixmap();
 		blinkTimer->start(300, false);
 	}
 }
@@ -169,7 +169,7 @@ void EvaSystemTray::newSysMessage()
 	messageStack.push(-1);
 	iconStack.push(-1);
 	if(!blinkTimer->isActive()){
-		//statusPix =  *QLabel::pixmap();
+		//statusPix =  *TQLabel::pixmap();
 		blinkTimer->start(300, false);
 	}
 }
@@ -180,7 +180,7 @@ void EvaSystemTray::gotSysMessage()
 	if( index == -1) return; // if not exist, just return
 	if(iconStack[index] != -1) return; // if not a sys msg icon, return
 	
-	QValueStack<int>::iterator iter = messageStack.find(-1);
+	TQValueStack<int>::iterator iter = messageStack.find(-1);
 	messageStack.remove(iter);
 	iter = iconStack.find(-1);
 	iconStack.remove(iter);
@@ -191,7 +191,7 @@ void EvaSystemTray::gotSysMessage()
 	}	
 }
 
-void EvaSystemTray::mousePressEvent(QMouseEvent *me)
+void EvaSystemTray::mousePressEvent(TQMouseEvent *me)
 {
 	if(me->button() == MidButton){
 		mouseDoubleClickEvent(me);
@@ -207,12 +207,12 @@ void EvaSystemTray::mousePressEvent(QMouseEvent *me)
 	}
 		
 	if(me->button() == LeftButton && !clickTimer->isActive())
-		clickTimer->start(QApplication::doubleClickInterval(), false);
+		clickTimer->start(TQApplication::doubleClickInterval(), false);
 	
 	me->accept();
 }
 
-void EvaSystemTray::mouseDoubleClickEvent( QMouseEvent *me )
+void EvaSystemTray::mouseDoubleClickEvent( TQMouseEvent *me )
 {
 	if(clickTimer->isActive())
 		clickTimer->stop();
@@ -246,14 +246,14 @@ void EvaSystemTray::mouseDoubleClickEvent( QMouseEvent *me )
 void EvaSystemTray::slotClickTimeout( )
 {
 	if(clickTimer->isActive()){
-		statusMenu->popup(QCursor::pos());
+		statusMenu->popup(TQCursor::pos());
 	}
 	clickTimer->stop();
 }
 
 void EvaSystemTray::minMaxAction( )
 {
-	KAction* action = KSystemTray::actionCollection()->action("minimizeRestore");
+	TDEAction* action = KSystemTray::actionCollection()->action("minimizeRestore");
 	if(action)
 		action->activate();
 }
@@ -269,7 +269,7 @@ void EvaSystemTray::slotTimeout()
 		return;
 	}
 	if(isBlinkOn){
-		QLabel::setPixmap(QPixmap());
+		TQLabel::setPixmap(TQPixmap());
 		isBlinkOn = false;
 	}else{
 		int id = messageStack.top();
@@ -282,12 +282,12 @@ void EvaSystemTray::slotTimeout()
 		
 		if(id != -1 && face == -2){
 			if(images)
-				setIconTo(images->getIcon("QUN"));
+				setIconTo(images->getIcon("TQUN"));
 		}
 		
 		if(id != -1 && face != -1 && face != -2){
 			if(images){
-				QPixmap *pic = images->getUserHeadPixmap(id);
+				TQPixmap *pic = images->getUserHeadPixmap(id);
 				if(!pic)
 					pic = images->getFace(images->getFaceFileIndex(face));
 				setIconTo(pic);
@@ -297,7 +297,7 @@ void EvaSystemTray::slotTimeout()
 	}
 }
 
-void EvaSystemTray::setIconTo( QPixmap * pix )
+void EvaSystemTray::setIconTo( TQPixmap * pix )
 {
 	if(!pix) return;
 	bool timerRunning = false;
@@ -305,11 +305,11 @@ void EvaSystemTray::setIconTo( QPixmap * pix )
 		blinkTimer->stop();
 		timerRunning = true;
 	}
-	QMovie *mov = movie();
+	TQMovie *mov = movie();
 	if(mov) mov->pause();
 	
-	QImage img(pix->convertToImage().smoothScale(16, 16));
-	QLabel::setPixmap(QPixmap(img));
+	TQImage img(pix->convertToImage().smoothScale(16, 16));
+	TQLabel::setPixmap(TQPixmap(img));
 	if(timerRunning)
 		blinkTimer->start(300, false);
 }

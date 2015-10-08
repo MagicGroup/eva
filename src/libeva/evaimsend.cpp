@@ -30,7 +30,7 @@
 #include <cstdlib>
 
 SendIM::SendIM(const unsigned short type)
-	: OutPacket(QQ_CMD_SEND_IM, true),
+	: OutPacket(TQQ_CMD_SEND_IM, true),
 	receiver(0),
 	face(0),
 	contentType(type)
@@ -74,8 +74,8 @@ int SendIM::putBody(unsigned char *buf)
 	pos += EvaUtil::write32(buf+pos, receiver);
 	
 	// bit 18-33 file transfer session key
-	memcpy( buf+pos, getFileSessionKey(), QQ_KEY_LENGTH);
-	pos+=QQ_KEY_LENGTH;
+	memcpy( buf+pos, getFileSessionKey(), TQQ_KEY_LENGTH);
+	pos+=TQQ_KEY_LENGTH;
 	
 	// bit 34-35 contents type ( is it normal text message or file transfer...)
 	pos += EvaUtil::write16(buf+pos, contentType);
@@ -100,8 +100,8 @@ int SendIM::putBody(unsigned char *buf)
 	// font information, set as 1
 	buf[pos++] = 0x01;
 
-	if(contentType == QQ_IM_NORMAL_TEXT){
-		// note that, for QQ_IM_NORMAL_TEXT the contents should 
+	if(contentType == TQQ_IM_NORMAL_TEXT){
+		// note that, for TQQ_IM_NORMAL_TEXT the contents should 
 		// be 4 bytes(multi-fragment information) more than others
 		pos+= putContents(buf+pos);  // put all contents in	
 	} else {
@@ -126,14 +126,14 @@ int SendIM::putContents(unsigned char *buf)
 short SendTextIMPacket::messageID = 0;
 
 SendTextIMPacket::SendTextIMPacket()
-	: SendIM(QQ_IM_NORMAL_TEXT),
-	encoding(QQ_IM_ENCODING_GB),
+	: SendIM(TQQ_IM_NORMAL_TEXT),
+	encoding(TQQ_IM_ENCODING_GB),
 	red(0),green(0),blue(0),
 	bold(false),italic(false),underline(false),
 	fontSize(0x09),
 	fontFlag(0x09),
 	message("Hello, I am using Eva."),
-	replyType(QQ_IM_NORMAL_REPLY)
+	replyType(TQQ_IM_NORMAL_REPLY)
 {
 	char *fname = (char *)malloc(5);
         fname[0] = 0xcb;
@@ -235,9 +235,9 @@ void SendTextIMPacket::setFontSize(char fontSize)
 void SendTextIMPacket::setAutoReply(const bool isNormal)
 {
 	if(isNormal)
-		replyType = QQ_IM_NORMAL_REPLY;
+		replyType = TQQ_IM_NORMAL_REPLY;
 	else
-		replyType = QQ_IM_AUTO_REPLY;
+		replyType = TQQ_IM_AUTO_REPLY;
 }
 
 int SendTextIMPacket::putContents(unsigned char *buf) 
@@ -253,7 +253,7 @@ int SendTextIMPacket::putContents(unsigned char *buf)
 	bool hasImage = false;
 	std::string str2send = EvaUtil::convertToSend(message, &hasImage);
 
-	buf[pos++] = hasImage?QQ_IM_IMAGE_REPLY:replyType; // auto-reply or not
+	buf[pos++] = hasImage?TQQ_IM_IMAGE_REPLY:replyType; // auto-reply or not
 
 	memcpy(buf+pos, str2send.c_str(), str2send.length());
 	pos += str2send.length();
@@ -334,7 +334,7 @@ SendIMReplyPacket &SendIMReplyPacket::operator=(const SendIMReplyPacket &rhs )
 
 const bool SendIMReplyPacket::isSentOK() const
 {
-	 return replyCode == QQ_SEND_IM_REPLY_OK;
+	 return replyCode == TQQ_SEND_IM_REPLY_OK;
 }
 
 void SendIMReplyPacket::parseBody()
@@ -347,13 +347,13 @@ void SendIMReplyPacket::parseBody()
 
 
 SendFileRequestPacket::SendFileRequestPacket( )
-	: SendIM(QQ_IM_UDP_REQUEST)
+	: SendIM(TQQ_IM_UDP_REQUEST)
 	, m_FileName("")
 	, m_FileSize(0)
 	, m_DirectPort(0)
 	, m_WanPort(0)
 	, m_WanIp(0)
-	, m_TransferType(QQ_TRANSFER_FACE)
+	, m_TransferType(TQQ_TRANSFER_FACE)
 {
 }
 
@@ -427,7 +427,7 @@ SendFileExRequestPacket::SendFileExRequestPacket( const short cmd )
 	, m_FileSize(0)
 	, m_WanPort(0)
 	, m_WanIp(0)
-	, m_TransferType(QQ_TRANSFER_FILE)
+	, m_TransferType(TQQ_TRANSFER_FILE)
 {
 }
 
@@ -460,15 +460,15 @@ int SendFileExRequestPacket::putContents( unsigned char * buf )
 	buf[pos++] = 0x66;  // unknown byte, 0x66, but sometimes is 0x67
 
 	// 2 bytes, 0x0000 ( if is Cancellation Request,this part still here? 
-	// no, if not QQ_IM_EX_REQUEST_CANCELED command, this part will be here.:)
-	if(getContentType() != QQ_IM_EX_REQUEST_CANCELLED) pos+=EvaUtil::write16(buf+pos, 0x00);
+	// no, if not TQQ_IM_EX_REQUEST_CANCELED command, this part will be here.:)
+	if(getContentType() != TQQ_IM_EX_REQUEST_CANCELLED) pos+=EvaUtil::write16(buf+pos, 0x00);
 
 	pos+=EvaUtil::write32(buf+pos, 1); // 4 bytes, 0x00000001
 	pos+=EvaUtil::write16(buf+pos, 0x00); // 2 bytes, 0x0000
 	pos+=EvaUtil::write16(buf+pos, m_SessionId); // can it be random number ?
 
-	if(getContentType() != QQ_IM_EX_REQUEST_CANCELLED){
-		if(getContentType() == QQ_IM_EX_REQUEST_ACCEPTED){
+	if(getContentType() != TQQ_IM_EX_REQUEST_CANCELLED){
+		if(getContentType() == TQQ_IM_EX_REQUEST_ACCEPTED){
 			pos+=EvaUtil::write32(buf+pos, m_WanIp); // big endian
 			memset(buf+pos, 0, 8); pos+=8;
 		}else {
@@ -477,7 +477,7 @@ int SendFileExRequestPacket::putContents( unsigned char * buf )
 		}
 	
 		buf[pos++] = 0x02; // unknown, 0x02 or 0x04
-		if(getContentType() == QQ_IM_TCP_REQUEST)
+		if(getContentType() == TQQ_IM_TCP_REQUEST)
 			EvaUtil::write16(buf+pos, 0x0102);
 		else
 			memset(buf+pos, 0, 2);
@@ -488,18 +488,18 @@ int SendFileExRequestPacket::putContents( unsigned char * buf )
 
 	memset(buf+pos, 0, 2); pos+=2;
 
-	if(getContentType() == QQ_IM_EX_REQUEST_ACCEPTED){ // QQ_IM_EX_REQUEST_ACCEPTED finished here
+	if(getContentType() == TQQ_IM_EX_REQUEST_ACCEPTED){ // TQQ_IM_EX_REQUEST_ACCEPTED finished here
 		memset(buf+pos, 0, 2); pos+=2;
 		return pos;
 	}
 
-	if(getContentType() == QQ_IM_EX_REQUEST_CANCELLED){ // QQ_IM_EX_REQUEST_CANCELED finished here
+	if(getContentType() == TQQ_IM_EX_REQUEST_CANCELLED){ // TQQ_IM_EX_REQUEST_CANCELED finished here
 		memset(buf+pos, 0, 6); pos+=6;
 		return pos;
 	}
 		
 	int offset = 0;
-	if(getContentType() == QQ_IM_EX_UDP_REQUEST){
+	if(getContentType() == TQQ_IM_EX_UDP_REQUEST){
 		offset = pos;
 		pos+=2;
 		buf[pos++] = 0x01; // unknown
@@ -550,10 +550,10 @@ int SendFileExRequestPacket::putContents( unsigned char * buf )
 
 
 SendIpExNotifyPacket::SendIpExNotifyPacket( const bool isSender )
-	: SendIM(QQ_IM_EX_NOTIFY_IP)
+	: SendIM(TQQ_IM_EX_NOTIFY_IP)
 	, m_IsSender(isSender)
-	, m_TransferType(QQ_TRANSFER_FILE)
-	, m_ConnectMode(QQ_TRANSFER_FILE_UDP)
+	, m_TransferType(TQQ_TRANSFER_FILE)
+	, m_ConnectMode(TQQ_TRANSFER_FILE_UDP)
 	, m_SessionId(0)
 	, m_WanIp1(0), m_WanPort1(0)
 	, m_WanIp2(0), m_WanPort2(0)
@@ -683,9 +683,9 @@ int SendIpExNotifyPacket::putContents( unsigned char * buf )
 
 
 SendFileNotifyAgentPacket::SendFileNotifyAgentPacket()
-	: SendIM(QQ_IM_NOTIFY_FILE_AGENT_INFO)
-	, m_TransferType(QQ_TRANSFER_FILE)
-	, m_ConnectMode(QQ_TRANSFER_FILE_TCP)
+	: SendIM(TQQ_IM_NOTIFY_FILE_AGENT_INFO)
+	, m_TransferType(TQQ_TRANSFER_FILE)
+	, m_ConnectMode(TQQ_TRANSFER_FILE_TCP)
 {
 }
 
@@ -734,14 +734,14 @@ int SendFileNotifyAgentPacket::putContents(unsigned char *buf)
 
 
 SendTempSessionTextIMPacket::SendTempSessionTextIMPacket()
-: OutPacket(QQ_CMD_TEMP_SESSION_OP,true),
-encoding(QQ_IM_ENCODING_GB),
+: OutPacket(TQQ_CMD_TEMP_SESSION_OP,true),
+encoding(TQQ_IM_ENCODING_GB),
 red(0),green(0),blue(0),
 bold(false),italic(false),underline(false),
 fontSize(0x09),
 fontFlag(0x09),
 message("Hello, I am using Eva."),
-subcommand(QQ_SUB_CMD_SEND_TEMP_SESSION_IM),
+subcommand(TQQ_SUB_CMD_SEND_TEMP_SESSION_IM),
 authInfo(NULL)
 {
 	char *fname = (char *)malloc(5);
@@ -866,7 +866,7 @@ int SendTempSessionTextIMPacket::putBody(unsigned char *buf)
 	unsigned short sht;
 
 	switch(subcommand) {
-			case QQ_SUB_CMD_SEND_TEMP_SESSION_IM:
+			case TQQ_SUB_CMD_SEND_TEMP_SESSION_IM:
 				// ±µ¦¬ªÌ
 				rev=htonl(getReceiver());
 				memmove(buf+pos,&rev,4);

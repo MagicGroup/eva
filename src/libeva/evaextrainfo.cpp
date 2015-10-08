@@ -28,13 +28,13 @@
 #include <cstring>
 
 RequestExtraInfoPacket::RequestExtraInfoPacket()
-	: OutPacket(QQ_CMD_REQUEST_EXTRA_INFORMATION, true), 
+	: OutPacket(TQQ_CMD_REQUEST_EXTRA_INFORMATION, true), 
 	mOffset(0)
 {
 }
 
 RequestExtraInfoPacket::RequestExtraInfoPacket(const unsigned short offset)
-	: OutPacket(QQ_CMD_REQUEST_EXTRA_INFORMATION, true), 
+	: OutPacket(TQQ_CMD_REQUEST_EXTRA_INFORMATION, true), 
 	mOffset(offset)
 {
 }
@@ -116,7 +116,7 @@ void RequestExtraInfoReplyPacket::parseBody()
 /* =========================================================== */
 
 SignaturePacket::SignaturePacket( const unsigned char type )
-	: OutPacket(QQ_CMD_SIGNATURE_OP, true), mType(type)
+	: OutPacket(TQQ_CMD_SIGNATURE_OP, true), mType(type)
 {
 }
 
@@ -141,16 +141,16 @@ int SignaturePacket::putBody( unsigned char * buf )
 	buf[pos++] = mType;
 	
 	switch(mType){
-	case QQ_SIGNATURE_MODIFY:{
+	case TQQ_SIGNATURE_MODIFY:{
 		buf[pos++] = 0x00;
 		int len = mSignature.length();
 		buf[pos++] = 0xff & len;
 		memcpy(buf + pos, mSignature.c_str(), len); pos+=len;
 		}
 		break;
-	case QQ_SIGNATURE_DELETE:
+	case TQQ_SIGNATURE_DELETE:
 		break;
-	case QQ_SIGNATURE_REQUEST:{
+	case TQQ_SIGNATURE_REQUEST:{
 		unsigned short tmp2;
 		tmp2 = htons(mMembers.size());
 		memcpy(buf + pos, &tmp2, 2); pos+=2;
@@ -200,10 +200,10 @@ void SignatureReplyPacket::parseBody( )
 	if(mReplyCode != 0x00) return;
 	
 	switch(mType){
-	case QQ_SIGNATURE_MODIFY:
-	case QQ_SIGNATURE_DELETE:
+	case TQQ_SIGNATURE_MODIFY:
+	case TQQ_SIGNATURE_DELETE:
 		break;
-	case QQ_SIGNATURE_REQUEST:{
+	case TQQ_SIGNATURE_REQUEST:{
 		uint tmp4;
 		memcpy(&tmp4, decryptedBuf+pos, 4); pos+=4; // next start QQ number must equal or greater than this number
 		mNextStartId = ntohl(tmp4);

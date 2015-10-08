@@ -22,27 +22,27 @@
 #define EVASYSTEMTRAY_H
 
 #include <ksystemtray.h>
-#include <qvaluestack.h>
+#include <ntqvaluestack.h>
 
 class EvaImageResource;
-class KPopupMenu;
-class QMouseEvent;
-class QTimer;
-class QPixmap;
+class TDEPopupMenu;
+class TQMouseEvent;
+class TQTimer;
+class TQPixmap;
 
 class EvaSystemTray : public KSystemTray
 {
 	Q_OBJECT
 public:
-	EvaSystemTray(QWidget* parent = 0, const char* name = 0);
+	EvaSystemTray(TQWidget* parent = 0, const char* name = 0);
 	EvaSystemTray():KSystemTray() {}
 	~EvaSystemTray();
 	
 	void setImagesResource(EvaImageResource *res = 0);
-	void setupMenus(KPopupMenu *sys, KPopupMenu *status);
+	void setupMenus(TDEPopupMenu *sys, TDEPopupMenu *status);
 	void reset();
 public slots:	
-	void changeToolTip(const unsigned int id, const QString &nick, const short face);
+	void changeToolTip(const unsigned int id, const TQString &nick, const short face);
 	void setOnline();
 	void setOffline();
 	void setLeave();
@@ -59,21 +59,21 @@ signals:
 	void requestQunChat(const unsigned int id);
 	void requestSystemMessage();
 protected:
-	virtual void mousePressEvent(QMouseEvent *e);
-	virtual void mouseDoubleClickEvent( QMouseEvent *me );
+	virtual void mousePressEvent(TQMouseEvent *e);
+	virtual void mouseDoubleClickEvent( TQMouseEvent *me );
 private:
 	EvaImageResource *images;
-	KPopupMenu *sysMenu;
-	KPopupMenu *statusMenu;
-	QTimer *blinkTimer;
-	QTimer *clickTimer;
-	QPixmap *statusPix;
+	TDEPopupMenu *sysMenu;
+	TDEPopupMenu *statusMenu;
+	TQTimer *blinkTimer;
+	TQTimer *clickTimer;
+	TQPixmap *statusPix;
 	bool isBlinkOn;
 	
-	QValueStack<int> messageStack; // store user qq id or -1 for system message
-	QValueStack<int> iconStack; // store the corresponding face number or -1 for system message icon
+	TQValueStack<int> messageStack; // store user qq id or -1 for system message
+	TQValueStack<int> iconStack; // store the corresponding face number or -1 for system message icon
 	
-	void setIconTo(QPixmap *pix);
+	void setIconTo(TQPixmap *pix);
 private slots:
 	void slotTimeout();
 	void slotClickTimeout();

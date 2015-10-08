@@ -1280,7 +1280,7 @@ INCLUDE_FILE_PATTERNS  =
 # undefined via #undef or recursively expanded use the := operator
 # instead of the = operator.
 
-PREDEFINED             = QT_VERSION=320 \
+PREDEFINED             = TQT_VERSION=320 \
                          __cplusplus \
                          Q_WS_X11
 

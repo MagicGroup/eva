@@ -30,34 +30,34 @@
 #include "evauser.h"
 #include "evautil.h"
 
-#include <qcombobox.h>
-#include <qpushbutton.h>
-#include <qslider.h>
-#include <qtextedit.h>
-#include <qlineedit.h>
-#include <qspinbox.h>
-#include <qcheckbox.h>
-#include <qlabel.h>
-#include <qfiledialog.h>
-#include <klocale.h>
+#include <ntqcombobox.h>
+#include <ntqpushbutton.h>
+#include <ntqslider.h>
+#include <ntqtextedit.h>
+#include <ntqlineedit.h>
+#include <ntqspinbox.h>
+#include <ntqcheckbox.h>
+#include <ntqlabel.h>
+#include <ntqfiledialog.h>
+#include <tdelocale.h>
 #include <inttypes.h>
 
-#include <qlistview.h>
-#include <qheader.h>
-#include <qwidgetstack.h>
-#include <qiconview.h>
-#include <qradiobutton.h>
-#include <qtextcodec.h>
-#include <qtimer.h>
-#include <qtoolbutton.h>
+#include <ntqlistview.h>
+#include <ntqheader.h>
+#include <ntqwidgetstack.h>
+#include <ntqiconview.h>
+#include <ntqradiobutton.h>
+#include <ntqtextcodec.h>
+#include <ntqtimer.h>
+#include <ntqtoolbutton.h>
 #include <krun.h>
 #include <kpushbutton.h>
 #include <kcolorcombo.h>
-#include <kmessagebox.h>
+#include <tdemessagebox.h>
 #include <kapp.h>
 
 EvaImageResource *EvaSysSettingWindow::faces = NULL;
-EvaSysSettingWindow::EvaSysSettingWindow( QStringList &user, EvaImageResource * res, EvaUserSetting * setting , QWidget *parent)
+EvaSysSettingWindow::EvaSysSettingWindow( TQStringList &user, EvaImageResource * res, EvaUserSetting * setting , TQWidget *parent)
 	: EvaSysSettingUIBase(parent, 0, WType_Dialog | WShowModal),
 	details(user), selectedFaceIndex(0), isSignatureChanged(false)
 {
@@ -75,159 +75,159 @@ EvaSysSettingWindow::EvaSysSettingWindow( QStringList &user, EvaImageResource * 
 	slotCbbQuickNoActivated(0);
 	slotAuthChanged();
 
-	QObject::connect(pbFaceDefault, SIGNAL(clicked()), SLOT(slotPbFaceDefaultClicked()));
+	TQObject::connect(pbFaceDefault, SIGNAL(clicked()), SLOT(slotPbFaceDefaultClicked()));
 	
-	QObject::connect(pbApply, SIGNAL(clicked()), SLOT(slotPbApplyClicked()));
-	QObject::connect(pbCancel, SIGNAL(clicked()), SLOT(close()));
-	QObject::connect(pbOk, SIGNAL(clicked()), SLOT(slotPbOKClicked()));
-	QObject::connect(sliderFaceSize, SIGNAL(valueChanged(int)), SLOT(slotFaceSizeChanged(int)));
+	TQObject::connect(pbApply, SIGNAL(clicked()), SLOT(slotPbApplyClicked()));
+	TQObject::connect(pbCancel, SIGNAL(clicked()), SLOT(close()));
+	TQObject::connect(pbOk, SIGNAL(clicked()), SLOT(slotPbOKClicked()));
+	TQObject::connect(sliderFaceSize, SIGNAL(valueChanged(int)), SLOT(slotFaceSizeChanged(int)));
 	
-	QObject::connect(kkbtnShortKey, SIGNAL(capturedShortcut(const KShortcut &)), SLOT(slotCapturedShortcut(const KShortcut &)));
+	TQObject::connect(kkbtnShortKey, SIGNAL(capturedShortcut(const TDEShortcut &)), SLOT(slotCapturedShortcut(const TDEShortcut &)));
 	
-	QObject::connect(pbTheme, SIGNAL(clicked()), SLOT(slotPbThemeClicked()));
-	QObject::connect(pbSound, SIGNAL(clicked()), SLOT(slotPbSoundClicked()));
+	TQObject::connect(pbTheme, SIGNAL(clicked()), SLOT(slotPbThemeClicked()));
+	TQObject::connect(pbSound, SIGNAL(clicked()), SLOT(slotPbSoundClicked()));
 	
-	QObject::connect(cbbAutoNo, SIGNAL(activated(int)), SLOT(slotCbbAutoNoActivated(int)));
-	QObject::connect(pbAutoNew, SIGNAL(clicked()), SLOT(slotPbAutoNewClicked()));
-	QObject::connect(pbAutoDelete, SIGNAL(clicked()), SLOT(slotPbAutoDeleteClicked()));
-	QObject::connect(teAutoMessage, SIGNAL(textChanged()), SLOT(slotTeAutoTextChanged()));
+	TQObject::connect(cbbAutoNo, SIGNAL(activated(int)), SLOT(slotCbbAutoNoActivated(int)));
+	TQObject::connect(pbAutoNew, SIGNAL(clicked()), SLOT(slotPbAutoNewClicked()));
+	TQObject::connect(pbAutoDelete, SIGNAL(clicked()), SLOT(slotPbAutoDeleteClicked()));
+	TQObject::connect(teAutoMessage, SIGNAL(textChanged()), SLOT(slotTeAutoTextChanged()));
 	
-	QObject::connect(cbbQuickNo, SIGNAL(activated(int)), SLOT(slotCbbQuickNoActivated(int)));
-	QObject::connect(pbQuickNew, SIGNAL(clicked()), SLOT(slotPbQuickNewClicked()));
-	QObject::connect(pbQuickDelete, SIGNAL(clicked()), SLOT(slotPbQuickDeleteClicked()));
-	QObject::connect(teQuickMessage, SIGNAL(textChanged()), SLOT(slotTeQuickTextChanged()));
+	TQObject::connect(cbbQuickNo, SIGNAL(activated(int)), SLOT(slotCbbQuickNoActivated(int)));
+	TQObject::connect(pbQuickNew, SIGNAL(clicked()), SLOT(slotPbQuickNewClicked()));
+	TQObject::connect(pbQuickDelete, SIGNAL(clicked()), SLOT(slotPbQuickDeleteClicked()));
+	TQObject::connect(teQuickMessage, SIGNAL(textChanged()), SLOT(slotTeQuickTextChanged()));
 	
 	//connect ListView to the WidgetStack,add by casper
-	QObject::connect(lvSettingItem, SIGNAL(clicked(QListViewItem *)), SLOT(slotSettingListItemClicked(QListViewItem *)));
+	TQObject::connect(lvSettingItem, SIGNAL(clicked(TQListViewItem *)), SLOT(slotSettingListItemClicked(TQListViewItem *)));
 	//click face button then show the IconView
-	QObject::connect(pbChangeFace,SIGNAL(clicked()),SLOT(slotPbFaceClicked()));
+	TQObject::connect(pbChangeFace,SIGNAL(clicked()),SLOT(slotPbFaceClicked()));
 	//double click the face Icon in the IconView
-	QObject::connect( ivFace, SIGNAL( doubleClicked(QIconViewItem*) ), SLOT( FaceChoose(QIconViewItem*) ) );
+	TQObject::connect( ivFace, SIGNAL( doubleClicked(TQIconViewItem*) ), SLOT( FaceChoose(TQIconViewItem*) ) );
 	//if the text of signature changed
-	QObject::connect( teSignature, SIGNAL(textChanged()), SLOT(slotSignatureChanged()));
+	TQObject::connect( teSignature, SIGNAL(textChanged()), SLOT(slotSignatureChanged()));
 	
-	//QQShow
-	QObject::connect( tbtnShop, SIGNAL( clicked() ),  SLOT( slotShopClicked() ) );
-	QObject::connect( tbtnAlbum, SIGNAL( clicked() ),  SLOT( slotAlbumClicked() ) );
-	QObject::connect( tbtnHome, SIGNAL( clicked() ),  SLOT( slotHomeClicked() ) );
-	QObject::connect( kpbUpdateShow, SIGNAL( clicked() ),  SLOT( slotUpdateQQShow() ) );
+	//TQQShow
+	TQObject::connect( tbtnShop, SIGNAL( clicked() ),  SLOT( slotShopClicked() ) );
+	TQObject::connect( tbtnAlbum, SIGNAL( clicked() ),  SLOT( slotAlbumClicked() ) );
+	TQObject::connect( tbtnHome, SIGNAL( clicked() ),  SLOT( slotHomeClicked() ) );
+	TQObject::connect( kpbUpdateShow, SIGNAL( clicked() ),  SLOT( slotUpdateTQQShow() ) );
 	
 	//the following connection check if anything of Setting Item changed ,then make apply enable;
-	QObject::connect( leNickName, SIGNAL( textChanged( const QString & )), SLOT( slotUserInfoChanged() ) );
-	QObject::connect( leRealName, SIGNAL( textChanged( const QString & )), SLOT( slotUserInfoChanged() ) );
-	QObject::connect( leAge, SIGNAL( textChanged( const QString & )), SLOT( slotUserInfoChanged() ) );
-	QObject::connect( leSchool, SIGNAL( textChanged( const QString & )), SLOT( slotUserInfoChanged() ) );
-	QObject::connect( leHomePage, SIGNAL( textChanged( const QString & )), SLOT( slotUserInfoChanged() ) );
-	QObject::connect( teSignature, SIGNAL(textChanged()), SLOT( slotUserInfoChanged() ) );
-	QObject::connect( teAboutMe, SIGNAL(textChanged()), SLOT( slotUserInfoChanged() ) );
-	QObject::connect( ivFace, SIGNAL( doubleClicked(QIconViewItem*) ), SLOT( slotUserInfoChanged() ) );
-	QObject::connect( cbSex, SIGNAL( activated( int )), SLOT( slotUserInfoChanged() ) );
-	QObject::connect( cbOccupation, SIGNAL( textChanged( const QString & )), SLOT( slotUserInfoChanged() ) );
-	QObject::connect( cbZodiac, SIGNAL( activated( int )), SLOT( slotUserInfoChanged() ) );
-	QObject::connect( cbHoroscape, SIGNAL( activated( int )), SLOT( slotUserInfoChanged() ) );
-	QObject::connect( cbBlood, SIGNAL( activated( int )), SLOT( slotUserInfoChanged() ) );
+	TQObject::connect( leNickName, SIGNAL( textChanged( const TQString & )), SLOT( slotUserInfoChanged() ) );
+	TQObject::connect( leRealName, SIGNAL( textChanged( const TQString & )), SLOT( slotUserInfoChanged() ) );
+	TQObject::connect( leAge, SIGNAL( textChanged( const TQString & )), SLOT( slotUserInfoChanged() ) );
+	TQObject::connect( leSchool, SIGNAL( textChanged( const TQString & )), SLOT( slotUserInfoChanged() ) );
+	TQObject::connect( leHomePage, SIGNAL( textChanged( const TQString & )), SLOT( slotUserInfoChanged() ) );
+	TQObject::connect( teSignature, SIGNAL(textChanged()), SLOT( slotUserInfoChanged() ) );
+	TQObject::connect( teAboutMe, SIGNAL(textChanged()), SLOT( slotUserInfoChanged() ) );
+	TQObject::connect( ivFace, SIGNAL( doubleClicked(TQIconViewItem*) ), SLOT( slotUserInfoChanged() ) );
+	TQObject::connect( cbSex, SIGNAL( activated( int )), SLOT( slotUserInfoChanged() ) );
+	TQObject::connect( cbOccupation, SIGNAL( textChanged( const TQString & )), SLOT( slotUserInfoChanged() ) );
+	TQObject::connect( cbZodiac, SIGNAL( activated( int )), SLOT( slotUserInfoChanged() ) );
+	TQObject::connect( cbHoroscape, SIGNAL( activated( int )), SLOT( slotUserInfoChanged() ) );
+	TQObject::connect( cbBlood, SIGNAL( activated( int )), SLOT( slotUserInfoChanged() ) );
 	
-	QObject::connect( cbArea, SIGNAL( textChanged( const QString & )), SLOT( slotUserInfoChanged() ) );
-	QObject::connect( cbProvince, SIGNAL( textChanged( const QString & )), SLOT( slotUserInfoChanged() ) );
-	QObject::connect( cbCity, SIGNAL( textChanged( const QString & )), SLOT( slotUserInfoChanged() ) );
-	QObject::connect( leZipCode, SIGNAL( textChanged( const QString & )), SLOT( slotUserInfoChanged() ) );
-	QObject::connect( leEmail, SIGNAL( textChanged( const QString & )), SLOT( slotUserInfoChanged() ) );
-	QObject::connect( leAddress, SIGNAL( textChanged( const QString & )), SLOT( slotUserInfoChanged() ) );
-	QObject::connect( lePhone, SIGNAL( textChanged( const QString & )), SLOT( slotUserInfoChanged() ) );
-	QObject::connect( leMobile, SIGNAL( textChanged( const QString & )), SLOT( slotUserInfoChanged() ) );
-	QObject::connect( rbPublic, SIGNAL( clicked() ), SLOT( slotUserInfoChanged() ) );
-	QObject::connect( rbProtect, SIGNAL( clicked() ), SLOT( slotUserInfoChanged() ) );
-	QObject::connect( rbPrivate, SIGNAL( clicked() ), SLOT( slotUserInfoChanged() ) );
+	TQObject::connect( cbArea, SIGNAL( textChanged( const TQString & )), SLOT( slotUserInfoChanged() ) );
+	TQObject::connect( cbProvince, SIGNAL( textChanged( const TQString & )), SLOT( slotUserInfoChanged() ) );
+	TQObject::connect( cbCity, SIGNAL( textChanged( const TQString & )), SLOT( slotUserInfoChanged() ) );
+	TQObject::connect( leZipCode, SIGNAL( textChanged( const TQString & )), SLOT( slotUserInfoChanged() ) );
+	TQObject::connect( leEmail, SIGNAL( textChanged( const TQString & )), SLOT( slotUserInfoChanged() ) );
+	TQObject::connect( leAddress, SIGNAL( textChanged( const TQString & )), SLOT( slotUserInfoChanged() ) );
+	TQObject::connect( lePhone, SIGNAL( textChanged( const TQString & )), SLOT( slotUserInfoChanged() ) );
+	TQObject::connect( leMobile, SIGNAL( textChanged( const TQString & )), SLOT( slotUserInfoChanged() ) );
+	TQObject::connect( rbPublic, SIGNAL( clicked() ), SLOT( slotUserInfoChanged() ) );
+	TQObject::connect( rbProtect, SIGNAL( clicked() ), SLOT( slotUserInfoChanged() ) );
+	TQObject::connect( rbPrivate, SIGNAL( clicked() ), SLOT( slotUserInfoChanged() ) );
 	
-	QObject::connect( pbChangePassword, SIGNAL(clicked()), SLOT(slotChangePasswordClicked()));
-	QObject::connect( pbProtectPassword, SIGNAL(clicked()), SLOT(slotProtectPasswordClicked()));
-	QObject::connect( rbAuthNoNeed, SIGNAL( clicked() ), SLOT( slotAuthChanged() ) );
-	QObject::connect( rbAuthNeed, SIGNAL( clicked() ), SLOT( slotAuthChanged() ) );
-	QObject::connect( rbAuthReject, SIGNAL( clicked() ), SLOT( slotAuthChanged() ) );
-	QObject::connect( rbAuthQuest, SIGNAL( clicked() ), SLOT( slotAuthChanged() ) );
-	QObject::connect( cbbQuestion, SIGNAL( textChanged( const QString & ) ), SLOT( slotAuthChanged() ) );
-	QObject::connect( leAnswer, SIGNAL( textChanged( const QString & ) ), SLOT( slotAuthChanged() ) );
+	TQObject::connect( pbChangePassword, SIGNAL(clicked()), SLOT(slotChangePasswordClicked()));
+	TQObject::connect( pbProtectPassword, SIGNAL(clicked()), SLOT(slotProtectPasswordClicked()));
+	TQObject::connect( rbAuthNoNeed, SIGNAL( clicked() ), SLOT( slotAuthChanged() ) );
+	TQObject::connect( rbAuthNeed, SIGNAL( clicked() ), SLOT( slotAuthChanged() ) );
+	TQObject::connect( rbAuthReject, SIGNAL( clicked() ), SLOT( slotAuthChanged() ) );
+	TQObject::connect( rbAuthQuest, SIGNAL( clicked() ), SLOT( slotAuthChanged() ) );
+	TQObject::connect( cbbQuestion, SIGNAL( textChanged( const TQString & ) ), SLOT( slotAuthChanged() ) );
+	TQObject::connect( leAnswer, SIGNAL( textChanged( const TQString & ) ), SLOT( slotAuthChanged() ) );
 	
 	
-	QObject::connect( chbOnlineTip, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( chbMessage, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( chbShowOnlineUsers, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( chbSystemBroadcast, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( chbSystemNews, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( chbSound, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( chbSendKey, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( chbShowNickSmiley, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( chbShowSigSeperate, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( sbPageSize, SIGNAL( valueChanged( int ) ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( sbIdleTime, SIGNAL( valueChanged( int ) ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( sliderFaceSize, SIGNAL( valueChanged( int )  ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( kkbtnShortKey, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( chbOnlineTip, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( chbMessage, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( chbShowOnlineUsers, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( chbSystemBroadcast, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( chbSystemNews, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( chbSound, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( chbSendKey, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( chbShowNickSmiley, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( chbShowSigSeperate, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( sbPageSize, SIGNAL( valueChanged( int ) ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( sbIdleTime, SIGNAL( valueChanged( int ) ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( sliderFaceSize, SIGNAL( valueChanged( int )  ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( kkbtnShortKey, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
 	
-	QObject::connect( leThemePath, SIGNAL( textChanged( const QString & )), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( leSoundPath, SIGNAL( textChanged( const QString & )), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( leThemePath, SIGNAL( textChanged( const TQString & )), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( leSoundPath, SIGNAL( textChanged( const TQString & )), SLOT( slotSysSettingChanged() ) );
 	
-	QObject::connect( chbAutoReply, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( pbAutoNew, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( pbAutoDelete, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( pbQuickNew, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( pbQuickDelete, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( chbAutoReply, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( pbAutoNew, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( pbAutoDelete, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( pbQuickNew, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( pbQuickDelete, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
 
-	QObject::connect( wspMainFont->kcbbBuddyNickColor, SIGNAL( activated(int) ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( wspMainFont->chbBuddyNickFontB, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( wspMainFont->chbBuddyNickFontU, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( wspMainFont->chbBuddyNickFontI, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( wspMainFont->kcbbBuddyFlashColor, SIGNAL( activated(int) ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( wspMainFont->chbBuddyFlashFontB, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( wspMainFont->chbBuddyFlashFontU, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( wspMainFont->chbBuddyFlashFontI, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( wspMainFont->kcbbBuddySigColor, SIGNAL( activated(int) ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( wspMainFont->chbBuddySigFontB, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( wspMainFont->chbBuddySigFontU, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( wspMainFont->chbBuddySigFontI, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( wspMainFont->kcbbBuddyNickColor, SIGNAL( activated(int) ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( wspMainFont->chbBuddyNickFontB, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( wspMainFont->chbBuddyNickFontU, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( wspMainFont->chbBuddyNickFontI, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( wspMainFont->kcbbBuddyFlashColor, SIGNAL( activated(int) ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( wspMainFont->chbBuddyFlashFontB, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( wspMainFont->chbBuddyFlashFontU, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( wspMainFont->chbBuddyFlashFontI, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( wspMainFont->kcbbBuddySigColor, SIGNAL( activated(int) ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( wspMainFont->chbBuddySigFontB, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( wspMainFont->chbBuddySigFontU, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( wspMainFont->chbBuddySigFontI, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
 
-	QObject::connect( wspMainFont->kcbbQunNameColor, SIGNAL( activated(int) ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( wspMainFont->chbQunNameFontB, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( wspMainFont->chbQunNameFontU, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( wspMainFont->chbQunNameFontI, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( wspMainFont->kcbbQunFlashColor, SIGNAL( activated(int) ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( wspMainFont->chbQunFlashFontB, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( wspMainFont->chbQunFlashFontU, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( wspMainFont->chbQunFlashFontI, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( wspMainFont->kcbbQunNameColor, SIGNAL( activated(int) ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( wspMainFont->chbQunNameFontB, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( wspMainFont->chbQunNameFontU, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( wspMainFont->chbQunNameFontI, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( wspMainFont->kcbbQunFlashColor, SIGNAL( activated(int) ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( wspMainFont->chbQunFlashFontB, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( wspMainFont->chbQunFlashFontU, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( wspMainFont->chbQunFlashFontI, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
 
-	QObject::connect( wspMainFont->kcbbGroupNameColor, SIGNAL( activated(int) ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( wspMainFont->chbGroupNameFontB, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( wspMainFont->chbGroupNameFontU, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( wspMainFont->chbGroupNameFontI, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( wspMainFont->kcbbGroupFlashColor, SIGNAL( activated(int) ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( wspMainFont->chbGroupFlashFontB, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( wspMainFont->chbGroupFlashFontU, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( wspMainFont->chbGroupFlashFontI, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( wspMainFont->kcbbGroupOnlineColor, SIGNAL( activated(int) ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( wspMainFont->chbGroupOnlineFontB, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( wspMainFont->chbGroupOnlineFontU, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
-	QObject::connect( wspMainFont->chbGroupOnlineFontI, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( wspMainFont->kcbbGroupNameColor, SIGNAL( activated(int) ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( wspMainFont->chbGroupNameFontB, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( wspMainFont->chbGroupNameFontU, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( wspMainFont->chbGroupNameFontI, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( wspMainFont->kcbbGroupFlashColor, SIGNAL( activated(int) ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( wspMainFont->chbGroupFlashFontB, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( wspMainFont->chbGroupFlashFontU, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( wspMainFont->chbGroupFlashFontI, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( wspMainFont->kcbbGroupOnlineColor, SIGNAL( activated(int) ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( wspMainFont->chbGroupOnlineFontB, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( wspMainFont->chbGroupOnlineFontU, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
+	TQObject::connect( wspMainFont->chbGroupOnlineFontI, SIGNAL( clicked() ), SLOT( slotSysSettingChanged() ) );
 
 	
-	//setup Icon of QQShow 
+	//setup Icon of TQQShow 
 	if(faces){
-		QPixmap *icon = faces->getIcon("QQ_SHOP");
+		TQPixmap *icon = faces->getIcon("TQQ_SHOP");
 		if(icon)
-			tbtnShop->setIconSet(QIconSet(*icon));
+			tbtnShop->setIconSet(TQIconSet(*icon));
 	} 
 	if(faces){
-		QPixmap *icon = faces->getIcon("QQ_ALBUM");
+		TQPixmap *icon = faces->getIcon("TQQ_ALBUM");
 		if(icon)
-			tbtnAlbum->setIconSet(QIconSet(*icon));
+			tbtnAlbum->setIconSet(TQIconSet(*icon));
 	}
 	if(faces){
-		QPixmap *icon = faces->getIcon("QQ_HOME");
+		TQPixmap *icon = faces->getIcon("TQQ_HOME");
 		if(icon)
-			tbtnHome->setIconSet(QIconSet(*icon));
+			tbtnHome->setIconSet(TQIconSet(*icon));
 	}
 	//show user info in User Info Window
 	UpdateData(true); 
 	if(details.size()!=37) {
-		QTimer::singleShot(500, this, SLOT(slotFirstUpdate()));
+		TQTimer::singleShot(500, this, SLOT(slotFirstUpdate()));
 	}
 	
 	pbApply->setEnabled( FALSE );
@@ -254,7 +254,7 @@ void EvaSysSettingWindow::saveSetting( )
 	userSetting->setShowSignatureInSeperateLine( chbShowSigSeperate->isChecked());
 	userSetting->setSendKeyEnterEnabled(chbSendKey->isChecked());
 	
-	userSetting->setFaceSize(QSize(sliderFaceSize->value(), sliderFaceSize->value()));
+	userSetting->setFaceSize(TQSize(sliderFaceSize->value(), sliderFaceSize->value()));
 	userSetting->setPageSize(sbPageSize->value());
 	
 	userSetting->setMessageShortcut(kkbtnShortKey->shortcut());
@@ -300,7 +300,7 @@ void EvaSysSettingWindow::saveSetting( )
 	//userSetting->setShowOnlineEnabled(false);
 	
 	userSetting->setAutoReplyList(autoList);
-	userSetting->setQuickReplyList(quickList);
+	userSetting->setQuickReplyList(tquickList);
 	userSetting->setIdleMaxTime(sbIdleTime->value());
 	
 	userSetting->saveSettings();
@@ -375,13 +375,13 @@ void EvaSysSettingWindow::loadSetting( const bool isLoadDefault)
 		autoList = userSetting->getAutoReplyList();
 		cbbAutoNo->clear();
 		for(uint i=0; i<autoList.size(); i++)
-			cbbAutoNo->insertItem(QString::number(i+1));
+			cbbAutoNo->insertItem(TQString::number(i+1));
 		slotCbbAutoNoActivated(0);
 				
-		quickList = userSetting->getQuickReplyList();
+		tquickList = userSetting->getQuickReplyList();
 		cbbQuickNo->clear();
-		for(uint i=0; i<quickList.size(); i++)
-			cbbQuickNo->insertItem(QString::number(i+1));
+		for(uint i=0; i<tquickList.size(); i++)
+			cbbQuickNo->insertItem(TQString::number(i+1));
 		slotCbbQuickNoActivated(0);
 	}
 }
@@ -429,7 +429,7 @@ void EvaSysSettingWindow::slotPbApplyClicked( )
 			//emit requestModify(details, leOldPwd->text(), leNewPwd->text());
 			emit requestModify(details, "", "");
 			if(isSignatureChanged){
-				QString contents = teSignature->text();
+				TQString contents = teSignature->text();
 				if(contents.isEmpty()){
 					emit requestDeleteSignature();
 				}else{
@@ -467,25 +467,25 @@ void EvaSysSettingWindow::slotPbOKClicked( )
 
 void EvaSysSettingWindow::slotFaceSizeChanged( int value )
 {
-	QString txt = i18n("large" ) + " (" + QString::number(value) + ")";
+	TQString txt = i18n("large" ) + " (" + TQString::number(value) + ")";
 	lblFaceBig->setText( txt );
 
 	isFaceSizeChanged = TRUE;
 	
 }
 
-void EvaSysSettingWindow::slotCapturedShortcut(const KShortcut &key)
+void EvaSysSettingWindow::slotCapturedShortcut(const TDEShortcut &key)
 {
 	kkbtnShortKey->setShortcut(key, false);
 }
 
 void EvaSysSettingWindow::slotPbThemeClicked( )
 {
-	QFileDialog *fd = new QFileDialog(this, i18n("Choose Theme Path  - Eva"), true);
-	fd->setMode(QFileDialog::DirectoryOnly);
+	TQFileDialog *fd = new TQFileDialog(this, i18n("Choose Theme Path  - Eva"), true);
+	fd->setMode(TQFileDialog::DirectoryOnly);
 	fd->setFilter("Theme (eva.theme)");
-	QString path;
-	if(fd->exec() == QDialog::Accepted)
+	TQString path;
+	if(fd->exec() == TQDialog::Accepted)
 		path = fd->selectedFile();
 	else
 		return;
@@ -497,11 +497,11 @@ void EvaSysSettingWindow::slotPbThemeClicked( )
 
 void EvaSysSettingWindow::slotPbSoundClicked( )
 {
-	QFileDialog *fd = new QFileDialog(this, i18n("Choose Sound Path  - Eva"), true);
-	fd->setMode(QFileDialog::DirectoryOnly);
+	TQFileDialog *fd = new TQFileDialog(this, i18n("Choose Sound Path  - Eva"), true);
+	fd->setMode(TQFileDialog::DirectoryOnly);
 	fd->setFilter("all (*)");
-	QString path;
-	if(fd->exec() == QDialog::Accepted)
+	TQString path;
+	if(fd->exec() == TQDialog::Accepted)
 		path = fd->selectedFile();
 	else
 		return;
@@ -512,7 +512,7 @@ void EvaSysSettingWindow::slotPbSoundClicked( )
 void EvaSysSettingWindow::slotCbbAutoNoActivated( int index)
 {
 	if((uint)index>=autoList.size()) return;
-	std::list<QString>::iterator iter = autoList.begin();
+	std::list<TQString>::iterator iter = autoList.begin();
 	for(int i=0; i<index; i++)
 		iter++;
 	teAutoMessage->setText(*iter);
@@ -520,7 +520,7 @@ void EvaSysSettingWindow::slotCbbAutoNoActivated( int index)
 
 void EvaSysSettingWindow::slotPbAutoNewClicked( )
 {	
-	cbbAutoNo->insertItem(QString::number(cbbAutoNo->count()+1));
+	cbbAutoNo->insertItem(TQString::number(cbbAutoNo->count()+1));
 	cbbAutoNo->setCurrentItem(cbbAutoNo->count()-1);
 	autoList.push_back(teAutoMessage->text());
 	teAutoMessage->selectAll(true);
@@ -528,9 +528,9 @@ void EvaSysSettingWindow::slotPbAutoNewClicked( )
 
 void EvaSysSettingWindow::slotPbAutoDeleteClicked( )
 {
-	QString txt = teAutoMessage->text();
+	TQString txt = teAutoMessage->text();
 	int index = cbbAutoNo->currentItem();
-	std::list<QString>::iterator iter = autoList.begin();
+	std::list<TQString>::iterator iter = autoList.begin();
 	for(int i=0; i<index; i++)
 		iter++;
 	autoList.erase(iter);
@@ -541,10 +541,10 @@ void EvaSysSettingWindow::slotPbAutoDeleteClicked( )
 void EvaSysSettingWindow::slotTeAutoTextChanged()
 {
 	int index = cbbAutoNo->currentItem();
-	QString txt = teAutoMessage->text();
+	TQString txt = teAutoMessage->text();
 	if((uint)index > autoList.size()) return;
 	
-	std::list<QString>::iterator iter = autoList.begin();
+	std::list<TQString>::iterator iter = autoList.begin();
 	for(int i=0; i<index; i++)
 		iter++;
 	*iter = txt;
@@ -552,8 +552,8 @@ void EvaSysSettingWindow::slotTeAutoTextChanged()
 
 void EvaSysSettingWindow::slotCbbQuickNoActivated( int index)
 {
-	if((uint)index>=quickList.size()) return;
-	std::list<QString>::iterator iter = quickList.begin();
+	if((uint)index>=tquickList.size()) return;
+	std::list<TQString>::iterator iter = tquickList.begin();
 	for(int i=0; i<index; i++)
 		iter++;
 	teQuickMessage->setText(*iter);
@@ -561,20 +561,20 @@ void EvaSysSettingWindow::slotCbbQuickNoActivated( int index)
 
 void EvaSysSettingWindow::slotPbQuickNewClicked( )
 {
-	cbbQuickNo->insertItem(QString::number(cbbQuickNo->count()+1));
+	cbbQuickNo->insertItem(TQString::number(cbbQuickNo->count()+1));
 	cbbQuickNo->setCurrentItem(cbbQuickNo->count()-1);
-	quickList.push_back(teQuickMessage->text());
+	tquickList.push_back(teQuickMessage->text());
 	teQuickMessage->selectAll(true);
 }
 
 void EvaSysSettingWindow::slotPbQuickDeleteClicked( )
 {
 	int index = cbbQuickNo->currentItem();
-	if((uint)index > quickList.size()) return;
-	std::list<QString>::iterator iter = quickList.begin();
+	if((uint)index > tquickList.size()) return;
+	std::list<TQString>::iterator iter = tquickList.begin();
 	for(int i=0; i<index; i++)
 		iter++;
-	quickList.erase(iter);
+	tquickList.erase(iter);
 
 	cbbQuickNo->removeItem(cbbQuickNo->count()-1);
 	slotCbbQuickNoActivated(cbbQuickNo->currentItem());
@@ -583,17 +583,17 @@ void EvaSysSettingWindow::slotPbQuickDeleteClicked( )
 void EvaSysSettingWindow::slotTeQuickTextChanged()
 {
 	int index = cbbQuickNo->currentItem();
-	QString txt = teQuickMessage->text();
-	if((uint)index >= quickList.size()) return;
+	TQString txt = teQuickMessage->text();
+	if((uint)index >= tquickList.size()) return;
 	
-	std::list<QString>::iterator iter = quickList.begin();
+	std::list<TQString>::iterator iter = tquickList.begin();
 	for(int i=0; i<index; i++){
 		iter++;
 	}
 	*iter = txt;
 }
 
-void EvaSysSettingWindow::slotSettingListItemClicked(QListViewItem* item)
+void EvaSysSettingWindow::slotSettingListItemClicked(TQListViewItem* item)
 { 
 	if(!item)
 		return;
@@ -657,7 +657,7 @@ void EvaSysSettingWindow::slotSettingListItemClicked(QListViewItem* item)
 	default:
 		break;
 	}
-	//qDebug( item->itemPos() );*/
+	//tqDebug( item->itemPos() );*/
 	
 }
 
@@ -667,9 +667,9 @@ void EvaSysSettingWindow::setupFaces()
 	ivFace->clear();
 	//printf("setupFaces run !\n");
 	for(int i=1; i< MaxFaceNumber; i++){
-		QIconViewItem *item =  new QIconViewItem( ivFace, QString::null );
+		TQIconViewItem *item =  new TQIconViewItem( ivFace, TQString::null );
 		item->setPixmap(*(faces->getFace(i)));
-		item->setKey( QString::number(i));  // set face file index as key
+		item->setKey( TQString::number(i));  // set face file index as key
 	}
 }
 
@@ -682,7 +682,7 @@ void EvaSysSettingWindow::slotPbFaceClicked()
 		ivFace->show();
 }
 
-void EvaSysSettingWindow::FaceChoose( QIconViewItem * item )
+void EvaSysSettingWindow::FaceChoose( TQIconViewItem * item )
 {
 	if(!faces) return;
 	selectedFaceIndex = faces->getFaceID(item->key().toInt());
@@ -699,19 +699,19 @@ bool EvaSysSettingWindow::UpdateData(bool toShow)
 	bool OK;
 	unsigned int id = details[0].toUInt(&OK);
 	if(!OK) return false;
-	slotBuddyQQShowReady(id);
+	slotBuddyTQQShowReady(id);
 	
 	int level = 0;
-	QString signature = "";
+	TQString signature = "";
 	level = EvaMain::user->getLevel();
-	signature = QTextCodec::codecForName("GB18030")->toUnicode(EvaMain::user->getSignature().c_str());
+	signature = TQTextCodec::codecForName("GB18030")->toUnicode(EvaMain::user->getSignature().c_str());
 	
 	int suns, moons, stars;
 	EvaUtil::calcSuns(level, &suns, &moons, &stars);
-	QString strSun =  "<img src=\"" + faces->getIconFullPath("TIME_SUN") + "\"></img>";
-	QString strMoon = "<img src=\"" + faces->getIconFullPath("TIME_MOON") + "\"></img>";
-	QString strStar = "<img src=\"" + faces->getIconFullPath("TIME_STAR") + "\"></img>";
-	QString strLevel;
+	TQString strSun =  "<img src=\"" + faces->getIconFullPath("TIME_SUN") + "\"></img>";
+	TQString strMoon = "<img src=\"" + faces->getIconFullPath("TIME_MOON") + "\"></img>";
+	TQString strStar = "<img src=\"" + faces->getIconFullPath("TIME_STAR") + "\"></img>";
+	TQString strLevel;
 	for(int i=0; i<suns; i++){
 		strLevel += strSun;
 	}
@@ -721,7 +721,7 @@ bool EvaSysSettingWindow::UpdateData(bool toShow)
 	for(int i=0; i<stars; i++){
 		strLevel += strStar;
 	}
-	lblLevelDisplay->setText("(" + QString::number(level) + ")" + strLevel);
+	lblLevelDisplay->setText("(" + TQString::number(level) + ")" + strLevel);
 	lblLevelDisplay->adjustSize();
 	leNumber->setReadOnly(true);
 	if (toShow)
@@ -738,7 +738,7 @@ bool EvaSysSettingWindow::UpdateData(bool toShow)
 		int faceId = details[21].toInt(&ok, 10);
 		if(ok){
 			selectedFaceIndex = faceId;
-			QPixmap *pix = faces->getUserHeadPixmap(id);
+			TQPixmap *pix = faces->getUserHeadPixmap(id);
 			if(!pix) pix = faces->getFace(faces->getFaceFileIndex(faceId));
 			if(pix) lblFace->setPixmap( *pix );
 		}else{
@@ -772,7 +772,7 @@ bool EvaSysSettingWindow::UpdateData(bool toShow)
 				break;
 			default:break;
 		}
-		QString authCode = details[18];
+		TQString authCode = details[18];
 		if ( authCode == "0" ){
 			rbAuthNoNeed->setChecked(true);
 		}else if(authCode == "1"){
@@ -843,7 +843,7 @@ bool EvaSysSettingWindow::UpdateData(bool toShow)
 		details.append(""); // unknown1
 		
 		details.append(""); // unknown2
-		details.append( QString::number(selectedFaceIndex) );printf("face index: %d", selectedFaceIndex);
+		details.append( TQString::number(selectedFaceIndex) );printf("face index: %d", selectedFaceIndex);
 		details.append(leMobile->text( ));
 		details.append(""); // mobile type
 		details.append(teAboutMe->text(  ));
@@ -862,9 +862,9 @@ bool EvaSysSettingWindow::UpdateData(bool toShow)
 			details.append("2");
 		}
         	details.append(leSchool->text( ));
-		details.append(QString::number(cbHoroscape->currentItem(  )));
-		details.append(QString::number(cbZodiac->currentItem(  )));
-		details.append(QString::number(cbBlood->currentItem()));
+		details.append(TQString::number(cbHoroscape->currentItem(  )));
+		details.append(TQString::number(cbZodiac->currentItem(  )));
+		details.append(TQString::number(cbBlood->currentItem()));
 		
 		details.append("0"); // qqshow
 		details.append("0"); // unknown6
@@ -882,7 +882,7 @@ void EvaSysSettingWindow::slotFirstUpdate()
 	emit requestUpdate(id);
 }
 
-void EvaSysSettingWindow::slotDetailsUpdated(QStringList list)
+void EvaSysSettingWindow::slotDetailsUpdated(TQStringList list)
 {
 	if(details[0] != list[0] ) 
 		return;
@@ -917,9 +917,9 @@ void EvaSysSettingWindow::slotUpdateResult(bool ok, bool isSignature)
 }
 
 
-void EvaSysSettingWindow::slotLinkClicked( const QString & url)
+void EvaSysSettingWindow::slotLinkClicked( const TQString & url)
 {
-	QStringList args;
+	TQStringList args;
 	args<<"exec"<< url;
 	kapp->tdeinitExec("kfmclient",args);
 	//KRun::runCommand("konqueror \""+url+"\"");
@@ -927,7 +927,7 @@ void EvaSysSettingWindow::slotLinkClicked( const QString & url)
 
 void EvaSysSettingWindow::slotShopClicked( )
 {
-	QString url = "http://jump.qq.com/clienturl_simp_17?clientuin=" + QString::number(EvaMain::user->getQQ());
+	TQString url = "http://jump.qq.com/clienturl_simp_17?clientuin=" + TQString::number(EvaMain::user->getQQ());
 	url+="&clientkey=";
 	url+=getClientKeyString();
 	slotLinkClicked(url);
@@ -935,7 +935,7 @@ void EvaSysSettingWindow::slotShopClicked( )
 
 void EvaSysSettingWindow::slotAlbumClicked( )
 {
-	QString url = "http://ptlogin.qq.com/qqshowalbum?clientuin=" + QString::number(EvaMain::user->getQQ());
+	TQString url = "http://ptlogin.qq.com/qqshowalbum?clientuin=" + TQString::number(EvaMain::user->getQQ());
 	url+="&clientkey=";
 	url+=getClientKeyString();
 	slotLinkClicked(url);
@@ -943,18 +943,18 @@ void EvaSysSettingWindow::slotAlbumClicked( )
 
 void EvaSysSettingWindow::slotHomeClicked( )
 {
-	QString url = "http://jump.qq.com/clienturl_42?clientuin=" + QString::number(EvaMain::user->getQQ());
+	TQString url = "http://jump.qq.com/clienturl_42?clientuin=" + TQString::number(EvaMain::user->getQQ());
 	url+="&clientkey=";
 	url+=getClientKeyString();
 	slotLinkClicked(url);
 }
 
-const QString EvaSysSettingWindow::getClientKeyString()
+const TQString EvaSysSettingWindow::getClientKeyString()
 {
-	QString key="";
+	TQString key="";
 	int len = Packet::getClientKeyLength();
 	for(int i=0; i<len; i++){
-		QString tmp = QString::number((unsigned char)(Packet::getClientKey()[i]), 16);
+		TQString tmp = TQString::number((unsigned char)(Packet::getClientKey()[i]), 16);
 		if(tmp.length()==1)
 			tmp = "0" + tmp;
 		key+=tmp;
@@ -962,23 +962,23 @@ const QString EvaSysSettingWindow::getClientKeyString()
 	return key.upper();
 }
 
-void EvaSysSettingWindow::slotUpdateQQShow()
+void EvaSysSettingWindow::slotUpdateTQQShow()
 {
 	bool ok;
 	int id = details[0].toInt(&ok, 10);
 	if(ok)
-		emit requestQQShow(id);
+		emit requestTQQShow(id);
 }
 
-void EvaSysSettingWindow::slotBuddyQQShowReady(const unsigned int id)
+void EvaSysSettingWindow::slotBuddyTQQShowReady(const unsigned int id)
 {
 	bool ok;
 	unsigned int qq = details[0].toUInt(&ok, 10);
 	if(!ok) return;
 	if(id != qq) return;
-	QPixmap *pix = faces->getQQShow(id);
+	TQPixmap *pix = faces->getTQQShow(id);
 	if(pix){
-		lblQQShow->setPixmap( *pix);
+		lblTQQShow->setPixmap( *pix);
 	}
 }
 
@@ -1009,7 +1009,7 @@ void EvaSysSettingWindow:: slotSysSettingChanged()
 	pbApply->setEnabled( TRUE );
 }
 
-void EvaSysSettingWindow::closeEvent( QCloseEvent * e )
+void EvaSysSettingWindow::closeEvent( TQCloseEvent * e )
 {	
 	e->accept();
 	deleteLater();
@@ -1029,8 +1029,8 @@ void EvaSysSettingWindow::slotAuthChanged( )
 }
 
 void EvaSysSettingWindow::slotReceivedMyAuthSettings( const unsigned char auth,
-					const QString& question,
-					const QString & answer )
+					const TQString& question,
+					const TQString & answer )
 {
 	if(auth != AUHT_TYPE_QUESTION_GET) return;
 	fraQuestion->setEnabled( true );
@@ -1042,7 +1042,7 @@ void EvaSysSettingWindow::slotUpdateAuthSettingResult( const unsigned char auth,
 {
 	if(auth != AUTH_TYPE_QUESTION_SET) return;
 	if(reply != 0x00){
-		KMessageBox::information(0, QString(i18n("Update authentication question failed!")),
+		KMessageBox::information(0, TQString(i18n("Update authentication question failed!")),
 			i18n("Modify Personal Details"));
 		return;
 	}
@@ -1053,18 +1053,18 @@ void EvaSysSettingWindow::slotUpdateAuthSettingResult( const unsigned char auth,
 
 void EvaSysSettingWindow::slotChangePasswordClicked( )
 {
-	QString url = "http://jump.qq.com/clienturl_173?clientuin=" + QString::number(EvaMain::user->getQQ());
+	TQString url = "http://jump.qq.com/clienturl_173?clientuin=" + TQString::number(EvaMain::user->getQQ());
 	url+= "&clientkey=";
 	url+= getClientKeyString();
 	url+= "&ADUIN=";
-	url+= QString::number(EvaMain::user->getQQ());
+	url+= TQString::number(EvaMain::user->getQQ());
 	url+= "&ADSESSION=1171468766&ADTAG=CLIENT.QQ.1595_Setting_PasswordTab.0";
 	slotLinkClicked(url);
 }
 
 void EvaSysSettingWindow::slotProtectPasswordClicked( )
 {
-	QString url = "http://service.qq.com/psw/psw_id_index.htm?ADUIN=" + QString::number(EvaMain::user->getQQ());
+	TQString url = "http://service.qq.com/psw/psw_id_index.htm?ADUIN=" + TQString::number(EvaMain::user->getQQ());
 	url+= "&ADSESSION=1171468766&ADTAG=CLIENT.QQ.1595_Setting_PasswordTab.0";
 	slotLinkClicked(url);
 }

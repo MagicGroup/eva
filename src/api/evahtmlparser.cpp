@@ -21,15 +21,15 @@
 #include "evahtmlparser.h"
 #include "evapacket.h"
 #include <arpa/inet.h>
-#include <qregexp.h>
-#include <qfile.h>
-#include <qpixmap.h>
+#include <ntqregexp.h>
+#include <ntqfile.h>
+#include <ntqpixmap.h>
 #include <cstring>
 //#include <stdio.h>
 
 unsigned int EvaHtmlParser::tmpNum = 0;
 
-std::list<CustomizedPic> EvaHtmlParser::convertToHtml(QString &txt, bool isURLOn, bool isAbsImgPath, bool useRealFileName)
+std::list<CustomizedPic> EvaHtmlParser::convertToHtml(TQString &txt, bool isURLOn, bool isAbsImgPath, bool useRealFileName)
 {
 	//printf("EvaHtmlParser::convertToHtml before:%s\n", txt.latin1() );
 	// FIXME  by this way, some html code may not be displayed properly
@@ -62,7 +62,7 @@ std::list<CustomizedPic> EvaHtmlParser::convertToHtml(QString &txt, bool isURLOn
 	txt.replace("\"", "&quot;");
 	txt.replace("\n", "<br>");
 
-// 	QRegExp rx2("/(:o|jy|:~|pz|:\\*|se|:\\||fd|dy|:<|ll|:$|hx|:x|bz|:z|shui|:'|dk"
+// 	TQRegExp rx2("/(:o|jy|:~|pz|:\\*|se|:\\||fd|dy|:<|ll|:$|hx|:x|bz|:z|shui|:'|dk"
 // 				"|:\\-\\||gg|:@|fn|:P|tp|:D|cy|:\\)|wx|:\\(|ng|:\\+|kuk|:#|feid"
 // 				"|:Q|zk|:t|tu|;P|tx|;\\-D|ka|;d|baiy|;o|am|:g|jie|\\|\\-\\)|kun"
 // 				"|:\\!|jk|:L|lh|:\\>|hanx|:;|db|;f|fendou|:\\-S|zhm|\\?|yiw"
@@ -79,7 +79,7 @@ std::list<CustomizedPic> EvaHtmlParser::convertToHtml(QString &txt, bool isURLOn
 // 				"|wq|kk|yx|qq|xia|kelian|cd|pj|lq|pp|sa|pc|bq"
 // 				"|gy|qt|cj|an|NO|OK|zhuanquan|kt|ht|ts|hs|jd"
 // 				"|jw|xw|zuotaiji|youtaiji)");
-	QRegExp rx2(	"/(:\\)|wx|:~|pz|:\\*|se|:\\||fd|8-\\)|dy|:<|ll|:$|hx|:x|bz|:z|shui|:'|dk"
+	TQRegExp rx2(	"/(:\\)|wx|:~|pz|:\\*|se|:\\||fd|8-\\)|dy|:<|ll|:$|hx|:x|bz|:z|shui|:'|dk"
 				"|:\\-\\||gg|:@|fn|:P|tp|:D|cy|:o|jy|:\\(|ng|:\\+|kuk|\\-\\-b|lengh|:Q|zk|:t|tu"
 				"|;P|tx|;\\-D|ka|;d|baiy|;o|am|:g|jie|\\|\\-\\)|kun|:\\!|jk|:L|lh|:>|hanx|:;|db"
 				"|;f|fendou|:\\-S|zhm|\\?|yiw|;x|xu|;@|yun|;8|zhem|;\\!|shuai|\\!\\!\\!|kl|xx|qiao|bye|zj"
@@ -95,16 +95,16 @@ std::list<CustomizedPic> EvaHtmlParser::convertToHtml(QString &txt, bool isURLOn
 				"|email|yj|tv|ds|<D>|dd|<J>|mn|<H>|hl|<M>|mamao|<QQ>|qz|<B>|bj|<U>|qsh|<\\!\\!>|xy"
 				"|<~>|duoy|<Z>|xr|<\\*>|xixing|<00>|nv|<11>|nan)");
 
-	QRegExp rx4("(http|ftp)://[a-z0-9._%-]+\\.[a-z0-9._%\\-]+\\.[a-z0-9]{1,4}[a-z0-9._%\\-/\\?=~&#]*");
-//	QRegExp rx4("(http|ftp)://([a-z0-9._%-]+\\.)+[a-z0-9]{1,4}[a-z0-9._%\\-/\\?=~&#;,\\[\\]\\$\\+:]*");
+	TQRegExp rx4("(http|ftp)://[a-z0-9._%-]+\\.[a-z0-9._%\\-]+\\.[a-z0-9]{1,4}[a-z0-9._%\\-/\\?=~&#]*");
+//	TQRegExp rx4("(http|ftp)://([a-z0-9._%-]+\\.)+[a-z0-9]{1,4}[a-z0-9._%\\-/\\?=~&#;,\\[\\]\\$\\+:]*");
 		rx4.setCaseSensitive(false);
 	int pos=0;
 	int pos1=0;
-	QString smiley;
+	TQString smiley;
 	int fileIndex;
-	QString img;
-	QString url;
-	QString buffer;
+	TQString img;
+	TQString url;
+	TQString buffer;
 
 	while(pos>=0){
 		pos1 = pos;
@@ -118,14 +118,14 @@ std::list<CustomizedPic> EvaHtmlParser::convertToHtml(QString &txt, bool isURLOn
 				pos2 = rx2.search(buffer, pos2);
 				if (pos2 > -1) {
 					smiley = rx2.cap(0);
-					QChar suffix = txt[pos + smiley.length() ];
+					TQChar suffix = txt[pos + smiley.length() ];
 					if( !suffix.isNull() && ( (suffix >= 'a' && suffix <= 'z' ) || (suffix >= 'A' && suffix <= 'Z' ) )){
 						pos2 += smiley.length();
 						continue;
 					}
 					fileIndex = EvaUtil::textToFileIndex(smiley.ascii());
 					if(fileIndex!=-1){
-						img = "<img src=\""+ (isAbsImgPath?(absImagePath+"/"):"") + QString::number(fileIndex)+".gif\">";
+						img = "<img src=\""+ (isAbsImgPath?(absImagePath+"/"):"") + TQString::number(fileIndex)+".gif\">";
 						buffer.replace(pos2, smiley.length(), img);
 						pos2 += img.length();
 					}else
@@ -142,14 +142,14 @@ std::list<CustomizedPic> EvaHtmlParser::convertToHtml(QString &txt, bool isURLOn
 			pos = rx2.search(txt, pos1);
 			if (pos > -1) {
 				smiley = rx2.cap(0);
-				QChar suffix = txt[pos + smiley.length() ];
+				TQChar suffix = txt[pos + smiley.length() ];
 				if(!suffix.isNull() && ( (suffix >= 'a' && suffix <= 'z' )  || (suffix >= 'A' && suffix <= 'Z' ) )){
 					pos += smiley.length();
 					continue;
 				}
 				fileIndex = EvaUtil::textToFileIndex(smiley.ascii());
 				if(fileIndex!=-1){
-					img = "<img src=\""+ (isAbsImgPath?(absImagePath+"/"):"") + QString::number(fileIndex)+".gif\">";
+					img = "<img src=\""+ (isAbsImgPath?(absImagePath+"/"):"") + TQString::number(fileIndex)+".gif\">";
 					txt.replace(pos, smiley.length(), img);
 					pos += img.length();
 				}else
@@ -160,13 +160,13 @@ std::list<CustomizedPic> EvaHtmlParser::convertToHtml(QString &txt, bool isURLOn
 	//printf("EvaHtmlParser::convertToHtml stage 1:%s\n", txt.latin1() );
 	std::list< CustomizedPic > picList = convertCustomizedPictures(txt, useRealFileName);
 	if(isURLOn){
-		QString email;
-		QString wraped;
-		QString aRefBegin = "<a href=\"";
-		QString aRefEnd = "</a>";
-		QString emailTag = "mailto:";
+		TQString email;
+		TQString wraped;
+		TQString aRefBegin = "<a href=\"";
+		TQString aRefEnd = "</a>";
+		TQString emailTag = "mailto:";
 
-		QRegExp rx3("\\b[a-z0-9._%-]+@[a-z0-9._%-]+\\.[a-z]{2,4}\\b");
+		TQRegExp rx3("\\b[a-z0-9._%-]+@[a-z0-9._%-]+\\.[a-z]{2,4}\\b");
 		rx3.setCaseSensitive(false);
 		pos = 0;
 		while(pos>=0){
@@ -179,7 +179,7 @@ std::list<CustomizedPic> EvaHtmlParser::convertToHtml(QString &txt, bool isURLOn
 				pos += strlen(wraped.ascii());
 			}
 		}
-		QString url;
+		TQString url;
 			pos = 0;
 			while(pos>=0){
 				pos = rx4.search(txt, pos);
@@ -195,7 +195,7 @@ std::list<CustomizedPic> EvaHtmlParser::convertToHtml(QString &txt, bool isURLOn
 	//printf("EvaHtmlParser::convertToHtml stage 2:%s\n", txt.latin1() );
 	bool isIgnore = false;
 	for(pos = 0; pos < (int)txt.length(); pos ++ ){
-		QChar ch = txt.at(pos);//printf("ch(%d): %c\t", pos,  ch.latin1());
+		TQChar ch = txt.at(pos);//printf("ch(%d): %c\t", pos,  ch.latin1());
 		if(ch == '<') {
 			isIgnore = true;
 			continue;
@@ -206,11 +206,11 @@ std::list<CustomizedPic> EvaHtmlParser::convertToHtml(QString &txt, bool isURLOn
 		}
 		if(ch == ' ' && !isIgnore && isAbsImgPath){
 			txt.replace(pos, 1, "&nbsp;");
-			pos+= (QString("&nbsp;").length() -1 );
+			pos+= (TQString("&nbsp;").length() -1 );
 		}
 		if(ch == '\t' && !isIgnore && isAbsImgPath){
 			txt.replace(pos, 1, "&nbsp;&nbsp;&nbsp;&nbsp;");
-			pos+= (QString("&nbsp;&nbsp;&nbsp;&nbsp;").length() - 1);
+			pos+= (TQString("&nbsp;&nbsp;&nbsp;&nbsp;").length() - 1);
 		}
 	}
 	//printf("EvaHtmlParser::convertToHtml after:%s\n", txt.latin1() );
@@ -218,15 +218,15 @@ std::list<CustomizedPic> EvaHtmlParser::convertToHtml(QString &txt, bool isURLOn
 }
 
 // for personal chatting only
-const int EvaHtmlParser::convertToPlainTxt(QString &html, QString &sendFileNameBase)
+const int EvaHtmlParser::convertToPlainTxt(TQString &html, TQString &sendFileNameBase)
 {
-	QRegExp rx("<img src=\\d\\d?\\d?\\.gif >");
-	QRegExp rx1("\\d\\d?\\d?");
-	QRegExp picRx("<img src=[a-zA-Z0-9_/\\.\\s\\-\\{\\}\\[\\]\\(\\)]{10,100}\\.(jpg|JPG|gif|GIF|bmp|BMP|jpeg|JPEG) >");
-	QRegExp picRx1("[a-zA-Z0-9_\\.\\s\\-\\{\\}\\[\\]\\(\\)]{10,100}\\.(jpg|JPG|gif|GIF|bmp|BMP|jpeg|JPEG)");
+	TQRegExp rx("<img src=\\d\\d?\\d?\\.gif >");
+	TQRegExp rx1("\\d\\d?\\d?");
+	TQRegExp picRx("<img src=[a-zA-Z0-9_/\\.\\s\\-\\{\\}\\[\\]\\(\\)]{10,100}\\.(jpg|JPG|gif|GIF|bmp|BMP|jpeg|JPEG) >");
+	TQRegExp picRx1("[a-zA-Z0-9_\\.\\s\\-\\{\\}\\[\\]\\(\\)]{10,100}\\.(jpg|JPG|gif|GIF|bmp|BMP|jpeg|JPEG)");
 
 	int pos=0;
-	QString imgTxt, strFile, smiley;
+	TQString imgTxt, strFile, smiley;
 	int fileIndex, len;
 	while(pos>=0){
 		pos = rx.search(html, pos);
@@ -238,11 +238,11 @@ const int EvaHtmlParser::convertToPlainTxt(QString &html, QString &sendFileNameB
 			if(p>-1) 
 				strFile = rx1.cap(0);
 			fileIndex = strFile.toInt();
-			if(fileIndex<0 || fileIndex > QQ_SMILEY_AMOUNT-1) {
+			if(fileIndex<0 || fileIndex > TQQ_SMILEY_AMOUNT-1) {
 				pos += len;
 				continue;
 			}
-			smiley = QString(EvaUtil::fileIndexToText(fileIndex).c_str()) + " ";
+			smiley = TQString(EvaUtil::fileIndexToText(fileIndex).c_str()) + " ";
 			html.replace(imgTxt, smiley);
 			pos += smiley.length();
 		}
@@ -269,7 +269,7 @@ const int EvaHtmlParser::convertToPlainTxt(QString &html, QString &sendFileNameB
 		}
 	}
 	
-	QString start = "<p>";
+	TQString start = "<p>";
 	pos = html.find(start, 0);
 	if(pos!= -1){
 		html = html.right(html.length() - pos - start.length());
@@ -291,15 +291,15 @@ const int EvaHtmlParser::convertToPlainTxt(QString &html, QString &sendFileNameB
 }
 
 // imgNo starts from 1
-QString EvaHtmlParser::generateSendFormat32(const QString sendFileNameBase, const QString &file, const int imgNo)
+TQString EvaHtmlParser::generateSendFormat32(const TQString sendFileNameBase, const TQString &file, const int imgNo)
 {
-	QPixmap pix(absCustomCachesPath + "/" +  file);
-	pix.save(absCustomCachesPath + "/" + sendFileNameBase + QString::number(imgNo - 1) + ".jpg", "JPEG", 100);
-	//QFile info(absCustomCachesPath + "/" + file);
+	TQPixmap pix(absCustomCachesPath + "/" +  file);
+	pix.save(absCustomCachesPath + "/" + sendFileNameBase + TQString::number(imgNo - 1) + ".jpg", "JPEG", 100);
+	//TQFile info(absCustomCachesPath + "/" + file);
 	//info.remove();
 
-	QString ext = file.right(4); 
-	QString extCode;
+	TQString ext = file.right(4); 
+	TQString extCode;
 	if(ext == ".jpg")
 		extCode = "A";
 	else if(ext == ".gif")
@@ -307,23 +307,23 @@ QString EvaHtmlParser::generateSendFormat32(const QString sendFileNameBase, cons
 	else
 		extCode = "A";
 
-	QChar code = 0x40 + imgNo;  // note that imgNo starts from 1
-	QString noCode = code;
+	TQChar code = 0x40 + imgNo;  // note that imgNo starts from 1
+	TQString noCode = code;
 	
-	QString contents;
+	TQString contents;
 	if(imgNo == 1)               // for the first occurred we put its name here
-		contents = sendFileNameBase + QString::number(imgNo - 1) + ".jpg"; 
+		contents = sendFileNameBase + TQString::number(imgNo - 1) + ".jpg"; 
 	contents += (extCode + noCode);
 	
 	return "[ZDY][32]"+contents+"[/32][/ZDY]";
 }
 
-std::list< CustomizedPic > EvaHtmlParser::convertCustomizedPictures( QString & text, bool useRealFileName)
+std::list< CustomizedPic > EvaHtmlParser::convertCustomizedPictures( TQString & text, bool useRealFileName)
 {
-	QRegExp rx("\\[ZDY\\]\\[[0-9][0-9]\\][^/]+\\[/[0-9][0-9]\\]\\[/ZDY\\]");
+	TQRegExp rx("\\[ZDY\\]\\[[0-9][0-9]\\][^/]+\\[/[0-9][0-9]\\]\\[/ZDY\\]");
 	int pos=0;
-	QString contents;
-	QString img;
+	TQString contents;
+	TQString img;
 	int type;
 	while(pos>=0){
 		pos = rx.search(text, pos);
@@ -379,15 +379,15 @@ std::list< CustomizedPic > EvaHtmlParser::convertCustomizedPictures( QString & t
 }
 
 // for 0x32
-QString EvaHtmlParser::processPic32( const QString &src, CustomizedPic * args )
+TQString EvaHtmlParser::processPic32( const TQString &src, CustomizedPic * args )
 {
-	QString imgName = src.mid(9, src.length()-9-11);
+	TQString imgName = src.mid(9, src.length()-9-11);
 	
-	QChar dot = imgName.at(imgName.length() - 4);
+	TQChar dot = imgName.at(imgName.length() - 4);
 	args->type = 32;
 	args->fileName = imgName.left(imgName.length() - ((dot=='.')?0:2));
 	//printf("EvaHtmlParser::processPic32 -- args->fileName: %s\n", args->fileName.ascii());
-	QFile file(absCustomCachesPath + "/" + imgName);
+	TQFile file(absCustomCachesPath + "/" + imgName);
 	if(file.exists()){
 		args->tmpFileName = absCustomCachesPath + "/" + imgName;
 		args->isExisted = true;
@@ -398,21 +398,21 @@ QString EvaHtmlParser::processPic32( const QString &src, CustomizedPic * args )
 }
 
 // for 33, only fileName and shortCutName are useful.
-QString EvaHtmlParser::processPic33( const QString &src, CustomizedPic * args )
+TQString EvaHtmlParser::processPic33( const TQString &src, CustomizedPic * args )
 {
-	QString contents = src.mid(9, src.length()-9-11);
+	TQString contents = src.mid(9, src.length()-9-11);
 	//args->isExisted = true;
 	args->type = 33;
 	args->fileName = contents.mid(0, 36);
 	args->shortCutName = contents.right(contents.length() - 36);
-	args->tmpFileName = ((absCustomCachesPath)?absCustomCachesPath:"~/.eva/customCaches") + "/" + "tmp" + QString::number(tmpNum) + ".png";
-	QString ret =  "<img src=\"" + args->tmpFileName +"\">";
+	args->tmpFileName = ((absCustomCachesPath)?absCustomCachesPath:"~/.eva/customCaches") + "/" + "tmp" + TQString::number(tmpNum) + ".png";
+	TQString ret =  "<img src=\"" + args->tmpFileName +"\">";
 	return ret;
 }
 
-QString EvaHtmlParser::processPic34( const QString &src)
+TQString EvaHtmlParser::processPic34( const TQString &src)
 {
-	QString contents = src.mid(9, src.length()-9-11);
+	TQString contents = src.mid(9, src.length()-9-11);
 
 	int occurredIndex = contents.latin1()[0] - 'A'; 
 	if(occurredIndex >= (int)(picList.size())){
@@ -429,17 +429,17 @@ QString EvaHtmlParser::processPic34( const QString &src)
 	return "<img src=\"" + ((absCustomCachesPath)?absCustomCachesPath:"~/.eva/customCaches") + "/unknown.png\">";
 }
 
-QString EvaHtmlParser::processPic36( const QString &src, CustomizedPic * args )
+TQString EvaHtmlParser::processPic36( const TQString &src, CustomizedPic * args )
 {
-	QString contents = src.mid(10, src.length()-9-11-1);// cause this always be first, so ignore first 'e'
+	TQString contents = src.mid(10, src.length()-9-11-1);// cause this always be first, so ignore first 'e'
 	//args->isFirst = true;
 	args->type = 36;
 	uint pos = 0;
-	Q_UINT8 shortLen = contents.latin1()[pos++] - 'A';
+	TQ_UINT8 shortLen = contents.latin1()[pos++] - 'A';
 	
 	// start getting session key,  it's 4 bytes long but represented in ascii expression of hex with 8 bytes long
 	bool ok;
-	//Q_UINT16 sessionLen = contents.mid(pos, 2).toInt(&ok, 16) - 16 - 2; // we have to minus 2, because we need get rid ot these 2 bytes. 16 is ip(8 bytes) & port(8 bytes)
+	//TQ_UINT16 sessionLen = contents.mid(pos, 2).toInt(&ok, 16) - 16 - 2; // we have to minus 2, because we need get rid ot these 2 bytes. 16 is ip(8 bytes) & port(8 bytes)
 	contents.mid(pos, 2).toInt(&ok, 16); // we have to minus 2, because we need get rid ot these 2 bytes. 16 is ip(8 bytes) & port(8 bytes)
 	pos+=2;
 	if(!ok){
@@ -447,7 +447,7 @@ QString EvaHtmlParser::processPic36( const QString &src, CustomizedPic * args )
 		return "<img src=\"" + ((absCustomCachesPath)?absCustomCachesPath:"~/.eva/customCaches") +"/unknown_sessionLen2int.png\">";
 	}
 	// FIXME: we should use sessionLen to get the session string not fix value 8
-	QString strSession = contents.mid(pos, 8);
+	TQString strSession = contents.mid(pos, 8);
 	uint tmp4 = strSession.stripWhiteSpace().toInt(&ok, 16);
 	if(!ok){
 		args->type = 0;
@@ -457,7 +457,7 @@ QString EvaHtmlParser::processPic36( const QString &src, CustomizedPic * args )
 	pos+=8;// note sessionLen is 8 
 	
 	// we sort ip out now
-	QString strIP = contents.mid(pos, 8);
+	TQString strIP = contents.mid(pos, 8);
 	strIP.replace(' ', '0'); // in the case of "10.0.0.1", which these 0s are presented as white spaces
 	args->ip = htonl(strIP.toUInt(&ok, 16));
 	if(!ok){
@@ -466,7 +466,7 @@ QString EvaHtmlParser::processPic36( const QString &src, CustomizedPic * args )
 	}
 	pos+=8;
 	// port 
-	QString strPort = contents.mid(pos, 8).stripWhiteSpace();
+	TQString strPort = contents.mid(pos, 8).stripWhiteSpace();
 	args->port = strPort.toInt(&ok, 16) & 0xffff; 
 	if(!ok){
 		args->type = 0;
@@ -474,7 +474,7 @@ QString EvaHtmlParser::processPic36( const QString &src, CustomizedPic * args )
 	}
 	pos+=8;
 	
-	QString strFileAgentKey = contents.mid(pos, 16);
+	TQString strFileAgentKey = contents.mid(pos, 16);
 	memcpy(args->fileAgentKey, strFileAgentKey.latin1(), 16);
 	pos+=16;
 	
@@ -485,26 +485,26 @@ QString EvaHtmlParser::processPic36( const QString &src, CustomizedPic * args )
 	args->shortCutName = contents.mid(pos, shortLen);
 	// if file already existed/downloaded just display it :)
 	if(absCustomCachesPath){
-		QFile file(absCustomCachesPath + "/" + args->fileName);
+		TQFile file(absCustomCachesPath + "/" + args->fileName);
 		if(file.exists()){
 			args->tmpFileName = absCustomCachesPath + "/" + args->fileName;
 			args->isExisted = true;
 		}else
-			args->tmpFileName = absCustomCachesPath + "/tmp" + QString::number(tmpNum) + ".png";
+			args->tmpFileName = absCustomCachesPath + "/tmp" + TQString::number(tmpNum) + ".png";
 	}else
-		args->tmpFileName = "~/.eva/customCaches/tmp" + QString::number(tmpNum) + ".png";
-	//args->tmpFileName = ((absCustomCachesPath)?absCustomCachesPath:"~/.eva/customCaches") + "/" + "tmp" + QString::number(tmpNum) + ".png";
-	QString ret =  "<img src=\"" + args->tmpFileName +"\">";
+		args->tmpFileName = "~/.eva/customCaches/tmp" + TQString::number(tmpNum) + ".png";
+	//args->tmpFileName = ((absCustomCachesPath)?absCustomCachesPath:"~/.eva/customCaches") + "/" + "tmp" + TQString::number(tmpNum) + ".png";
+	TQString ret =  "<img src=\"" + args->tmpFileName +"\">";
 	return ret;
 }
 
-QString EvaHtmlParser::processPic37( const QString &src)
+TQString EvaHtmlParser::processPic37( const TQString &src)
 {
-	QString contents = src.mid(9, src.length()-9-11);
+	TQString contents = src.mid(9, src.length()-9-11);
 	uint pos = 0;
 	int occurredIndex = contents.latin1()[pos++] - 'A'; 
 	
-	//Q_UINT8 shortLen = contents.latin1()[pos++] - 'A';
+	//TQ_UINT8 shortLen = contents.latin1()[pos++] - 'A';
 	
 	if(occurredIndex >= (int)picList.size()){
 		return "<img src=\"" + ((absCustomCachesPath)?absCustomCachesPath:"~/.eva/customCaches") + "/unknown.png\">";
@@ -520,15 +520,15 @@ QString EvaHtmlParser::processPic37( const QString &src)
 	return "<img src=\"" + ((absCustomCachesPath)?absCustomCachesPath:"~/.eva/customCaches") + "/unknown.png\">";
 }
 
-void EvaHtmlParser::convertToPlainTxt( QString & html, const unsigned int agentSessionID, 
+void EvaHtmlParser::convertToPlainTxt( TQString & html, const unsigned int agentSessionID, 
 						const unsigned int agentIP, const unsigned short agentPort )
 {
-	QRegExp rx("<img src=\\d\\d?\\d?\\.gif >");
-	QRegExp rx1("\\d\\d?\\d?");
-	QRegExp picRx("<img src=[a-zA-Z0-9_/\\.\\s\\-\\{\\}\\[\\]\\(\\)]{10,100}\\.(jpg|JPG|gif|GIF|bmp|BMP|jpeg|JPEG) >");
-	QRegExp picRx1("[a-zA-Z0-9_\\.\\s\\-\\{\\}\\[\\]\\(\\)]{10,100}\\.(jpg|JPG|gif|GIF|bmp|BMP|jpeg|JPEG)");
+	TQRegExp rx("<img src=\\d\\d?\\d?\\.gif >");
+	TQRegExp rx1("\\d\\d?\\d?");
+	TQRegExp picRx("<img src=[a-zA-Z0-9_/\\.\\s\\-\\{\\}\\[\\]\\(\\)]{10,100}\\.(jpg|JPG|gif|GIF|bmp|BMP|jpeg|JPEG) >");
+	TQRegExp picRx1("[a-zA-Z0-9_\\.\\s\\-\\{\\}\\[\\]\\(\\)]{10,100}\\.(jpg|JPG|gif|GIF|bmp|BMP|jpeg|JPEG)");
 	int pos=0;
-	QString imgTxt, strFile, smiley;
+	TQString imgTxt, strFile, smiley;
 	int fileIndex, len;
 	
 	while(pos>=0){
@@ -541,11 +541,11 @@ void EvaHtmlParser::convertToPlainTxt( QString & html, const unsigned int agentS
 			if(p>-1) 
 				strFile = rx1.cap(0);
 			fileIndex = strFile.toInt();
-			if(fileIndex<0 || fileIndex > QQ_SMILEY_AMOUNT-1) {
+			if(fileIndex<0 || fileIndex > TQQ_SMILEY_AMOUNT-1) {
 				pos += len;
 				continue;
 			}
-			smiley = QString(EvaUtil::fileIndexToText(fileIndex).c_str()) + " ";
+			smiley = TQString(EvaUtil::fileIndexToText(fileIndex).c_str()) + " ";
 			html.replace(imgTxt, smiley);
 			pos += imgTxt.length();
 		}
@@ -568,7 +568,7 @@ void EvaHtmlParser::convertToPlainTxt( QString & html, const unsigned int agentS
 		}
 	}
 	
-	QString start = "<p>";
+	TQString start = "<p>";
 	pos = html.find(start, 0);
 	if(pos!= -1){
 		html = html.right(html.length() - pos - start.length());
@@ -586,33 +586,33 @@ void EvaHtmlParser::convertToPlainTxt( QString & html, const unsigned int agentS
 	html.replace("&quot;", "\"");
 }
 
-QString EvaHtmlParser::generateSendFormat( QString & fileName, const unsigned int agentSessionID, 
+TQString EvaHtmlParser::generateSendFormat( TQString & fileName, const unsigned int agentSessionID, 
 			const unsigned int agentIP, const unsigned short agentPort )
 {
-	QString shortcutStr = "";
+	TQString shortcutStr = "";
 	if(!fileName.startsWith("{"))
 		shortcutStr = (strlen(fileName.ascii()) > 7)?(fileName.mid(1,6)):(fileName);
-	//QString shortcutStr = "abc";
-	QString lenStr;
+	//TQString shortcutStr = "abc";
+	TQString lenStr;
 	lenStr.sprintf("%3d",strlen(fileName.ascii()) + 50 + strlen(shortcutStr.ascii()));
 	
-	QString sessionStr;
+	TQString sessionStr;
 	sessionStr.sprintf("%8x", agentSessionID);
 	
-	QString ipStr;
-	QString tmpStr;
+	TQString ipStr;
+	TQString tmpStr;
 	char *tmp = new char[4];
 	memcpy(tmp, &agentIP, 4);
 	for(int i = 0; i <4; i++){
-		tmpStr.sprintf("%02x", (Q_UINT8)tmp[i]);
+		tmpStr.sprintf("%02x", (TQ_UINT8)tmp[i]);
 		ipStr+=tmpStr;
 	}
 	delete []tmp;
 	
-	QString portStr;
+	TQString portStr;
 	portStr.sprintf("%8x", agentPort);
 	
-	QString contents = "[36]";
+	TQString contents = "[36]";
 	contents+="e"; // new pic
 	int scLen = strlen(shortcutStr.ascii());
 	char scCh = 'A' + scLen;
@@ -624,7 +624,7 @@ QString EvaHtmlParser::generateSendFormat( QString & fileName, const unsigned in
 	tmp = new char[17];
 	memcpy(tmp, Packet::getFileAgentKey(), 16);
 	tmp[16]=0x00;
-	contents+=QString(tmp);
+	contents+=TQString(tmp);
 	delete []tmp;
 	contents+=fileName;
 	contents+=shortcutStr;
@@ -633,15 +633,15 @@ QString EvaHtmlParser::generateSendFormat( QString & fileName, const unsigned in
 	return "[ZDY]"+contents+"[/36][/ZDY]";
 }
 
-void EvaHtmlParser::parseToAbsPath( QString & html, const QString absPath )
+void EvaHtmlParser::parseToAbsPath( TQString & html, const TQString absPath )
 {
-	QRegExp rx("<img src=\\d\\d?\\d?\\.gif >");
-	QRegExp rx1("\\d\\d?\\d?");
-	QRegExp picRx("<img src=[a-zA-Z0-9_/\\.\\s\\-\\{\\}\\[\\]\\(\\)]+\\.(jpg|JPG|gif|GIF|bmp|BMP|jpeg|JPEG) >");
-	QRegExp picRx1("[a-zA-Z0-9_\\.\\s\\-\\{\\}\\[\\]\\(\\)]+\\.(jpg|JPG|gif|GIF|bmp|BMP|jpeg|JPEG)");
+	TQRegExp rx("<img src=\\d\\d?\\d?\\.gif >");
+	TQRegExp rx1("\\d\\d?\\d?");
+	TQRegExp picRx("<img src=[a-zA-Z0-9_/\\.\\s\\-\\{\\}\\[\\]\\(\\)]+\\.(jpg|JPG|gif|GIF|bmp|BMP|jpeg|JPEG) >");
+	TQRegExp picRx1("[a-zA-Z0-9_\\.\\s\\-\\{\\}\\[\\]\\(\\)]+\\.(jpg|JPG|gif|GIF|bmp|BMP|jpeg|JPEG)");
 	//int pos=0, len = 0, fileIndex = 0;
 	int pos=0, len = 0;
-	QString imgTxt, strFile, smiley;
+	TQString imgTxt, strFile, smiley;
 	
 	while(pos>=0){
 		pos = rx.search(html, pos);
@@ -671,7 +671,7 @@ void EvaHtmlParser::parseToAbsPath( QString & html, const QString absPath )
 			pos += smiley.length();
 		}
 	}
-	QString start = "<p>";
+	TQString start = "<p>";
 	pos = html.find(start, 0);
 	if(pos!= -1){
 		html = html.right(html.length() - pos - start.length());
@@ -680,13 +680,13 @@ void EvaHtmlParser::parseToAbsPath( QString & html, const QString absPath )
 	html.replace("</p>\n</body></html>", "");
 }
 
-std::list< QString > EvaHtmlParser::getCustomImages( const QString html )
+std::list< TQString > EvaHtmlParser::getCustomImages( const TQString html )
 {
-	std::list<QString> picList;
-	QRegExp picRx("<img src=[a-zA-Z0-9_\\.\\s\\-\\{\\}\\[\\]\\(\\)]{10,100}\\.(jpg|JPG|gif|GIF|bmp|BMP|jpeg|JPEG) >");
-	QRegExp picRx1("[a-zA-Z0-9_\\.\\s\\-\\{\\}\\[\\]\\(\\)]{10,100}\\.(jpg|JPG|gif|GIF|bmp|BMP|jpeg|JPEG)");
+	std::list<TQString> picList;
+	TQRegExp picRx("<img src=[a-zA-Z0-9_\\.\\s\\-\\{\\}\\[\\]\\(\\)]{10,100}\\.(jpg|JPG|gif|GIF|bmp|BMP|jpeg|JPEG) >");
+	TQRegExp picRx1("[a-zA-Z0-9_\\.\\s\\-\\{\\}\\[\\]\\(\\)]{10,100}\\.(jpg|JPG|gif|GIF|bmp|BMP|jpeg|JPEG)");
 	int pos=0;
-	QString imgTxt, strFile, smiley;
+	TQString imgTxt, strFile, smiley;
 	while(pos>=0){
 		pos = picRx.search(html, pos);
 		if(pos > -1) {

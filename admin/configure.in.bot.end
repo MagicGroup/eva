@@ -3,7 +3,7 @@ if test -n "$kde_libs_prefix" -a -n "$given_prefix"; then
   # And if so, warn when they don't match
   if test "$kde_libs_prefix" != "$given_prefix"; then
     # And if kde doesn't know about the prefix yet
-    echo ":"`kde-config --path exe`":" | grep ":$given_prefix/bin/:" 2>&1 >/dev/null
+    echo ":"`tde-config --path exe`":" | grep ":$given_prefix/bin/:" 2>&1 >/dev/null
     if test $? -ne 0; then
       echo ""
       echo "Warning: you chose to install this package in $given_prefix,"

@@ -18,8 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
-#ifndef QUNCATEGORYPICKER_H
-#define QUNCATEGORYPICKER_H
+#ifndef TQUNCATEGORYPICKER_H
+#define TQUNCATEGORYPICKER_H
 
 #include "quncategoryui.h"
 #include <map>
@@ -27,7 +27,7 @@
 typedef struct QunCategoryElement{
 unsigned short code;
 unsigned short parent;
-QString name;
+TQString name;
 } QunCategoryElement;
 
 
@@ -37,7 +37,7 @@ public:
 	QunCategory();	
 	const bool isLoaded() { return isOK; }
 	std::list<QunCategoryElement> getSubList(unsigned short code);
-	const QString getDescription(const unsigned short code);
+	const TQString getDescription(const unsigned short code);
 private:
 	const bool loadList();
 	bool isOK;
@@ -48,7 +48,7 @@ class QunCategoryPicker : public QunCategoryUI
 {
 	Q_OBJECT
 public:
-	QunCategoryPicker(QWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
+	QunCategoryPicker(TQWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
 	~QunCategoryPicker();
 	const unsigned short getCategoryCode();
 signals:

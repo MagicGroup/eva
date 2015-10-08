@@ -32,34 +32,34 @@
 
 EvaAddFriendExPacket::EvaAddFriendExPacket()
  	:OutPacket(),
-	m_AddQQNum(0)
+	m_AddTQQNum(0)
 {
 }
 
 EvaAddFriendExPacket::EvaAddFriendExPacket(const unsigned int id)
- 	:OutPacket(QQ_CMD_ADD_FRIEND_EX, true),
-	m_AddQQNum(id)
+ 	:OutPacket(TQQ_CMD_ADD_FRIEND_EX, true),
+	m_AddTQQNum(id)
 {
 }
 
 EvaAddFriendExPacket::EvaAddFriendExPacket(const EvaAddFriendExPacket &rhs)
  	:OutPacket(rhs)
 {
-	m_AddQQNum = rhs.getAddQQ();
+	m_AddTQQNum = rhs.getAddQQ();
 }
 
 EvaAddFriendExPacket &EvaAddFriendExPacket::operator=(const EvaAddFriendExPacket &rhs)
 {
 	*((OutPacket *)this) = (OutPacket)rhs;
-	m_AddQQNum = rhs.getAddQQ();
+	m_AddTQQNum = rhs.getAddQQ();
 	return *this;
 }
 
 int EvaAddFriendExPacket::putBody(unsigned char* buf)
 {
-	if(m_AddQQNum==0) return 0;
+	if(m_AddTQQNum==0) return 0;
 	int pos = 0;
-	pos += EvaUtil::write32(buf+pos, m_AddQQNum);//qq number of the added friend
+	pos += EvaUtil::write32(buf+pos, m_AddTQQNum);//qq number of the added friend
 	return pos;
 }
 
@@ -73,7 +73,7 @@ EvaAddFriendExReplyPacket::EvaAddFriendExReplyPacket(unsigned char* buf, int len
 EvaAddFriendExReplyPacket::EvaAddFriendExReplyPacket(const EvaAddFriendExReplyPacket &rhs)
  	:InPacket(rhs)
 {
-	m_AddQQNum = rhs.getAddQQ();
+	m_AddTQQNum = rhs.getAddQQ();
 	m_AuthStatus = rhs.getAuthStatus();
 	m_ReplyCode = rhs.getReplyCode();
 	
@@ -82,7 +82,7 @@ EvaAddFriendExReplyPacket::EvaAddFriendExReplyPacket(const EvaAddFriendExReplyPa
 EvaAddFriendExReplyPacket &EvaAddFriendExReplyPacket::operator=( const EvaAddFriendExReplyPacket &rhs)
 {
 	*((InPacket *)this) = (InPacket)rhs;
-	m_AddQQNum = rhs.getAddQQ();
+	m_AddTQQNum = rhs.getAddQQ();
 	m_AuthStatus = rhs.getAuthStatus();
 	m_ReplyCode = rhs.getReplyCode();
 	return *this;
@@ -91,14 +91,14 @@ EvaAddFriendExReplyPacket &EvaAddFriendExReplyPacket::operator=( const EvaAddFri
 void EvaAddFriendExReplyPacket::parseBody()
 {
 	int pos = 0;
-	m_AddQQNum= EvaUtil::read32(decryptedBuf+pos);
+	m_AddTQQNum= EvaUtil::read32(decryptedBuf+pos);
 	pos += 4;
 	m_ReplyCode = decryptedBuf[pos++];
 	switch(m_ReplyCode){
-	case QQ_ADD_FRIEND_EX_ADDING_POSSIBLE://the user can be added to your buddy list
+	case TQQ_ADD_FRIEND_EX_ADDING_POSSIBLE://the user can be added to your buddy list
 		m_AuthStatus = decryptedBuf[pos];
 		break;
-	case QQ_ADD_FRIEND_EX_ALREADY_IN_LIST://the user is already in your buddy list
+	case TQQ_ADD_FRIEND_EX_ALREADY_IN_LIST://the user is already in your buddy list
 		break;
 	default:
 		break;
@@ -109,11 +109,11 @@ void EvaAddFriendExReplyPacket::parseBody()
 /**  ======================================================= */
 
 EvaAddFriendAuthExPacket::EvaAddFriendAuthExPacket()
-	:OutPacket(QQ_CMD_ADD_FRIEND_AUTH_EX, true),
+	:OutPacket(TQQ_CMD_ADD_FRIEND_AUTH_EX, true),
 	m_AuthStatus(0x02),
 	m_DestGroup(0),
 	m_AllowAddReverse(true),
-	m_AddQQNum(0),
+	m_AddTQQNum(0),
 	m_AuthCodeLen(0),
 	m_AuthCode(0),
 	m_QuestionCodeLen(0),
@@ -123,11 +123,11 @@ EvaAddFriendAuthExPacket::EvaAddFriendAuthExPacket()
 }
 
 EvaAddFriendAuthExPacket::EvaAddFriendAuthExPacket(const unsigned int id, const unsigned char authStatus)
-	:OutPacket(QQ_CMD_ADD_FRIEND_AUTH_EX, true),
+	:OutPacket(TQQ_CMD_ADD_FRIEND_AUTH_EX, true),
 	m_AuthStatus(authStatus),
 	m_DestGroup(0),
 	m_AllowAddReverse(true),
-	m_AddQQNum(id),
+	m_AddTQQNum(id),
 	m_AuthCodeLen(0),
 	m_AuthCode(0),
 	m_QuestionCodeLen(0),
@@ -157,7 +157,7 @@ EvaAddFriendAuthExPacket::~EvaAddFriendAuthExPacket()
 EvaAddFriendAuthExPacket &EvaAddFriendAuthExPacket::operator=(const EvaAddFriendAuthExPacket &rhs)
 {
 	*((OutPacket *)this) = (OutPacket)rhs;
-	m_AddQQNum = rhs.getAddQQ();
+	m_AddTQQNum = rhs.getAddQQ();
 	m_AuthStatus = rhs.getAuthStatus();
 	m_DestGroup = rhs.getDestGroup();
 	m_AllowAddReverse = rhs.getAllowAddReverse();
@@ -196,7 +196,7 @@ int EvaAddFriendAuthExPacket::putBody( unsigned char * buf )
 	int len = 0;
 	buf[pos++] = m_AuthStatus;
 
-	pos += EvaUtil::write32(buf+pos, m_AddQQNum);
+	pos += EvaUtil::write32(buf+pos, m_AddTQQNum);
 
 	// 2 bytes unknown, 0x0000
 	memset(buf + pos, 0, 2);
@@ -259,7 +259,7 @@ EvaAddFriendAuthExReplyPacket::EvaAddFriendAuthExReplyPacket(unsigned char* buf,
 EvaAddFriendAuthExReplyPacket::EvaAddFriendAuthExReplyPacket( const EvaAddFriendAuthExReplyPacket& rhs)
 	:InPacket(rhs)
 {
-	m_AddQQNum = rhs.getAddQQ();
+	m_AddTQQNum = rhs.getAddQQ();
 	m_AuthStatus = rhs.getAuthStatus();
 	m_ReplyCode = rhs.getReplyCode();
 	
@@ -268,7 +268,7 @@ EvaAddFriendAuthExReplyPacket::EvaAddFriendAuthExReplyPacket( const EvaAddFriend
 EvaAddFriendAuthExReplyPacket &EvaAddFriendAuthExReplyPacket::operator=(const EvaAddFriendAuthExReplyPacket &rhs)
 {
 	*((InPacket *)this) = (InPacket)rhs;
-	m_AddQQNum = rhs.getAddQQ();
+	m_AddTQQNum = rhs.getAddQQ();
 	m_AuthStatus = rhs.getAuthStatus();
 	m_ReplyCode = rhs.getReplyCode();
 	
@@ -279,7 +279,7 @@ void EvaAddFriendAuthExReplyPacket::parseBody()
 {
 	int pos = 0;
 	m_AuthStatus = decryptedBuf[pos++];
-	m_AddQQNum = EvaUtil::read32(decryptedBuf+pos);
+	m_AddTQQNum = EvaUtil::read32(decryptedBuf+pos);
 	pos += 4;
 	m_ReplyCode = decryptedBuf[pos++]; // 0x00: success
 }
@@ -290,7 +290,7 @@ void EvaAddFriendAuthExReplyPacket::parseBody()
 /**  ======================================================= */
 
 EvaAddFriendGetAuthInfoPacket::EvaAddFriendGetAuthInfoPacket( )
-	:OutPacket(QQ_CMD_ADD_FRIEND_AUTH_INFO, true),
+	:OutPacket(TQQ_CMD_ADD_FRIEND_AUTH_INFO, true),
 	m_IsQun(false),
 	m_AddID(0),
 	m_Cmd(AUTH_INFO_CMD_INFO),
@@ -299,7 +299,7 @@ EvaAddFriendGetAuthInfoPacket::EvaAddFriendGetAuthInfoPacket( )
 }
 
 EvaAddFriendGetAuthInfoPacket::EvaAddFriendGetAuthInfoPacket( const unsigned int id, const unsigned char cmd, const bool isQun )
-	:OutPacket(QQ_CMD_ADD_FRIEND_AUTH_INFO, true),
+	:OutPacket(TQQ_CMD_ADD_FRIEND_AUTH_INFO, true),
 	m_IsQun(isQun),
 	m_AddID(id),
 	m_Cmd(cmd),
@@ -474,8 +474,8 @@ printf("\n\n");
 
 
 EvaAddFriendAuthQuestionPacket::EvaAddFriendAuthQuestionPacket( )
-	: OutPacket(QQ_CMD_ADD_FRIEND_AUTH_QUESTION, true),
-	m_AddQQNum(0),
+	: OutPacket(TQQ_CMD_ADD_FRIEND_AUTH_QUESTION, true),
+	m_AddTQQNum(0),
 	m_AuthStatus(AUTH_TYPE_QUESTION_REQUEST),
 	m_Question(""),
 	m_Answer("")
@@ -483,8 +483,8 @@ EvaAddFriendAuthQuestionPacket::EvaAddFriendAuthQuestionPacket( )
 }
 
 EvaAddFriendAuthQuestionPacket::EvaAddFriendAuthQuestionPacket( const unsigned int id, const unsigned char auth )
-	: OutPacket(QQ_CMD_ADD_FRIEND_AUTH_QUESTION, true),
-	m_AddQQNum(id),
+	: OutPacket(TQQ_CMD_ADD_FRIEND_AUTH_QUESTION, true),
+	m_AddTQQNum(id),
 	m_AuthStatus(auth),
 	m_Question(""),
 	m_Answer("")
@@ -504,7 +504,7 @@ EvaAddFriendAuthQuestionPacket::~EvaAddFriendAuthQuestionPacket( )
 EvaAddFriendAuthQuestionPacket & EvaAddFriendAuthQuestionPacket::operator =( const EvaAddFriendAuthQuestionPacket & rhs )
 {
 	*( (OutPacket*)(this) ) = (OutPacket)(rhs);
-	m_AddQQNum = rhs.getAddQQ();
+	m_AddTQQNum = rhs.getAddQQ();
 	m_AuthStatus = rhs.getAuthStatus();
 	m_Question = rhs.getQuestion();
 	m_Answer = rhs.getAnswer();
@@ -545,7 +545,7 @@ printf("\n\n");
 	buf[pos++] = 0x00;
 	buf[pos++] = 0x01;
 
-	*((unsigned int *)(buf + pos)) = htonl(m_AddQQNum);
+	*((unsigned int *)(buf + pos)) = htonl(m_AddTQQNum);
 	pos+= 4;
 
 	if(m_AuthStatus == AUTH_TYPE_QUESTION_REQUEST) return pos;

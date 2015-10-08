@@ -21,32 +21,32 @@
 #ifndef EVALISTVIEW_H
 #define EVALISTVIEW_H
 
-#include <qlistview.h>
-#include <qvaluestack.h>
-#include <qtooltip.h>
-#include <qcolor.h>
-#include <qsize.h>
+#include <ntqlistview.h>
+#include <ntqvaluestack.h>
+#include <ntqtooltip.h>
+#include <ntqcolor.h>
+#include <ntqsize.h>
 #include <string>
 #include <list>
 #include <map>
 
-class QTimer;
-class QPixmap;
+class TQTimer;
+class TQPixmap;
 class EvaListView;
-class QCustomEvent;
-class QPainter;
-class QColorGroup;
-class QSimpleRichText;
-class QTextCodec;
+class TQCustomEvent;
+class TQPainter;
+class TQColorGroup;
+class TQSimpleRichText;
+class TQTextCodec;
 
 
-class EvaLVToolTip : public QToolTip
+class EvaLVToolTip : public TQToolTip
 {
 public:
-    EvaLVToolTip(EvaListView *lv, QToolTipGroup *group = 0);
+    EvaLVToolTip(EvaListView *lv, TQToolTipGroup *group = 0);
     virtual ~EvaLVToolTip();
 protected:
-    void maybeTip(const QPoint &p);
+    void maybeTip(const TQPoint &p);
 private:
     EvaListView *m_lv;
 };
@@ -54,42 +54,42 @@ private:
 // list view item types
 enum LVIType { E_LVIBuddy, E_LVIGroup, E_LVIQun};
 
-class EvaListViewItem :  public QListViewItem
+class EvaListViewItem :  public TQListViewItem
 {
 public:
-	EvaListViewItem( QListViewItem *parent, QString label, QPixmap *p = 0);
-	EvaListViewItem( QListView *parent);
+	EvaListViewItem( TQListViewItem *parent, TQString label, TQPixmap *p = 0);
+	EvaListViewItem( TQListView *parent);
 	~EvaListViewItem();
 	
-	virtual void updateIcon(QPixmap *p);
+	virtual void updateIcon(TQPixmap *p);
 	// can be rich text
-	void setText(const QString &text);
+	void setText(const TQString &text);
 	
-	virtual QString tip();
+	virtual TQString tip();
 	
-	virtual void paintCell( QPainter * painter, const QColorGroup & colourGroup, int column, int width, int align );
-	virtual void paintBranches(QPainter * p, const QColorGroup & cg,int w, int y, int h);
+	virtual void paintCell( TQPainter * painter, const TQColorGroup & colourGroup, int column, int width, int align );
+	virtual void paintBranches(TQPainter * p, const TQColorGroup & cg,int w, int y, int h);
 	const LVIType type() const { return m_type; }
 
 protected:
 	LVIType m_type;
-	QTextCodec *codec;
-	QPixmap *m_icon;
+	TQTextCodec *codec;
+	TQPixmap *m_icon;
 private:
-	QSimpleRichText *m_richText;
+	TQSimpleRichText *m_richText;
 	
 	friend class EvaListView;
 };
 
-class EvaListView : public QListView 
+class EvaListView : public TQListView 
 {
     Q_OBJECT
 public:
-    EvaListView( QWidget *parent=0, const char *name =0, WFlags f= 0);
+    EvaListView( TQWidget *parent=0, const char *name =0, WFlags f= 0);
     ~EvaListView();
 
 protected:	
-    QTextCodec *codec;
+    TQTextCodec *codec;
 
 private:
     EvaLVToolTip *m_tooltip;

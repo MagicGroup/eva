@@ -21,50 +21,50 @@
 #ifndef EVAFILESTATUSUIBASE_H
 #define EVAFILESTATUSUIBASE_H
 
-#include <qvariant.h>
-#include <qwidget.h>
+#include <ntqvariant.h>
+#include <ntqwidget.h>
 
-class QVBoxLayout;
-class QHBoxLayout;
-class QGridLayout;
-class QSpacerItem;
-class QLabel;
+class TQVBoxLayout;
+class TQHBoxLayout;
+class TQGridLayout;
+class TQSpacerItem;
+class TQLabel;
 class KProgress;
 class KPushButton;
 
-class EvaFileStatusUIBase : public QWidget
+class EvaFileStatusUIBase : public TQWidget
 {
 	Q_OBJECT
 
 public:
 	EvaFileStatusUIBase( const unsigned int session, const unsigned int size = 0,
-				QWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
+				TQWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
 	~EvaFileStatusUIBase();
 	
 	inline const unsigned int getSession() const { return m_Session; }
 
-	void setMimePixmap(const QPixmap &pixmap);
-	void setFileName(const QString &fileName);
+	void setMimePixmap(const TQPixmap &pixmap);
+	void setFileName(const TQString &fileName);
 	void setStartPosition(const unsigned int offset) { m_StartPosition = offset; }
 	void updateStatus(const unsigned int size, const unsigned int bytes, const unsigned int time);
 
-	const QString strFileSize(const float size, int precise = 2);
+	const TQString strFileSize(const float size, int precise = 2);
 	inline const bool isFinished() const { return m_IsFinished; }
 signals:
-	void closeRequest(const unsigned int, QWidget *); // send itself to parent
+	void closeRequest(const unsigned int, TQWidget *); // send itself to parent
 protected:
-	QGridLayout* EvaFileStatusUIBaseLayout;
-	QVBoxLayout* layout10;
-	QHBoxLayout* layout6;
-	QHBoxLayout* layout1;
-	QVBoxLayout* layout9;
+	TQGridLayout* EvaFileStatusUIBaseLayout;
+	TQVBoxLayout* layout10;
+	TQHBoxLayout* layout6;
+	TQHBoxLayout* layout1;
+	TQVBoxLayout* layout9;
 
-	QLabel* lblIcon;
-	QLabel* lblFileName;
+	TQLabel* lblIcon;
+	TQLabel* lblFileName;
 	KProgress* kpgFileStatus;
 	KPushButton* kpbtnClose;
-	QLabel* lblReceived;
-	QLabel* lblSpeed;
+	TQLabel* lblReceived;
+	TQLabel* lblSpeed;
 
 protected slots:
 	virtual void languageChange();

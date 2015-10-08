@@ -130,14 +130,14 @@ EvaFTAgentPacket::EvaFTAgentPacket(const unsigned char *buf, const int len)
 EvaFTAgentPacket::EvaFTAgentPacket(const short cmd)
 	: EvaFTPacket(), m_Command(cmd)
 {
-	setPacketTag(QQ_FILE_AGENT_PACKET_TAG, QQ_FILE_AGENT_PACKET_TAIL);
+	setPacketTag(TQQ_FILE_AGENT_PACKET_TAG, TQQ_FILE_AGENT_PACKET_TAIL);
 	m_HasLength = true;
 	m_LengthOffset = 3;
 }
 
 const int EvaFTAgentPacket::parseHeader(unsigned char *buf)
 {
-	if(getTag() != QQ_FILE_AGENT_PACKET_TAG || getTail() != QQ_FILE_AGENT_PACKET_TAIL)
+	if(getTag() != TQQ_FILE_AGENT_PACKET_TAG || getTail() != TQQ_FILE_AGENT_PACKET_TAIL)
 		return -1;
 	int pos = 0;
 	m_Version = EvaUtil::read16(buf + pos); pos+=2;
@@ -149,7 +149,7 @@ const int EvaFTAgentPacket::parseHeader(unsigned char *buf)
 	m_Sequence = EvaUtil::read16(buf + pos); pos+=2;
 	m_Id = EvaUtil::read32(buf + pos); pos+=4;
 	pos+=8; // 8 unknown bytes
-	if(m_Command != QQ_FILE_AGENT_CMD_CREATE){
+	if(m_Command != TQQ_FILE_AGENT_CMD_CREATE){
 		m_Session = EvaUtil::read32(buf + pos); pos+=4;
 	}
 
@@ -166,7 +166,7 @@ const int EvaFTAgentPacket::fillHeader(unsigned char *buf)
 	pos += EvaUtil::write32(buf + pos, m_Id);
 	pos += 8; // 8 unknown bytes
 
-	if(m_Command != QQ_FILE_AGENT_CMD_CREATE){
+	if(m_Command != TQQ_FILE_AGENT_CMD_CREATE){
 		pos += EvaUtil::write32(buf + pos, m_Session);
 	}
 	return pos;

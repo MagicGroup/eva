@@ -19,25 +19,25 @@
  ***************************************************************************/ 
 #include "evahistoryviewer.h"
 
-#include <qpushbutton.h>
-#include <qtable.h>
-#include <qcheckbox.h>
-#include <qdatetime.h>
-#include <qdatetimeedit.h>
-#include <klocale.h>
+#include <ntqpushbutton.h>
+#include <ntqtable.h>
+#include <ntqcheckbox.h>
+#include <ntqdatetime.h>
+#include <ntqdatetimeedit.h>
+#include <tdelocale.h>
 
-EvaHistoryViewer::EvaHistoryViewer(const int id, const QString &nickname, EvaUserSetting *userSetting, const bool isQunMsg)
-	: EvaHistoryUIBase(0,0,Qt::WStyle_Customize | Qt::WStyle_Title | Qt::WStyle_SysMenu | Qt::WStyle_Minimize
-				| Qt::WStyle_Maximize | Qt::WStyle_NormalBorder | Qt::WDestructiveClose), 
+EvaHistoryViewer::EvaHistoryViewer(const int id, const TQString &nickname, EvaUserSetting *userSetting, const bool isQunMsg)
+	: EvaHistoryUIBase(0,0,TQt::WStyle_Customize | TQt::WStyle_Title | TQt::WStyle_SysMenu | TQt::WStyle_Minimize
+				| TQt::WStyle_Maximize | TQt::WStyle_NormalBorder | TQt::WDestructiveClose), 
 	qqNum(id), nick(nickname), setting(userSetting), isQun(isQunMsg)
 {
 	page = 0;
-	setCaption(QString(i18n("IM History of %1")).arg(nick));
-	QObject::connect( chbSelect, SIGNAL( clicked() ), this, SLOT( slotChbSelectClick() ) );
-	QObject::connect( pbShow, SIGNAL( clicked() ), this, SLOT( slotPbShowClick() ) );
-	QObject::connect( pbPrev, SIGNAL( clicked() ), this, SLOT( slotPbPrevClick() ) );
-	QObject::connect( pbNext, SIGNAL( clicked() ), this, SLOT( slotPbNextClick() ) );
-	QObject::connect(tblDisplay, SIGNAL(doubleClicked( int,int, int, const QPoint &)), 
+	setCaption(TQString(i18n("IM History of %1")).arg(nick));
+	TQObject::connect( chbSelect, SIGNAL( clicked() ), this, SLOT( slotChbSelectClick() ) );
+	TQObject::connect( pbShow, SIGNAL( clicked() ), this, SLOT( slotPbShowClick() ) );
+	TQObject::connect( pbPrev, SIGNAL( clicked() ), this, SLOT( slotPbPrevClick() ) );
+	TQObject::connect( pbNext, SIGNAL( clicked() ), this, SLOT( slotPbNextClick() ) );
+	TQObject::connect(tblDisplay, SIGNAL(doubleClicked( int,int, int, const TQPoint &)), 
 					this, SLOT( slotTblDisplayDoubleClick(int)));
 	
 	chbSelect->setChecked(false);
@@ -55,9 +55,9 @@ EvaHistoryViewer::~EvaHistoryViewer()
 void EvaHistoryViewer::display()
 {
 	if(chbSelect->isChecked()){
-		list = setting->getMessages(qqNum, page, QDateTime(deFrom->date()), QDateTime(deTo->date()), isQun);
+		list = setting->getMessages(qqNum, page, TQDateTime(deFrom->date()), TQDateTime(deTo->date()), isQun);
 	}else{
-		QDateTime nutime;
+		TQDateTime nutime;
 		nutime.setTime_t(0);
 		list = setting->getMessages(qqNum, page,nutime,nutime, isQun);
 	}
@@ -78,7 +78,7 @@ void EvaHistoryViewer::display()
 	tblDisplay->setColumnWidth(2, tblDisplay->width()/4);		
 }
 
-void EvaHistoryViewer::closeEvent( QCloseEvent * e)
+void EvaHistoryViewer::closeEvent( TQCloseEvent * e)
 {
 	emit windowClosed();
 	hide();

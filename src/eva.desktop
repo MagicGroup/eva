@@ -7,5 +7,5 @@ GenericName[zh_CN]=Eva 即时消息客户程序
 Comment=Instant Messenger
 Comment[zh_CN]=Eva 即时消息客户程序
 Icon=eva
-Categories=Qt;KDE;Network;InstantMessaging;
+Categories=Qt;TDE;Network;InstantMessaging;
 Terminal=false

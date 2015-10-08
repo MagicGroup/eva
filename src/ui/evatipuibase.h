@@ -21,34 +21,34 @@
 #ifndef EVATIPUIBASE_H
 #define EVATIPUIBASE_H
 
-#include <qvariant.h>
-#include <qwidget.h>
+#include <ntqvariant.h>
+#include <ntqwidget.h>
 
-class QVBoxLayout;
-class QHBoxLayout;
-class QGridLayout;
-class QSpacerItem;
-class QFrame;
-class QLabel;
+class TQVBoxLayout;
+class TQHBoxLayout;
+class TQGridLayout;
+class TQSpacerItem;
+class TQFrame;
+class TQLabel;
 
-class EvaTipUIBase : public QWidget
+class EvaTipUIBase : public TQWidget
 {
     Q_OBJECT
 
 public:
-    EvaTipUIBase( QWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
+    EvaTipUIBase( TQWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
     ~EvaTipUIBase();
 
-    QFrame* fraMain;
-    QLabel* lblPixmap;
-    QLabel* lblNick;
-    QLabel* lblMessage;
+    TQFrame* fraMain;
+    TQLabel* lblPixmap;
+    TQLabel* lblNick;
+    TQLabel* lblMessage;
 
 protected:
-    QGridLayout* EvaTipUIBaseLayout;
-    QGridLayout* fraMainLayout;
-    QHBoxLayout* layout2;
-    QVBoxLayout* layout1;
+    TQGridLayout* EvaTipUIBaseLayout;
+    TQGridLayout* fraMainLayout;
+    TQHBoxLayout* layout2;
+    TQVBoxLayout* layout1;
 
 protected slots:
     virtual void languageChange();

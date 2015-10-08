@@ -21,10 +21,10 @@
 #ifndef EVAADDINGMANAGER_H
 #define EVAADDINGMANAGER_H
 
-#include <qobject.h>
-#include <qcstring.h>
-#include <qpixmap.h>
-#include <qfile.h>
+#include <ntqobject.h>
+#include <ntqcstring.h>
+#include <ntqpixmap.h>
+#include <ntqfile.h>
 #include "evaqun.h"
 
 class EvaPacketManager;
@@ -38,7 +38,7 @@ class EvaHttp;
 
  */
 
-class EvaAddingManager : public QObject
+class EvaAddingManager : public TQObject
 {
 	Q_OBJECT
 public:
@@ -48,7 +48,7 @@ public:
 	void setPacketManager(EvaPacketManager *packetManager);
 
 signals:
-	void buddyAdded(const unsigned int id, const QString nick, const unsigned short face, const int group);
+	void buddyAdded(const unsigned int id, const TQString nick, const unsigned short face, const int group);
 
 	void requestDetails(const unsigned int id);
 
@@ -62,21 +62,21 @@ private:
 	bool m_IsAddingQun;
 
 	unsigned int m_ID;
-	QString m_Nick;
+	TQString m_Nick;
 	unsigned short m_Face;
 	unsigned char m_AuthType; // initial case is 0xff
 
 	QunInfo m_Qun;
 
-	QByteArray m_AuthInfo; // could be verify code or url to ge the graphic
+	TQByteArray m_AuthInfo; // could be verify code or url to ge the graphic
 	bool m_IsGraphic;
-	QPixmap m_Graphic;
+	TQPixmap m_Graphic;
 	EvaHttp *m_Http;
-	QFile m_GraphicFile;
-	QString m_Session;   // session from Set-Cookie value
+	TQFile m_GraphicFile;
+	TQString m_Session;   // session from Set-Cookie value
 	bool m_IsGraphicVerified;
 
-	QByteArray m_QuestInfo; // the value returned if answer is correct
+	TQByteArray m_QuestInfo; // the value returned if answer is correct
 	bool m_IsQuestVerified;
 
 	bool m_IsInLastProcess; // true after user click to add
@@ -88,7 +88,7 @@ private:
 	void rejectedAdding();
 
 	// buddy has verify question for adding
-	void requestQuestion(const bool isQuestion = true, const QString &answer="");
+	void requestQuestion(const bool isQuestion = true, const TQString &answer="");
 
 	void authInfoReady();
 
@@ -96,10 +96,10 @@ private:
 
 	void qunAuthAdd();
 public slots:
-	void slotAddBuddy(const unsigned int id, const QString nick, const unsigned short face);
+	void slotAddBuddy(const unsigned int id, const TQString nick, const unsigned short face);
 	void slotAddBuddy(const unsigned int id);
 
-	void acceptAndAdd(const unsigned int id, const QString &nick, const unsigned short face);
+	void acceptAndAdd(const unsigned int id, const TQString &nick, const unsigned short face);
 
 	// Qun
 	void slotAddQun(const QunInfo &info);
@@ -121,7 +121,7 @@ private slots:
 
 	void slotAccepAndAdd(const int);
 
-	void slotJoinQunReply(const unsigned int id, const unsigned char authType, const QString &message);
+	void slotJoinQunReply(const unsigned int id, const unsigned char authType, const TQString &message);
 	void slotJoinQunAuthReply(const unsigned int id, const unsigned char reply);
 };
 

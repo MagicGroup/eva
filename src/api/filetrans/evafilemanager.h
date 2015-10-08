@@ -21,32 +21,32 @@
 #ifndef EVAFILEMANAGER_H
 #define EVAFILEMANAGER_H
 
-#include <qobject.h>
-#include <qptrlist.h>
-//#include <qmap.h>
+#include <ntqobject.h>
+#include <ntqptrlist.h>
+//#include <ntqmap.h>
 #include "evafiledownloader.h"
 #include "../../libeva/evadefines.h"
 
-class QCustomEvent;
+class TQCustomEvent;
 class EvaFileThread;
 
-class EvaFileManager : public QObject {
+class EvaFileManager : public TQObject {
 	Q_OBJECT
 public:
-	EvaFileManager(const int myId, QObject *parent = 0);
+	EvaFileManager(const int myId, TQObject *parent = 0);
 	~EvaFileManager();
 	// set before starting a new thread
 	void setMyBasicInfo(const unsigned char *key, const unsigned char *token, const unsigned int tokenLen);
-	void setMyProxyInfo(const QHostAddress addr, const short port, const QCString &param);
+	void setMyProxyInfo(const TQHostAddress addr, const short port, const TQCString &param);
 
 	const bool newSession(const unsigned int id, const unsigned int session, 
-				const QValueList<QString> &dirList, 
-				const QValueList<QString> &filenameList,
-				const QValueList<unsigned int> &sizeList, const bool isDownload,
-				const unsigned char transferType = QQ_TRANSFER_FILE);
+				const TQValueList<TQString> &dirList, 
+				const TQValueList<TQString> &filenameList,
+				const TQValueList<unsigned int> &sizeList, const bool isDownload,
+				const unsigned char transferType = TQQ_TRANSFER_FILE);
 	const bool changeToAgent(const unsigned int id, const unsigned int session);
 
-// 	const bool newSession(const int id, const QString &dir, const QString &file, 
+// 	const bool newSession(const int id, const TQString &dir, const TQString &file, 
 // 			const unsigned int session, const unsigned int size, 
 // 			const bool isDirectConnection = true, const bool usingProxy = false, 
 // 			const bool isDownload = false);
@@ -54,16 +54,16 @@ public:
 	void changeSessionTo(const unsigned int id, const unsigned int oldSession, const unsigned int newSession);
 	void setBuddyAgentKey(const unsigned int id, const unsigned int session, const unsigned char *key);
 	void setAgentServer(const unsigned int id, const unsigned int session, const unsigned int ip, const unsigned short port);
-	void saveFileTo(const unsigned int id, const unsigned int session, const QString dir);
+	void saveFileTo(const unsigned int id, const unsigned int session, const TQString dir);
 
 	void updateIp(const unsigned int id, const unsigned int session, const unsigned int ip);
 	const bool startSession(const unsigned int id, const unsigned int session);
 
-	const QString getFileName(const unsigned int id, const unsigned int session, const bool isAbs = false);
+	const TQString getFileName(const unsigned int id, const unsigned int session, const bool isAbs = false);
 	const unsigned int getFileSize(const unsigned int id, const unsigned int session);
 	const unsigned char getTransferType(const unsigned int id, const unsigned int session);
 
-// 	void newSendThread(const int id, const unsigned int ip, const QString &srcDir, const QString &srcFilename,
+// 	void newSendThread(const int id, const unsigned int ip, const TQString &srcDir, const TQString &srcFilename,
 // 			const bool isDirectConnection = true, const bool usingProxy = false);
 //	void newReceiveThread();
 
@@ -76,8 +76,8 @@ signals:
 	// buddy qq, agent session id, agent ip, agent port
 	void notifyAgentRequest(const unsigned int, const unsigned int, const unsigned int, const unsigned int, const unsigned short, const unsigned char);
 	void notifyTransferSessionChanged(const unsigned int, const unsigned int, const unsigned int);
-	void notifyTransferNormalInfo(const unsigned int, const unsigned int, EvaFileStatus, const QString, 
-					const QString, const unsigned int, const unsigned char);
+	void notifyTransferNormalInfo(const unsigned int, const unsigned int, EvaFileStatus, const TQString, 
+					const TQString, const unsigned int, const unsigned char);
 	void notifyAddressRequest(const unsigned int, const unsigned int, const unsigned int, const unsigned int, const unsigned short, 
 				 const unsigned int, const unsigned short);
 
@@ -85,17 +85,17 @@ public slots:
 	void slotFileTransferResume(const unsigned int id, const unsigned int session, const bool isResume);
 
 protected:
-	void customEvent(QCustomEvent *e);
+	void customEvent(TQCustomEvent *e);
 private:
 	// session are the keys
-	//QPtrList<EvaFileThread> m_SendList;
-	//QPtrList<EvaFileThread> m_ReceiveList;
-	//QMap<unsigned int, EvaFileThread *> m_SendList;
-	QPtrList<EvaFileThread> m_ThreadList;
+	//TQPtrList<EvaFileThread> m_SendList;
+	//TQPtrList<EvaFileThread> m_ReceiveList;
+	//TQMap<unsigned int, EvaFileThread *> m_SendList;
+	TQPtrList<EvaFileThread> m_ThreadList;
 	EvaFileThread *m_LastThread;
 
 	unsigned int m_MyId;
-	QHostAddress m_LocalAddress;
+	TQHostAddress m_LocalAddress;
 
 	// my encryption settings
 	unsigned char m_FileAgentKey[16];
@@ -104,9 +104,9 @@ private:
 
 	// my proxy settings
 	bool m_IsProxySet;
-	QHostAddress m_ProxyServer;
+	TQHostAddress m_ProxyServer;
 	short m_ProxyPort;
-	QCString m_ProxyAuthParam;
+	TQCString m_ProxyAuthParam;
 
 	//EvaFileThread *getThread(const unsigned int session);
 	EvaFileThread *getThread(const unsigned int id, const unsigned int session);

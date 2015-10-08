@@ -79,7 +79,7 @@
    <executable path="" params="" />
    <valgrind path="/usr/bin/valgrind" params=" --leak-check=yes" />
    <calltree path="calltree" params="" />
-   <kcachegrind path="/usr/bin/kcachegrind" />
+   <tdecachegrind path="/usr/bin/tdecachegrind" />
   </kdevvalgrind>
  </pluginList>
 </KDevPrjSession>

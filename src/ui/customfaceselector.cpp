@@ -20,15 +20,15 @@
 
 #include "customfaceselector.h"
 
-#include <qtabwidget.h>
-#include <qcheckbox.h>
-#include <qtoolbutton.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qimage.h>
-#include <qbitmap.h>
-#include <qpixmap.h>
-#include <klocale.h>
+#include <ntqtabwidget.h>
+#include <ntqcheckbox.h>
+#include <ntqtoolbutton.h>
+#include <ntqlabel.h>
+#include <ntqpainter.h>
+#include <ntqimage.h>
+#include <ntqbitmap.h>
+#include <ntqpixmap.h>
+#include <tdelocale.h>
 #include <math.h>
 
 #include "../evamain.h"
@@ -37,8 +37,8 @@
 #include "evaqtutil.h"
 #include "evaresource.h"
 
-#define FACE_GRID_SIZE    QQ_FACE_THUMBNAIL_SIZE
-#define GRID_COLOR    (QColor(0xDD, 0xE9, 0xF9))
+#define FACE_GRID_SIZE    TQQ_FACE_THUMBNAIL_SIZE
+#define GRID_COLOR    (TQColor(0xDD, 0xE9, 0xF9))
 
 // we need draw some grids
 #define GRID_LINE_WIDTH   5
@@ -51,19 +51,19 @@
 #define IndexOf(r, c, page)    ( (page) * NUM_GRIDS + (r) * NUM_W + c)
 
 // parameters: pixmap with mask, original image, the color to be ignored
-static void CreateMaskFromImage(QPixmap *pixmap, QImage *image, int color)
+static void CreateMaskFromImage(TQPixmap *pixmap, TQImage *image, int color)
 {
-	QImage *maskImage;
-	QBitmap maskBitmap;
+	TQImage *maskImage;
+	TQBitmap maskBitmap;
 	int x, dx, y, pixel;
 	unsigned char *sourceLine, *destLine;
 
 	// we only deal with depth of 32 images( QQ thumbnail format)
 	if(image->depth() != 32) return;
-	maskImage = new QImage(image->width(), image->height(), 8, 2);
+	maskImage = new TQImage(image->width(), image->height(), 8, 2);
 
-	maskImage->setColor(0, Qt::white.rgb());
-	maskImage->setColor(1, Qt::black.rgb());
+	maskImage->setColor(0, TQt::white.rgb());
+	maskImage->setColor(1, TQt::black.rgb());
 
 	for(y=0; y < image->height(); y++) {
 		sourceLine = image->scanLine(y);
@@ -81,12 +81,12 @@ static void CreateMaskFromImage(QPixmap *pixmap, QImage *image, int color)
 	pixmap->setMask(maskBitmap);
 }
 
-CustomFacePanel::CustomFacePanel(int groupIndex, QString &group, FaceList &members, QWidget* parent)
-	: QFrame(parent, "", WStyle_NoBorder),
+CustomFacePanel::CustomFacePanel(int groupIndex, TQString &group, FaceList &members, TQWidget* parent)
+	: TQFrame(parent, "", WStyle_NoBorder),
 	m_groupName(group), m_groupIndex(groupIndex), m_CurrSurface(0), m_CurrPage(0)
 {
-	setPaletteBackgroundColor( QColor( 255, 255, 255 ) );
-	resize( QSize(FACE_PANEL_WIDTH, FACE_PANEL_HEIGHT).expandedTo(minimumSizeHint()) );
+	setPaletteBackgroundColor( TQColor( 255, 255, 255 ) );
+	resize( TQSize(FACE_PANEL_WIDTH, FACE_PANEL_HEIGHT).expandedTo(minimumSizeHint()) );
 	clearWState( WState_Polished );
 	m_Surfaces.setAutoDelete(true);
 
@@ -105,7 +105,7 @@ CustomFacePanel::~CustomFacePanel()
 void CustomFacePanel::initSysPanel()
 {
 	int index = 0;
-	while(index < QQ_SMILEY_AMOUNT)
+	while(index < TQQ_SMILEY_AMOUNT)
 	{
 		m_sysIndex[index++] = -1;
 	}
@@ -115,12 +115,12 @@ void CustomFacePanel::initSysPanel()
 
 	
 // 	// create a back-buffer panel
-// 	QPixmap *pic = new QPixmap(FACE_PANEL_WIDTH, FACE_PANEL_HEIGHT);
+// 	TQPixmap *pic = new TQPixmap(FACE_PANEL_WIDTH, FACE_PANEL_HEIGHT);
 // 	pic->fill();
 // 
 // 	// draw grids for last panel buffer
-// 	QPainter painter(pic);
-// 	painter.setPen(QPen(GRID_COLOR, 1));
+// 	TQPainter painter(pic);
+// 	painter.setPen(TQPen(GRID_COLOR, 1));
 // 
 // 	// draw rows
 // 	for(int r=1; r< NUM_H; r++){
@@ -140,7 +140,7 @@ void CustomFacePanel::initSysPanel()
 // 				col = 14;
 // 				break;
 // 			};
-// 			QPixmap smiley( EvaMain::images->getSmiley(row * 15 + col)); // load smileys
+// 			TQPixmap smiley( EvaMain::images->getSmiley(row * 15 + col)); // load smileys
 // 
 // 			int y = row * (FACE_GRID_SIZE + GRID_LINE_WIDTH) + GRID_LINE_WIDTH;
 // 			int x = col * (FACE_GRID_SIZE + GRID_LINE_WIDTH) + GRID_LINE_WIDTH;
@@ -148,7 +148,7 @@ void CustomFacePanel::initSysPanel()
 // 		}
 // 	}
 
-	int iPages = QQ_SMILEY_AMOUNT / NUM_GRIDS + ((QQ_SMILEY_AMOUNT % NUM_GRIDS)?1:0);
+	int iPages = TQQ_SMILEY_AMOUNT / NUM_GRIDS + ((TQQ_SMILEY_AMOUNT % NUM_GRIDS)?1:0);
 	for(int p = 0; p < iPages; p++)
 	{
 		AddSysPanel( p * NUM_GRIDS);
@@ -159,12 +159,12 @@ void CustomFacePanel::initSysPanel()
 int CustomFacePanel::AddSysPanel(int iStartIndex /*= 0*/)
 {
 	// create a back-buffer panel
-	QPixmap *pic = new QPixmap(FACE_PANEL_WIDTH, FACE_PANEL_HEIGHT);
+	TQPixmap *pic = new TQPixmap(FACE_PANEL_WIDTH, FACE_PANEL_HEIGHT);
 	pic->fill();
 
 	// draw grids for last panel buffer
-	QPainter painter(pic);
-	painter.setPen(QPen(GRID_COLOR, 1));
+	TQPainter painter(pic);
+	painter.setPen(TQPen(GRID_COLOR, 1));
 
 	// draw rows
 	for(int r=1; r< NUM_H; r++){
@@ -184,7 +184,7 @@ int CustomFacePanel::AddSysPanel(int iStartIndex /*= 0*/)
 // 				col = 14;
 // 				break;
 // 			};
-// 			QPixmap smiley( EvaMain::images->getSmiley(row * 15 + col)); // load smileys
+// 			TQPixmap smiley( EvaMain::images->getSmiley(row * 15 + col)); // load smileys
 // 
 // 			int y = row * (FACE_GRID_SIZE + GRID_LINE_WIDTH) + GRID_LINE_WIDTH;
 // 			int x = col * (FACE_GRID_SIZE + GRID_LINE_WIDTH) + GRID_LINE_WIDTH;
@@ -195,13 +195,13 @@ int CustomFacePanel::AddSysPanel(int iStartIndex /*= 0*/)
 	bool bDrawn = false;
 	int i = iStartIndex , iRow, iCol;
 	int page = m_Surfaces.count();
-	for(; i < (iStartIndex + NUM_GRIDS) && i < QQ_SMILEY_AMOUNT; i++)
+	for(; i < (iStartIndex + NUM_GRIDS) && i < TQQ_SMILEY_AMOUNT; i++)
 	{
 		iRow = (i % NUM_GRIDS) / NUM_W;
 		iCol = (i % NUM_GRIDS) % NUM_W;
 		m_sysIndex[page * NUM_GRIDS + iRow * NUM_W + iCol] = i;
 
-		QPixmap smiley( EvaMain::images->getSmiley(i) ); // load smileys
+		TQPixmap smiley( EvaMain::images->getSmiley(i) ); // load smileys
 
 		int y = iRow * (FACE_GRID_SIZE + GRID_LINE_WIDTH) + GRID_LINE_WIDTH;
 		int x = iCol * (FACE_GRID_SIZE + GRID_LINE_WIDTH) + GRID_LINE_WIDTH;
@@ -223,21 +223,21 @@ void CustomFacePanel::initCustomPanel(FaceList &members)
 	m_Surfaces.clear();
 	files.clear();
 	int index=0, offset = 0;
-	QPixmap *pic = 0;
+	TQPixmap *pic = 0;
 
-	QString dir = EvaMain::user->getSetting()->getCustomSmileyDir() + "/";
-	//QString dir = "./CustomFace/";
+	TQString dir = EvaMain::user->getSetting()->getCustomSmileyDir() + "/";
+	//TQString dir = "./CustomFace/";
 	for(FaceList::Iterator it = members.begin(); it != members.end(); ++it){
 		files[index]=(*it).org(); // got file name
 
 		if( !(index%NUM_GRIDS) ){
 			// create a back-buffer panel
-			pic = new QPixmap(FACE_PANEL_WIDTH, FACE_PANEL_HEIGHT);
+			pic = new TQPixmap(FACE_PANEL_WIDTH, FACE_PANEL_HEIGHT);
 			pic->fill();
 
 			// draw grids for last panel buffer
-			QPainter gridPainter(pic);
-			gridPainter.setPen(QPen(GRID_COLOR, 1));
+			TQPainter gridPainter(pic);
+			gridPainter.setPen(TQPen(GRID_COLOR, 1));
 
 			// draw rows
 			for(int r=1; r< NUM_H; r++){
@@ -257,12 +257,12 @@ void CustomFacePanel::initCustomPanel(FaceList &members)
 		}
 
 		// draw current pixmap onto the buffer
-		QPainter painter(pic);
-		QString file = dir + (m_groupIndex?(m_groupName + "/" + (*it).fixed()):((*it).fixed()) );
-		QPixmap smiley(file); // load smiley thumbnail
+		TQPainter painter(pic);
+		TQString file = dir + (m_groupIndex?(m_groupName + "/" + (*it).fixed()):((*it).fixed()) );
+		TQPixmap smiley(file); // load smiley thumbnail
 		// ignore the pink background color in case of using thumbnails from Win QQ directly
-		QImage img = smiley.convertToImage();
-		CreateMaskFromImage(&smiley, &img, qRgb(255, 0, 255) );
+		TQImage img = smiley.convertToImage();
+		CreateMaskFromImage(&smiley, &img, tqRgb(255, 0, 255) );
 
 		int row = RowOf(index - offset);
 		int col = ColOf(index - offset);
@@ -284,10 +284,10 @@ void CustomFacePanel::setPage(int index)
 	repaint(false);
 }
 
-void CustomFacePanel::paintEvent( QPaintEvent *e)
+void CustomFacePanel::paintEvent( TQPaintEvent *e)
 {
 	if(!m_CurrSurface){
-		QFrame::paintEvent(e);
+		TQFrame::paintEvent(e);
 		return;
 	}
 	
@@ -296,15 +296,15 @@ void CustomFacePanel::paintEvent( QPaintEvent *e)
 	int w = e->rect().width();
 	int h = e->rect().height();
 
-	QPainter painter(this);
+	TQPainter painter(this);
 	painter.drawPixmap(x, y, *m_CurrSurface, x, y, w, h);
 
 	drawFrame(&painter);
 }
 
-void CustomFacePanel::mouseReleaseEvent( QMouseEvent * e)
+void CustomFacePanel::mouseReleaseEvent( TQMouseEvent * e)
 {
-	if(e->button() != Qt::LeftButton){
+	if(e->button() != TQt::LeftButton){
 		e->ignore();
 		return;
 	}
@@ -315,7 +315,7 @@ void CustomFacePanel::mouseReleaseEvent( QMouseEvent * e)
 	{
 		if(m_groupIndex == -1){
 			int index = m_CurrPage * NUM_GRIDS + row * NUM_W + col;
-			if( index < QQ_SMILEY_AMOUNT && m_sysIndex[index] != -1)
+			if( index < TQQ_SMILEY_AMOUNT && m_sysIndex[index] != -1)
 				emit selectSysFace(m_sysIndex[index]);
 	
 		} else {
@@ -323,7 +323,7 @@ void CustomFacePanel::mouseReleaseEvent( QMouseEvent * e)
 		
 			if(index < 0 || index >= (int)(files.size()) ) return;
 		
-			QString name = (m_groupIndex)?m_groupName:"";
+			TQString name = (m_groupIndex)?m_groupName:"";
 			emit selectCustomFace(name, files[index]);
 		}
 	}
@@ -331,37 +331,37 @@ void CustomFacePanel::mouseReleaseEvent( QMouseEvent * e)
 
 ///*  =========================================== */
 
-CustomFaceSelector::CustomFaceSelector( bool useSysFaceOnly, QWidget* parent,  const char* name, WFlags fl )
+CustomFaceSelector::CustomFaceSelector( bool useSysFaceOnly, TQWidget* parent,  const char* name, WFlags fl )
     : CustomFaceUIBase( parent, name, fl ), m_UseSysFaceOnly(useSysFaceOnly)
 {
 	// system smiley first
 	FaceList list;
-	QString gn;
+	TQString gn;
 	CustomFacePanel *tab = new CustomFacePanel( -1, gn, list, twSelector);
 	twSelector->insertTab(tab, i18n("System"));
 
 	int total = tab->numPages();
 	int curr = tab->page();
-	lblPage->setText(QString("%1/%2").arg(curr+1).arg(total));
+	lblPage->setText(TQString("%1/%2").arg(curr+1).arg(total));
 	connect(tab, SIGNAL(selectSysFace(int)),
 		this, SLOT(slotSelectSysFace(int)) );
 
 	
 	if(!m_UseSysFaceOnly) {
-		QString dir = EvaMain::user->getSetting()->getCustomSmileyDir() + "/";
-		//QString dir = "./CustomFace/";
+		TQString dir = EvaMain::user->getSetting()->getCustomSmileyDir() + "/";
+		//TQString dir = "./CustomFace/";
 		CustomFaceConfig config(dir);
 		if(config.loadXML()){
-			QStringList groups = config.groupNames();
+			TQStringList groups = config.groupNames();
 			int i = 0;
-			for(QStringList::Iterator it = groups.begin(); it  != groups.end(); ++it){
+			for(TQStringList::Iterator it = groups.begin(); it  != groups.end(); ++it){
 				FaceList faces = config.groupMembers(i);
 				
 				tab = new CustomFacePanel(i, *it, faces, twSelector);
 				twSelector->insertTab(tab, *it);
 
-				connect(tab, SIGNAL(selectCustomFace(QString, QString)),
-					this, SLOT(slotSelectCustomFace(QString, QString)) );
+				connect(tab, SIGNAL(selectCustomFace(TQString, TQString)),
+					this, SLOT(slotSelectCustomFace(TQString, TQString)) );
 				i++;
 			}
 		}
@@ -380,12 +380,12 @@ CustomFaceSelector::CustomFaceSelector( bool useSysFaceOnly, QWidget* parent,  c
 	connect(chbUseShortcut, SIGNAL(clicked()), this, SLOT(slotUseShortcutClicked()) );
 	connect(tbPrev, SIGNAL(clicked()), this, SLOT(slotPrevClicked() ) );
 	connect(tbNext, SIGNAL(clicked()), this, SLOT(slotNextClicked() ) );
-	connect(twSelector, SIGNAL(currentChanged( QWidget *)), this, SLOT(slotPanelChanged(QWidget *)) );
+	connect(twSelector, SIGNAL(currentChanged( TQWidget *)), this, SLOT(slotPanelChanged(TQWidget *)) );
 }
 
 CustomFaceSelector::~CustomFaceSelector()
 {
-    // no need to delete child widgets, Qt does it all for us
+    // no need to delete child widgets, TQt does it all for us
 }
 
 void CustomFaceSelector::slotSelectSysFace(int id)
@@ -394,15 +394,15 @@ void CustomFaceSelector::slotSelectSysFace(int id)
 	hide();
 }
 
-void CustomFaceSelector::slotSelectCustomFace(QString group, QString file)
+void CustomFaceSelector::slotSelectCustomFace(TQString group, TQString file)
 {
-	QString src = EvaMain::user->getSetting()->getCustomSmileyDir();
+	TQString src = EvaMain::user->getSetting()->getCustomSmileyDir();
 
 	if(!group.isEmpty()){
 		src += ("/" + group);
 	}
 	src += ("/" + file );
-	QString dest = EvaMain::user->getSetting()->getPictureCacheDir() + "/" + file;
+	TQString dest = EvaMain::user->getSetting()->getPictureCacheDir() + "/" + file;
 
  	if(EvaHelper::copyFile(src, dest)){
  		emit selectCustomFace(file);
@@ -429,7 +429,7 @@ void CustomFaceSelector::slotPrevClicked()
 		int curr = panel->page();
 		if(curr <= 0) return;
 		panel->setPage( curr - 1);
-		lblPage->setText(QString("%1/%2").arg(curr).arg(total));
+		lblPage->setText(TQString("%1/%2").arg(curr).arg(total));
 	}
 }
 
@@ -441,33 +441,33 @@ void CustomFaceSelector::slotNextClicked()
 		int curr = panel->page();
 		if(curr >= total -1 ) return;
 		panel->setPage( curr + 1);
-		lblPage->setText(QString("%1/%2").arg(curr+2).arg(total));
+		lblPage->setText(TQString("%1/%2").arg(curr+2).arg(total));
 	}
 }
 
-void CustomFaceSelector::slotPanelChanged(QWidget * w)
+void CustomFaceSelector::slotPanelChanged(TQWidget * w)
 {
 	if(m_UseSysFaceOnly) return;
 	CustomFacePanel *panel = static_cast<CustomFacePanel*>(w);
 	if(panel){
 		int total = panel->numPages();
 		int curr = panel->page();
-		lblPage->setText(QString("%1/%2").arg(curr+1).arg(total));
+		lblPage->setText(TQString("%1/%2").arg(curr+1).arg(total));
 	}	
 }
 
-void CustomFaceSelector::paintEvent( QPaintEvent *e)
+void CustomFaceSelector::paintEvent( TQPaintEvent *e)
 {
-	QPainter painter(this);
-	painter.setPen(QPen(QColor(4, 74, 155), 1));
+	TQPainter painter(this);
+	painter.setPen(TQPen(TQColor(4, 74, 155), 1));
 	painter.drawRect(rect());
 
-	QWidget::paintEvent(e);
+	TQWidget::paintEvent(e);
 }
 
-void CustomFaceSelector::mouseReleaseEvent( QMouseEvent * e)
+void CustomFaceSelector::mouseReleaseEvent( TQMouseEvent * e)
 {
-	if(e->button() != Qt::LeftButton){
+	if(e->button() != TQt::LeftButton){
 		hide();
 		e->accept();
 	}

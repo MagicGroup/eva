@@ -20,125 +20,125 @@
 
 #include "evaaddingnoticeuibase.h"
 
-#include <qvariant.h>
-#include <qpushbutton.h>
-#include <qframe.h>
-#include <qlabel.h>
-#include <qtoolbutton.h>
-#include <qbuttongroup.h>
-#include <qradiobutton.h>
-#include <qlineedit.h>
-#include <qcheckbox.h>
-#include <qlayout.h>
-#include <qtooltip.h>
-#include <klocale.h>
+#include <ntqvariant.h>
+#include <ntqpushbutton.h>
+#include <ntqframe.h>
+#include <ntqlabel.h>
+#include <ntqtoolbutton.h>
+#include <ntqbuttongroup.h>
+#include <ntqradiobutton.h>
+#include <ntqlineedit.h>
+#include <ntqcheckbox.h>
+#include <ntqlayout.h>
+#include <ntqtooltip.h>
+#include <tdelocale.h>
 
 /*
  *  Constructs a EvaAddingNoticeUIBase as a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'.
  */
-EvaAddingNoticeUIBase::EvaAddingNoticeUIBase( QWidget* parent, const char* name, WFlags fl )
-    : QWidget( parent, name, fl )
+EvaAddingNoticeUIBase::EvaAddingNoticeUIBase( TQWidget* parent, const char* name, WFlags fl )
+    : TQWidget( parent, name, fl )
 {
 	if ( !name )
 		setName( "EvaAddingNoticeUIBase" );
-	EvaAddingNoticeUIBaseLayout = new QGridLayout( this, 1, 1, 11, 6, "EvaAddingNoticeUIBaseLayout"); 
+	EvaAddingNoticeUIBaseLayout = new TQGridLayout( this, 1, 1, 11, 6, "EvaAddingNoticeUIBaseLayout"); 
 	
-	layout15 = new QVBoxLayout( 0, 0, 6, "layout15"); 
-	spacer1 = new QSpacerItem( 20, 16, QSizePolicy::Minimum, QSizePolicy::Fixed );
+	layout15 = new TQVBoxLayout( 0, 0, 6, "layout15"); 
+	spacer1 = new TQSpacerItem( 20, 16, TQSizePolicy::Minimum, TQSizePolicy::Fixed );
 	layout15->addItem( spacer1 );
 	
-	fraMain = new QFrame( this, "fraMain" );
-	fraMain->setPaletteBackgroundColor( QColor( 234, 247, 225 ) );
-	fraMain->setFrameShape( QFrame::StyledPanel );
-	fraMain->setFrameShadow( QFrame::Raised );
-	fraMainLayout = new QGridLayout( fraMain, 1, 1, 11, 6, "fraMainLayout"); 
+	fraMain = new TQFrame( this, "fraMain" );
+	fraMain->setPaletteBackgroundColor( TQColor( 234, 247, 225 ) );
+	fraMain->setFrameShape( TQFrame::StyledPanel );
+	fraMain->setFrameShadow( TQFrame::Raised );
+	fraMainLayout = new TQGridLayout( fraMain, 1, 1, 11, 6, "fraMainLayout"); 
 	
-	layout10 = new QVBoxLayout( 0, 0, 6, "layout10"); 
+	layout10 = new TQVBoxLayout( 0, 0, 6, "layout10"); 
 	
-	layout9 = new QHBoxLayout( 0, 0, 6, "layout9"); 
+	layout9 = new TQHBoxLayout( 0, 0, 6, "layout9"); 
 	
-	layout4 = new QVBoxLayout( 0, 0, 6, "layout4"); 
+	layout4 = new TQVBoxLayout( 0, 0, 6, "layout4"); 
 	
-	lblTitle = new QLabel( fraMain, "lblTitle" );
+	lblTitle = new TQLabel( fraMain, "lblTitle" );
 	layout4->addWidget( lblTitle );
 	
-	lblMessageTag = new QLabel( fraMain, "lblMessageTag" );
+	lblMessageTag = new TQLabel( fraMain, "lblMessageTag" );
 	layout4->addWidget( lblMessageTag );
 	layout9->addLayout( layout4 );
-	spacer3 = new QSpacerItem( 61, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
+	spacer3 = new TQSpacerItem( 61, 20, TQSizePolicy::Expanding, TQSizePolicy::Minimum );
 	layout9->addItem( spacer3 );
 	
-	tbFace = new QToolButton( fraMain, "tbFace" );
-	tbFace->setSizePolicy( QSizePolicy( (QSizePolicy::SizeType)1, (QSizePolicy::SizeType)1, 0, 0, tbFace->sizePolicy().hasHeightForWidth() ) );
+	tbFace = new TQToolButton( fraMain, "tbFace" );
+	tbFace->setSizePolicy( TQSizePolicy( (TQSizePolicy::SizeType)1, (TQSizePolicy::SizeType)1, 0, 0, tbFace->sizePolicy().hasHeightForWidth() ) );
 	tbFace->setUsesBigPixmap( TRUE );
 	tbFace->setAutoRaise( TRUE );
 	layout9->addWidget( tbFace );
 	layout10->addLayout( layout9 );
 	
-	lblMessage = new QLabel( fraMain, "lblMessage" );
+	lblMessage = new TQLabel( fraMain, "lblMessage" );
 	layout10->addWidget( lblMessage );
 	
 	fraMainLayout->addLayout( layout10, 0, 0 );
 	layout15->addWidget( fraMain );
 	
-	btngrpActions = new QButtonGroup( this, "btngrpActions" );
-	btngrpActions->setFrameShape( QButtonGroup::NoFrame );
-	btngrpActions->setColumnLayout(0, Qt::Vertical );
+	btngrpActions = new TQButtonGroup( this, "btngrpActions" );
+	btngrpActions->setFrameShape( TQButtonGroup::NoFrame );
+	btngrpActions->setColumnLayout(0, TQt::Vertical );
 	btngrpActions->layout()->setSpacing( 6 );
 	btngrpActions->layout()->setMargin( 0 );
-	btngrpActionsLayout = new QGridLayout( btngrpActions->layout() );
-	btngrpActionsLayout->setAlignment( Qt::AlignTop );
+	btngrpActionsLayout = new TQGridLayout( btngrpActions->layout() );
+	btngrpActionsLayout->setAlignment( TQt::AlignTop );
 	
-	layout14 = new QHBoxLayout( 0, 0, 6, "layout14"); 
+	layout14 = new TQHBoxLayout( 0, 0, 6, "layout14"); 
 	
-	rbtnAcceptAdd = new QRadioButton( btngrpActions, "rbtnAcceptAdd" );
+	rbtnAcceptAdd = new TQRadioButton( btngrpActions, "rbtnAcceptAdd" );
 	layout14->addWidget( rbtnAcceptAdd );
 	
-	rbtnAccept = new QRadioButton( btngrpActions, "rbtnAccept" );
+	rbtnAccept = new TQRadioButton( btngrpActions, "rbtnAccept" );
 	layout14->addWidget( rbtnAccept );
 	
-	rbtnReject = new QRadioButton( btngrpActions, "rbtnReject" );
+	rbtnReject = new TQRadioButton( btngrpActions, "rbtnReject" );
 	layout14->addWidget( rbtnReject );
 	
 	btngrpActionsLayout->addLayout( layout14, 0, 0 );
 	layout15->addWidget( btngrpActions );
 	
-	fraRejectContents = new QFrame( this, "fraRejectContents" );
-	fraRejectContents->setFrameShape( QFrame::NoFrame );
-	fraRejectContents->setFrameShadow( QFrame::Raised );
-	fraRejectContentsLayout = new QGridLayout( fraRejectContents, 1, 1, 0, 6, "fraRejectContentsLayout"); 
+	fraRejectContents = new TQFrame( this, "fraRejectContents" );
+	fraRejectContents->setFrameShape( TQFrame::NoFrame );
+	fraRejectContents->setFrameShadow( TQFrame::Raised );
+	fraRejectContentsLayout = new TQGridLayout( fraRejectContents, 1, 1, 0, 6, "fraRejectContentsLayout"); 
 	
-	layout2 = new QVBoxLayout( 0, 0, 6, "layout2"); 
+	layout2 = new TQVBoxLayout( 0, 0, 6, "layout2"); 
 	
-	leRejectMessage = new QLineEdit( fraRejectContents, "leRejectMessage" );
+	leRejectMessage = new TQLineEdit( fraRejectContents, "leRejectMessage" );
 	layout2->addWidget( leRejectMessage );
 	
-	chbRejectForever = new QCheckBox( fraRejectContents, "chbRejectForever" );
+	chbRejectForever = new TQCheckBox( fraRejectContents, "chbRejectForever" );
 	layout2->addWidget( chbRejectForever );
 	
 	fraRejectContentsLayout->addLayout( layout2, 0, 0 );
 	layout15->addWidget( fraRejectContents );
 	
-	layout3 = new QHBoxLayout( 0, 0, 6, "layout3"); 
+	layout3 = new TQHBoxLayout( 0, 0, 6, "layout3"); 
 	
-	tbtnAuthSettings = new QToolButton( this, "tbtnAuthSettings" );
-	tbtnAuthSettings->setPaletteForegroundColor( QColor( 85, 0, 255 ) );
+	tbtnAuthSettings = new TQToolButton( this, "tbtnAuthSettings" );
+	tbtnAuthSettings->setPaletteForegroundColor( TQColor( 85, 0, 255 ) );
 	tbtnAuthSettings->setAutoRaise( TRUE );
 	layout3->addWidget( tbtnAuthSettings );
-	spacer2 = new QSpacerItem( 21, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
+	spacer2 = new TQSpacerItem( 21, 20, TQSizePolicy::Expanding, TQSizePolicy::Minimum );
 	layout3->addItem( spacer2 );
 	
-	btnOk = new QPushButton( this, "btnOk" );
+	btnOk = new TQPushButton( this, "btnOk" );
 	layout3->addWidget( btnOk );
 	
-	btnCancel = new QPushButton( this, "btnCancel" );
+	btnCancel = new TQPushButton( this, "btnCancel" );
 	layout3->addWidget( btnCancel );
 	layout15->addLayout( layout3 );
 	
 	EvaAddingNoticeUIBaseLayout->addLayout( layout15, 0, 0 );
 	languageChange();
-	resize( QSize(337, 272).expandedTo(minimumSizeHint()) );
+	resize( TQSize(337, 272).expandedTo(minimumSizeHint()) );
 	clearWState( WState_Polished );
 }
 
@@ -147,7 +147,7 @@ EvaAddingNoticeUIBase::EvaAddingNoticeUIBase( QWidget* parent, const char* name,
  */
 EvaAddingNoticeUIBase::~EvaAddingNoticeUIBase()
 {
-    // no need to delete child widgets, Qt does it all for us
+    // no need to delete child widgets, TQt does it all for us
 }
 
 /*
@@ -161,15 +161,15 @@ void EvaAddingNoticeUIBase::languageChange()
 	//lblMessageTag->setText( i18n( "Message ():" ) );
 	tbFace->setText( i18n( "..." ) );
 	//lblMessage->setText( i18n( "-" ) );
-	btngrpActions->setTitle( QString::null );
+	btngrpActions->setTitle( TQString::null );
 	rbtnAcceptAdd->setText( i18n( "Accept and Add" ) );
 	rbtnAccept->setText( i18n( "Accept" ) );
 	rbtnReject->setText( i18n( "Reject" ) );
 	chbRejectForever->setText( i18n( "Reject always" ) );
 	tbtnAuthSettings->setText( i18n( "Authentication settings" ) );
 	btnOk->setText( i18n( "&OK" ) );
-	btnOk->setAccel( QKeySequence( tr( "Alt+O" ) ) );
+	btnOk->setAccel( TQKeySequence( tr( "Alt+O" ) ) );
 	btnCancel->setText( i18n( "&Cancel" ) );
-	btnCancel->setAccel( QKeySequence( tr( "Alt+C" ) ) );
+	btnCancel->setAccel( TQKeySequence( tr( "Alt+C" ) ) );
 }
 

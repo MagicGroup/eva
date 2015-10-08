@@ -17,81 +17,81 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef QUNCREATEUI_H
-#define QUNCREATEUI_H
+#ifndef TQUNCREATEUI_H
+#define TQUNCREATEUI_H
 
-#include <qvariant.h>
-#include <qwidget.h>
+#include <ntqvariant.h>
+#include <ntqwidget.h>
 
-class QVBoxLayout;
-class QHBoxLayout;
-class QGridLayout;
-class QSpacerItem;
-class QLabel;
-class QFrame;
-class QWidgetStack;
-class QLineEdit;
-class QToolButton;
-class QGroupBox;
-class QTextEdit;
-class QButtonGroup;
-class QRadioButton;
-class QTable;
-class QPushButton;
+class TQVBoxLayout;
+class TQHBoxLayout;
+class TQGridLayout;
+class TQSpacerItem;
+class TQLabel;
+class TQFrame;
+class TQWidgetStack;
+class TQLineEdit;
+class TQToolButton;
+class TQGroupBox;
+class TQTextEdit;
+class TQButtonGroup;
+class TQRadioButton;
+class TQTable;
+class TQPushButton;
 
-class QunCreateUI : public QWidget
+class QunCreateUI : public TQWidget
 {
     Q_OBJECT
 
 public:
-    QunCreateUI( QWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
+    QunCreateUI( TQWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
     ~QunCreateUI();
 
-    QLabel* lblTip;
-    QFrame* line1;
-    QWidgetStack* wsMain;
-    QWidget* wsDetails;
-    QLabel* lblName;
-    QLineEdit* leQunName;
-    QLabel* lblCategory;
-    QToolButton* tbCategory;
-    QGroupBox* gbNotice;
-    QTextEdit* teNotice;
-    QGroupBox* gbDescription;
-    QTextEdit* teDescription;
-    QButtonGroup* bgAuthen;
-    QRadioButton* rbNoAuthenNeed;
-    QRadioButton* rbNeedAuthen;
-    QRadioButton* rbRejectAnyone;
-    QWidget* wsMembers;
-    QTable* tblMembers;
-    QPushButton* pbSetMembers;
-    QPushButton* pbDelMembers;
-    QPushButton* pbPrev;
-    QPushButton* pbNext;
-    QPushButton* pbCancel;
+    TQLabel* lblTip;
+    TQFrame* line1;
+    TQWidgetStack* wsMain;
+    TQWidget* wsDetails;
+    TQLabel* lblName;
+    TQLineEdit* leQunName;
+    TQLabel* lblCategory;
+    TQToolButton* tbCategory;
+    TQGroupBox* gbNotice;
+    TQTextEdit* teNotice;
+    TQGroupBox* gbDescription;
+    TQTextEdit* teDescription;
+    TQButtonGroup* bgAuthen;
+    TQRadioButton* rbNoAuthenNeed;
+    TQRadioButton* rbNeedAuthen;
+    TQRadioButton* rbRejectAnyone;
+    TQWidget* wsMembers;
+    TQTable* tblMembers;
+    TQPushButton* pbSetMembers;
+    TQPushButton* pbDelMembers;
+    TQPushButton* pbPrev;
+    TQPushButton* pbNext;
+    TQPushButton* pbCancel;
 
 protected:
-    QVBoxLayout* QunCreateUILayout;
-    QGridLayout* wsDetailsLayout;
-    QVBoxLayout* layout44;
-    QHBoxLayout* layout40;
-    QSpacerItem* spacer15;
-    QHBoxLayout* layout41;
-    QSpacerItem* spacer16;
-    QGridLayout* gbNoticeLayout;
-    QGridLayout* gbDescriptionLayout;
-    QVBoxLayout* bgAuthenLayout;
-    QGridLayout* wsMembersLayout;
-    QHBoxLayout* layout43;
-    QVBoxLayout* layout42;
-    QSpacerItem* spacer17;
-    QHBoxLayout* layout7;
-    QSpacerItem* spacer18;
+    TQVBoxLayout* QunCreateUILayout;
+    TQGridLayout* wsDetailsLayout;
+    TQVBoxLayout* layout44;
+    TQHBoxLayout* layout40;
+    TQSpacerItem* spacer15;
+    TQHBoxLayout* layout41;
+    TQSpacerItem* spacer16;
+    TQGridLayout* gbNoticeLayout;
+    TQGridLayout* gbDescriptionLayout;
+    TQVBoxLayout* bgAuthenLayout;
+    TQGridLayout* wsMembersLayout;
+    TQHBoxLayout* layout43;
+    TQVBoxLayout* layout42;
+    TQSpacerItem* spacer17;
+    TQHBoxLayout* layout7;
+    TQSpacerItem* spacer18;
 
 protected slots:
     virtual void languageChange();
 
 };
 
-#endif // QUNCREATEUI_H
+#endif // TQUNCREATEUI_H

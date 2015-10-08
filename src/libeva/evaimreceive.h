@@ -44,7 +44,7 @@ public:
 	const int getBodyLength() const { return (bodyLength - bodyOffset); }
 	const unsigned char *getBodyData() const { return (decryptedBuf + bodyOffset); }
 	
-	static std::string convertToShow(const std::string &src, const unsigned char type = QQ_IM_NORMAL_REPLY);
+	static std::string convertToShow(const std::string &src, const unsigned char type = TQQ_IM_NORMAL_REPLY);
 	ReceiveIMPacket &operator=(const ReceiveIMPacket &rhs);
 protected:
 	virtual void parseBody(); 
@@ -260,19 +260,19 @@ private:
 /*
 	this class is used to analyse following notifications:
 	
-	QQ_RECV_IM_CREATE_QUN
-	QQ_RECV_IM_ADDED_TO_QUN
-	QQ_RECV_IM_DELETED_FROM_QUN
-	QQ_RECV_IM_REQUEST_JOIN_QUN
-	QQ_RECV_IM_APPROVE_JOIN_QUN
-	 QQ_RECV_IM_REJECT_JOIN_QUN
-	QQ_RECV_IM_SET_QUN_ADMIN
+	TQQ_RECV_IM_CREATE_QUN
+	TQQ_RECV_IM_ADDED_TO_QUN
+	TQQ_RECV_IM_DELETED_FROM_QUN
+	TQQ_RECV_IM_REQUEST_JOIN_QUN
+	TQQ_RECV_IM_APPROVE_JOIN_QUN
+	 TQQ_RECV_IM_REJECT_JOIN_QUN
+	TQQ_RECV_IM_SET_QUN_ADMIN
 	 
 	 note that:  
-	 	QQ_RECV_IM_CREATE_QUN
-		QQ_RECV_IM_ADDED_TO_QUN
-		QQ_RECV_IM_DELETED_FROM_QUN
-		QQ_RECV_IM_SET_QUN_ADMIN
+	 	TQQ_RECV_IM_CREATE_QUN
+		TQQ_RECV_IM_ADDED_TO_QUN
+		TQQ_RECV_IM_DELETED_FROM_QUN
+		TQQ_RECV_IM_SET_QUN_ADMIN
 		have no messages in its packet.
 */
 class ReceivedQunIMJoinRequest{
@@ -286,7 +286,7 @@ public:
 	const unsigned int getSender() const { return sender; }
 	const std::string &getMessage() const { return message; }
 	const char getType() const { return type; }
-	// if QQ_RECV_IM_SET_QUN_ADMIN packet, commander will be the 
+	// if TQQ_RECV_IM_SET_QUN_ADMIN packet, commander will be the 
 	// action. 0: unset admin, 1: set admin
 	const unsigned int getCommander() const { return commander; }  // from starkwong's patch
 	
@@ -334,13 +334,13 @@ private:
 
 /*
 	this class used in:
-			QQ_IM_UDP_REQUEST
-			QQ_IM_TCP_REQUEST
-			QQ_IM_ACCEPT_UDP_REQUEST
-			QQ_IM_NOTIFY_IP
-			QQ_IM_UDP_EX_REQUEST        0x81
-			QQ_IM_EX_REQUEST_ACCEPTED   0x83
-			QQ_IM_EX_REQUEST_CANCELED   0x85
+			TQQ_IM_UDP_REQUEST
+			TQQ_IM_TCP_REQUEST
+			TQQ_IM_ACCEPT_UDP_REQUEST
+			TQQ_IM_NOTIFY_IP
+			TQQ_IM_UDP_EX_REQUEST        0x81
+			TQQ_IM_EX_REQUEST_ACCEPTED   0x83
+			TQQ_IM_EX_REQUEST_CANCELED   0x85
 */
 class ReceivedFileIM : public NormalIMBase{
 public:
@@ -380,13 +380,13 @@ private:
 	//unsigned short m_LanPort;
 
 	// the following two used when other side start a sending request:
-	// types are QQ_IM_UDP_REQUEST and QQ_IM_TCP_REQUEST
+	// types are TQQ_IM_UDP_REQUEST and TQQ_IM_TCP_REQUEST
 	std::string m_FileName;
 	unsigned int m_FileSize;
 };
 
 
-// QQ_IM_EX_NOTIFY_IP
+// TQQ_IM_EX_NOTIFY_IP
 
 class ReceivedFileExIpIM : public NormalIMBase{
 public:
@@ -449,17 +449,17 @@ private:
 	unsigned int m_SyncSession;
 };
 
-class ReceivedQQNews {
+class ReceivedTQQNews {
 public:
-	ReceivedQQNews(const unsigned char *buf, const int len);
-	ReceivedQQNews( const ReceivedQQNews &rhs);
-	~ReceivedQQNews() {};
+	ReceivedTQQNews(const unsigned char *buf, const int len);
+	ReceivedTQQNews( const ReceivedTQQNews &rhs);
+	~ReceivedTQQNews() {};
 
 	const std::string &getTitle() const { return m_Title; }
 	const std::string &getBrief() const { return m_Brief; }
 	const std::string &getURL() const { return m_URL; }
 
-	ReceivedQQNews &operator=(const ReceivedQQNews &rhs);
+	ReceivedTQQNews &operator=(const ReceivedTQQNews &rhs);
 private:
 	std::string m_Title;
 	std::string m_Brief;
@@ -525,12 +525,12 @@ private:
 	void parseData(const unsigned char *buf, const int len);
 };
 
-class ReceivedQQMailPacket {
+class ReceivedTQQMailPacket {
 public:
-	ReceivedQQMailPacket(const unsigned char *buf, const int len);
-	ReceivedQQMailPacket( const ReceivedQQMailPacket &rhs);
-	~ReceivedQQMailPacket() {};
-	ReceivedQQMailPacket &operator=(const ReceivedQQMailPacket &rhs);
+	ReceivedTQQMailPacket(const unsigned char *buf, const int len);
+	ReceivedTQQMailPacket( const ReceivedTQQMailPacket &rhs);
+	~ReceivedTQQMailPacket() {};
+	ReceivedTQQMailPacket &operator=(const ReceivedTQQMailPacket &rhs);
 
 	const std::string getMailID() const { return mailID; }
 	const std::string getFrom() const { return from; }

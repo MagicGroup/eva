@@ -22,10 +22,10 @@
 #ifndef EVA_IDLE_TIME_DETECTOR_H
 #define EVA_IDLE_TIME_DETECTOR_H
 
-#include <qobject.h>
+#include <ntqobject.h>
 #include "config.h"
 
-class QTimer;
+class TQTimer;
 
 
 // Seconds per minutes - useful for speeding debugging up!
@@ -38,7 +38,7 @@ const int testInterval= 1000;
  * Keep track of how long the computer has been idle.
  */
 
-class IdleTimeDetector :public QObject
+class IdleTimeDetector :public TQObject
 {
 Q_OBJECT
 
@@ -115,7 +115,7 @@ private:
   bool _idleDetectionPossible;
   bool _overAllIdleDetect; // Based on preferences.
   int _maxIdle;
-  QTimer *_timer;
+  TQTimer *_timer;
 };
 
 #endif // EVA_IDLE_TIME_DETECTOR_H

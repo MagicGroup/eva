@@ -24,7 +24,7 @@
 #include <stdio.h>
 #include "md5.h"
 #define KEY_LENGTH 16
-#define QQ_SMILEY_AMOUNT 135
+#define TQQ_SMILEY_AMOUNT 135
 
 /** Visual Studio .NET 2002/2003 Additional Definitions */
 #ifdef WIN32
@@ -71,8 +71,8 @@ public:
 	static unsigned int read32(const unsigned char *buf);  // return the int value
 private:	
 	static char md5Buf[KEY_LENGTH];
-	static textMap map[QQ_SMILEY_AMOUNT];
-	static const char smileyMap[QQ_SMILEY_AMOUNT];
+	static textMap map[TQQ_SMILEY_AMOUNT];
+	static const char smileyMap[TQQ_SMILEY_AMOUNT];
 	static int smileyToFileIndex( const char smileyCode);
 	
 };

@@ -10,116 +10,116 @@
 #ifndef EVAUSERINFOWIDGET_H
 #define EVAUSERINFOWIDGET_H
 
-#include <qvariant.h>
-#include <qwidget.h>
+#include <ntqvariant.h>
+#include <ntqwidget.h>
 
-class QVBoxLayout;
-class QHBoxLayout;
-class QGridLayout;
-class QSpacerItem;
-class QLabel;
-class QLineEdit;
-class QTextEdit;
+class TQVBoxLayout;
+class TQHBoxLayout;
+class TQGridLayout;
+class TQSpacerItem;
+class TQLabel;
+class TQLineEdit;
+class TQTextEdit;
 
-class EvaUserInfoWidget : public QWidget
+class EvaUserInfoWidget : public TQWidget
 {
     Q_OBJECT
 
 public:
-    EvaUserInfoWidget( QWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
+    EvaUserInfoWidget( TQWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
     ~EvaUserInfoWidget();
 
-    QLabel* lblBasicInfo;
-    QLabel* lblRealName;
-    QLabel* lblNickName;
-    QLabel* lblAge;
-    QLabel* lblArea;
-    QLineEdit* leRealName;
-    QLineEdit* leNickName;
-    QLineEdit* leAge;
-    QLineEdit* leArea;
-    QLabel* lblNumber;
-    QLabel* lblLevel;
-    QLabel* lblSex;
-    QLabel* lblProvince;
-    QLineEdit* leNumber;
-    QLabel* lblLevelDisplay;
-    QLineEdit* leSex;
-    QLabel* lblFace;
-    QLineEdit* leProvince;
-    QLabel* lblCity;
-    QLineEdit* leCity;
-    QTextEdit* teSignature;
-    QLabel* lblSignature;
-    QLineEdit* lePhone;
-    QLineEdit* leHomePage;
-    QLabel* lblMobile;
-    QLineEdit* leMobile;
-    QLineEdit* leOccupation;
-    QLineEdit* leBlood;
-    QLabel* lblBlood;
-    QLabel* lblOccupation;
-    QLineEdit* leZodiac;
-    QLineEdit* leHoroscape;
-    QLineEdit* leSchool;
-    QLineEdit* leEmail;
-    QLineEdit* leAddress;
-    QLineEdit* leZipCode;
-    QLabel* lblZodiac;
-    QLabel* lblHoroscape;
-    QLabel* lblSchool;
-    QLabel* lblEmail;
-    QLabel* lblAddress;
-    QLabel* lblZipCode;
-    QLabel* lblPhone;
-    QLabel* lblHomePage;
-    QLabel* lblDetails;
-    QLabel* lblDescription;
-    QTextEdit* teAboutMe;
-    QLabel* lblAboutMe;
+    TQLabel* lblBasicInfo;
+    TQLabel* lblRealName;
+    TQLabel* lblNickName;
+    TQLabel* lblAge;
+    TQLabel* lblArea;
+    TQLineEdit* leRealName;
+    TQLineEdit* leNickName;
+    TQLineEdit* leAge;
+    TQLineEdit* leArea;
+    TQLabel* lblNumber;
+    TQLabel* lblLevel;
+    TQLabel* lblSex;
+    TQLabel* lblProvince;
+    TQLineEdit* leNumber;
+    TQLabel* lblLevelDisplay;
+    TQLineEdit* leSex;
+    TQLabel* lblFace;
+    TQLineEdit* leProvince;
+    TQLabel* lblCity;
+    TQLineEdit* leCity;
+    TQTextEdit* teSignature;
+    TQLabel* lblSignature;
+    TQLineEdit* lePhone;
+    TQLineEdit* leHomePage;
+    TQLabel* lblMobile;
+    TQLineEdit* leMobile;
+    TQLineEdit* leOccupation;
+    TQLineEdit* leBlood;
+    TQLabel* lblBlood;
+    TQLabel* lblOccupation;
+    TQLineEdit* leZodiac;
+    TQLineEdit* leHoroscape;
+    TQLineEdit* leSchool;
+    TQLineEdit* leEmail;
+    TQLineEdit* leAddress;
+    TQLineEdit* leZipCode;
+    TQLabel* lblZodiac;
+    TQLabel* lblHoroscape;
+    TQLabel* lblSchool;
+    TQLabel* lblEmail;
+    TQLabel* lblAddress;
+    TQLabel* lblZipCode;
+    TQLabel* lblPhone;
+    TQLabel* lblHomePage;
+    TQLabel* lblDetails;
+    TQLabel* lblDescription;
+    TQTextEdit* teAboutMe;
+    TQLabel* lblAboutMe;
 
 protected:
-    QGridLayout* EvaUserInfoWidgetLayout;
-    QGridLayout* layout191;
-    QSpacerItem* spacer18;
-    QSpacerItem* spacer31;
-    QVBoxLayout* layout189;
-    QVBoxLayout* layout188;
-    QHBoxLayout* layout187;
-    QHBoxLayout* layout186;
-    QVBoxLayout* layout39;
-    QVBoxLayout* layout178;
-    QHBoxLayout* layout163;
-    QVBoxLayout* layout64;
-    QVBoxLayout* layout162;
-    QHBoxLayout* layout161;
-    QVBoxLayout* layout86;
-    QHBoxLayout* layout66;
-    QHBoxLayout* layout65;
-    QHBoxLayout* layout103;
-    QSpacerItem* spacer17;
-    QSpacerItem* spacer24;
-    QHBoxLayout* layout151;
-    QSpacerItem* spacer26;
-    QHBoxLayout* layout156;
-    QSpacerItem* spacer14_2;
-    QGridLayout* layout99;
-    QGridLayout* layout144;
-    QGridLayout* layout143;
-    QSpacerItem* spacer13_2;
-    QGridLayout* layout142;
-    QSpacerItem* spacer28;
-    QSpacerItem* spacer29;
-    QGridLayout* layout141;
-    QHBoxLayout* layout139;
-    QSpacerItem* spacer27;
-    QGridLayout* layout138;
-    QVBoxLayout* layout30;
-    QVBoxLayout* layout51;
-    QVBoxLayout* layout95;
-    QGridLayout* layout94;
-    QSpacerItem* spacer16;
-    QSpacerItem* spacer14_2_2;
+    TQGridLayout* EvaUserInfoWidgetLayout;
+    TQGridLayout* layout191;
+    TQSpacerItem* spacer18;
+    TQSpacerItem* spacer31;
+    TQVBoxLayout* layout189;
+    TQVBoxLayout* layout188;
+    TQHBoxLayout* layout187;
+    TQHBoxLayout* layout186;
+    TQVBoxLayout* layout39;
+    TQVBoxLayout* layout178;
+    TQHBoxLayout* layout163;
+    TQVBoxLayout* layout64;
+    TQVBoxLayout* layout162;
+    TQHBoxLayout* layout161;
+    TQVBoxLayout* layout86;
+    TQHBoxLayout* layout66;
+    TQHBoxLayout* layout65;
+    TQHBoxLayout* layout103;
+    TQSpacerItem* spacer17;
+    TQSpacerItem* spacer24;
+    TQHBoxLayout* layout151;
+    TQSpacerItem* spacer26;
+    TQHBoxLayout* layout156;
+    TQSpacerItem* spacer14_2;
+    TQGridLayout* layout99;
+    TQGridLayout* layout144;
+    TQGridLayout* layout143;
+    TQSpacerItem* spacer13_2;
+    TQGridLayout* layout142;
+    TQSpacerItem* spacer28;
+    TQSpacerItem* spacer29;
+    TQGridLayout* layout141;
+    TQHBoxLayout* layout139;
+    TQSpacerItem* spacer27;
+    TQGridLayout* layout138;
+    TQVBoxLayout* layout30;
+    TQVBoxLayout* layout51;
+    TQVBoxLayout* layout95;
+    TQGridLayout* layout94;
+    TQSpacerItem* spacer16;
+    TQSpacerItem* spacer14_2_2;
 
 protected slots:
     virtual void languageChange();

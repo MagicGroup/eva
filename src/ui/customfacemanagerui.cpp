@@ -9,21 +9,21 @@
 
 #include "customfacemanagerui.h"
 
-#include <qvariant.h>
-#include <qpushbutton.h>
-#include <qframe.h>
-#include <qtoolbutton.h>
-#include <qlistview.h>
-#include <qtable.h>
-#include <qlabel.h>
-#include <qlayout.h>
-#include <qtooltip.h>
-#include <qwhatsthis.h>
-#include <qimage.h>
-#include <qpixmap.h>
-#include <qrect.h>
-#include <klocale.h>
-#include <kapplication.h>
+#include <ntqvariant.h>
+#include <ntqpushbutton.h>
+#include <ntqframe.h>
+#include <ntqtoolbutton.h>
+#include <ntqlistview.h>
+#include <ntqtable.h>
+#include <ntqlabel.h>
+#include <ntqlayout.h>
+#include <ntqtooltip.h>
+#include <ntqwhatsthis.h>
+#include <ntqimage.h>
+#include <ntqpixmap.h>
+#include <ntqrect.h>
+#include <tdelocale.h>
+#include <tdeapplication.h>
 
 static const unsigned char image0_data[] = { 
     0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00, 0x00, 0x00, 0x0d,
@@ -330,10 +330,10 @@ static const unsigned char image2_data[] = {
  *  Constructs a CustomFaceManagerUI as a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'.
  */
-CustomFaceManagerUI::CustomFaceManagerUI( QWidget* parent, const char* name, WFlags fl )
-    : QWidget( parent, name, fl )
+CustomFaceManagerUI::CustomFaceManagerUI( TQWidget* parent, const char* name, WFlags fl )
+    : TQWidget( parent, name, fl )
 {
-    QImage img;
+    TQImage img;
     img.loadFromData( image0_data, sizeof( image0_data ), "PNG" );
     image0 = img;
     img.loadFromData( image1_data, sizeof( image1_data ), "PNG" );
@@ -342,125 +342,125 @@ CustomFaceManagerUI::CustomFaceManagerUI( QWidget* parent, const char* name, WFl
     image2 = img;
     if ( !name )
 	setName( "CustomFaceManagerUI" );
-    CustomFaceManagerUILayout = new QGridLayout( this, 1, 1, 3, 0, "CustomFaceManagerUILayout"); 
+    CustomFaceManagerUILayout = new TQGridLayout( this, 1, 1, 3, 0, "CustomFaceManagerUILayout"); 
 
-    layout9 = new QVBoxLayout( 0, 0, 6, "layout9"); 
+    layout9 = new TQVBoxLayout( 0, 0, 6, "layout9"); 
 
-    frame7 = new QFrame( this, "frame7" );
-    frame7->setSizePolicy( QSizePolicy( (QSizePolicy::SizeType)1, (QSizePolicy::SizeType)1, 0, 0, frame7->sizePolicy().hasHeightForWidth() ) );
-    frame7->setFrameShape( QFrame::TabWidgetPanel );
-    frame7->setFrameShadow( QFrame::Raised );
-    frame7Layout = new QGridLayout( frame7, 1, 1, 2, 0, "frame7Layout"); 
+    frame7 = new TQFrame( this, "frame7" );
+    frame7->setSizePolicy( TQSizePolicy( (TQSizePolicy::SizeType)1, (TQSizePolicy::SizeType)1, 0, 0, frame7->sizePolicy().hasHeightForWidth() ) );
+    frame7->setFrameShape( TQFrame::TabWidgetPanel );
+    frame7->setFrameShadow( TQFrame::Raised );
+    frame7Layout = new TQGridLayout( frame7, 1, 1, 2, 0, "frame7Layout"); 
 
-    layout1 = new QHBoxLayout( 0, 0, 6, "layout1"); 
+    layout1 = new TQHBoxLayout( 0, 0, 6, "layout1"); 
 
-    tbtnImport = new QToolButton( frame7, "tbtnImport" );
+    tbtnImport = new TQToolButton( frame7, "tbtnImport" );
     tbtnImport->setAutoRaise( TRUE );
     layout1->addWidget( tbtnImport );
 
-    tbtnExport = new QToolButton( frame7, "tbtnExport" );
+    tbtnExport = new TQToolButton( frame7, "tbtnExport" );
     tbtnExport->setAutoRaise( TRUE );
     layout1->addWidget( tbtnExport );
 
-    tbtnAddGroup = new QToolButton( frame7, "tbtnAddGroup" );
-    tbtnAddGroup->setIconSet( QIconSet( image0 ) );
+    tbtnAddGroup = new TQToolButton( frame7, "tbtnAddGroup" );
+    tbtnAddGroup->setIconSet( TQIconSet( image0 ) );
     tbtnAddGroup->setUsesTextLabel( TRUE );
     tbtnAddGroup->setAutoRaise( TRUE );
-    tbtnAddGroup->setTextPosition( QToolButton::BesideIcon );
+    tbtnAddGroup->setTextPosition( TQToolButton::BesideIcon );
     layout1->addWidget( tbtnAddGroup );
 
-    tbtnEditGroup = new QToolButton( frame7, "tbtnEditGroup" );
-    tbtnEditGroup->setIconSet( QIconSet( image1 ) );
+    tbtnEditGroup = new TQToolButton( frame7, "tbtnEditGroup" );
+    tbtnEditGroup->setIconSet( TQIconSet( image1 ) );
     tbtnEditGroup->setUsesTextLabel( TRUE );
     tbtnEditGroup->setAutoRaise( TRUE );
-    tbtnEditGroup->setTextPosition( QToolButton::BesideIcon );
+    tbtnEditGroup->setTextPosition( TQToolButton::BesideIcon );
     layout1->addWidget( tbtnEditGroup );
 
-    tbtnRemoveGroup = new QToolButton( frame7, "tbtnRemoveGroup" );
-    tbtnRemoveGroup->setIconSet( QIconSet( image2 ) );
+    tbtnRemoveGroup = new TQToolButton( frame7, "tbtnRemoveGroup" );
+    tbtnRemoveGroup->setIconSet( TQIconSet( image2 ) );
     tbtnRemoveGroup->setUsesBigPixmap( TRUE );
     tbtnRemoveGroup->setUsesTextLabel( TRUE );
     tbtnRemoveGroup->setAutoRaise( TRUE );
-    tbtnRemoveGroup->setTextPosition( QToolButton::BesideIcon );
+    tbtnRemoveGroup->setTextPosition( TQToolButton::BesideIcon );
     layout1->addWidget( tbtnRemoveGroup );
 
     frame7Layout->addLayout( layout1, 0, 0 );
     layout9->addWidget( frame7 );
 
-    layout7 = new QHBoxLayout( 0, 0, 6, "layout7"); 
+    layout7 = new TQHBoxLayout( 0, 0, 6, "layout7"); 
 
-    frame6 = new QFrame( this, "frame6" );
-    frame6->setPaletteForegroundColor( QColor( 0, 124, 206 ) );
-    frame6->setFrameShape( QFrame::Box );
-    frame6->setFrameShadow( QFrame::Plain );
-    frame6Layout = new QGridLayout( frame6, 1, 1, 1, 0, "frame6Layout"); 
+    frame6 = new TQFrame( this, "frame6" );
+    frame6->setPaletteForegroundColor( TQColor( 0, 124, 206 ) );
+    frame6->setFrameShape( TQFrame::Box );
+    frame6->setFrameShadow( TQFrame::Plain );
+    frame6Layout = new TQGridLayout( frame6, 1, 1, 1, 0, "frame6Layout"); 
 
-    lvGroups = new QListView( frame6, "lvGroups" );
-    lvGroups->setSizePolicy( QSizePolicy( (QSizePolicy::SizeType)5, (QSizePolicy::SizeType)7, 0, 0, lvGroups->sizePolicy().hasHeightForWidth() ) );
-    lvGroups->setMinimumSize( QSize( 100, 0 ) );
-    lvGroups->setMaximumSize( QSize( 250, 32767 ) );
-    lvGroups->setFrameShape( QListView::NoFrame );
-    lvGroups->setFrameShadow( QListView::Plain );
+    lvGroups = new TQListView( frame6, "lvGroups" );
+    lvGroups->setSizePolicy( TQSizePolicy( (TQSizePolicy::SizeType)5, (TQSizePolicy::SizeType)7, 0, 0, lvGroups->sizePolicy().hasHeightForWidth() ) );
+    lvGroups->setMinimumSize( TQSize( 100, 0 ) );
+    lvGroups->setMaximumSize( TQSize( 250, 32767 ) );
+    lvGroups->setFrameShape( TQListView::NoFrame );
+    lvGroups->setFrameShadow( TQListView::Plain );
     lvGroups->setLineWidth( 1 );
-    lvGroups->setHScrollBarMode( QListView::AlwaysOff );
+    lvGroups->setHScrollBarMode( TQListView::AlwaysOff );
     lvGroups->setSorting( -1 ); // don't sort
 
     frame6Layout->addWidget( lvGroups, 0, 0 );
     layout7->addWidget( frame6 );
 
-    frmMain = new QFrame( this, "frmMain" );
-    frmMain->setPaletteForegroundColor( QColor( 0, 124, 206 ) );
-    frmMain->setPaletteBackgroundColor( QColor( 255, 255, 255 ) );
-    frmMain->setFrameShape( QFrame::Box );
-    frmMain->setFrameShadow( QFrame::Plain );
-    frmMainLayout = new QGridLayout( frmMain, 1, 1, 11, 6, "frmMainLayout"); 
+    frmMain = new TQFrame( this, "frmMain" );
+    frmMain->setPaletteForegroundColor( TQColor( 0, 124, 206 ) );
+    frmMain->setPaletteBackgroundColor( TQColor( 255, 255, 255 ) );
+    frmMain->setFrameShape( TQFrame::Box );
+    frmMain->setFrameShadow( TQFrame::Plain );
+    frmMainLayout = new TQGridLayout( frmMain, 1, 1, 11, 6, "frmMainLayout"); 
 
-    layout6 = new QHBoxLayout( 0, 0, 6, "layout6"); 
+    layout6 = new TQHBoxLayout( 0, 0, 6, "layout6"); 
 
-    tblFaceList = new QTable( frmMain, "tblFaceList" );
+    tblFaceList = new TQTable( frmMain, "tblFaceList" );
     tblFaceList->setNumCols( tblFaceList->numCols() + 1 );
     tblFaceList->horizontalHeader()->setLabel( tblFaceList->numCols() - 1, i18n("No." ) );
     tblFaceList->setNumCols( tblFaceList->numCols() + 1 );
     tblFaceList->horizontalHeader()->setLabel( tblFaceList->numCols() - 1, i18n("Smiley" ) );
     tblFaceList->setNumCols( tblFaceList->numCols() + 1 );
     tblFaceList->horizontalHeader()->setLabel( tblFaceList->numCols() - 1, i18n("Shortcut" ) );
-    tblFaceList->setFrameShape( QTable::GroupBoxPanel );
-    tblFaceList->setFrameShadow( QTable::Plain );
-    tblFaceList->setHScrollBarMode( QTable::AlwaysOff );
+    tblFaceList->setFrameShape( TQTable::GroupBoxPanel );
+    tblFaceList->setFrameShadow( TQTable::Plain );
+    tblFaceList->setHScrollBarMode( TQTable::AlwaysOff );
     tblFaceList->setNumRows( 0 );
     tblFaceList->setNumCols( 3 );
-    tblFaceList->setSelectionMode( QTable::MultiRow );
-    tblFaceList->setFocusStyle( QTable::FollowStyle );
+    tblFaceList->setSelectionMode( TQTable::MultiRow );
+    tblFaceList->setFocusStyle( TQTable::FollowStyle );
     layout6->addWidget( tblFaceList );
 
-    layout5 = new QVBoxLayout( 0, 0, 6, "layout5"); 
+    layout5 = new TQVBoxLayout( 0, 0, 6, "layout5"); 
 
-    btnAdd = new QPushButton( frmMain, "btnAdd" );
+    btnAdd = new TQPushButton( frmMain, "btnAdd" );
     layout5->addWidget( btnAdd );
 
-    btnRemove = new QPushButton( frmMain, "btnRemove" );
+    btnRemove = new TQPushButton( frmMain, "btnRemove" );
     layout5->addWidget( btnRemove );
 
-    btnEdit = new QPushButton( frmMain, "btnEdit" );
+    btnEdit = new TQPushButton( frmMain, "btnEdit" );
     layout5->addWidget( btnEdit );
 
-    btnUp = new QPushButton( frmMain, "btnUp" );
+    btnUp = new TQPushButton( frmMain, "btnUp" );
     layout5->addWidget( btnUp );
 
-    btnDown = new QPushButton( frmMain, "btnDown" );
+    btnDown = new TQPushButton( frmMain, "btnDown" );
     layout5->addWidget( btnDown );
 
-    btnMoveTo = new QPushButton( frmMain, "btnMoveTo" );
+    btnMoveTo = new TQPushButton( frmMain, "btnMoveTo" );
     layout5->addWidget( btnMoveTo );
-    spacer1 = new QSpacerItem( 20, 20, QSizePolicy::Minimum, QSizePolicy::Expanding );
+    spacer1 = new TQSpacerItem( 20, 20, TQSizePolicy::Minimum, TQSizePolicy::Expanding );
     layout5->addItem( spacer1 );
 
-    lblPreview = new QLabel( frmMain, "lblPreview" );
-    lblPreview->setSizePolicy( QSizePolicy( (QSizePolicy::SizeType)0, (QSizePolicy::SizeType)0, 0, 0, lblPreview->sizePolicy().hasHeightForWidth() ) );
-    lblPreview->setMinimumSize( QSize( 100, 85 ) );
-    lblPreview->setMaximumSize( QSize( 100, 85 ) );
-    lblPreview->setPaletteForegroundColor( QColor( 0, 124, 206 ) );
-    lblPreview->setFrameShape( QLabel::Box );
+    lblPreview = new TQLabel( frmMain, "lblPreview" );
+    lblPreview->setSizePolicy( TQSizePolicy( (TQSizePolicy::SizeType)0, (TQSizePolicy::SizeType)0, 0, 0, lblPreview->sizePolicy().hasHeightForWidth() ) );
+    lblPreview->setMinimumSize( TQSize( 100, 85 ) );
+    lblPreview->setMaximumSize( TQSize( 100, 85 ) );
+    lblPreview->setPaletteForegroundColor( TQColor( 0, 124, 206 ) );
+    lblPreview->setFrameShape( TQLabel::Box );
     layout5->addWidget( lblPreview );
     layout6->addLayout( layout5 );
 
@@ -468,23 +468,23 @@ CustomFaceManagerUI::CustomFaceManagerUI( QWidget* parent, const char* name, WFl
     layout7->addWidget( frmMain );
     layout9->addLayout( layout7 );
 
-    layout8 = new QHBoxLayout( 0, 0, 6, "layout8"); 
-    spacer2 = new QSpacerItem( 91, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
+    layout8 = new TQHBoxLayout( 0, 0, 6, "layout8"); 
+    spacer2 = new TQSpacerItem( 91, 20, TQSizePolicy::Expanding, TQSizePolicy::Minimum );
     layout8->addItem( spacer2 );
 
-    btnOK = new QPushButton( this, "btnOK" );
+    btnOK = new TQPushButton( this, "btnOK" );
     layout8->addWidget( btnOK );
 
-    btnCancel = new QPushButton( this, "btnCancel" );
+    btnCancel = new TQPushButton( this, "btnCancel" );
     layout8->addWidget( btnCancel );
     layout9->addLayout( layout8 );
 
     CustomFaceManagerUILayout->addLayout( layout9, 0, 0 );
     languageChange();
-    resize( QSize(521, 382).expandedTo(minimumSizeHint()) );
+    resize( TQSize(521, 382).expandedTo(minimumSizeHint()) );
     clearWState( WState_Polished );
 
-    QRect scr = KApplication::desktop()->screenGeometry();
+    TQRect scr = TDEApplication::desktop()->screenGeometry();
     move(scr.center()-rect().center());
 }
 
@@ -493,7 +493,7 @@ CustomFaceManagerUI::CustomFaceManagerUI( QWidget* parent, const char* name, WFl
  */
 CustomFaceManagerUI::~CustomFaceManagerUI()
 {
-    // no need to delete child widgets, Qt does it all for us
+    // no need to delete child widgets, TQt does it all for us
 }
 
 /*
@@ -504,37 +504,37 @@ void CustomFaceManagerUI::languageChange()
 {
     setCaption( i18n("Smiley Manager" ) );
     tbtnImport->setText( i18n("&Import" ) );
-    tbtnImport->setAccel( QKeySequence( tr("Alt+I" ) ) );
+    tbtnImport->setAccel( TQKeySequence( tr("Alt+I" ) ) );
     tbtnExport->setText( i18n("&Export" ) );
-    tbtnExport->setAccel( QKeySequence( tr("Alt+E" ) ) );
-    tbtnAddGroup->setText( QString::null );
-    tbtnAddGroup->setAccel( QKeySequence( QString::null ) );
+    tbtnExport->setAccel( TQKeySequence( tr("Alt+E" ) ) );
+    tbtnAddGroup->setText( TQString::null );
+    tbtnAddGroup->setAccel( TQKeySequence( TQString::null ) );
     tbtnAddGroup->setTextLabel( i18n("Add &Group" ) );
-    tbtnEditGroup->setText( QString::null );
-    tbtnEditGroup->setAccel( QKeySequence( QString::null ) );
+    tbtnEditGroup->setText( TQString::null );
+    tbtnEditGroup->setAccel( TQKeySequence( TQString::null ) );
     tbtnEditGroup->setTextLabel( i18n("Ed&it Group" ) );
-    tbtnRemoveGroup->setText( QString::null );
-    tbtnRemoveGroup->setAccel( QKeySequence( QString::null ) );
+    tbtnRemoveGroup->setText( TQString::null );
+    tbtnRemoveGroup->setAccel( TQKeySequence( TQString::null ) );
     tbtnRemoveGroup->setTextLabel( i18n("Re&move Group" ) );
     tblFaceList->horizontalHeader()->setLabel( 0, i18n("No." ) );
     tblFaceList->horizontalHeader()->setLabel( 1, i18n("Smiley" ) );
     tblFaceList->horizontalHeader()->setLabel( 2, i18n("Shortcut" ) );
     btnAdd->setText( i18n("&Add" ) );
-    btnAdd->setAccel( QKeySequence( tr("Alt+A" ) ) );
+    btnAdd->setAccel( TQKeySequence( tr("Alt+A" ) ) );
     btnRemove->setText( i18n("&Remove" ) );
-    btnRemove->setAccel( QKeySequence( tr("Alt+R" ) ) );
+    btnRemove->setAccel( TQKeySequence( tr("Alt+R" ) ) );
     btnEdit->setText( i18n("&Edit" ) );
-    btnEdit->setAccel( QKeySequence( tr("Alt+E" ) ) );
+    btnEdit->setAccel( TQKeySequence( tr("Alt+E" ) ) );
     btnUp->setText( i18n("&Up" ) );
-    btnUp->setAccel( QKeySequence( tr("Alt+U" ) ) );
+    btnUp->setAccel( TQKeySequence( tr("Alt+U" ) ) );
     btnDown->setText( i18n("&Down" ) );
-    btnDown->setAccel( QKeySequence( tr("Alt+D" ) ) );
+    btnDown->setAccel( TQKeySequence( tr("Alt+D" ) ) );
     btnMoveTo->setText( i18n("&Move to" ) );
-    btnMoveTo->setAccel( QKeySequence( tr("Alt+M" ) ) );
-    lblPreview->setText( QString::null );
+    btnMoveTo->setAccel( TQKeySequence( tr("Alt+M" ) ) );
+    lblPreview->setText( TQString::null );
     btnOK->setText( i18n("&OK" ) );
-    btnOK->setAccel( QKeySequence( tr("Alt+O" ) ) );
+    btnOK->setAccel( TQKeySequence( tr("Alt+O" ) ) );
     btnCancel->setText( i18n("&Cancel" ) );
-    btnCancel->setAccel( QKeySequence( tr( "Alt+C" ) ) );
+    btnCancel->setAccel( TQKeySequence( tr( "Alt+C" ) ) );
 }
 

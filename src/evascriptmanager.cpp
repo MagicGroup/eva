@@ -30,26 +30,26 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#include <qdir.h>
-#include <qfileinfo.h>
-#include <qfont.h>
-#include <qlabel.h>
-#include <qtimer.h>
-#include <qpixmap.h>
-#include <qstringlist.h>
-#include <qtextcodec.h>
+#include <ntqdir.h>
+#include <ntqfileinfo.h>
+#include <ntqfont.h>
+#include <ntqlabel.h>
+#include <ntqtimer.h>
+#include <ntqpixmap.h>
+#include <ntqstringlist.h>
+#include <ntqtextcodec.h>
 
-#include <kaboutdialog.h>
-#include <kapplication.h>
-#include <kfiledialog.h>
+#include <tdeaboutdialog.h>
+#include <tdeapplication.h>
+#include <tdefiledialog.h>
 #include <kiconloader.h>
-#include <kio/netaccess.h>
-#include <klistview.h>
-#include <klocale.h>
-#include <kmessagebox.h>
-#include <kpopupmenu.h>
+#include <tdeio/netaccess.h>
+#include <tdelistview.h>
+#include <tdelocale.h>
+#include <tdemessagebox.h>
+#include <tdepopupmenu.h>
 #include <kprocio.h>
-#include <kprotocolmanager.h>
+#include <tdeprotocolmanager.h>
 #include <kpushbutton.h>
 #include <krun.h>
 #include <kstandarddirs.h>
@@ -58,15 +58,15 @@
 #include <twin.h>
 #include <kdebug.h>
 
-class ScriptListViewItem : public KListViewItem
+class ScriptListViewItem : public TDEListViewItem
 {
 public:
-	ScriptListViewItem(KListView  *lv, QString &caption) 
-		: KListViewItem(lv, caption)
+	ScriptListViewItem(TDEListView  *lv, TQString &caption) 
+		: TDEListViewItem(lv, caption)
 		, m_scriptName("")
 	{
 	}
-	QString  m_scriptName;
+	TQString  m_scriptName;
 };
 
 // void closeOpenFiles(int out, int in, int err) {
@@ -82,16 +82,16 @@ EvaScriptManager * GetScriptManager()
 }
 
 //EvaScriptManager* EvaScriptManager::s_instance = 0;
-QString EvaScriptManager::s_evaDcopName;
+TQString EvaScriptManager::s_evaDcopName;
 
 
-EvaScriptManager::EvaScriptManager( QWidget *parent, const char *name )
+EvaScriptManager::EvaScriptManager( TQWidget *parent, const char *name )
 	: DCOPObject("Tools")
-	, KDialogBase( parent, name, false, QString::null, Close, Close, true )
+	, KDialogBase( parent, name, false, TQString::null, Close, Close, true )
 	, m_gui( new EvaScriptManagerUIBase( this ) )
 {
 //	s_instance = this;
-	s_evaDcopName = QString("eva-%1").arg(getpid());
+	s_evaDcopName = TQString("eva-%1").arg(getpid());
 
 	kapp->setTopWidget( this );
 	setCaption( kapp->makeStdCaption( i18n( "Script Manager" ) ) );
@@ -107,10 +107,10 @@ EvaScriptManager::EvaScriptManager( QWidget *parent, const char *name )
 
 
     /// Category items
-// 	m_generalCategory    = new KListViewItem( m_gui->listView, i18n( "General" ) );
-// 	m_lyricsCategory     = new KListViewItem( m_gui->listView, i18n( "Lyrics" ) );
-// 	m_scoreCategory      = new KListViewItem( m_gui->listView, i18n( "Score" ) );
-// 	m_transcodeCategory  = new KListViewItem( m_gui->listView, i18n( "Transcoding" ) );
+// 	m_generalCategory    = new TDEListViewItem( m_gui->listView, i18n( "General" ) );
+// 	m_lyricsCategory     = new TDEListViewItem( m_gui->listView, i18n( "Lyrics" ) );
+// 	m_scoreCategory      = new TDEListViewItem( m_gui->listView, i18n( "Score" ) );
+// 	m_transcodeCategory  = new TDEListViewItem( m_gui->listView, i18n( "Transcoding" ) );
 // 
 // 	m_generalCategory  ->setSelectable( false );
 // 	m_lyricsCategory   ->setSelectable( false );
@@ -123,15 +123,15 @@ EvaScriptManager::EvaScriptManager( QWidget *parent, const char *name )
 // 	m_transcodeCategory->setPixmap( 0, SmallIcon( Amarok::icon( "files" ) ) );
 // 
 //     // Restore the open/closed state of the category items
-// 	KConfig* const config = Amarok::config( "ScriptManager" );
+// 	TDEConfig* const config = Amarok::config( "ScriptManager" );
 // 	m_generalCategory  ->setOpen( config->readBoolEntry( "General category open" ) );
 // 	m_lyricsCategory   ->setOpen( config->readBoolEntry( "Lyrics category open" ) );
 // 	m_scoreCategory    ->setOpen( config->readBoolEntry( "Score category State" ) );
 // 	m_transcodeCategory->setOpen( config->readBoolEntry( "Transcode category open" ) );
 
-	connect( m_gui->listView, SIGNAL( currentChanged( QListViewItem* ) ), SLOT( slotCurrentChanged( QListViewItem* ) ) );
-	connect( m_gui->listView, SIGNAL( doubleClicked ( QListViewItem*, const QPoint&, int ) ), SLOT( slotRunScript() ) );
-	connect( m_gui->listView, SIGNAL( contextMenuRequested ( QListViewItem*, const QPoint&, int ) ), SLOT( slotShowContextMenu( QListViewItem*, const QPoint& ) ) );
+	connect( m_gui->listView, SIGNAL( currentChanged( TQListViewItem* ) ), SLOT( slotCurrentChanged( TQListViewItem* ) ) );
+	connect( m_gui->listView, SIGNAL( doubleClicked ( TQListViewItem*, const TQPoint&, int ) ), SLOT( slotRunScript() ) );
+	connect( m_gui->listView, SIGNAL( contextMenuRequested ( TQListViewItem*, const TQPoint&, int ) ), SLOT( slotShowContextMenu( TQListViewItem*, const TQPoint& ) ) );
 
 	connect( m_gui->btnInstall,   SIGNAL( clicked() ), SLOT( slotInstallScript() ) );
 	//connect( m_gui->retrieveButton,  SIGNAL( clicked() ), SLOT( slotRetrieveScript() ) );
@@ -143,42 +143,42 @@ EvaScriptManager::EvaScriptManager( QWidget *parent, const char *name )
 
 	EvaImageResource * images = EvaMain::images;
 	if(images){
-		QPixmap *icon = images->getIcon("SCRIPT_INSTALL");
+		TQPixmap *icon = images->getIcon("SCRIPT_INSTALL");
 		if(icon)
-			m_gui->btnInstall  ->setIconSet( QIconSet( *icon ) );
+			m_gui->btnInstall  ->setIconSet( TQIconSet( *icon ) );
 		//m_gui->retrieveButton ->setIconSet( SmallIconSet( Amarok::icon( "download" ) ) );
 		icon = images->getIcon("SCRIPT_UNINSTALL");
 		if(icon)
-			m_gui->btnUninstall->setIconSet( QIconSet( *icon) );
+			m_gui->btnUninstall->setIconSet( TQIconSet( *icon) );
 		
 		icon = images->getIcon("SCRIPT_RUN");
 		if(icon)
-			m_gui->btnRun      ->setIconSet( QIconSet( *icon) );
+			m_gui->btnRun      ->setIconSet( TQIconSet( *icon) );
 		
 		icon = images->getIcon("SCRIPT_STOP");
 		if(icon)
-			m_gui->btnStop     ->setIconSet( QIconSet( *icon) );
+			m_gui->btnStop     ->setIconSet( TQIconSet( *icon) );
 		
 		icon = images->getIcon("SCRIPT_CONFIG");
 		if(icon)
-			m_gui->btnConfig   ->setIconSet( QIconSet( *icon) );
+			m_gui->btnConfig   ->setIconSet( TQIconSet( *icon) );
 		
 		icon = images->getIcon("SCRIPT_ABOUT");
 		if(icon)
-			m_gui->btnAbout    ->setIconSet( QIconSet( *icon) );
+			m_gui->btnAbout    ->setIconSet( TQIconSet( *icon) );
 	}
-	QSize sz = sizeHint();
+	TQSize sz = sizeHint();
 	setMinimumSize( kMax( 350, sz.width() ), kMax( 250, sz.height() ) );
 	resize( sizeHint() );
 
   // Delay this call via eventloop, because it's a bit slow and would block
-	//QTimer::singleShot( 1000, this, SLOT( findScripts() ) );
+	//TQTimer::singleShot( 1000, this, SLOT( findScripts() ) );
 }
 
 EvaScriptManager::~EvaScriptManager()
 {
 // 	kdDebug() << "EvaScriptManager destructor"<< endl;
-// 	QStringList runningScripts;
+// 	TQStringList runningScripts;
 // 	ScriptMap::Iterator it;
 // 	ScriptMap::Iterator end( m_scripts.end() );
 // 	for( it = m_scripts.begin(); it != end; ++it ) {
@@ -192,7 +192,7 @@ EvaScriptManager::~EvaScriptManager()
 // 
 // 	kdDebug() << "------start writing config " << endl;
 //     // Save config
-// 	KConfig* const config = EvaMain::user->config( "ScriptManager" );
+// 	TDEConfig* const config = EvaMain::user->config( "ScriptManager" );
 // 	
 // 	kdDebug() << "start writing config " << endl;
 // 	config->writeEntry( "Running Scripts", runningScripts );
@@ -212,7 +212,7 @@ void EvaScriptManager::releaseScripts( )
 {
 	kdDebug() << "EvaScriptManager destructor"<< endl;
 	m_gui->listView->clear();
-	QStringList runningScripts;
+	TQStringList runningScripts;
 	ScriptMap::Iterator it;
 	ScriptMap::Iterator end( m_scripts.end() );
 	for( it = m_scripts.begin(); it != end; ++it ) {
@@ -225,12 +225,12 @@ void EvaScriptManager::releaseScripts( )
 	}
   // Save config
 	if(runningScripts.size()) {
-		KConfig* const config = EvaMain::user->config( "ScriptManager" );
+		TDEConfig* const config = EvaMain::user->config( "ScriptManager" );
 		config->writeEntry( "Running Scripts", runningScripts );
 	}
 }
 
-bool EvaScriptManager::runScript( const QString& name, bool silent )
+bool EvaScriptManager::runScript( const TQString& name, bool silent )
 {
 	if( !m_scripts.contains( name ) )
 		return false;
@@ -239,7 +239,7 @@ bool EvaScriptManager::runScript( const QString& name, bool silent )
 	return slotRunScript( silent );
 }
 
-bool EvaScriptManager::stopScript( const QString& name )
+bool EvaScriptManager::stopScript( const TQString& name )
 {
 	if( !m_scripts.contains( name ) )
 		return false;
@@ -251,9 +251,9 @@ bool EvaScriptManager::stopScript( const QString& name )
 }
 
 
-QStringList EvaScriptManager::listRunningScripts()
+TQStringList EvaScriptManager::listRunningScripts()
 {
-	QStringList runningScripts;
+	TQStringList runningScripts;
 	ScriptMap::Iterator it = m_scripts.begin();
 	for( it = m_scripts.begin(); it != m_scripts.end(); ++it)
 		if( it.data().process )
@@ -262,12 +262,12 @@ QStringList EvaScriptManager::listRunningScripts()
 	return runningScripts;
 }
 
-QString EvaScriptManager::specForScript( const QString& name )
+TQString EvaScriptManager::specForScript( const TQString& name )
 {
 	if( !m_scripts.contains( name ) )
-		return QString();
-	QFileInfo info( m_scripts[name].url.path() );
-	const QString specPath = info.dirPath() + '/' + info.baseName( true ) + ".spec";
+		return TQString();
+	TQFileInfo info( m_scripts[name].url.path() );
+	const TQString specPath = info.dirPath() + '/' + info.baseName( true ) + ".spec";
 
 	return specPath;
 }
@@ -275,22 +275,22 @@ QString EvaScriptManager::specForScript( const QString& name )
 void EvaScriptManager::findScripts() //SLOT
 {
 	releaseScripts();
-	QStringList allFiles = kapp->dirs()->findAllResources( "data", "eva/scripts/*", true );
+	TQStringList allFiles = kapp->dirs()->findAllResources( "data", "eva/scripts/*", true );
 
     // Add found scripts to listview:
 	{
-		for( QStringList::Iterator it = allFiles.begin(); it != allFiles.end(); ++it )
-			if( QFileInfo( *it ).isExecutable() )
+		for( TQStringList::Iterator it = allFiles.begin(); it != allFiles.end(); ++it )
+			if( TQFileInfo( *it ).isExecutable() )
 				loadScript( *it );
 	}
 
     // Handle auto-run:
 
-	KConfig* const config = EvaMain::user->config( "ScriptManager" );
-	QStringList runningScripts = config->readListEntry( "Running Scripts" );
+	TDEConfig* const config = EvaMain::user->config( "ScriptManager" );
+	TQStringList runningScripts = config->readListEntry( "Running Scripts" );
 
 	{
-		for( QStringList::Iterator it = runningScripts.begin(); it != runningScripts.end(); ++it )
+		for( TQStringList::Iterator it = runningScripts.begin(); it != runningScripts.end(); ++it )
 			if( m_scripts.contains( *it ) ) {
 				kdDebug() << "Auto-running script: " << *it << endl;
 				m_gui->listView->setCurrentItem( m_scripts[*it].li );
@@ -302,7 +302,7 @@ void EvaScriptManager::findScripts() //SLOT
 	slotCurrentChanged( m_gui->listView->currentItem() );
 }
 
-void EvaScriptManager::slotCurrentChanged( QListViewItem* item )
+void EvaScriptManager::slotCurrentChanged( TQListViewItem* item )
 {
 // 	const bool isCategory = item == m_generalCategory ||
 // 			item == m_lyricsCategory ||
@@ -310,7 +310,7 @@ void EvaScriptManager::slotCurrentChanged( QListViewItem* item )
 // 			item == m_transcodeCategory;
 
 	if( item ) {
-		const QString name = ((ScriptListViewItem *)(item))->m_scriptName;
+		const TQString name = ((ScriptListViewItem *)(item))->m_scriptName;
 		m_gui->btnUninstall->setEnabled( true );
 		m_gui->btnRun->setEnabled( !m_scripts[name].process );
 		m_gui->btnStop->setEnabled( m_scripts[name].process );
@@ -326,12 +326,12 @@ void EvaScriptManager::slotCurrentChanged( QListViewItem* item )
 	}
 }
 
-bool EvaScriptManager::slotInstallScript( const QString& path )
+bool EvaScriptManager::slotInstallScript( const TQString& path )
 {
-	QString _path = path;
+	TQString _path = path;
 
 	if( path.isNull() ) {
-		_path = KFileDialog::getOpenFileName( QString::null,
+		_path = KFileDialog::getOpenFileName( TQString::null,
 									"*.evascript.tar *.evascript.tar.bz2 *.evascript.tar.gz|"
 									+ i18n( "Script Packages (*.evascript.tar, *.evascript.tar.bz2, *.evascript.tar.gz)" )
 									, this
@@ -345,13 +345,13 @@ bool EvaScriptManager::slotInstallScript( const QString& path )
 		return false;
 	}
 
-	//QString destination = EvaMain::global->getScriptDir() + "/";
-	QString destination = KGlobal::dirs()->saveLocation( "data", QString("eva/scripts/"), true);
+	//TQString destination = EvaMain::global->getScriptDir() + "/";
+	TQString destination = TDEGlobal::dirs()->saveLocation( "data", TQString("eva/scripts/"), true);
 	const KArchiveDirectory* const archiveDir = archive.directory();
 
     // Prevent installing a script that's already installed
-	const QString scriptFolder = destination + archiveDir->entries().first();
-	if( QFile::exists( scriptFolder ) ) {
+	const TQString scriptFolder = destination + archiveDir->entries().first();
+	if( TQFile::exists( scriptFolder ) ) {
 		KMessageBox::error( 0, i18n( "A script with the name '%1' is already installed. "
 				"Please uninstall it first." ).arg( archiveDir->entries().first() ) );
 		return false;
@@ -371,18 +371,18 @@ bool EvaScriptManager::slotInstallScript( const QString& path )
 						"Please inform the package maintainer about this error.</p>" ) );
 
         // Delete directory recursively
-		KIO::NetAccess::del( KURL::fromPathOrURL( scriptFolder ), 0 );
+		TDEIO::NetAccess::del( KURL::fromPathOrURL( scriptFolder ), 0 );
 	}
 
 	return false;
 }
 
-void EvaScriptManager::recurseInstall( const KArchiveDirectory* archiveDir, const QString& destination )
+void EvaScriptManager::recurseInstall( const KArchiveDirectory* archiveDir, const TQString& destination )
 {
-	QStringList entries = archiveDir->entries();
+	TQStringList entries = archiveDir->entries();
 
-	for( QStringList::Iterator it = entries.begin(); it != entries.end(); ++it ) {
-		const QString entry = *it;
+	for( TQStringList::Iterator it = entries.begin(); it != entries.end(); ++it ) {
+		const TQString entry = *it;
 		const KArchiveEntry* const archEntry = archiveDir->entry( entry );
 
 		if( archEntry->isDirectory() ) {
@@ -390,9 +390,9 @@ void EvaScriptManager::recurseInstall( const KArchiveDirectory* archiveDir, cons
 			recurseInstall( dir, destination + entry + '/' );
 		}
 		else {
-				::chmod( QFile::encodeName( destination + entry ), archEntry->permissions() );
+				::chmod( TQFile::encodeName( destination + entry ), archEntry->permissions() );
 
-				if( QFileInfo( destination + entry ).isExecutable() ) {
+				if( TQFileInfo( destination + entry ).isExecutable() ) {
 					loadScript( destination + entry );
 					m_installSuccess = true;
 				}
@@ -403,8 +403,8 @@ void EvaScriptManager::recurseInstall( const KArchiveDirectory* archiveDir, cons
 
 void EvaScriptManager::slotUninstallScript()
 {
-	const QString caption = m_gui->listView->currentItem()->text( 0 );
-	const QString name = ((ScriptListViewItem *)(m_gui->listView->currentItem()))->m_scriptName;
+	const TQString caption = m_gui->listView->currentItem()->text( 0 );
+	const TQString name = ((ScriptListViewItem *)(m_gui->listView->currentItem()))->m_scriptName;
 
 	if( KMessageBox::warningContinueCancel( 0, i18n( "Are you sure you want to uninstall the script '%1'?" ).arg( caption ), i18n("Uninstall Script"), i18n("Uninstall") ) == KMessageBox::Cancel )
 		return;
@@ -412,16 +412,16 @@ void EvaScriptManager::slotUninstallScript()
 	if( m_scripts.find( name ) == m_scripts.end() )
 		return;
 
-	const QString directory = m_scripts[name].url.directory();
+	const TQString directory = m_scripts[name].url.directory();
 
     // Delete directory recursively
 	const KURL url = KURL::fromPathOrURL( directory );
-	if( !KIO::NetAccess::del( url, 0 ) ) {
+	if( !TDEIO::NetAccess::del( url, 0 ) ) {
 		KMessageBox::sorry( 0, i18n( "<p>Could not uninstall this script.</p><p>The ScriptManager can only uninstall scripts which have been installed as packages.</p>" ) );
 		return;
 	}
 
-	QStringList keys;
+	TQStringList keys;
 
     // Find all scripts that were in the uninstalled folder
 	{
@@ -432,7 +432,7 @@ void EvaScriptManager::slotUninstallScript()
 
     // Terminate script processes, remove entries from script list
 	{
-		for( QStringList::Iterator it = keys.begin(); it != keys.end(); ++it ) {
+		for( TQStringList::Iterator it = keys.begin(); it != keys.end(); ++it ) {
 			delete m_scripts[*it].li;
 			terminateProcess( &m_scripts[*it].process );
 			releaseScriptResource(*it);
@@ -446,17 +446,17 @@ bool EvaScriptManager::slotRunScript( bool silent )
 	if( !m_gui->btnRun->isEnabled() ) return false;
 
 	ScriptListViewItem* const li = (ScriptListViewItem *)(m_gui->listView->currentItem());
-	//const QString name = li->text( 0 );
-	const QString name = li->m_scriptName;
+	//const TQString name = li->text( 0 );
+	const TQString name = li->m_scriptName;
 
-// 	if( m_scripts[name].type == "lyrics" && lyricsScriptRunning() != QString::null ) {
+// 	if( m_scripts[name].type == "lyrics" && lyricsScriptRunning() != TQString::null ) {
 // 		if( !silent )
 // 			KMessageBox::sorry( 0, i18n( "Another lyrics script is already running. "
 // 					"You may only run one lyrics script at a time." ) );
 // 		return false;
 // 	}
 // 
-// 	if( m_scripts[name].type == "transcode" && transcodeScriptRunning() != QString::null ) {
+// 	if( m_scripts[name].type == "transcode" && transcodeScriptRunning() != TQString::null ) {
 // 		if( !silent )
 // 			KMessageBox::sorry( 0, i18n( "Another transcode script is already running. "
 // 					"You may only run one transcode script at a time." ) );
@@ -467,21 +467,21 @@ bool EvaScriptManager::slotRunScript( bool silent )
 	if( m_scripts[name].process ) return false;
 
 	//Amarok::ProcIO* script = new Amarok::ProcIO();
-	KProcIO * script = new KProcIO(QTextCodec::codecForName( "UTF-8" ));
-	script->setComm( static_cast<KProcess::Communication>( KProcess::All ) );
+	KProcIO * script = new KProcIO(TQTextCodec::codecForName( "UTF-8" ));
+	script->setComm( static_cast<TDEProcess::Communication>( TDEProcess::All ) );
 	const KURL url = m_scripts[name].url;
 	*script << url.path() << s_evaDcopName;
-	script->setWorkingDirectory( KGlobal::dirs()->saveLocation( "data", QString("eva/scripts/%1").arg(name), true));
+	script->setWorkingDirectory( TDEGlobal::dirs()->saveLocation( "data", TQString("eva/scripts/%1").arg(name), true));
 	//script->setWorkingDirectory( Amarok::saveLocation( "scripts-data/" ) );
 	//script->setWorkingDirectory(EvaMain::global->getScriptDir() + "/")
 	//script->setWorkingDirectory(url.directory( false ) + "/");
 
 	kdDebug() << name << "||| "<< url << "" << endl;
-	connect( script, SIGNAL( receivedStderr( KProcess*, char*, int ) ), SLOT( slotReceivedStderr( KProcess*, char*, int ) ) );
-	connect( script, SIGNAL( receivedStdout( KProcess*, char*, int ) ), SLOT( slotReceivedStdout( KProcess*, char*, int ) ) );
-	connect( script, SIGNAL( processExited( KProcess* ) ), SLOT( scriptFinished( KProcess* ) ) );
+	connect( script, SIGNAL( receivedStderr( TDEProcess*, char*, int ) ), SLOT( slotReceivedStderr( TDEProcess*, char*, int ) ) );
+	connect( script, SIGNAL( receivedStdout( TDEProcess*, char*, int ) ), SLOT( slotReceivedStdout( TDEProcess*, char*, int ) ) );
+	connect( script, SIGNAL( processExited( TDEProcess* ) ), SLOT( scriptFinished( TDEProcess* ) ) );
 
-	if( !script->start( KProcess::NotifyOnExit ) )
+	if( !script->start( TDEProcess::NotifyOnExit ) )
 	{
 		if( !silent )
 			KMessageBox::sorry( 0, i18n( "<p>Could not start the script <i>%1</i>.</p>"
@@ -491,7 +491,7 @@ bool EvaScriptManager::slotRunScript( bool silent )
 	}
 	
 	EvaImageResource * images = EvaMain::images;
-	QPixmap *icon = images->getIcon("SCRIPT_RUN");
+	TQPixmap *icon = images->getIcon("SCRIPT_RUN");
 	if(icon)
 		li->setPixmap( 0,  *icon);
 	kdDebug() << "Running script: " << url.path() << endl;
@@ -507,22 +507,22 @@ bool EvaScriptManager::slotRunScript( bool silent )
 void EvaScriptManager::slotStopScript()
 {
 	ScriptListViewItem* const li = (ScriptListViewItem *)(m_gui->listView->currentItem());
-	//const QString name = li->text( 0 );
-	const QString name = li->m_scriptName;
+	//const TQString name = li->text( 0 );
+	const TQString name = li->m_scriptName;
 
 	if( !m_scripts.contains( name ) )
 		return;
 
 	terminateProcess( &m_scripts[name].process );
-	m_scripts[name].log = QString::null;
+	m_scripts[name].log = TQString::null;
 	slotCurrentChanged( m_gui->listView->currentItem() );
 
-	li->setPixmap( 0, QPixmap() );
+	li->setPixmap( 0, TQPixmap() );
 
 	releaseScriptResource(name);
 }
 
-void EvaScriptManager::releaseScriptResource(const QString &scriptName)
+void EvaScriptManager::releaseScriptResource(const TQString &scriptName)
 {	
 	///remove all buttons this script added
 	EvaMain::g_mainWin->removeButtons(scriptName);
@@ -533,47 +533,47 @@ void EvaScriptManager::releaseScriptResource(const QString &scriptName)
 void EvaScriptManager::slotConfigureScript()
 {
 	kdDebug() << "Configure clicked" << endl;
-	const QString name = ((ScriptListViewItem *)(m_gui->listView->currentItem()))->m_scriptName;
+	const TQString name = ((ScriptListViewItem *)(m_gui->listView->currentItem()))->m_scriptName;
 	if( !m_scripts[name].process ) return;
 
 	kdDebug() << "Configure clicked --- " << endl;
 	const KURL url = m_scripts[name].url;
-	QDir::setCurrent( url.directory() );
+	TQDir::setCurrent( url.directory() );
 
 	m_scripts[name].process->writeStdin( "Configure" );
 }
 
 void EvaScriptManager::slotAboutScript()
 {
-	//const QString name = m_gui->listView->currentItem()->text( 0 );
-	const QString name = ((ScriptListViewItem *)(m_gui->listView->currentItem()))->m_scriptName;
-	QFile readme( m_scripts[name].url.directory( false ) + "README" );
-	QFile license( m_scripts[name].url.directory( false ) + "COPYING" );
+	//const TQString name = m_gui->listView->currentItem()->text( 0 );
+	const TQString name = ((ScriptListViewItem *)(m_gui->listView->currentItem()))->m_scriptName;
+	TQFile readme( m_scripts[name].url.directory( false ) + "README" );
+	TQFile license( m_scripts[name].url.directory( false ) + "COPYING" );
 
 	if( !readme.open( IO_ReadOnly ) ) {
 		KMessageBox::sorry( 0, i18n( "There is no information available for this script." ) );
 		return;
 	}
 
-	KAboutDialog* about = new KAboutDialog( KAboutDialog::AbtTabbed|KAboutDialog::AbtProduct,
-																					QString::null,
+	TDEAboutDialog* about = new TDEAboutDialog( TDEAboutDialog::AbtTabbed|TDEAboutDialog::AbtProduct,
+																					TQString::null,
 										 KDialogBase::Ok, KDialogBase::Ok, this );
 	kapp->setTopWidget( about );
 	about->setCaption( kapp->makeStdCaption( i18n( "About %1" ).arg( name ) ) );
 	about->setProduct( "", "", "", "" );
     // Get rid of the confusing KDE version text
-	QLabel* product = static_cast<QLabel*>( about->mainWidget()->child( "version" ) );
+	TQLabel* product = static_cast<TQLabel*>( about->mainWidget()->child( "version" ) );
 	if( product ) product->setText( i18n( "%1 Eva Script" ).arg( name ) );
 
-	about->addTextPage( i18n( "About" ), QString::fromUtf8(readme.readAll()), true );
+	about->addTextPage( i18n( "About" ), TQString::fromUtf8(readme.readAll()), true );
 	if( license.open( IO_ReadOnly ) )
 		about->addLicensePage( i18n( "License" ), license.readAll() );
 
-	about->setInitialSize( QSize( 500, 350 ) );
+	about->setInitialSize( TQSize( 500, 350 ) );
 	about->show();
 }
 
-void EvaScriptManager::slotShowContextMenu( QListViewItem* item, const QPoint& pos )
+void EvaScriptManager::slotShowContextMenu( TQListViewItem* item, const TQPoint& pos )
 {
 // 	const bool isCategory = item == m_generalCategory ||
 // 			item == m_lyricsCategory ||
@@ -591,14 +591,14 @@ void EvaScriptManager::slotShowContextMenu( QListViewItem* item, const QPoint& p
 
 	
 	EvaImageResource * images = EvaMain::images;
-	QPixmap *icon;
+	TQPixmap *icon;
 	enum { SHOW_LOG, EDIT };
-	KPopupMenu menu;
+	TDEPopupMenu menu;
 	icon = images->getIcon("NA");
 	menu.insertTitle( i18n( "Debugging" ) );
-	menu.insertItem( QIconSet(icon?(*icon):QPixmap()), i18n( "Show Output &Log" ), SHOW_LOG );
+	menu.insertItem( TQIconSet(icon?(*icon):TQPixmap()), i18n( "Show Output &Log" ), SHOW_LOG );
 	icon = images->getIcon("SCRIPT");
-	menu.insertItem( QIconSet(icon?(*icon):QPixmap()), i18n( "&Edit" ), EDIT );
+	menu.insertItem( TQIconSet(icon?(*icon):TQPixmap()), i18n( "&Edit" ), EDIT );
 	menu.setItemEnabled( SHOW_LOG, it.data().process );
 	const int id = menu.exec( pos );
 
@@ -609,7 +609,7 @@ void EvaScriptManager::slotShowContextMenu( QListViewItem* item, const QPoint& p
 			break;
 
 		case SHOW_LOG:
-			QString line;
+			TQString line;
 			while( it.data().process->readln( line ) != -1 )
 				it.data().log += (line + "\n");
 
@@ -618,12 +618,12 @@ void EvaScriptManager::slotShowContextMenu( QListViewItem* item, const QPoint& p
 			editor->setCaption( kapp->makeStdCaption( i18n( "Output Log for %1" ).arg( it.key() ) ) );
 			editor->setReadOnly( true );
 
-			QFont font( "fixed" );
+			TQFont font( "fixed" );
 			font.setFixedPitch( true );
-			font.setStyleHint( QFont::TypeWriter );
+			font.setStyleHint( TQFont::TypeWriter );
 			editor->setFont( font );
 
-			editor->setTextFormat( QTextEdit::PlainText );
+			editor->setTextFormat( TQTextEdit::PlainText );
 			editor->resize( 500, 380 );
 			editor->show();
 			break;
@@ -631,12 +631,12 @@ void EvaScriptManager::slotShowContextMenu( QListViewItem* item, const QPoint& p
 }
 
 /* This is just a workaround, some scripts crash for some people if stdout is not handled. */
-void EvaScriptManager::slotReceivedStdout( KProcess*, char* buf, int len )
+void EvaScriptManager::slotReceivedStdout( TDEProcess*, char* buf, int len )
 {
-	kdDebug() << QString::fromLatin1( buf, len ) << endl;
+	kdDebug() << TQString::fromLatin1( buf, len ) << endl;
 }
 
-void EvaScriptManager::slotReceivedStderr( KProcess* process, char* buf, int len )
+void EvaScriptManager::slotReceivedStderr( TDEProcess* process, char* buf, int len )
 {
     // Look up script entry in our map
 	ScriptMap::Iterator it;
@@ -644,7 +644,7 @@ void EvaScriptManager::slotReceivedStderr( KProcess* process, char* buf, int len
 	for( it = m_scripts.begin(); it != end; ++it )
 		if( it.data().process == process ) break;
 
-	const QString text = QString::fromLatin1( buf, len );
+	const TQString text = TQString::fromLatin1( buf, len );
 	kdDebug() << it.key() << ":\n" << text << endl;
 
 	if( it.data().log.length() > 20000 )
@@ -652,7 +652,7 @@ void EvaScriptManager::slotReceivedStderr( KProcess* process, char* buf, int len
 	it.data().log += text;
 }
 
-void EvaScriptManager::scriptFinished( KProcess* process ) //SLOT
+void EvaScriptManager::scriptFinished( TDEProcess* process ) //SLOT
 {
     // Look up script entry in our map
 	ScriptMap::Iterator it;
@@ -669,8 +669,8 @@ void EvaScriptManager::scriptFinished( KProcess* process ) //SLOT
     // Destroy script process
 	delete it.data().process;
 	it.data().process = 0;
-	it.data().log = QString::null;
-	it.data().li->setPixmap( 0, QPixmap() );
+	it.data().log = TQString::null;
+	it.data().li->setPixmap( 0, TQPixmap() );
 	slotCurrentChanged( m_gui->listView->currentItem() );
 	releaseScriptResource(it.key());
 }
@@ -687,7 +687,7 @@ void EvaScriptManager::terminateProcess( KProcIO** proc )
 	}
 }
 
-void EvaScriptManager::notifyScripts( const QString& message, const unsigned char type )
+void EvaScriptManager::notifyScripts( const TQString& message, const unsigned char type )
 {
 	for( ScriptMap::Iterator it = m_scripts.begin(); it != m_scripts.end(); ++it ) {
 		KProcIO* const proc = it.data().process;
@@ -696,7 +696,7 @@ void EvaScriptManager::notifyScripts( const QString& message, const unsigned cha
 	}
 }
 
-void EvaScriptManager::notifyScript( const QString& name, const QString message )
+void EvaScriptManager::notifyScript( const TQString& name, const TQString message )
 {
 	for(ScriptMap::Iterator it = m_scripts.begin();
 		it != m_scripts.end();
@@ -711,41 +711,41 @@ void EvaScriptManager::notifyScript( const QString& name, const QString message 
 	if( !m_scripts[name].process ) return; // not running
 	
 	const KURL url = m_scripts[name].url;
-	QDir::setCurrent( url.directory() );
+	TQDir::setCurrent( url.directory() );
 	
 	kdDebug() << message << endl;
 	m_scripts[name].process->writeStdin( message );	
 }
 
-void EvaScriptManager::loadScript( const QString& path )
+void EvaScriptManager::loadScript( const TQString& path )
 {
 	if( !path.isEmpty() ) {
 		const KURL url = KURL::fromPathOrURL( path );
-		QString name = url.fileName();
-		QString caption = name;
-		//QString type = "generic";
+		TQString name = url.fileName();
+		TQString caption = name;
+		//TQString type = "generic";
 		unsigned char type = MT_Eva;
 
         	// Read and parse .spec file, if exists
-		QFileInfo info( path );
-		//KListViewItem* li = 0;
+		TQFileInfo info( path );
+		//TDEListViewItem* li = 0;
 		ScriptListViewItem * li = 0;
-		const QString specPath = info.dirPath() + '/' + info.baseName( true ) + ".spec";
-		if( QFile::exists( specPath ) ) {
-			KConfig spec( specPath, true, false );
+		const TQString specPath = info.dirPath() + '/' + info.baseName( true ) + ".spec";
+		if( TQFile::exists( specPath ) ) {
+			TDEConfig spec( specPath, true, false );
 			if( spec.hasKey( "name" ) )
 				caption = name = spec.readEntry( "name" );
 			if( spec.hasKey( "caption" ))
 				caption = spec.readEntry( "caption" );
 			if( spec.hasKey( "type" ) ){
-				QString types = spec.readEntry( "type");
-				QStringList typeList = QStringList::split(",", types);
-				for(QStringList::Iterator it = typeList.begin(); it != typeList.end(); ++it){
-					if((*it).stripWhiteSpace().upper() == QString("MESSAGE"))
+				TQString types = spec.readEntry( "type");
+				TQStringList typeList = TQStringList::split(",", types);
+				for(TQStringList::Iterator it = typeList.begin(); it != typeList.end(); ++it){
+					if((*it).stripWhiteSpace().upper() == TQString("MESSAGE"))
 						type |= MT_Message;
-					if((*it).stripWhiteSpace().upper() == QString("STATUS"))
+					if((*it).stripWhiteSpace().upper() == TQString("STATUS"))
 						type |= MT_Status;
-					if((*it).stripWhiteSpace().upper() == QString("BUTTONCLICK"))
+					if((*it).stripWhiteSpace().upper() == TQString("BUTTONCLICK"))
 						type |= MT_ButtonClick;
 				}
 			}
@@ -754,9 +754,9 @@ void EvaScriptManager::loadScript( const QString& path )
 
 		if( !li )
 			li = new ScriptListViewItem(m_gui->listView, caption);
-			//li = new KListViewItem( m_generalCategory, name );
+			//li = new TDEListViewItem( m_generalCategory, name );
 
-		li->setPixmap( 0, QPixmap() );
+		li->setPixmap( 0, TQPixmap() );
 		li->m_scriptName = name;
 
 		ScriptItem item;
@@ -776,17 +776,17 @@ void EvaScriptManager::loadScript( const QString& path )
 void EvaScriptManager::notifyStatusChange(const unsigned int id)
 {
 	kdDebug() << "notifyStatusChange" << endl;
-	notifyScripts(QString("StatusChanged %1").arg(id), MT_Status);
+	notifyScripts(TQString("StatusChanged %1").arg(id), MT_Status);
 }
 
 void EvaScriptManager::notifyMessage(const bool isQun, 
 																		const unsigned int id, 
-																		const QDateTime &time, 
-																		const QString &message)
+																		const TQDateTime &time, 
+																		const TQString &message)
 {
-	QString revised = message;
+	TQString revised = message;
 	revised.replace('\n', "\n#");
-	notifyScripts(QString("Message %1 %2 %3 \n#%4\n@")
+	notifyScripts(TQString("Message %1 %2 %3 \n#%4\n@")
 					.arg(isQun?"Qun":"Contact")
 					.arg(id)
 					.arg(time.toString("yyyy-MM-dd hh:mm:ss"))
@@ -794,22 +794,22 @@ void EvaScriptManager::notifyMessage(const bool isQun,
 				MT_Message);
 }
 
-void EvaScriptManager::customMenuClicked( const bool isQun, const unsigned int id, QString scriptName, QString name)
+void EvaScriptManager::customMenuClicked( const bool isQun, const unsigned int id, TQString scriptName, TQString name)
 {
 	kdDebug() << "customMenuClicked :" << scriptName << "(" << name << ")" << endl;
-	notifyScript(scriptName, QString("ButtonClicked %1 %2 %3")
+	notifyScript(scriptName, TQString("ButtonClicked %1 %2 %3")
 							.arg(isQun?"Qun":"Contact")
 							.arg(id)
 							.arg(name));
 }
 
-QString EvaScriptManager::scriptDir( bool isSystem )
+TQString EvaScriptManager::scriptDir( bool isSystem )
 {
-	QString dir;
+	TQString dir;
 	if( isSystem )
 		dir = (EvaMain::global->getDirPath() + "/scripts/");
 	else
-	  dir = (KGlobal::dirs()->saveLocation( "data", QString("eva/scripts/"), true));
+	  dir = (TDEGlobal::dirs()->saveLocation( "data", TQString("eva/scripts/"), true));
 	return dir;
 }
 

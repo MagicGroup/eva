@@ -20,17 +20,17 @@
 
 #include "evaaddqunwindow.h"
 
-#include <qlabel.h>
-#include <qlineedit.h>
-#include <qtoolbutton.h>
-#include <qpushbutton.h>
-#include <qtextcodec.h>
-#include <qevent.h>
-#include <qiconset.h>
-#include <qgroupbox.h>
+#include <ntqlabel.h>
+#include <ntqlineedit.h>
+#include <ntqtoolbutton.h>
+#include <ntqpushbutton.h>
+#include <ntqtextcodec.h>
+#include <ntqevent.h>
+#include <ntqiconset.h>
+#include <ntqgroupbox.h>
 
-#include <kmessagebox.h>
-#include <klocale.h>
+#include <tdemessagebox.h>
+#include <tdelocale.h>
 
 #include <list>
 #include <string>
@@ -44,25 +44,25 @@ EvaAddingQunWindow::EvaAddingQunWindow( )
 	: m_Qun()
 {
 	initWindow();
-	QObject::connect(tbQunDetails, SIGNAL(clicked()), SLOT(slotQunDetailsClicked( )));
-	QObject::connect(tbCreatorDetails, SIGNAL(clicked()), SLOT(slotCreatorDetailsClicked( )));
-	QObject::connect(tbRefresh, SIGNAL(clicked()), SIGNAL(refreshGraphic()));
-	QObject::connect(btnSend, SIGNAL(clicked()), SLOT(slotSendClicked()));
-	QObject::connect(btnCancel, SIGNAL(clicked()), SLOT(close()));	
+	TQObject::connect(tbQunDetails, SIGNAL(clicked()), SLOT(slotQunDetailsClicked( )));
+	TQObject::connect(tbCreatorDetails, SIGNAL(clicked()), SLOT(slotCreatorDetailsClicked( )));
+	TQObject::connect(tbRefresh, SIGNAL(clicked()), SIGNAL(refreshGraphic()));
+	TQObject::connect(btnSend, SIGNAL(clicked()), SLOT(slotSendClicked()));
+	TQObject::connect(btnCancel, SIGNAL(clicked()), SLOT(close()));	
 }
 
 void EvaAddingQunWindow::setQun(const QunInfo &qun)
 {
 	m_Qun = qun;
 
-	QPixmap *facePic = EvaMain::images->getFaceByID( 0 );
-	QIconSet faceIcon;
-	faceIcon.setPixmap(*facePic,QIconSet::Large);
+	TQPixmap *facePic = EvaMain::images->getFaceByID( 0 );
+	TQIconSet faceIcon;
+	faceIcon.setPixmap(*facePic,TQIconSet::Large);
 	tbQunDetails->setIconSet(faceIcon);
 
-	lblQunExtID->setText(QString::number(m_Qun.getExtID()));
-	lblCreator->setText(QString::number(m_Qun.getCreator()));
-	QTextCodec *codec=QTextCodec::codecForName("GB18030");
+	lblQunExtID->setText(TQString::number(m_Qun.getExtID()));
+	lblCreator->setText(TQString::number(m_Qun.getCreator()));
+	TQTextCodec *codec=TQTextCodec::codecForName("GB18030");
 	lblQunName->setText(codec->toUnicode(m_Qun.getName().c_str()));
 
 	fraAuthGraphic->setHidden(true);
@@ -82,12 +82,12 @@ void EvaAddingQunWindow::initWindow( )
 	lblQunName->setText( "" );
 
 	lblDescription->setText( i18n("Retrieving information from server..."));
-	lblGraphic->setPixmap( QPixmap());
+	lblGraphic->setPixmap( TQPixmap());
 	leCode->setText("");
 	leMessage->setText("");
 }
 
-void EvaAddingQunWindow::closeEvent( QCloseEvent * e )
+void EvaAddingQunWindow::closeEvent( TQCloseEvent * e )
 {
 	emit requestCancel();
 	initWindow();
@@ -139,7 +139,7 @@ void EvaAddingQunWindow::AddingNeedAuth( )
 	adjustSize();
 }
 
-void EvaAddingQunWindow::updateGraphic( QPixmap & p )
+void EvaAddingQunWindow::updateGraphic( TQPixmap & p )
 {
 	lblGraphic->setPixmap( p);
 	fraAuthGraphic->setHidden(false);
@@ -153,8 +153,8 @@ void EvaAddingQunWindow::AddingNoAuthReady( )
 	fraAuthGraphic->setHidden( true);
 	gbMessage->setHidden( true);
 
-	QTextCodec *codec = QTextCodec::codecForName("GB18030");
-	lblDescription->setText( QString(i18n("You have joined Qun %1(%2)")).arg(codec->toUnicode(m_Qun.getName().c_str())).arg(m_Qun.getExtID()));
+	TQTextCodec *codec = TQTextCodec::codecForName("GB18030");
+	lblDescription->setText( TQString(i18n("You have joined Qun %1(%2)")).arg(codec->toUnicode(m_Qun.getName().c_str())).arg(m_Qun.getExtID()));
 	btnSend->setEnabled(false);
 	btnCancel->setText(i18n("&Close"));
 }

@@ -20,19 +20,19 @@
 
 #include "evaaddingwindow.h"
 
-#include <qlabel.h>
-#include <qcombobox.h>
-#include <qlineedit.h>
-#include <qtoolbutton.h>
-#include <qcheckbox.h>
-#include <qpushbutton.h>
-#include <qiconset.h>
-//#include <qtextedit.h>
-#include <qtextcodec.h>
-#include <qevent.h>
+#include <ntqlabel.h>
+#include <ntqcombobox.h>
+#include <ntqlineedit.h>
+#include <ntqtoolbutton.h>
+#include <ntqcheckbox.h>
+#include <ntqpushbutton.h>
+#include <ntqiconset.h>
+//#include <ntqtextedit.h>
+#include <ntqtextcodec.h>
+#include <ntqevent.h>
 
-#include <kmessagebox.h>
-#include <klocale.h>
+#include <tdemessagebox.h>
+#include <tdelocale.h>
 
 #include <list>
 
@@ -48,33 +48,33 @@ EvaAddingWindow::EvaAddingWindow()
 	m_IsSelectGroupOnly(false)
 {
 	initWindow();
-	QObject::connect(tbtnFace, SIGNAL(clicked()), SLOT(slotFaceClicked( )));
-	QObject::connect(btnRefreshCode, SIGNAL(clicked()), SIGNAL(refreshGraphic()));
-	QObject::connect(btnOk, SIGNAL(clicked()), SLOT(slotOkClicked()));
-	QObject::connect(btnCancel, SIGNAL(clicked()), SLOT(close()));
+	TQObject::connect(tbtnFace, SIGNAL(clicked()), SLOT(slotFaceClicked( )));
+	TQObject::connect(btnRefreshCode, SIGNAL(clicked()), SIGNAL(refreshGraphic()));
+	TQObject::connect(btnOk, SIGNAL(clicked()), SLOT(slotOkClicked()));
+	TQObject::connect(btnCancel, SIGNAL(clicked()), SLOT(close()));
 
 }
 
 void EvaAddingWindow::initBuddy( )
 {
 	if(m_IsSelectGroupOnly)
-		lblTip->setText("<b>" + QString(i18n("Select a group for %1")).arg(m_ID) + "</b>");
+		lblTip->setText("<b>" + TQString(i18n("Select a group for %1")).arg(m_ID) + "</b>");
 	else
 		lblTip->setText("<b>" + i18n("Retrieving information from server...") + "</b>");
 
-	lblTopic->setText(QString(i18n("You are about to add ")) + m_Nick + QString("(%1)").arg(m_ID) );
-	QPixmap *facePic = EvaMain::images->getFaceByID( m_Face);
-	QIconSet faceIcon;
-	faceIcon.setPixmap(*facePic,QIconSet::Large);
+	lblTopic->setText(TQString(i18n("You are about to add ")) + m_Nick + TQString("(%1)").arg(m_ID) );
+	TQPixmap *facePic = EvaMain::images->getFaceByID( m_Face);
+	TQIconSet faceIcon;
+	faceIcon.setPixmap(*facePic,TQIconSet::Large);
 	tbtnFace->setIconSet(faceIcon);
 
 	// load users groups
 	std::list<std::string> names = EvaMain::user->getGroupNames();
 	std::list<std::string>::iterator iter;
-	QTextCodec *codec = QTextCodec::codecForName( "GB18030");
+	TQTextCodec *codec = TQTextCodec::codecForName( "GB18030");
 	cbbGroups->clear();
 	for(iter = names.begin(); iter!= names.end(); ++iter){
-		QString g = codec->toUnicode(iter->c_str());
+		TQString g = codec->toUnicode(iter->c_str());
 		cbbGroups->insertItem(g);
 	}
 	cbbGroups->setCurrentItem( 0);
@@ -88,7 +88,7 @@ void EvaAddingWindow::initBuddy( )
 		btnOk->setEnabled(false);
 }
 
-void EvaAddingWindow::setBuddy( const unsigned int id, const QString & nick, const unsigned short face, const bool selectGroup )
+void EvaAddingWindow::setBuddy( const unsigned int id, const TQString & nick, const unsigned short face, const bool selectGroup )
 {	
 	m_ID = id;
 	m_Nick = nick;
@@ -117,13 +117,13 @@ void EvaAddingWindow::AddingNeedAuth( )
 	//adjustSize();
 }
 
-void EvaAddingWindow::updateGraphic( QPixmap & p )
+void EvaAddingWindow::updateGraphic( TQPixmap & p )
 {
 	lblCodeGraphic->setPixmap( p);
 	fraVeriGraphic->setHidden(false);
 }
 
-void EvaAddingWindow::setQuestion( const QString & q )
+void EvaAddingWindow::setQuestion( const TQString & q )
 {
 	lblTip->setText("");
 	lblQuesContents->setText(q);
@@ -180,15 +180,15 @@ void EvaAddingWindow::initWindow( )
 	lblTip->setText("");
 	lblTopic->setText("");
 	cbbGroups->setCurrentItem( 0 );
-	lblCodeGraphic->setPixmap( QPixmap());
+	lblCodeGraphic->setPixmap( TQPixmap());
 	leCode->setText("");
 	lblQuesContents->setText("");
 	leAnswer->setText( "");
 	leMessage->setText("");
-	//QWidget::close();
+	//TQWidget::close();
 }
 
-void EvaAddingWindow::closeEvent( QCloseEvent * e )
+void EvaAddingWindow::closeEvent( TQCloseEvent * e )
 {
 	emit requestCancel();
 	initWindow();

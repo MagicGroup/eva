@@ -1,6 +1,6 @@
 ##   -*- autoconf -*-
 
-dnl    This file is part of the KDE libraries/packages
+dnl    This file is part of the TDE libraries/packages
 dnl    Copyright (C) 1997 Janos Farkas (chexum@shadow.banki.hu)
 dnl              (C) 1997,98,99 Stephan Kulow (coolo@kde.org)
 
@@ -244,9 +244,9 @@ AC_DEFUN([KDE_FIND_PATH],
 
 AC_DEFUN([KDE_MOC_ERROR_MESSAGE],
 [
-    AC_MSG_ERROR([No Qt meta object compiler (moc) found!
+    AC_MSG_ERROR([No TQt meta object compiler (tqmoc) found!
 Please check whether you installed Qt correctly.
-You need to have a running moc binary.
+You need to have a running tqmoc binary.
 configure tried to run $ac_cv_path_moc and the test didn't
 succeed. If configure shouldn't have tried this one, set
 the environment variable MOC to the right one before running
@@ -268,8 +268,8 @@ configure.
 
 AC_DEFUN([KDE_UIC_ERROR_MESSAGE],
 [
-    AC_MSG_WARN([No Qt ui compiler (uic) found!
-Please check whether you installed Qt correctly.
+    AC_MSG_WARN([No TQt ui compiler (tquic) found!
+Please check whether you installed TQt correctly.
 You need to have a running uic binary.
 configure tried to run $ac_cv_path_uic and the test didn't
 succeed. If configure shouldn't have tried this one, set
@@ -334,7 +334,7 @@ AC_DEFUN([AC_PATH_QT_MOC_UIC],
      qt_bindirs="/usr/share/qt4/bin $qt_bindirs"
    fi
 
-   KDE_FIND_PATH(moc, MOC, [$qt_bindirs], [KDE_MOC_ERROR_MESSAGE])
+   KDE_FIND_PATH(tqmoc, MOC, [$qt_bindirs], [KDE_MOC_ERROR_MESSAGE])
    if test -z "$UIC_NOT_NEEDED"; then
      if test $kde_qtver = 3; then
        KDE_FIND_PATH(uic-tqt, UIC_PATH, [$qt_bindirs], [UIC_PATH=""])
@@ -413,13 +413,13 @@ AC_DEFUN([KDE_1_CHECK_PATHS],
      KDE_TEST_RPATH="$KDE_TEST_RPATH $KDE_EXTRA_RPATH"
   fi
 
-AC_MSG_CHECKING([for KDE libraries installed])
+AC_MSG_CHECKING([for TDE libraries installed])
 ac_link='$LIBTOOL_SHELL --silent --mode=link ${CXX-g++} -o conftest $CXXFLAGS $all_includes $CPPFLAGS $LDFLAGS $all_libraries conftest.$ac_ext $LIBS -ltdecore $LIBQT $KDE_TEST_RPATH 1>&5'
 
 if AC_TRY_EVAL(ac_link) && test -s conftest; then
   AC_MSG_RESULT(yes)
 else
-  AC_MSG_ERROR([your system fails at linking a small KDE application!
+  AC_MSG_ERROR([your system fails at linking a small TDE application!
 Check, if your compiler is installed correctly and if you have used the
 same compiler to compile Qt and tdelibs as you did use now.
 For more details about this problem, look at the end of config.log.])
@@ -471,7 +471,7 @@ AC_DEFUN([KDE_SET_DEFAULT_PATHS],
 if test "$1" = "default"; then
 
   if test -z "$kde_htmldir"; then
-    kde_htmldir='\${datadir}/doc/HTML'
+    kde_htmldir='\${datadir}/doc/tde/HTML'
   fi
   if test -z "$kde_appsdir"; then
     kde_appsdir='\${datadir}/applnk'
@@ -532,7 +532,7 @@ if test "$1" = "default"; then
     kde_widgetdir='\${libdir}/trinity/plugins/designer'
   fi
   if test -z "$xdg_appsdir"; then
-    xdg_appsdir='\${datadir}/applications/kde'
+    xdg_appsdir='\${datadir}/applications/tde'
   fi
   if test -z "$xdg_menudir"; then
     xdg_menudir='\${sysconfdir}/xdg/menus'
@@ -549,7 +549,7 @@ else
      AC_MSG_RESULT([compiling])
      KDE_1_CHECK_PATHS
   else
-     AC_MSG_ERROR([path checking not yet supported for KDE 2])
+     AC_MSG_ERROR([path checking not yet supported for TDE 2])
   fi
 
 fi
@@ -575,7 +575,7 @@ AC_DEFUN([KDE_CHECK_PATHS_FOR_COMPLETENESS],
 AC_DEFUN([KDE_MISSING_PROG_ERROR],
 [
     AC_MSG_ERROR([The important program $1 was not found!
-Please check whether you installed KDE correctly.
+Please check whether you installed TDE correctly.
 ])
 ])
 
@@ -623,54 +623,39 @@ AC_DEFUN([KDE_SUBST_PROGRAMS],
         fi
         KDE_FIND_PATH(meinproc, MEINPROC, [$kde_default_bindirs])
 
-        trinity2ornewer=1
-        trinity3ornewer=1
-        if test -n "$kde_qtver" && test "$kde_qtver" -lt 3; then
-            trinity2ornewer=
-            trinity3ornewer=
-        else
-            if test "$kde_qtver" = "3"; then
-              if test "$kde_qtsubver" -le 1; then
-                trinity2ornewer=
-              fi
-              if test "$kde_qtsubver" -le 2; then
-                trinity3ornewer=
-              fi
-              if test "$KDECONFIG" != "compiled"; then
-                if test `$KDECONFIG --version | grep KDE | sed 's/KDE: \(...\).*/\1/'` = 3.2; then
-                  trinity3ornewer=
-                fi
-              fi
+        trinity14ornewer=1
+        if test "$kde_qtver" = "3"; then
+          if test "$KDECONFIG" != "compiled"; then
+            if test `$KDECONFIG --version | grep TDE | sed 's/TDE: R\(..\).*/\1/'` -lt 14; then
+              trinity14ornewer=
             fi
-            if test "$kde_qtver" = "4"; then
-              trinity2ornewer=1
-              trinity3ornewer=1
-            fi
+          fi
+        fi
+        if test "$kde_qtver" = "4"; then
+          trinity14ornewer=1
         fi
 
-        if test -n "$trinity2ornewer"; then
-            KDE_FIND_PATH(kconfig_compiler, KCONFIG_COMPILER, [$kde_default_bindirs], [KDE_MISSING_PROG_ERROR(kconfig_compiler)])
+        if test -n "$trinity14ornewer"; then
+            KDE_FIND_PATH(tdeconfig_compiler, KCONFIG_COMPILER, [$kde_default_bindirs], [KDE_MISSING_PROG_ERROR(tdeconfig_compiler)])
             KDE_FIND_PATH(dcopidlng, DCOPIDLNG, [$kde_default_bindirs], [KDE_MISSING_PROG_ERROR(dcopidlng)])
-        fi
-        if test -n "$trinity3ornewer"; then
-            KDE_FIND_PATH(makekdewidgets, MAKEKDEWIDGETS, [$kde_default_bindirs], [KDE_MISSING_PROG_ERROR(makekdewidgets)])
-            AC_SUBST(MAKEKDEWIDGETS)
+            KDE_FIND_PATH(maketdewidgets, MAKETDEWIDGETS, [$kde_default_bindirs], [KDE_MISSING_PROG_ERROR(maketdewidgets)])
+            AC_SUBST(MAKETDEWIDGETS)
         fi
         KDE_FIND_PATH(xmllint, XMLLINT, [${prefix}/bin ${exec_prefix}/bin], [XMLLINT=""])
 
         if test -n "$MEINPROC" -a "$MEINPROC" != "compiled"; then
- 	    kde_sharedirs="/usr/share/kde /usr/local/share /usr/share /opt/trinity/share /opt/trinity/share /opt/kde/share $prefix/share"
+ 	    kde_sharedirs="$prefix/share /opt/trinity/share /opt/trinity/share /opt/kde/share /usr/share/kde /usr/local/share /usr/share"
             test -n "$TDEDIR" && kde_sharedirs="$TDEDIR/share $kde_sharedirs"
-            AC_FIND_FILE(apps/ksgmltools2/customization/kde-chunk.xsl, $kde_sharedirs, KDE_XSL_STYLESHEET)
+            AC_FIND_FILE(apps/ksgmltools2/customization/tde-chunk.xsl, $kde_sharedirs, KDE_XSL_STYLESHEET)
 	    if test "$KDE_XSL_STYLESHEET" = "NO"; then
 		KDE_XSL_STYLESHEET=""
 	    else
-                KDE_XSL_STYLESHEET="$KDE_XSL_STYLESHEET/apps/ksgmltools2/customization/kde-chunk.xsl"
+                KDE_XSL_STYLESHEET="$KDE_XSL_STYLESHEET/apps/ksgmltools2/customization/tde-chunk.xsl"
 	    fi
         fi
 
         DCOP_DEPENDENCIES='$(DCOPIDL)'
-        if test -n "$trinity2ornewer"; then
+        if test -n "$trinity14ornewer"; then
             KCFG_DEPENDENCIES='$(KCONFIG_COMPILER)'
             DCOP_DEPENDENCIES='$(DCOPIDL) $(DCOPIDLNG)'
             AC_SUBST(KCONFIG_COMPILER)
@@ -691,7 +676,7 @@ AC_DEFUN([AC_CREATE_KFSSTND],
 [
 AC_REQUIRE([AC_CHECK_RPATH])
 
-AC_MSG_CHECKING([for KDE paths])
+AC_MSG_CHECKING([for TDE paths])
 kde_result=""
 kde_cached_paths=yes
 AC_CACHE_VAL(kde_cv_all_paths,
@@ -718,7 +703,7 @@ if test "$kde_have_all_paths" = "no" && test "$kde_cached_paths" = "yes"; then
   kde_result="$kde_result (cache overridden)"
 fi
 if test "$kde_have_all_paths" = "no"; then
-  AC_MSG_ERROR([configure could not run a little KDE program to test the environment.
+  AC_MSG_ERROR([configure could not run a little TDE program to test the environment.
 Since it had compiled and linked before, it must be a strange problem on your system.
 Look at config.log for details. If you are not able to fix this, look at
 http://www.kde.org/faq/installation.html or any www.kde.org mirror.
@@ -752,7 +737,7 @@ dnl X Desktop Group standards
 AC_SUBST(xdg_appsdir)
 AC_SUBST(xdg_menudir)
 AC_SUBST(xdg_directorydir)
-dnl for KDE 2
+dnl for TDE 2
 AC_SUBST(kde_templatesdir)
 AC_SUBST(kde_servicesdir)
 AC_SUBST(kde_servicetypesdir)
@@ -763,7 +748,7 @@ AC_SUBST(kde_widgetdir)
 if test "$kde_qtver" = 1; then
   kde_minidir="$kde_icondir/mini"
 else
-# for KDE 1 - this breaks KDE2 apps using minidir, but
+# for TDE 1 - this breaks KDE2 apps using minidir, but
 # that's the plan ;-/
   kde_minidir="/dev/null"
 fi
@@ -1152,15 +1137,16 @@ EOF
 fi
 
 if test "$kde_qtver" = "3"; then
-if $PKG_CONFIG --exists qt-mt ; then
-cat >> conftest.$ac_ext <<EOF
-#include <qglobal.h>
-#include <qapplication.h>
-EOF
-else
+if $PKG_CONFIG --exists tqt-mt ; then
 cat >> conftest.$ac_ext <<EOF
 #include <tqglobal.h>
 #include <tqapplication.h>
+EOF
+else
+cat >> conftest.$ac_ext <<EOF
+#include <tqt.h>
+#include <qglobal.h>
+#include <qapplication.h>
 EOF
 fi
 fi
@@ -1174,7 +1160,7 @@ EOF
 
 if test $kde_qtsubver -gt 0; then
 cat >> conftest.$ac_ext <<EOF
-#if QT_VERSION < 210
+#if TQT_VERSION < 210
 #error 1
 #endif
 EOF
@@ -1182,17 +1168,17 @@ fi
 fi
 
 if test "$kde_qtver" = "3"; then
-if $PKG_CONFIG --exists qt-mt ; then
-cat >> conftest.$ac_ext <<EOF
-#include <qcursor.h>
-#include <qstylefactory.h>
-#include <private/qucomextra_p.h>
-EOF
-else
+if $PKG_CONFIG --exists tqt-mt ; then
 cat >> conftest.$ac_ext <<EOF
 #include <tqcursor.h>
 #include <tqstylefactory.h>
 #include <tqucomextra_p.h>
+EOF
+else
+cat >> conftest.$ac_ext <<EOF
+#include <qcursor.h>
+#include <qstylefactory.h>
+#include <private/qucomextra_p.h>
 EOF
 fi
 fi
@@ -1224,15 +1210,15 @@ EOF
 fi
 fi
 if test "$kde_qtver" = "3"; then
-if $PKG_CONFIG --exists qt-mt ; then
-cat >> conftest.$ac_ext <<EOF
-    (void)QStyleFactory::create(QString::null);
-    QCursor c(Qt::WhatsThisCursor);
-EOF
-else
+if $PKG_CONFIG --exists tqt-mt ; then
 cat >> conftest.$ac_ext <<EOF
     (void)TQStyleFactory::create(TQString::null);
     TQCursor c(TQt::WhatsThisCursor);
+EOF
+else
+cat >> conftest.$ac_ext <<EOF
+    (void)QStyleFactory::create(QString::null);
+    QCursor c(Qt::WhatsThisCursor);
 EOF
 fi
 fi
@@ -1277,7 +1263,7 @@ AC_DEFUN([KDE_USE_QT],
     AC_MSG_RESULT(Detected TQt3...)
   fi
   if test "$kde_qtver" = "4"; then
-    AC_MSG_RESULT(Detected TQt4...)
+    AC_MSG_RESULT(Detected Qt4...)
   fi
 
 #else
@@ -1340,53 +1326,53 @@ fi
 if test -z "$3"; then
    if test $kde_qtver = 4; then
      if test $kde_qtsubver -gt 0; then
-       kde_qt_verstring="QT_VERSION >= 0x04@VER@00 && QT_VERSION < 0x050000"
+       kde_qt_verstring="TQT_VERSION >= 0x04@VER@00 && TQT_VERSION < 0x050000"
        qtsubver=`echo "00$kde_qtsubver" | sed -e 's,.*\(..\)$,\1,'`
        kde_qt_verstring=`echo $kde_qt_verstring | sed -e "s,@VER@,$qtsubver,"`
      else
-       kde_qt_verstring="QT_VERSION >= 400 && QT_VERSION < 0x050000"
+       kde_qt_verstring="TQT_VERSION >= 400 && TQT_VERSION < 0x050000"
      fi
    fi
    if test $kde_qtver = 3; then
      if test $kde_qtsubver -gt 0; then
-       kde_qt_verstring="QT_VERSION >= 0x03@VER@00 && QT_VERSION < 0x040000"
+       kde_qt_verstring="TQT_VERSION >= 0x03@VER@00 && TQT_VERSION < 0x040000"
        qtsubver=`echo "00$kde_qtsubver" | sed -e 's,.*\(..\)$,\1,'`
        kde_qt_verstring=`echo $kde_qt_verstring | sed -e "s,@VER@,$qtsubver,"`
      else
-       kde_qt_verstring="QT_VERSION >= 300 && QT_VERSION < 0x040000"
+       kde_qt_verstring="TQT_VERSION >= 300 && TQT_VERSION < 0x040000"
      fi
    fi
    if test $kde_qtver = 2; then
      if test $kde_qtsubver -gt 0; then
-       kde_qt_verstring="QT_VERSION >= 222"
+       kde_qt_verstring="TQT_VERSION >= 222"
      else
-       kde_qt_verstring="QT_VERSION >= 200"
+       kde_qt_verstring="TQT_VERSION >= 200"
      fi
    fi
    if test $kde_qtver = 1; then
-    kde_qt_verstring="QT_VERSION >= 142 && QT_VERSION < 200"
+    kde_qt_verstring="TQT_VERSION >= 142 && TQT_VERSION < 200"
    fi
 else
    kde_qt_verstring="$3"
 fi
 
 if test $kde_qtver = 4; then
-  kde_qt_dirs="$QTDIR /usr/lib/qt4 /usr/lib/qt /usr/share/qt4"
+  kde_qt_dirs="/usr/lib/qt4 /usr/lib/qt /usr/share/qt4"
 fi
 if test $kde_qtver = 3; then
-  kde_qt_dirs="$QTDIR /usr/lib/tqt3 /usr/lib/qt3 /usr/lib/qt /usr/share/tqt3 /usr/share/qt3 /usr/lib${tdelibsuff}/qt-3.3"
+  kde_qt_dirs="/usr/lib/tqt3 /usr/share/tqt3"
   if test -z "$PKG_CONFIG"; then
       AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
   fi
   if test "$PKG_CONFIG" != "no" ; then
-    if $PKG_CONFIG --exists qt-mt ; then
-       kde_qt_dirs="$kde_qt_dirs `$PKG_CONFIG --variable=prefix qt-mt`"
-       LIB_QUI="-lqui"
+    if $PKG_CONFIG --exists tqt-mt ; then
+       kde_qt_dirs="$kde_qt_dirs `$PKG_CONFIG --variable=prefix tqt-mt`"
+       LIB_QUI="-ltqui"
        AC_SUBST(LIB_QUI)
     else
-       if $PKG_CONFIG --exists tqt-mt ; then
+       if $PKG_CONFIG --exists qt-mt ; then
          kde_qt_dirs="$kde_qt_dirs `$PKG_CONFIG --variable=prefix tqt-mt`"
-         LIB_QUI="-ltqui"
+         LIB_QUI="-lqui"
          AC_SUBST(LIB_QUI)
        fi
     fi
@@ -1524,10 +1510,10 @@ if test -z "$LIBQT_GLOB"; then
     if test "x$kde_use_qt_emb" = "xyes"; then
       LIBQT_GLOB="libqte.*"
     else
-      if $PKG_CONFIG --exists qt-mt ; then
-        LIBQT_GLOB="libqt.*"
-      else
+      if $PKG_CONFIG --exists tqt-mt ; then
         LIBQT_GLOB="libtqt.*"
+      else
+        LIBQT_GLOB="libqt.*"
       fi
     fi
   fi
@@ -1544,10 +1530,10 @@ if test "$kde_qtver" = "3"; then
   if test "x$kde_use_qt_emb" = "xyes"; then
     qtlib="qte"
   else
-    if $PKG_CONFIG --exists qt-mt ; then
-      qtlib="qt"
-    else
+    if $PKG_CONFIG --exists tqt-mt ; then
       qtlib="tqt"
+    else
+      qtlib="qt"
     fi
   fi
 fi
@@ -1645,15 +1631,15 @@ if test -z "$PKG_CONFIG"; then
     AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
 fi
 if test "$PKG_CONFIG" != "no" ; then
-  if $PKG_CONFIG --exists qt-mt ; then
-      qt_incdirs="$qt_incdirs `$PKG_CONFIG --variable=includedir qt-mt`"
+  if $PKG_CONFIG --exists tqt-mt ; then
+      qt_incdirs="$qt_incdirs `$PKG_CONFIG --variable=includedir tqt-mt`"
   else
-      if $PKG_CONFIG --exists tqt-mt ; then
+      if $PKG_CONFIG --exists qt-mt ; then
           qt_incdirs="$qt_incdirs `$PKG_CONFIG --variable=includedir tqt-mt`"
       fi
   fi
 fi
-qt_incdirs="$QTINC $qt_incdirs /usr/local/qt/include /usr/include/qt /usr/include /usr/X11R6/include/X11/qt /usr/X11R6/include/qt /usr/X11R6/include/qt2 /usr/include/tqt3 /usr/include/qt3 $x_includes"
+qt_incdirs="$qt_incdirs /usr/include/tqt3 /usr/include $x_includes"
 if test ! "$ac_qt_includes" = "NO"; then
    qt_incdirs="$ac_qt_includes $qt_incdirs"
 fi
@@ -1663,12 +1649,17 @@ if test "$kde_qtver" != "1"; then
     kde_qt_header="Qt/qstyle.h"
   else
     kde_qt_header=qstyle.h
+    kde_tqt_header=ntqstyle.h
   fi
 else
   kde_qt_header=qglobal.h
+  kde_tqt_header=ntqglobal.h
 fi
 
 AC_FIND_FILE($kde_qt_header, $qt_incdirs, qt_incdir)
+if test "$qt_incdir" = "NO"; then
+   AC_FIND_FILE($kde_tqt_header, $qt_incdirs, qt_incdir)
+fi
 ac_qt_includes="$qt_incdir"
 
 qt_libdirs=""
@@ -1679,10 +1670,10 @@ if test -z "$PKG_CONFIG"; then
     AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
 fi
 if test "$PKG_CONFIG" != "no" ; then
-  if $PKG_CONFIG --exists qt-mt ; then
-      qt_libdirs="$qt_incdirs `$PKG_CONFIG --variable=libdir qt-mt`"
+  if $PKG_CONFIG --exists tqt-mt ; then
+      qt_libdirs="$qt_incdirs `$PKG_CONFIG --variable=libdir tqt-mt`"
   else
-      if $PKG_CONFIG --exists tqt-mt ; then
+      if $PKG_CONFIG --exists qt-mt ; then
           qt_libdirs="$qt_incdirs `$PKG_CONFIG --variable=libdir tqt-mt`"
       fi
   fi
@@ -1834,7 +1825,7 @@ AC_REQUIRE([AC_PATH_QT_MOC_UIC])
 
 if test x$ac_uic_supports_libpath = xyes; then
 
-AC_MSG_CHECKING([if UIC has KDE plugins available])
+AC_MSG_CHECKING([if UIC has TDE plugins available])
 AC_CACHE_VAL(kde_cv_uic_plugins,
 [
 cat > actest.ui << EOF
@@ -2016,21 +2007,21 @@ if test "$kde_qtver" = 1; then
   kde_check_lib="libtdecore.la"
 else
   kde_check_header="ksharedptr.h"
-  kde_check_lib="libkio.la"
+  kde_check_lib="libtdeio.la"
 fi
 
 if test -z "$1"; then
 
-kde_incdirs="$kde_libs_prefix/include /opt/trinity/include/kde /opt/trinity/include/kde /usr/lib/kde/include /usr/local/kde/include /usr/local/include /usr/kde/include /usr/include/kde /usr/include /opt/trinity/include /opt/trinity/include /opt/kde/include $x_includes $qt_includes"
-test -n "$TDEDIR" && kde_incdirs="$TDEDIR/include $TDEDIR/include/kde $TDEDIR $kde_incdirs"
+kde_incdirs="$kde_libs_prefix/include /opt/trinity/include/tde /opt/trinity/include/tde /usr/lib/kde/include /usr/local/kde/include /usr/local/include /usr/kde/include /usr/include/tde /usr/include /opt/trinity/include /opt/trinity/include /opt/kde/include $x_includes $qt_includes"
+test -n "$TDEDIR" && kde_incdirs="$TDEDIR/include $TDEDIR/include/tde $TDEDIR $kde_incdirs"
 kde_incdirs="$ac_kde_includes $kde_incdirs"
 AC_FIND_FILE($kde_check_header, $kde_incdirs, kde_incdir)
 ac_kde_includes="$kde_incdir"
 
 if test -n "$ac_kde_includes" && test ! -r "$ac_kde_includes/$kde_check_header"; then
   AC_MSG_ERROR([
-in the prefix, you've chosen, are no KDE headers installed. This will fail.
-So, check this please and use another prefix!])
+No TDE headers are installed in the chosen prefix. This will fail.
+Please check this and use another prefix if needed!])
 fi
 
 kde_libdirs="$kde_libs_prefix/lib${tdelibsuff} /usr/lib/kde/lib${tdelibsuff} /usr/local/kde/lib${tdelibsuff} /usr/kde/lib${tdelibsuff} /usr/lib${tdelibsuff}/kde /usr/lib${tdelibsuff}/trinity /usr/lib${tdelibsuff} /usr/X11R6/lib${tdelibsuff} /usr/local/lib${tdelibsuff} /opt/trinity/lib${tdelibsuff} /opt/trinity/lib${tdelibsuff} /opt/kde/lib${tdelibsuff} /usr/X11R6/kde/lib${tdelibsuff}"
@@ -2041,15 +2032,15 @@ ac_kde_libraries="$kde_libdir"
 
 kde_widgetdir=NO
 dnl this might be somewhere else
-AC_FIND_FILE("trinity/plugins/designer/kdewidgets.la", $kde_libdirs, kde_widgetdir)
+AC_FIND_FILE("trinity/plugins/designer/tdewidgets.la", $kde_libdirs, kde_widgetdir)
 
 if test -n "$ac_kde_libraries" && test ! -r "$ac_kde_libraries/$kde_check_lib"; then
 AC_MSG_ERROR([
-in the prefix, you've chosen, are no KDE libraries installed. This will fail.
+in the prefix, you've chosen, are no TDE libraries installed. This will fail.
 So, check this please and use another prefix!])
 fi
 
-if test -n "$kde_widgetdir" && test ! -r "$kde_widgetdir/trinity/plugins/designer/kdewidgets.la"; then
+if test -n "$kde_widgetdir" && test ! -r "$kde_widgetdir/trinity/plugins/designer/tdewidgets.la"; then
 AC_MSG_ERROR([
 I can't find the designer plugins. These are required and should have been installed
 by tdelibs])
@@ -2195,7 +2186,7 @@ AC_MSG_RESULT($kde_use_extra_libs)
 
 AC_DEFUN([KDE_1_CHECK_PATH_HEADERS],
 [
-    AC_MSG_CHECKING([for KDE headers installed])
+    AC_MSG_CHECKING([for TDE headers installed])
     AC_LANG_SAVE
     AC_LANG_CPLUSPLUS
 cat > conftest.$ac_ext <<EOF
@@ -2207,20 +2198,20 @@ cat > conftest.$ac_ext <<EOF
 #include <kapp.h>
 
 int main() {
-    printf("kde_htmldir=\\"%s\\"\n", KApplication::kde_htmldir().data());
-    printf("kde_appsdir=\\"%s\\"\n", KApplication::kde_appsdir().data());
-    printf("kde_icondir=\\"%s\\"\n", KApplication::kde_icondir().data());
-    printf("kde_sounddir=\\"%s\\"\n", KApplication::kde_sounddir().data());
-    printf("kde_datadir=\\"%s\\"\n", KApplication::kde_datadir().data());
-    printf("kde_locale=\\"%s\\"\n", KApplication::kde_localedir().data());
-    printf("kde_cgidir=\\"%s\\"\n", KApplication::kde_cgidir().data());
-    printf("kde_confdir=\\"%s\\"\n", KApplication::kde_configdir().data());
-    printf("kde_mimedir=\\"%s\\"\n", KApplication::kde_mimedir().data());
-    printf("kde_toolbardir=\\"%s\\"\n", KApplication::kde_toolbardir().data());
+    printf("kde_htmldir=\\"%s\\"\n", TDEApplication::kde_htmldir().data());
+    printf("kde_appsdir=\\"%s\\"\n", TDEApplication::kde_appsdir().data());
+    printf("kde_icondir=\\"%s\\"\n", TDEApplication::kde_icondir().data());
+    printf("kde_sounddir=\\"%s\\"\n", TDEApplication::kde_sounddir().data());
+    printf("kde_datadir=\\"%s\\"\n", TDEApplication::kde_datadir().data());
+    printf("kde_locale=\\"%s\\"\n", TDEApplication::kde_localedir().data());
+    printf("kde_cgidir=\\"%s\\"\n", TDEApplication::kde_cgidir().data());
+    printf("kde_confdir=\\"%s\\"\n", TDEApplication::kde_configdir().data());
+    printf("kde_mimedir=\\"%s\\"\n", TDEApplication::kde_mimedir().data());
+    printf("kde_toolbardir=\\"%s\\"\n", TDEApplication::kde_toolbardir().data());
     printf("kde_wallpaperdir=\\"%s\\"\n",
-	KApplication::kde_wallpaperdir().data());
-    printf("kde_bindir=\\"%s\\"\n", KApplication::kde_bindir().data());
-    printf("kde_partsdir=\\"%s\\"\n", KApplication::kde_partsdir().data());
+	TDEApplication::kde_wallpaperdir().data());
+    printf("kde_bindir=\\"%s\\"\n", TDEApplication::kde_bindir().data());
+    printf("kde_partsdir=\\"%s\\"\n", TDEApplication::kde_partsdir().data());
     printf("kde_servicesdir=\\"/tmp/dummy\\"\n");
     printf("kde_servicetypesdir=\\"/tmp/dummy\\"\n");
     printf("kde_moduledir=\\"/tmp/dummy\\"\n");
@@ -2239,8 +2230,8 @@ EOF
  if AC_TRY_EVAL(ac_compile); then
    AC_MSG_RESULT(yes)
  else
-   AC_MSG_ERROR([your system is not able to compile a small KDE application!
-Check, if you installed the KDE header files correctly.
+   AC_MSG_ERROR([your system is not able to compile a small TDE application!
+Check, if you installed the TDE header files correctly.
 For more details about this problem, look at the end of config.log.])
   fi
   CPPFLAGS=$ac_save_CPPFLAGS
@@ -2258,10 +2249,21 @@ AC_CACHE_VAL(kde_cv_have_kdeqtaddon,
  kde_cxxflags_safe="$CXXFLAGS"
 
  LIBS="-lkde-qt-addon $LIBQT $LIBS"
- CXXFLAGS="$CXXFLAGS -I$prefix/include -I$prefix/include/kde $all_includes"
+ CXXFLAGS="$CXXFLAGS -I$prefix/include -I$prefix/include/tde $all_includes"
  LDFLAGS="$LDFLAGS $all_libraries $USER_LDFLAGS"
 
 if test "$kde_qtver" = "3"; then
+if $PKG_CONFIG --exists tqt-mt ; then
+ AC_TRY_LINK([
+   #include <tqdom.h>
+ ],
+ [
+   TQDomDocument doc;
+ ],
+  kde_cv_have_kdeqtaddon=yes,
+  kde_cv_have_kdeqtaddon=no
+ )
+else
  AC_TRY_LINK([
    #include <qdom.h>
  ],
@@ -2271,6 +2273,7 @@ if test "$kde_qtver" = "3"; then
   kde_cv_have_kdeqtaddon=yes,
   kde_cv_have_kdeqtaddon=no
  )
+fi
 fi
 
 if test "$kde_qtver" = "4"; then
@@ -2312,24 +2315,24 @@ if test $kde_qtver = 4; then
    AC_SUBST(LIB_KDED, $lib_kded)
    AC_SUBST(LIB_TDECORE, "-ltdecore")
    AC_SUBST(LIB_TDEUI, "-ltdeui")
-   AC_SUBST(LIB_KIO, "-lkio")
+   AC_SUBST(LIB_TDEIO, "-ltdeio")
    AC_SUBST(LIB_KJS, "-lkjs")
    AC_SUBST(LIB_SMB, "-lsmb")
    AC_SUBST(LIB_KAB, "-lkab")
-   AC_SUBST(LIB_KABC, "-lkabc")
-   AC_SUBST(LIB_KHTML, "-lkhtml")
-   AC_SUBST(LIB_KSPELL, "-lkspell")
-   AC_SUBST(LIB_KPARTS, "-lkparts")
+   AC_SUBST(LIB_TDEABC, "-ltdeabc")
+   AC_SUBST(LIB_TDEHTML, "-ltdehtml")
+   AC_SUBST(LIB_TDESPELL, "-ltdespell")
+   AC_SUBST(LIB_TDEPARTS, "-ltdeparts")
    AC_SUBST(LIB_TDEPRINT, "-ltdeprint")
-   AC_SUBST(LIB_KUTILS, "-lkutils")
+   AC_SUBST(LIB_TDEUTILS, "-ltdeutils")
    AC_SUBST(LIB_TDEPIM, "-ltdepim")
-   AC_SUBST(LIB_KIMPROXY, "-lkimproxy")
-   AC_SUBST(LIB_KNEWSTUFF, "-lknewstuff")
-   AC_SUBST(LIB_KDNSSD, "-lkdnssd")
-   AC_SUBST(LIB_KUNITTEST, "-lkunittest")
+   AC_SUBST(LIB_TDEIMPROXY, "-ltdeimproxy")
+   AC_SUBST(LIB_TDENEWSTUFF, "-ltdenewstuff")
+   AC_SUBST(LIB_TDEDNSSD, "-ltdednssd")
+   AC_SUBST(LIB_TDEUNITTEST, "-ltdeunittest")
 # these are for backward compatibility
-   AC_SUBST(LIB_KSYCOCA, "-lkio")
-   AC_SUBST(LIB_KFILE, "-lkio")
+   AC_SUBST(LIB_TDESYCOCA, "-ltdeio")
+   AC_SUBST(LIB_TDEFILE, "-ltdeio")
 elif test $kde_qtver = 3; then
    case $host in 
                *cygwin*) lib_kded="-ltdeinit_kded" ;;
@@ -2338,41 +2341,41 @@ elif test $kde_qtver = 3; then
    AC_SUBST(LIB_KDED, $lib_kded)
    AC_SUBST(LIB_TDECORE, "-ltdecore")
    AC_SUBST(LIB_TDEUI, "-ltdeui")
-   AC_SUBST(LIB_KIO, "-lkio")
+   AC_SUBST(LIB_TDEIO, "-ltdeio")
    AC_SUBST(LIB_KJS, "-lkjs")
    AC_SUBST(LIB_SMB, "-lsmb")
    AC_SUBST(LIB_KAB, "-lkab")
-   AC_SUBST(LIB_KABC, "-lkabc")
-   AC_SUBST(LIB_KHTML, "-lkhtml")
-   AC_SUBST(LIB_KSPELL, "-lkspell")
-   AC_SUBST(LIB_KPARTS, "-lkparts")
+   AC_SUBST(LIB_TDEABC, "-ltdeabc")
+   AC_SUBST(LIB_TDEHTML, "-ltdehtml")
+   AC_SUBST(LIB_TDESPELL, "-ltdespell")
+   AC_SUBST(LIB_TDEPARTS, "-ltdeparts")
    AC_SUBST(LIB_TDEPRINT, "-ltdeprint")
-   AC_SUBST(LIB_KUTILS, "-lkutils")
+   AC_SUBST(LIB_TDEUTILS, "-ltdeutils")
    AC_SUBST(LIB_TDEPIM, "-ltdepim")
-   AC_SUBST(LIB_KIMPROXY, "-lkimproxy")
-   AC_SUBST(LIB_KNEWSTUFF, "-lknewstuff")
-   AC_SUBST(LIB_KDNSSD, "-lkdnssd")
-   AC_SUBST(LIB_KUNITTEST, "-lkunittest")
+   AC_SUBST(LIB_TDEIMPROXY, "-ltdeimproxy")
+   AC_SUBST(LIB_TDENEWSTUFF, "-ltdenewstuff")
+   AC_SUBST(LIB_TDEDNSSD, "-ltdednssd")
+   AC_SUBST(LIB_TDEUNITTEST, "-ltdeunittest")
 # these are for backward compatibility
-   AC_SUBST(LIB_KSYCOCA, "-lkio")
-   AC_SUBST(LIB_KFILE, "-lkio")
+   AC_SUBST(LIB_TDESYCOCA, "-ltdeio")
+   AC_SUBST(LIB_TDEFILE, "-ltdeio")
 elif test $kde_qtver = 2; then
    AC_SUBST(LIB_TDECORE, "-ltdecore")
    AC_SUBST(LIB_TDEUI, "-ltdeui")
-   AC_SUBST(LIB_KIO, "-lkio")
-   AC_SUBST(LIB_KSYCOCA, "-lksycoca")
+   AC_SUBST(LIB_TDEIO, "-ltdeio")
+   AC_SUBST(LIB_TDESYCOCA, "-ltdesycoca")
    AC_SUBST(LIB_SMB, "-lsmb")
-   AC_SUBST(LIB_KFILE, "-lkfile")
+   AC_SUBST(LIB_TDEFILE, "-ltdefile")
    AC_SUBST(LIB_KAB, "-lkab")
-   AC_SUBST(LIB_KHTML, "-lkhtml")
-   AC_SUBST(LIB_KSPELL, "-lkspell")
-   AC_SUBST(LIB_KPARTS, "-lkparts")
+   AC_SUBST(LIB_TDEHTML, "-ltdehtml")
+   AC_SUBST(LIB_TDESPELL, "-ltdespell")
+   AC_SUBST(LIB_TDEPARTS, "-ltdeparts")
    AC_SUBST(LIB_TDEPRINT, "-ltdeprint")
 else
    AC_SUBST(LIB_TDECORE, "-ltdecore -lXext $(LIB_QT)")
    AC_SUBST(LIB_TDEUI, "-ltdeui $(LIB_TDECORE)")
    AC_SUBST(LIB_KFM, "-lkfm $(LIB_TDECORE)")
-   AC_SUBST(LIB_KFILE, "-lkfile $(LIB_KFM) $(LIB_TDEUI)")
+   AC_SUBST(LIB_TDEFILE, "-ltdefile $(LIB_KFM) $(LIB_TDEUI)")
    AC_SUBST(LIB_KAB, "-lkab $(LIB_KIMGIO) $(LIB_TDECORE)")
 fi
 ])
@@ -2681,7 +2684,7 @@ AC_DEFUN([AC_CHECK_STRLCPY],
 #include <string.h>
 ],
 [ char buf[20];
-  strlcpy(buf, "KDE function test", sizeof(buf));
+  strlcpy(buf, "TDE function test", sizeof(buf));
 ],
  	[unsigned long strlcpy(char*, const char*, unsigned long)],
 	[STRLCPY])
@@ -2694,7 +2697,7 @@ AC_DEFUN([AC_CHECK_STRLCAT],
 ],
 [ char buf[20];
   buf[0]='\0';
-  strlcat(buf, "KDE function test", sizeof(buf));
+  strlcat(buf, "TDE function test", sizeof(buf));
 ],
  	[unsigned long strlcat(char*, const char*, unsigned long)],
 	[STRLCAT])
@@ -2820,7 +2823,7 @@ AC_FIND_FILE(jpeglib.h, $jpeg_incdirs, jpeg_incdir)
 test "x$jpeg_incdir" = xNO && jpeg_incdir=
 
 dnl if headers _and_ libraries are missing, this is no error, and we
-dnl continue with a warning (the user will get no jpeg support in khtml)
+dnl continue with a warning (the user will get no jpeg support in tdehtml)
 dnl if only one is missing, it means a configuration error, but we still
 dnl only warn
 if test -n "$jpeg_incdir" && test -n "$LIBJPEG" ; then
@@ -2907,9 +2910,7 @@ dnl  all_libraries="$all_libraries $LIBTQT_LDFLAGS"
   if test "$build_arts" '!=' "no"; then
     KDE_FIND_PATH(mcopidl, TQTMCOPIDL, [$kde_default_bindirs], [KDE_MISSING_ARTS_ERROR(mcopidl)])
   fi
-  if test -n "$trinity2ornewer"; then
-    KDE_FIND_PATH(dcopidlng, TQTDCOPIDLNG, [$kde_default_bindirs], [KDE_MISSING_PROG_ERROR(dcopidlng)])
-  fi
+  KDE_FIND_PATH(dcopidlng, TQTDCOPIDLNG, [$kde_default_bindirs], [KDE_MISSING_PROG_ERROR(dcopidlng)])
 
   AC_SUBST(TQTDCOPIDL)
   AC_SUBST(TQTMCOPIDL)
@@ -2943,6 +2944,16 @@ AC_TRY_LINK(
             eval "kde_cv_qt_jpeg=yes")
 fi
 if test "$kde_qtver" = "3"; then
+if $PKG_CONFIG --exists tqt-mt ; then
+AC_TRY_LINK(
+[#include <tqapplication.h>],
+            [
+            int argc;
+            char** argv;
+            TQApplication app(argc, argv);],
+            eval "kde_cv_qt_jpeg=no",
+            eval "kde_cv_qt_jpeg=yes")
+else
 AC_TRY_LINK(
 [#include <qapplication.h>],
             [
@@ -2951,6 +2962,7 @@ AC_TRY_LINK(
             QApplication app(argc, argv);],
             eval "kde_cv_qt_jpeg=no",
             eval "kde_cv_qt_jpeg=yes")
+fi
 fi
 LIBS="$ac_save_LIBS"
 CXXFLAGS="$ac_save_CXXFLAGS"
@@ -3556,7 +3568,7 @@ AC_DEFUN([AC_CHECK_COMPILERS],
         CXXFLAGS="-Wall -W -Wpointer-arith $CXXFLAGS"
         case $host in
           *-*-linux-gnu)	
-            CFLAGS="-std=iso9899:1990 -W -Wall -Wchar-subscripts -Wshadow -Wpointer-arith -Wmissing-prototypes -Wwrite-strings -D_XOPEN_SOURCE=500 -D_BSD_SOURCE $CFLAGS"
+            CFLAGS="-std=iso9899:1999 -W -Wall -Wchar-subscripts -Wshadow -Wpointer-arith -Wmissing-prototypes -Wwrite-strings -D_XOPEN_SOURCE=500 -D_BSD_SOURCE $CFLAGS"
             CXXFLAGS="-ansi -D_XOPEN_SOURCE=500 -D_BSD_SOURCE -Wcast-align -Wchar-subscripts $CXXFLAGS"
             KDE_CHECK_COMPILER_FLAG(Wmissing-format-attribute, [CXXFLAGS="$CXXFLAGS -Wformat-security -Wmissing-format-attribute"])
             KDE_CHECK_C_COMPILER_FLAG(Wmissing-format-attribute, [CFLAGS="$CFLAGS -Wformat-security -Wmissing-format-attribute"])
@@ -3564,7 +3576,7 @@ AC_DEFUN([AC_CHECK_COMPILERS],
         esac
         KDE_CHECK_COMPILER_FLAG(Wundef,[CXXFLAGS="-Wundef $CXXFLAGS"])
         KDE_CHECK_COMPILER_FLAG(Wno-long-long,[CXXFLAGS="-Wno-long-long $CXXFLAGS"])
-        dnl ### FIXME: revert for KDE 4
+        dnl ### FIXME: revert for TDE 4
         KDE_CHECK_COMPILER_FLAG(Wno-non-virtual-dtor,[CXXFLAGS="$CXXFLAGS -Wno-non-virtual-dtor"])
      fi
   fi
@@ -3797,8 +3809,20 @@ AC_DEFUN([KDE_ENABLE_HIDDEN_VISIBILITY],
           CXXFLAGS="$CXXFLAGS $all_includes"
 
 if test "$kde_qtver" = "3"; then
+if $PKG_CONFIG --exists tqt-mt ; then
           AC_TRY_COMPILE(
           [
+#include <tqglobal.h>
+#if Q_EXPORT - 0 != 0
+/* if this compiles, then Q_EXPORT is undefined */
+/* if Q_EXPORT is nonempty, this will break compilation */
+#endif
+          ], [/* elvis is alive */],
+          kde_cv_val_qt_gcc_visibility_patched=no, kde_cv_val_qt_gcc_visibility_patched=yes)
+else
+          AC_TRY_COMPILE(
+          [
+#include <tqt.h>
 #include <qglobal.h>
 #if Q_EXPORT - 0 != 0
 /* if this compiles, then Q_EXPORT is undefined */
@@ -3806,6 +3830,7 @@ if test "$kde_qtver" = "3"; then
 #endif
           ], [/* elvis is alive */],
           kde_cv_val_qt_gcc_visibility_patched=no, kde_cv_val_qt_gcc_visibility_patched=yes)
+fi
 fi
 
 if test "$kde_qtver" = "4"; then
@@ -3863,7 +3888,7 @@ LIBTOOL_SHELL="libtool"
 KDE_PLUGIN="-avoid-version -module -no-undefined \$(KDE_NO_UNDEFINED) \$(KDE_RPATH) \$(KDE_MT_LDFLAGS)"
 AC_SUBST(KDE_PLUGIN)
 
-# This hack ensures that libtool creates shared libs for kunittest plugins. By default check_LTLIBRARIES makes static libs.
+# This hack ensures that libtool creates shared libs for tdeunittest plugins. By default check_LTLIBRARIES makes static libs.
 KDE_CHECK_PLUGIN="\$(KDE_PLUGIN) -rpath \$(libdir)"
 AC_SUBST(KDE_CHECK_PLUGIN)
 
@@ -4446,14 +4471,14 @@ AC_DEFUN([KDE_PAM], [
     AC_HELP_STRING([--with-pam[=ARG]],[enable support for PAM: ARG=[yes|no|service name]]),
     [ if test "x$withval" = "xyes"; then
         want_pam=yes
-        pam_service=kde
+        pam_service=tde
       elif test "x$withval" = "xno"; then
         want_pam=no
       else
         want_pam=yes
         pam_service=$withval
       fi
-    ], [ pam_service=kde ])
+    ], [ pam_service=tde ])
 
   use_pam=
   PAMLIBS=
@@ -4922,7 +4947,8 @@ fi
 
 PYTHONINC=-I$python_incdir
 
-python_libdirs="$ac_python_dir/lib$tdelibsuff /usr/lib$tdelibsuff /usr/local /usr/lib$tdelibsuff $kde_extra_libs"
+python_multiarch_libdirs="`find /usr/lib/ -maxdepth 1 -type d | xargs echo`"
+python_libdirs="$ac_python_dir/lib$tdelibsuff /usr/lib$tdelibsuff /usr/local /usr/lib$tdelibsuff $python_multiarch_libdirs $kde_extra_libs"
 AC_FIND_FILE(libpython$version.so, $python_libdirs, python_libdir)
 if test ! -r $python_libdir/libpython$version.so; then
   AC_FIND_FILE(libpython$version.a, $python_libdirs, python_libdir)
@@ -5063,19 +5089,35 @@ ac_save_CXXFLAGS="$CXXFLAGS"
 if test "$kde_qtver" = "3"; then
 LIBS="$all_libraries -lqimgio -lpng -lz $LIBJPEG $LIBQT"
 CXXFLAGS="$CXXFLAGS -I$qt_incdir $all_includes"
+if $PKG_CONFIG --exists tqt-mt ; then
+AC_TRY_RUN(dnl
+[
+#include <tqimageio.h>
+#include <tqstring.h>
+int main() {
+                TQString t = "hallo";
+                t.fill('t');
+                qInitImageIO();
+}
+],
+            ac_cv_lib_qimgio=yes,
+            ac_cv_lib_qimgio=no,
+            ac_cv_lib_qimgio=no)
+else
 AC_TRY_RUN(dnl
 [
 #include <qimageio.h>
 #include <qstring.h>
 int main() {
-		QString t = "hallo";
-		t.fill('t');
-		qInitImageIO();
+                QString t = "hallo";
+                t.fill('t');
+                qInitImageIO();
 }
 ],
             ac_cv_lib_qimgio=yes,
             ac_cv_lib_qimgio=no,
-	    ac_cv_lib_qimgio=no)
+            ac_cv_lib_qimgio=no)
+fi
 fi
 
 if test "$kde_qtver" = "4"; then
@@ -5356,7 +5398,7 @@ AC_DEFINE_UNQUOTED(KDEMAXPATHLEN,$ac_cv_maxpathlen, [Define a safe value for MAX
 AC_DEFUN([KDE_CHECK_HEADER],
 [
    kde_safe_cppflags=$CPPFLAGS
-   CPPFLAGS="$CPPFLAGS $all_includes -I$kde_incdir/kde -I/usr/include/tqt"
+   CPPFLAGS="$CPPFLAGS $all_includes -I$kde_incdir/tde -I/usr/include/tqt"
    AC_LANG_SAVE
    AC_LANG_CPLUSPLUS
    AC_CHECK_HEADER([$1], [$2], [$3], [$4])
@@ -5366,10 +5408,10 @@ AC_DEFUN([KDE_CHECK_HEADER],
 
 AC_DEFUN([KDE_CHECK_HEADERS],
 [
-   AH_CHECK_HEADERS([$1])
+   AH_CHECK_HEADERS_TDE([$1])
    AC_LANG_SAVE
    kde_safe_cppflags=$CPPFLAGS
-   CPPFLAGS="$CPPFLAGS $all_includes -I$kde_incdir/kde -I/usr/include/tqt"
+   CPPFLAGS="$CPPFLAGS $all_includes -I$kde_incdir/tde -I/usr/include/tqt"
    AC_LANG_CPLUSPLUS
    AC_CHECK_HEADERS([$1], [$2], [$3], [$4])
    CPPFLAGS=$kde_safe_cppflags
@@ -5433,13 +5475,13 @@ AC_DEFUN([KDE_SET_PREFIX],
 
   KDE_SET_DEFAULT_BINDIRS
   if test "x$prefix" = "xNONE"; then
-    dnl no prefix given: look for kde-config in the PATH and deduce the prefix from it
-    KDE_FIND_PATH(kde-config, KDECONFIG, [$kde_default_bindirs], [KDE_MISSING_PROG_ERROR(kde-config)], [], prepend)
+    dnl no prefix given: look for tde-config in the PATH and deduce the prefix from it
+    KDE_FIND_PATH(tde-config, KDECONFIG, [$kde_default_bindirs], [KDE_MISSING_PROG_ERROR(tde-config)], [], prepend)
   else
-    dnl prefix given: look for kde-config, preferrably in prefix, otherwise in PATH
+    dnl prefix given: look for tde-config, preferrably in prefix, otherwise in PATH
     kde_save_PATH="$PATH"
     PATH="$exec_prefix/bin:$prefix/bin:$PATH"
-    KDE_FIND_PATH(kde-config, KDECONFIG, [$kde_default_bindirs], [KDE_MISSING_PROG_ERROR(kde-config)], [], prepend)
+    KDE_FIND_PATH(tde-config, KDECONFIG, [$kde_default_bindirs], [KDE_MISSING_PROG_ERROR(tde-config)], [], prepend)
     PATH="$kde_save_PATH"
   fi
 
@@ -5455,7 +5497,7 @@ AC_DEFUN([KDE_SET_PREFIX],
   AC_MSG_CHECKING([where to install])
   if test "x$prefix" = "xNONE"; then
     prefix=$kde_libs_prefix
-    AC_MSG_RESULT([$prefix (as returned by kde-config)])
+    AC_MSG_RESULT([$prefix (as returned by tde-config)])
   else
     dnl --prefix was given. Compare prefixes and warn (in configure.in.bot.end) if different
     given_prefix=$prefix
@@ -5517,7 +5559,7 @@ pushdef([AC_PROG_INSTALL],
   dnl  *autoconf 2.13 is dumb, and thinks it can use INSTALL_PROGRAM as
   dnl   INSTALL_SCRIPT, which breaks with automake <= 1.4
   dnl  *autoconf >2.13 (since 10.Apr 1999) has not that failure
-  dnl  *sometimes KDE does not use the install-@DIR@PROGRAM targets from
+  dnl  *sometimes TDE does not use the install-@DIR@PROGRAM targets from
   dnl   automake (due to broken Makefile.am or whatever) to install programs,
   dnl   and so does not see the -s flag in automake > 1.4
   dnl to clean up that mess we:
@@ -5767,12 +5809,6 @@ if test "x$kde_java_bindir" != "xno"; then
 
   dnl not needed for gcj compile
 
-  if test "x$kde_java_libgcjdir" = "x"; then 
-      if test ! -r "$kde_java_libhpidir/libhpi.so"; then
-        AC_MSG_ERROR([libhpi.so not found under $kde_java_libhpidir. Use --without-java.])
-      fi
-  fi
-
   if test -n "$jni_includes"; then
     dnl Check for JNI version
     AC_LANG_SAVE
@@ -5809,8 +5845,12 @@ if test "x$kde_java_bindir" != "xno"; then
     JAVAH=$kde_java_bindir/javah
     JAR=$kde_java_bindir/jar
     AC_DEFINE_UNQUOTED(PATH_JAVA, "$kde_java_bindir/java", [Define where your java executable is])
-    if test "x$kde_java_libgcjdir" = "x"; then 
-      JVMLIBS="-L$kde_java_libjvmdir -ljvm -L$kde_java_libhpidir -lhpi"
+    if test "x$kde_java_libgcjdir" = "x"; then
+      if test ! -r "$kde_java_libhpidir/libhpi.so"; then
+        JVMLIBS="-L$kde_java_libjvmdir -ljvm"
+      else
+        JVMLIBS="-L$kde_java_libjvmdir -ljvm -L$kde_java_libhpidir -lhpi"
+      fi
     else
       JVMLIBS="-L$kde_java_libgcjdir -lgcj"
     fi
@@ -5847,7 +5887,7 @@ kde_cv_java_bindir=$kde_java_bindir
 ])
 
 dnl this is a redefinition of autoconf 2.5x's AC_FOREACH.
-dnl When the argument list becomes big, as in KDE for AC_OUTPUT in
+dnl When the argument list becomes big, as in TDE for AC_OUTPUT in
 dnl big packages, m4_foreach is dog-slow.  So use our own version of
 dnl it.  (matz@kde.org)
 m4_define([mm_foreach],
@@ -5861,6 +5901,13 @@ m4_define([_mm_foreach],
                                                    [$3])])])
 m4_define([AC_FOREACH],
 [mm_foreach([$1], m4_split(m4_normalize([$2])), [$3])])
+
+# AH_CHECK_HEADERS_TDE(HEADER-FILE...)
+# --------------------------------
+m4_define([AH_CHECK_HEADERS_TDE],
+[m4_foreach_w([AC_Header], [$1],
+  [AH_TEMPLATE(AS_TR_CPP([HAVE_]m4_defn([AC_Header])),
+     [Define to 1 if you have the <]m4_defn([AC_Header])[> header file.])])])
 
 AC_DEFUN([KDE_NEED_FLEX],
 [
@@ -5986,7 +6033,7 @@ if test "${with_qt_dir+set}" = set; then
   kde_qtdir="$with_qt_dir"
 fi
 
-AC_FIND_FILE(qsql.html, [ $kde_qtdir/doc/html $QTDIR/doc/html /usr/share/doc/packages/tqt3/html /usr/share/doc/packages/qt3/html /usr/lib/qt/doc /usr/lib/tqt3/doc /usr/lib/qt3/doc /usr/lib/tqt3/doc/html /usr/lib/qt3/doc/html /usr/doc/tqt3/html /usr/doc/qt3/html /usr/doc/tqt3 /usr/doc/qt3 /usr/share/doc/tqt3-doc /usr/share/doc/qt3-doc /usr/share/tqt3/doc/html /usr/share/qt3/doc/html /usr/X11R6/share/doc/qt/html ], QTDOCDIR)
+AC_FIND_FILE(qsql.html, [ $kde_qtdir/doc/html /usr/share/doc/packages/tqt3/html /usr/share/doc/packages/qt3/html /usr/lib/qt/doc /usr/lib/tqt3/doc /usr/lib/qt3/doc /usr/lib/tqt3/doc/html /usr/lib/qt3/doc/html /usr/doc/tqt3/html /usr/doc/qt3/html /usr/doc/tqt3 /usr/doc/qt3 /usr/share/doc/tqt3-doc /usr/share/doc/qt3-doc /usr/share/tqt3/doc/html /usr/share/qt3/doc/html /usr/X11R6/share/doc/qt/html ], QTDOCDIR)
 AC_MSG_RESULT($QTDOCDIR)
 
 AC_SUBST(QTDOCDIR)
@@ -6363,7 +6410,7 @@ fi
 ])
 
 dnl A small extension to PKG_CHECK_MODULES (defined in pkg.m4.in)
-dnl which allows to search for libs that get installed into the KDE prefix.
+dnl which allows to search for libs that get installed into the TDE prefix.
 dnl
 dnl Syntax:  KDE_PKG_CHECK_MODULES(KSTUFF, libkexif >= 0.2 glib = 1.3.4, action-if, action-not)
 dnl defines KSTUFF_LIBS, KSTUFF_CFLAGS, see pkg-config man page
@@ -6528,7 +6575,7 @@ dnl AM_KDE_MIN_VERSION(MIN-VERSION-MAJOR, MIN-VERSION-MINOR, MIN-VERSION-MICRO)
 dnl
 AC_DEFUN([AM_KDE_MIN_VERSION],
 [
-	AC_MSG_CHECKING([if minimum KDE version is available])
+	AC_MSG_CHECKING([if minimum TDE version is available])
 	AC_LANG_SAVE
 	AC_LANG_CPLUSPLUS
 	save_CXXFLAGS=$CXXFLAGS
@@ -6536,7 +6583,7 @@ AC_DEFUN([AM_KDE_MIN_VERSION],
 	AC_TRY_COMPILE([
 	#include "kdecompat.h"
 	#if !( KDE_IS_VERSION( $1, $2, $3 ) )
-	#error KDE version does not meet KMyMoney minimum requirement
+	#error TDE version does not meet KMyMoney minimum requirement
 	#endif
 		], [], AC_MSG_RESULT(yes), AC_MSG_ERROR(no)
 	)
@@ -6690,7 +6737,7 @@ AC_DEFUN([AC_PDF_GENERATION], [
     AC_CHECK_PROG(found_recode, recode, yes, no)
     AC_CHECK_PROG(found_html2ps, html2ps, yes, no)
     AC_CHECK_PROG(found_ps2pdf, ps2pdf, yes, no)
-    if test "x$found_recode" != "xyes" -o "x$found_html2ps" != "xyes" -o "x$found_ps2pdf" != "xyes"; then
+    if test "x$found_recode" != "xyes" && "x$found_html2ps" != "xyes" && "x$found_ps2pdf" != "xyes"; then
       if test "x$enable_pdfdocs" = "xyes"; then
         AC_MSG_ERROR(At least one of the tools for PDF generation is missing)
       fi
@@ -6765,7 +6812,19 @@ AC_DEFUN([AC_SQLITE3], [
       QTDIR=`dirname $MOC`
       QTDIR=${QTDIR%/bin}
     fi
-    LIBSQLITE3=${QTDIR}/plugins/sqldrivers/libsqlite3${qtlib}.so
+    if test "$PKG_CONFIG" != "no" ; then
+      if $PKG_CONFIG --exists tqt-mt ; then
+        qt_plugins_dir="`pkg-config --variable=pluginsdir tqt-mt`"
+      else
+        if $PKG_CONFIG --exists qt-mt ; then
+          qt_plugins_dir="`pkg-config --variable=pluginsdir tqt-mt`"
+        fi
+      fi
+    fi
+    if test "x$qt_plugins_dir" = "x"; then
+      qt_plugins_dir=${QTDIR}/plugins
+    fi
+    LIBSQLITE3=${qt_plugins_dir}/sqldrivers/libqsqlite3${qtlib}.so
 
     # do the checks
     if test $enable_sqlite3 = auto; then

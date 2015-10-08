@@ -23,9 +23,9 @@
 #include "evaftprotocols.h"
 #include "../../libeva/evautil.h"
 #include "../../libeva/evadefines.h"
-#include <qdns.h>
-#include <qtextcodec.h>
-#include <qapplication.h>
+#include <ntqdns.h>
+#include <ntqtextcodec.h>
+#include <ntqapplication.h>
 #include <cstring>
 
 #define RELAY_SERVER_URL             "RelayServer2.tencent.com"
@@ -35,13 +35,13 @@
 #define SYN_SERVER_DEFAULT_IP        "219.133.49.80"
 #define SYN_SERVER_PORT              8000
 
-#define QQ_TRANSFER_FILE             0x65
-#define QQ_TRANSFER_IMAGE            0x66
+#define TQQ_TRANSFER_FILE             0x65
+#define TQQ_TRANSFER_IMAGE            0x66
 
-EvaFileThread::EvaFileThread(QObject *receiver, const unsigned int id, const QValueList<QString> &dirList, 
-				const QValueList<QString> &filenameList,
-				const QValueList<unsigned int> sizeList, const bool isSender)
-	: QObject(), QThread(), m_IsSender(isSender), m_Receiver(receiver),
+EvaFileThread::EvaFileThread(TQObject *receiver, const unsigned int id, const TQValueList<TQString> &dirList, 
+				const TQValueList<TQString> &filenameList,
+				const TQValueList<unsigned int> sizeList, const bool isSender)
+	: TQObject(), TQThread(), m_IsSender(isSender), m_Receiver(receiver),
 	m_Id(id), m_Session(0), m_StartOffset(0), m_ExitNow(false),
 	m_BytesSent(0), m_File(NULL), m_Connecter(NULL)
 {
@@ -72,7 +72,7 @@ EvaFileThread::~EvaFileThread()
 	cleanUp();
 }
 
-void EvaFileThread::setDir( const QString & dir )
+void EvaFileThread::setDir( const TQString & dir )
 {
 	if(!m_DirList.count()) return;
 	m_Dir = dir;
@@ -81,7 +81,7 @@ void EvaFileThread::setDir( const QString & dir )
 	m_DirList[0] = m_Dir; // for file transfer, one file each session, not like images
 }
 
-const QString EvaFileThread::getDir() const
+const TQString EvaFileThread::getDir() const
 {
 	return m_Dir;
 }
@@ -94,14 +94,14 @@ const unsigned int EvaFileThread::getFileSize()
 
 void EvaFileThread::notifyTransferStatus()
 {
-	int timeElapsed = m_StartTime.secsTo(QDateTime::currentDateTime());
+	int timeElapsed = m_StartTime.secsTo(TQDateTime::currentDateTime());
 	EvaFileNotifyStatusEvent *event = new EvaFileNotifyStatusEvent();
 	event->setFileSize(m_File->getFileSize());
 	event->setBytesSent(m_StartOffset + m_BytesSent);
 	event->setTimeElapsed(timeElapsed);
 	event->setSession(m_Session);
 	event->setBuddyQQ(m_Id);
-	QApplication::postEvent(m_Receiver, event);
+	TQApplication::postEvent(m_Receiver, event);
 }
 
 void EvaFileThread::notifyNormalStatus(const EvaFileStatus status)
@@ -118,7 +118,7 @@ void EvaFileThread::notifyNormalStatus(const EvaFileStatus status)
 		event->setFileSize(m_File->getNextOffset());
 	} else
 		event->setFileSize(m_File->getFileSize());
-	QApplication::postEvent(m_Receiver, event);
+	TQApplication::postEvent(m_Receiver, event);
 }
 
 void EvaFileThread::cleanUp()
@@ -135,9 +135,9 @@ void EvaFileThread::cleanUp()
 /** ================================================================== */
 
 
-EvaAgentThread::EvaAgentThread(QObject *receiver, const unsigned int id, const QValueList<QString> &dirList,
-			const QValueList<QString> &filenameList, 
-			QValueList<unsigned int> sizeList, const bool isSender)
+EvaAgentThread::EvaAgentThread(TQObject *receiver, const unsigned int id, const TQValueList<TQString> &dirList,
+			const TQValueList<TQString> &filenameList, 
+			TQValueList<unsigned int> sizeList, const bool isSender)
 	: EvaFileThread(receiver, id, dirList, filenameList, sizeList, isSender),
 	m_State(ENone), m_Token(NULL), m_TokenLength(0),  m_ServerPort(RELAY_SERVER_PORT),
 	m_BufferLength(0), m_PacketLength(0), m_UsingProxy(false)
@@ -167,11 +167,11 @@ void EvaAgentThread::setFileAgentKey(const unsigned char *key)
 void EvaAgentThread::setServerAddress(const unsigned int ip, const unsigned short port)
 {
 	m_HostAddresses.clear();
-	m_HostAddresses.append(QHostAddress(ip));
+	m_HostAddresses.append(TQHostAddress(ip));
 	m_ServerPort = port;
 }
 
-void EvaAgentThread::setProxySettings(const QHostAddress addr, const short port, const QCString &param)
+void EvaAgentThread::setProxySettings(const TQHostAddress addr, const short port, const TQCString &param)
 {
 	m_ProxyServer = addr;
 	m_ProxyPort = port;
@@ -192,9 +192,9 @@ void EvaAgentThread::doCreateConnection()
 	}else
 		m_Connecter = new EvaNetwork(m_HostAddresses.first(), m_ServerPort, EvaNetwork::TCP);
 
-	QObject::connect(m_Connecter, SIGNAL(isReady()), SLOT(slotNetworkReady()));
-	QObject::connect(m_Connecter, SIGNAL(dataComming(int)), SLOT(slotDataComming(int)));
-	QObject::connect(m_Connecter, SIGNAL(exceptionEvent(int)), SLOT(slotNetworkException(int)));
+	TQObject::connect(m_Connecter, SIGNAL(isReady()), SLOT(slotNetworkReady()));
+	TQObject::connect(m_Connecter, SIGNAL(dataComming(int)), SLOT(slotDataComming(int)));
+	TQObject::connect(m_Connecter, SIGNAL(exceptionEvent(int)), SLOT(slotNetworkException(int)));
 	m_Connecter->connect();
 	m_State = ENone;
 }
@@ -211,7 +211,7 @@ void EvaAgentThread::send(EvaFTAgentPacket *packet)
 	// set the header information & key
 	packet->setFileAgentKey(m_FileAgentKey);
 	packet->setQQ(m_MyId);
-	packet->setVersion(QQ_CLIENT_VERSION);
+	packet->setVersion(TQQ_CLIENT_VERSION);
 	packet->setSequence(m_Sequence);
 	packet->setSessionId(m_Session);
 
@@ -277,9 +277,9 @@ void EvaAgentThread::slotNetworkException(int no)
 /** ================================================================== */
 
 
-EvaAgentUploader::EvaAgentUploader(QObject *receiver, const unsigned int id, const QValueList<QString> &dirList,
-			const QValueList<QString> &filenameList)
-	: EvaAgentThread(receiver, id, dirList, filenameList, QValueList<unsigned int>(), true),
+EvaAgentUploader::EvaAgentUploader(TQObject *receiver, const unsigned int id, const TQValueList<TQString> &dirList,
+			const TQValueList<TQString> &filenameList)
+	: EvaAgentThread(receiver, id, dirList, filenameList, TQValueList<unsigned int>(), true),
 	m_IsSendingStart(false), m_Dns(NULL)
 {
 	m_Sequence = 0x0005;// give it a random number anyway
@@ -343,8 +343,8 @@ void EvaAgentUploader::doDnsRequest()
 	printf("EvaAgentUploader::doDnsRequest\n");
 	m_HostAddresses.clear();
 	if(m_Dns) delete m_Dns;
-	m_Dns = new QDns(RELAY_SERVER_URL);
-	QObject::connect(m_Dns, SIGNAL(resultsReady()), SLOT(slotDnsReady()));
+	m_Dns = new TQDns(RELAY_SERVER_URL);
+	TQObject::connect(m_Dns, SIGNAL(resultsReady()), SLOT(slotDnsReady()));
 	
 // 	while(!m_HostAddresses.size()){
 // 		printf("EvaAgentUploader::doDnsRequest -- waiting for DNS results\n");
@@ -358,7 +358,7 @@ void EvaAgentUploader::slotDnsReady()
 {
 	m_HostAddresses = m_Dns->addresses();
 	if(!m_HostAddresses.size()){
-		QHostAddress host;
+		TQHostAddress host;
 		host.setAddress(RELAY_SERVER_DEFAULT_IP);
 		m_HostAddresses.append(host);
 	}
@@ -392,7 +392,7 @@ void EvaAgentUploader::doNotifyBuddy()
 	event->setMyFileAgentKey(m_FileAgentKey);
 	event->setBuddyQQ(m_Id);
 	event->setTransferType(m_TransferType);
-	QApplication::postEvent(m_Receiver, event);
+	TQApplication::postEvent(m_Receiver, event);
 
 	m_Session = m_AgentSession; // now we use agent session
 	m_State = ENone;
@@ -422,9 +422,9 @@ void EvaAgentUploader::doSendInfo()
 		return;
 	}
 	
-	EvaFTAgentTransfer *TransferPacket = new EvaFTAgentTransfer(QQ_FILE_AGENT_TRANSFER_INFO);
+	EvaFTAgentTransfer *TransferPacket = new EvaFTAgentTransfer(TQQ_FILE_AGENT_TRANSFER_INFO);
 
-	QTextCodec *codec = QTextCodec::codecForName("GB18030");
+	TQTextCodec *codec = TQTextCodec::codecForName("GB18030");
 	TransferPacket->setInfo(codec->fromUnicode(m_FileName).data(),md5, m_File->getFileSize());
 	send(TransferPacket);
 	delete []md5;
@@ -451,7 +451,7 @@ void EvaAgentUploader::doDataTransfering()
 	printf("EvaAgentUploader::doDataTransfering\n");
 // 	for(int i = 0; i<50; i++){
 // 		m_Sequence++;
-// 		packet = new EvaFTAgentTransfer(QQ_FILE_AGENT_TRANSFER_DATA);
+// 		packet = new EvaFTAgentTransfer(TQQ_FILE_AGENT_TRANSFER_DATA);
 // 		bytesToSend = ((bufferLength - bytesSent)>EVA_FILE_BUFFER_UNIT)?EVA_FILE_BUFFER_UNIT:(bufferLength - bytesSent);
 // 		packet->setData(buf + bytesSent, bytesToSend);
 // 		send(packet);
@@ -479,7 +479,7 @@ void EvaAgentUploader::slotWriteReady()
 	//bufferLength = m_File->getFragment(m_BytesSent, bufferLength, buf);
 	
 	m_Sequence++;
-	EvaFTAgentTransfer *packet = new EvaFTAgentTransfer(QQ_FILE_AGENT_TRANSFER_DATA);
+	EvaFTAgentTransfer *packet = new EvaFTAgentTransfer(TQQ_FILE_AGENT_TRANSFER_DATA);
 	unsigned int bytesToSend = ((m_OutBufferLength - m_OutBytesSent)>EVA_FILE_BUFFER_UNIT)?EVA_FILE_BUFFER_UNIT:(m_OutBufferLength - m_OutBytesSent);
 	packet->setData(m_OutBuffer + m_OutBytesSent, bytesToSend);
 	send(packet);
@@ -530,20 +530,20 @@ void EvaAgentUploader::processAgentPacket( unsigned char * data, int len )
 {
 	unsigned short cmd = EvaUtil::read16(data + 5);
 	switch(cmd){
-	case QQ_FILE_AGENT_CMD_CREATE:
+	case TQQ_FILE_AGENT_CMD_CREATE:
 		processCreateReply(new EvaFTAgentCreateReply(data, len));
 		break;
-	case QQ_FILE_AGENT_CMD_TRANSFER:
+	case TQQ_FILE_AGENT_CMD_TRANSFER:
 		if(!m_IsSendingStart){
-			processTransferStart(new EvaFTAgentTransferReply(QQ_FILE_AGENT_TRANSFER_START, data, len));
+			processTransferStart(new EvaFTAgentTransferReply(TQQ_FILE_AGENT_TRANSFER_START, data, len));
 		}else{
-			processTransferReply(new EvaFTAgentTransferReply(QQ_FILE_AGENT_TRANSFER_REPLY, data, len));
+			processTransferReply(new EvaFTAgentTransferReply(TQQ_FILE_AGENT_TRANSFER_REPLY, data, len));
 		}
 		break;
-	case QQ_FILE_AGENT_CMD_READY:
+	case TQQ_FILE_AGENT_CMD_READY:
 		processNotifyReady(new EvaFTAgentAskReady(data, len));
 		break;
-	case QQ_FILE_AGENT_CMD_START:
+	case TQQ_FILE_AGENT_CMD_START:
 		processStartReply(new EvaFTAgentStartReply(data, len));
 		break;
 	}
@@ -559,7 +559,7 @@ void EvaAgentUploader::processCreateReply(EvaFTAgentCreateReply *packet)
 		return;
 	}
 	switch(packet->getReplyCode()){
-	case QQ_FILE_AGENT_CREATE_OK:{
+	case TQQ_FILE_AGENT_CREATE_OK:{
 		m_AgentSession = packet->getSessionId();
 		m_ServerPort = packet->getPort();
 
@@ -567,17 +567,17 @@ void EvaAgentUploader::processCreateReply(EvaFTAgentCreateReply *packet)
 		event->setBuddyQQ(m_Id);
 		event->setOldSession(m_Session);
 		event->setNewSession(m_AgentSession);
-		QApplication::postEvent(m_Receiver, event);
+		TQApplication::postEvent(m_Receiver, event);
 		m_State = ECreatingReady;
 		}
 		break;
-	case QQ_FILE_AGENT_CREATE_REDIRECT:
+	case TQQ_FILE_AGENT_CREATE_REDIRECT:
 		m_HostAddresses.clear();
-		m_HostAddresses.append(QHostAddress(packet->getIp()));
+		m_HostAddresses.append(TQHostAddress(packet->getIp()));
 		m_ServerPort = packet->getPort();
 		m_State = EDnsReady;
 		break;
-	case QQ_FILE_AGENT_CREATE_ERROR:
+	case TQQ_FILE_AGENT_CREATE_ERROR:
 		printf("EvaAgentUploader::processCreateReply -- :%s\n", packet->getMessage().c_str());
 	default:
 		m_State = EError;
@@ -624,7 +624,7 @@ void EvaAgentUploader::processTransferStart(EvaFTAgentTransferReply *packet)
 	m_BytesSent = packet->getStartPosition();
 	m_State = ETransfer;
 	m_IsSendingStart = true;
-	m_StartTime = QDateTime::currentDateTime();
+	m_StartTime = TQDateTime::currentDateTime();
 	notifyTransferStatus();
 	delete packet;
 }
@@ -655,9 +655,9 @@ void EvaAgentUploader::processTransferReply(EvaFTAgentTransferReply *packet)
 
 /** ================================================================== */
 
-EvaAgentDownloader::EvaAgentDownloader(QObject *receiver, const unsigned int id, const QValueList<QString> &dirList,
-			const QValueList<QString> &filenameList, 
-			QValueList<unsigned int> sizeList)
+EvaAgentDownloader::EvaAgentDownloader(TQObject *receiver, const unsigned int id, const TQValueList<TQString> &dirList,
+			const TQValueList<TQString> &filenameList, 
+			TQValueList<unsigned int> sizeList)
 	: EvaAgentThread(receiver, id, dirList, filenameList, sizeList, false),
 	m_IsRecovery(false), m_MaxBufferSize(EVA_FILE_BUFFER_UNIT), 
 	m_BufferSize(0), m_IsSendingStart(false)
@@ -723,7 +723,7 @@ void EvaAgentDownloader::doReadyReply( )
 void EvaAgentDownloader::doStartRequest()
 {
 	send(new EvaFTAgentStart());
-	EvaFTAgentTransfer *packet = new EvaFTAgentTransfer(QQ_FILE_AGENT_TRANSFER_START);
+	EvaFTAgentTransfer *packet = new EvaFTAgentTransfer(TQQ_FILE_AGENT_TRANSFER_START);
 	packet->setOffset(m_StartOffset);
 	send(packet);
 	m_State = ENone;
@@ -732,7 +732,7 @@ void EvaAgentDownloader::doStartRequest()
 void EvaAgentDownloader::doDataReply()
 {
 	m_Sequence++;
-	send(new EvaFTAgentTransfer(QQ_FILE_AGENT_TRANSFER_REPLY));
+	send(new EvaFTAgentTransfer(TQQ_FILE_AGENT_TRANSFER_REPLY));
 	m_State = ENone;
 }
 
@@ -758,7 +758,7 @@ void EvaAgentDownloader::doFinishProcessing()
 	m_FileSize = 0;
 	m_IsSendingStart = false;
 	m_ItemBuffer.clear();
-	m_StartTime = QDateTime::currentDateTime();
+	m_StartTime = TQDateTime::currentDateTime();
 	//notifyTransferStatus();
 	m_State = ENone;
 }
@@ -787,22 +787,22 @@ void EvaAgentDownloader::processAgentPacket( unsigned char * data, int len )
 	}
 	printf("\n---------=======================---------\n\n");
 	switch(cmd){
-	case QQ_FILE_AGENT_CMD_LOGIN:
+	case TQQ_FILE_AGENT_CMD_LOGIN:
 		processLoginReply(new EvaFTAgentLoginReply(data, len));
 		break;
-	case QQ_FILE_AGENT_CMD_TRANSFER:{
+	case TQQ_FILE_AGENT_CMD_TRANSFER:{
 		//unsigned short seq = EvaUtil::read16(data + 7);
 		if(!m_IsSendingStart){
-			processTransferInfo(new EvaFTAgentTransferReply(QQ_FILE_AGENT_TRANSFER_INFO, data, len));
+			processTransferInfo(new EvaFTAgentTransferReply(TQQ_FILE_AGENT_TRANSFER_INFO, data, len));
 		}else{
-			processTransferData(new EvaFTAgentTransferReply(QQ_FILE_AGENT_TRANSFER_DATA, data, len));
+			processTransferData(new EvaFTAgentTransferReply(TQQ_FILE_AGENT_TRANSFER_DATA, data, len));
 		}
 		}
 		break;
-	case QQ_FILE_AGENT_CMD_READY:
+	case TQQ_FILE_AGENT_CMD_READY:
 		processNotifyReady(new EvaFTAgentAskReady(data, len));
 		break;
-	case QQ_FILE_AGENT_CMD_START:
+	case TQQ_FILE_AGENT_CMD_START:
 		processStartReply(new EvaFTAgentStartReply(data, len));
 		break;
 	}
@@ -861,19 +861,19 @@ printf("EvaAgentDownloader::processTransferInfo\n");
 	m_StartSequence = packet->getSequence();
 	m_IsSendingStart = true;
 	m_File->setCheckValues( packet->getFileNameMd5(), packet->getFileMd5());
-	QTextCodec *codec = QTextCodec::codecForName("GB18030");
+	TQTextCodec *codec = TQTextCodec::codecForName("GB18030");
 	m_FileName = codec->toUnicode(packet->getFileName().c_str());
 	m_FileSize = packet->getFileSize();
 	printf("EvaAgentDownloader:: -------------------- got info - file: %s, size: %d\n", 
 				packet->getFileName().c_str(), m_FileSize);
 	
-	m_StartTime = QDateTime::currentDateTime();
+	m_StartTime = TQDateTime::currentDateTime();
 	if(!(m_File->setFileInfo(m_FileName, m_FileSize))){
 		m_State = EError;
 		delete packet;
 		return;
 	};
-	if(m_File->loadInfoFile() && m_TransferType == QQ_TRANSFER_FILE){
+	if(m_File->loadInfoFile() && m_TransferType == TQQ_TRANSFER_FILE){
 		notifyNormalStatus(ESResume);
 		m_State = ENone;
 		delete packet;
@@ -974,9 +974,9 @@ const bool EvaAgentDownloader::parsePacket(EvaFTAgentPacket *packet)
 
 
 
-EvaUDPThread::EvaUDPThread(QObject *receiver, const unsigned int id,const QValueList<QString> &dirList,
-			const QValueList<QString> &filenameList, 
-			QValueList<unsigned int> sizeList, const bool isSender)
+EvaUDPThread::EvaUDPThread(TQObject *receiver, const unsigned int id,const TQValueList<TQString> &dirList,
+			const TQValueList<TQString> &filenameList, 
+			TQValueList<unsigned int> sizeList, const bool isSender)
 	: EvaFileThread(receiver, id, dirList, filenameList, sizeList, isSender),
 	m_State(ENone), m_Token(NULL), m_TokenLength(0),  m_ServerPort(SYN_SERVER_PORT)
 {
@@ -1005,7 +1005,7 @@ void EvaUDPThread::setFileAgentKey(const unsigned char *key)
 void EvaUDPThread::setServerAddress(const unsigned int ip, const unsigned short port)
 {
 	m_HostAddresses.clear();
-	m_HostAddresses.append(QHostAddress(ip));
+	m_HostAddresses.append(TQHostAddress(ip));
 	m_ServerPort = port;
 }
 
@@ -1017,9 +1017,9 @@ void EvaUDPThread::doCreateConnection()
 	}
 	m_Connecter = new EvaNetwork(m_HostAddresses.first(), m_ServerPort, EvaNetwork::UDP);
 
-	QObject::connect(m_Connecter, SIGNAL(isReady()), SLOT(slotNetworkReady()));
-	QObject::connect(m_Connecter, SIGNAL(dataComming(int)), SLOT(slotDataComming(int)));
-	QObject::connect(m_Connecter, SIGNAL(exceptionEvent(int)), SLOT(slotNetworkException(int)));
+	TQObject::connect(m_Connecter, SIGNAL(isReady()), SLOT(slotNetworkReady()));
+	TQObject::connect(m_Connecter, SIGNAL(dataComming(int)), SLOT(slotDataComming(int)));
+	TQObject::connect(m_Connecter, SIGNAL(exceptionEvent(int)), SLOT(slotNetworkException(int)));
 	
 	m_State = ENone;
 	m_Connecter->connect();
@@ -1037,7 +1037,7 @@ void EvaUDPThread::sendSynPacket(EvaFTSynPacket *packet)
 	// set the header infomation & key
 	packet->setFileAgentKey(m_FileAgentKey);
 	packet->setQQ(m_MyId);
-	packet->setVersion(QQ_CLIENT_VERSION);
+	packet->setVersion(TQQ_CLIENT_VERSION);
 	packet->setSequence(m_Sequence);
 	packet->setSessionId(m_Session);
 
@@ -1088,9 +1088,9 @@ void EvaUDPThread::slotNetworkException(int no)
 
 
 
-EvaUdpUploader::EvaUdpUploader(QObject *receiver, const unsigned int id, const QValueList<QString> &dirList,
-			const QValueList<QString> &filenameList)
-	: EvaUDPThread(receiver, id, dirList, filenameList, QValueList<unsigned int>(), true),
+EvaUdpUploader::EvaUdpUploader(TQObject *receiver, const unsigned int id, const TQValueList<TQString> &dirList,
+			const TQValueList<TQString> &filenameList)
+	: EvaUDPThread(receiver, id, dirList, filenameList, TQValueList<unsigned int>(), true),
 	m_Dns(NULL)
 {
 	m_Sequence = 0x0000;// give it a random number anyway
@@ -1146,8 +1146,8 @@ void EvaUdpUploader::doDnsRequest()
 {
 	m_HostAddresses.clear();
 	if(m_Dns) delete m_Dns;
-	m_Dns = new QDns(SYN_SERVER_URL);
-	QObject::connect(m_Dns, SIGNAL(resultsReady()), SLOT(slotDnsReady()));
+	m_Dns = new TQDns(SYN_SERVER_URL);
+	TQObject::connect(m_Dns, SIGNAL(resultsReady()), SLOT(slotDnsReady()));
 	
 // 	while(!m_HostAddresses.size()){
 // 		if(m_ExitNow) break;
@@ -1160,7 +1160,7 @@ void EvaUdpUploader::slotDnsReady()
 {
 	m_HostAddresses = m_Dns->addresses();
 	if(!m_HostAddresses.size()){
-		QHostAddress host;
+		TQHostAddress host;
 		host.setAddress(SYN_SERVER_DEFAULT_IP);
 		m_HostAddresses.append(host);
 	}
@@ -1192,7 +1192,7 @@ void EvaUdpUploader::doNotifyBuddy(const unsigned int session, const unsigned in
 	event->setMyIp(ip);
 	event->setMyPort(port);
 	event->setBuddyQQ(m_Id);
-	QApplication::postEvent(m_Receiver, event);
+	TQApplication::postEvent(m_Receiver, event);
 }
 
 
@@ -1201,10 +1201,10 @@ void EvaUdpUploader::processSynPacket( unsigned char * data, int len )
 	unsigned short cmd = EvaUtil::read16(data + 11);
 
 	switch(cmd){
-	case QQ_FILE_SYN_CMD_CREATE:
+	case TQQ_FILE_SYN_CMD_CREATE:
 		processCreateReply(new EvaFTSynCreateReply(data, len));
 		break;
-	//case QQ_FILE_SYN_CMD_REGISTER:
+	//case TQQ_FILE_SYN_CMD_REGISTER:
 	//	processRegisterReply(new EvaFTAgentAskReady(data, len));
 	//	break;
 	default:

@@ -25,17 +25,17 @@
 #include <arpa/inet.h>
 #include <sys/mman.h>
 #include <stdlib.h>
-#include <qsocketdevice.h> 
-#include <qsocketnotifier.h>
-#include <qapplication.h>
-#include <qmutex.h>
-#include <qtimer.h>
-#include <qstringlist.h>
-#include <qurl.h>
-#include <qiodevice.h>
-#include <qtextstream.h>
-#include <qdns.h>
-#include <qcstring.h>
+#include <ntqsocketdevice.h> 
+#include <ntqsocketnotifier.h>
+#include <ntqapplication.h>
+#include <ntqmutex.h>
+#include <ntqtimer.h>
+#include <ntqstringlist.h>
+#include <ntqurl.h>
+#include <ntqiodevice.h>
+#include <ntqtextstream.h>
+#include <ntqdns.h>
+#include <ntqcstring.h>
 #include <kdebug.h>
 
 
@@ -49,7 +49,7 @@
  	to write, after isReady() emited, socketWriteNotifier is disabled unless 
 	setHost() is called.
  */
-EvaSocket::EvaSocket(const  QHostAddress &host, const short port, const Type type)
+EvaSocket::EvaSocket(const  TQHostAddress &host, const short port, const Type type)
 	: socketReadNotifier(NULL), socketWriteNotifier(NULL)
 {
 	connectionStatus = None;
@@ -59,19 +59,19 @@ EvaSocket::EvaSocket(const  QHostAddress &host, const short port, const Type typ
         server = host;
 	serverPort = port;
 	if(connectionType == UDP){
-		connectSocket = new QSocketDevice(QSocketDevice::Datagram); 
+		connectSocket = new TQSocketDevice(TQSocketDevice::Datagram); 
 	}else{
-		connectSocket = new QSocketDevice(QSocketDevice::Stream);
+		connectSocket = new TQSocketDevice(TQSocketDevice::Stream);
 		connectSocket->setBlocking(false);
-        	socketWriteNotifier =  new QSocketNotifier(connectSocket->socket(),
-							QSocketNotifier::Write,0,"writeNotifier");
-		QObject::connect(socketWriteNotifier,SIGNAL(activated(int)),SLOT(slotWriteReady(int)));
+        	socketWriteNotifier =  new TQSocketNotifier(connectSocket->socket(),
+							TQSocketNotifier::Write,0,"writeNotifier");
+		TQObject::connect(socketWriteNotifier,SIGNAL(activated(int)),SLOT(slotWriteReady(int)));
 		socketWriteNotifier->setEnabled(false);
 	}
-	socketReadNotifier = new QSocketNotifier(connectSocket->socket(),
-						QSocketNotifier::Read,0,"readNotifier");
+	socketReadNotifier = new TQSocketNotifier(connectSocket->socket(),
+						TQSocketNotifier::Read,0,"readNotifier");
 	connectionStatus = Init;
-	QObject::connect(socketReadNotifier,SIGNAL(activated(int)),SLOT(slotReceiveReady(int)));
+	TQObject::connect(socketReadNotifier,SIGNAL(activated(int)),SLOT(slotReceiveReady(int)));
 	socketReadNotifier->setEnabled(false);
 }
 
@@ -88,10 +88,10 @@ EvaSocket::~EvaSocket()
 	}
 }
 
-const QHostAddress EvaSocket::getSocketAddress( )
+const TQHostAddress EvaSocket::getSocketAddress( )
 {
 	if(connectSocket) return connectSocket->address();
-	return QHostAddress();
+	return TQHostAddress();
 }
 
 const unsigned short EvaSocket::getSocketPort( )
@@ -100,7 +100,7 @@ const unsigned short EvaSocket::getSocketPort( )
 	return 0;
 }
 
-void EvaSocket::setHost(const QHostAddress &address, const short port)
+void EvaSocket::setHost(const TQHostAddress &address, const short port)
 {
 	server = address;
 	serverPort = port;  
@@ -116,18 +116,18 @@ void EvaSocket::setHost(const QHostAddress &address, const short port)
 			delete socketWriteNotifier;
 		}
 		if(connectionType == UDP){
-			connectSocket = new QSocketDevice(QSocketDevice::Datagram); 
+			connectSocket = new TQSocketDevice(TQSocketDevice::Datagram); 
 		}else{
-			connectSocket = new QSocketDevice(QSocketDevice::Stream); 
+			connectSocket = new TQSocketDevice(TQSocketDevice::Stream); 
 			connectSocket->setBlocking(false);
-			socketWriteNotifier =  new QSocketNotifier(connectSocket->socket(),
-								QSocketNotifier::Write,0,"writeNotifier");
-			QObject::connect(socketWriteNotifier,SIGNAL(activated(int)),SLOT(slotWriteReady(int)));
+			socketWriteNotifier =  new TQSocketNotifier(connectSocket->socket(),
+								TQSocketNotifier::Write,0,"writeNotifier");
+			TQObject::connect(socketWriteNotifier,SIGNAL(activated(int)),SLOT(slotWriteReady(int)));
 			socketWriteNotifier->setEnabled(false);
 		}
-		socketReadNotifier = new QSocketNotifier(connectSocket->socket(),
-							QSocketNotifier::Read,0,"SocketNotifier");
-		QObject::connect(socketReadNotifier,SIGNAL(activated(int)),SLOT(slotReceiveReady(int)));
+		socketReadNotifier = new TQSocketNotifier(connectSocket->socket(),
+							TQSocketNotifier::Read,0,"SocketNotifier");
+		TQObject::connect(socketReadNotifier,SIGNAL(activated(int)),SLOT(slotReceiveReady(int)));
 		if(connectionType == TCP)
 			socketReadNotifier->setEnabled(false);
 	}
@@ -153,34 +153,34 @@ void EvaSocket::startConnecting()
 			fprintf(stderr,"connecting server failed\nError type: ");
 			connectionStatus = Failed;
 			switch(connectSocket->error()){
-				case QSocketDevice::NoError:
+				case TQSocketDevice::NoError:
 					fprintf(stderr,"NoError\n");
 					break;
-				case QSocketDevice::AlreadyBound:
+				case TQSocketDevice::AlreadyBound:
 					fprintf(stderr,"AlreadyBound\n");
 					break; 
-				case QSocketDevice::Inaccessible:
+				case TQSocketDevice::Inaccessible:
 					fprintf(stderr,"Inaccessible\n");
 					break;
-				case QSocketDevice::NoResources:
+				case TQSocketDevice::NoResources:
 					fprintf(stderr,"NoResources\n");
 					break;
-				case QSocketDevice::InternalError:
+				case TQSocketDevice::InternalError:
 					fprintf(stderr,"InternalError\n");
 					break;
-				case QSocketDevice::Impossible:
+				case TQSocketDevice::Impossible:
 					fprintf(stderr,"Impossible\n");
 					break;
-				case QSocketDevice::NoFiles:
+				case TQSocketDevice::NoFiles:
 					fprintf(stderr,"NoFiles\n");
 					break;
-				case QSocketDevice::ConnectionRefused:
+				case TQSocketDevice::ConnectionRefused:
 					fprintf(stderr,"ConnectionRefused\n");
 					break;
-				case QSocketDevice::NetworkFailure:
+				case TQSocketDevice::NetworkFailure:
 					fprintf(stderr,"NetworkFailure\n");
 					break;
-				case QSocketDevice::UnknownError:
+				case TQSocketDevice::UnknownError:
 					fprintf(stderr,"UnknownError\n");
 					break;
 				default:
@@ -210,7 +210,7 @@ bool EvaSocket::write(const char *buf, const int len)
 		emit exceptionEvent(Failed);
 		return false;
 	}
-	QMutex mutex;
+	TQMutex mutex;
 	mutex.lock();
 	int BytesSent = 0;
 	if(socketWriteNotifier) socketWriteNotifier->setEnabled(false);
@@ -230,7 +230,7 @@ bool EvaSocket::write(const char *buf, const int len)
 						return false;
 					}
 					usleep(10000);
-					//qApp->processEvents();
+					//tqApp->processEvents();
 					times++;
 					continue;
 				}else
@@ -276,7 +276,7 @@ void EvaSocket::slotWriteReady(int /*socket */)
 
 void EvaSocket::slotReceiveReady(int /*socket*/)
 {
-	if( (socketReadNotifier->type() != QSocketNotifier::Read) || (!connectSocket->isValid()) ){
+	if( (socketReadNotifier->type() != TQSocketNotifier::Read) || (!connectSocket->isValid()) ){
 		socketReadNotifier->setEnabled(false);
 		printf("EvaSocket::slotReceiveReady -- socket not valid or notifier not set to Read \n");
 		emit exceptionEvent(Failed);
@@ -310,32 +310,32 @@ void EvaSocket::slotReceiveReady(int /*socket*/)
 
 
 /* =========================================================== */
-EvaHttpProxy::EvaHttpProxy(const QHostAddress &proxyHost, const short proxyPort, const QString username, const QString password)
+EvaHttpProxy::EvaHttpProxy(const TQHostAddress &proxyHost, const short proxyPort, const TQString username, const TQString password)
 	: EvaSocket(proxyHost, proxyPort, EvaSocket::TCP),
 	status(Proxy_None),
 	destinationAddress(""),
 	base64AuthParam(""),
 	readBuffer(NULL)
 {
-	if(username!=QString::null && password!= QString::null){
+	if(username!=TQString::null && password!= TQString::null){
 		setAuthParameter(username, password);
 	}
-	QObject::connect(this, SIGNAL(isReady()), SLOT(tcpReady()));
-	QObject::connect(this, SIGNAL(writeReady()), SLOT(slotWriteReady()));
-	QObject::connect(this, SIGNAL(receivedData(int)), SLOT(parseData(int)));
-	QObject::connect(this, SIGNAL(exceptionEvent(int)), SIGNAL(socketException(int)));
+	TQObject::connect(this, SIGNAL(isReady()), SLOT(tcpReady()));
+	TQObject::connect(this, SIGNAL(writeReady()), SLOT(slotWriteReady()));
+	TQObject::connect(this, SIGNAL(receivedData(int)), SLOT(parseData(int)));
+	TQObject::connect(this, SIGNAL(exceptionEvent(int)), SIGNAL(socketException(int)));
 }
 
-void EvaHttpProxy::setDestinationServer(const QString &server, const int port) // server could be IP or URL
+void EvaHttpProxy::setDestinationServer(const TQString &server, const int port) // server could be IP or URL
 {
-	destinationAddress = server + ':' + QString::number(port);// qq http proxy server port: 443
+	destinationAddress = server + ':' + TQString::number(port);// qq http proxy server port: 443
 	status = Proxy_None;
 }
 
-void EvaHttpProxy::setAuthParameter(const QString &username, const QString &password)
+void EvaHttpProxy::setAuthParameter(const TQString &username, const TQString &password)
 {
-	QCString para = (username + ':' + password).local8Bit();
-	base64AuthParam = QCodecs::base64Encode(para);
+	TQCString para = (username + ':' + password).local8Bit();
+	base64AuthParam = TQCodecs::base64Encode(para);
 	status = Proxy_None;
 }
 
@@ -393,8 +393,8 @@ void EvaHttpProxy::parseData(int len)
 		return;
 	}
 	readBuffer[len]=0x00;
-	QString replyBuffer(readBuffer);
-	if(replyBuffer.startsWith("HTTP/1.")){ // this is for RedHat 9, the old Qt dosen't support QString::startsWith(const QString &str, bool cs) const
+	TQString replyBuffer(readBuffer);
+	if(replyBuffer.startsWith("HTTP/1.")){ // this is for RedHat 9, the old TQt dosen't support TQString::startsWith(const TQString &str, bool cs) const
 		int replyCode = replyBuffer.mid(9, 3).toInt();
 		fprintf(stderr, "Proxy Server Reply Code: %d\n",replyCode);
 		switch(replyCode){
@@ -434,7 +434,7 @@ HttpHeader::HttpHeader()
 {
 }
 
-HttpHeader::HttpHeader(const QByteArray &data)
+HttpHeader::HttpHeader(const TQByteArray &data)
 	: m_HeaderLen(0),
 	m_ContentLen(0),
 	m_Username(""),
@@ -444,9 +444,9 @@ HttpHeader::HttpHeader(const QByteArray &data)
 	parseHeader(data);
 }
 
-bool HttpHeader::parseHeader(const QByteArray &data)
+bool HttpHeader::parseHeader(const TQByteArray &data)
 {
-	QCString buf(data);
+	TQCString buf(data);
 	if (buf.left(strlen(HTTP_VERSION)) != HTTP_VERSION){
 		//kdDebug() << "[HttpHeader] Not a HTTP command return, but might be data packet" << endl;
 		return false;
@@ -456,26 +456,26 @@ bool HttpHeader::parseHeader(const QByteArray &data)
 
 
 	m_HeaderLen = index + 1 + 3;// index + 1 + strlen("\r\n\r\n")
-	/* NOTE:we use QString here for easy parsing */
-	QString header = buf.left(index + 1);
-	QStringList lines = QStringList::split(HTTP_NEW_LINE, header);
-	QStringList::Iterator lineIt = lines.begin();
+	/* NOTE:we use TQString here for easy parsing */
+	TQString header = buf.left(index + 1);
+	TQStringList lines = TQStringList::split(HTTP_NEW_LINE, header);
+	TQStringList::Iterator lineIt = lines.begin();
 	/* first line should be the return code */
-	QString ret = *(lineIt++);
-	QStringList items = QStringList::split(" ", ret);
+	TQString ret = *(lineIt++);
+	TQStringList items = TQStringList::split(" ", ret);
 	if(items.count() != 3){
 		kdDebug() << "[HttpHeader] Http header unknown: " << ret << endl;
 		return false;
 	}
-	QStringList::Iterator itemIt = items.begin();
+	TQStringList::Iterator itemIt = items.begin();
 	setMetaData(HTTP_REPLY_CODE, *(++itemIt));
 	
 	for( ; lineIt != lines.end(); ++lineIt){
 		ret = *lineIt;
-		QStringList items = QStringList::split(": ", ret);
+		TQStringList items = TQStringList::split(": ", ret);
 		if(items.count() == 2){
 			if(items[0] == HTTP_SET_COOKIE){
-				QStringList cookies = QStringList::split(":", items[1]);
+				TQStringList cookies = TQStringList::split(":", items[1]);
 				m_Cookies[cookies[0]] = cookies[1];
 			} else {
 				setMetaData(items[0], items[1]);
@@ -487,21 +487,21 @@ bool HttpHeader::parseHeader(const QByteArray &data)
 	return true;
 }
 
-const QCString HttpHeader::toCString()
+const TQCString HttpHeader::toCString()
 {
 	return "GET /forum/ HTTP/1.1\r\nHost: www.myswear.net\r\nUser-Agent: Eva 0.4.2\r\nAccept: */*\r\nConnection: Keep-Alive\r\n\r\n";
 }
 
-QCString HttpHeader::getProxyConnectHeader( const QString &destHost, const unsigned short port, const bool needAuth)
+TQCString HttpHeader::getProxyConnectHeader( const TQString &destHost, const unsigned short port, const bool needAuth)
 {
-	QCString buf;
-	QTextStream stream(buf, IO_WriteOnly);
-	stream << HTTP_CONNECT << " " << (destHost + ":" + QString::number(port)) << " " << HTTP_VERSION << HTTP_NEW_LINE;
+	TQCString buf;
+	TQTextStream stream(buf, IO_WriteOnly);
+	stream << HTTP_CONNECT << " " << (destHost + ":" + TQString::number(port)) << " " << HTTP_VERSION << HTTP_NEW_LINE;
 	if(needAuth){
 		stream << HTTP_PROXY_BASIC;
 		
 		if(m_Base64AuthParam.isEmpty()){
-			stream << (QCodecs::base64Encode( (m_Username + ":" + m_Password).local8Bit()));
+			stream << (TQCodecs::base64Encode( (m_Username + ":" + m_Password).local8Bit()));
 		} else
 			stream << m_Base64AuthParam;
 		
@@ -515,10 +515,10 @@ QCString HttpHeader::getProxyConnectHeader( const QString &destHost, const unsig
 	return buf;
 }
 
-QCString HttpHeader::getCmdGetHeader(const bool useProxy, const bool needAuth)
+TQCString HttpHeader::getCmdGetHeader(const bool useProxy, const bool needAuth)
 {
-	QString buf;
-	QTextStream stream(buf, IO_WriteOnly);
+	TQString buf;
+	TQTextStream stream(buf, IO_WriteOnly);
 	stream << HTTP_CMD_GET << " ";
 	if(useProxy){
 		stream << "http://" << getMetaData(HTTP_HOST);
@@ -530,7 +530,7 @@ QCString HttpHeader::getCmdGetHeader(const bool useProxy, const bool needAuth)
 		stream << HTTP_PROXY_BASIC;
 		
 		if(m_Base64AuthParam.isEmpty()){
-			stream << (QCodecs::base64Encode( (m_Username + ":" + m_Password).local8Bit()));
+			stream << (TQCodecs::base64Encode( (m_Username + ":" + m_Password).local8Bit()));
 		} else
 			stream << m_Base64AuthParam;
 
@@ -544,13 +544,13 @@ QCString HttpHeader::getCmdGetHeader(const bool useProxy, const bool needAuth)
 	stream << HTTP_KEEP_ALIVE << ": 300" << HTTP_NEW_LINE;
 	
 	if(useProxy)
-		stream << HTTP_PROXY_CONNECTION << ": " << QString(HTTP_KEEP_ALIVE).lower() << HTTP_NEW_LINE;
+		stream << HTTP_PROXY_CONNECTION << ": " << TQString(HTTP_KEEP_ALIVE).lower() << HTTP_NEW_LINE;
 	else
-		stream << HTTP_CONNECTION << ": " << QString(HTTP_KEEP_ALIVE).lower() << HTTP_NEW_LINE;
+		stream << HTTP_CONNECTION << ": " << TQString(HTTP_KEEP_ALIVE).lower() << HTTP_NEW_LINE;
 		
 	if(m_Cookies.count()){
 		stream << HTTP_COOKIE << ": ";
-		QMap<QString, QString>::Iterator it;
+		TQMap<TQString, TQString>::Iterator it;
 		for( it = m_Cookies.begin(); it != m_Cookies.end(); ++it){
 			if(it != m_Cookies.begin()){
 				stream << "; ";
@@ -563,50 +563,50 @@ QCString HttpHeader::getCmdGetHeader(const bool useProxy, const bool needAuth)
 	return buf.latin1();
 }
 
-void HttpHeader::setCookie(const QString &name, const QString &value)
+void HttpHeader::setCookie(const TQString &name, const TQString &value)
 {
 	m_Cookies[name] = value;
 }
 
-void HttpHeader::setGetURI(const QString &uri)
+void HttpHeader::setGetURI(const TQString &uri)
 {
 	setMetaData(HTTP_CMD_GET, uri);
 }
 
-void HttpHeader::setHost(const QString &host)
+void HttpHeader::setHost(const TQString &host)
 {
 	setMetaData(HTTP_HOST, host);
 }
 
-void HttpHeader::setAuthInfo(const QString &user, const QString &password)
+void HttpHeader::setAuthInfo(const TQString &user, const TQString &password)
 {
 	m_Username = user;
 	m_Password = password;
 }
 
-void HttpHeader::setBase64AuthParam( const QCString & param )
+void HttpHeader::setBase64AuthParam( const TQCString & param )
 {
 	m_Base64AuthParam = param;
 }
 
-const QString HttpHeader::getReplyCode() const
+const TQString HttpHeader::getReplyCode() const
 {
 	return getMetaData(HTTP_REPLY_CODE);
 }
 
-const QMap<QString, QString> &HttpHeader::getCookies() const
+const TQMap<TQString, TQString> &HttpHeader::getCookies() const
 {
 	return m_Cookies;
 }
 
-const QString HttpHeader::getCookie(const QString &name) const
+const TQString HttpHeader::getCookie(const TQString &name) const
 {
 	return m_Cookies[name];
 }
 
 const unsigned int HttpHeader::getContentLength() 
 {
-	QString strLen = getMetaData(HTTP_CONTENT_LENGTH);
+	TQString strLen = getMetaData(HTTP_CONTENT_LENGTH);
 	bool ok = false;
 	int len = strLen.toUInt(&ok);
 	if(ok) return len;
@@ -624,12 +624,12 @@ const unsigned int HttpHeader::getContentsOffset() const
 	return m_HeaderLen;
 }
 
-void HttpHeader::setMetaData(const QString &field, const QString &value)
+void HttpHeader::setMetaData(const TQString &field, const TQString &value)
 {
 	m_Fields[field.lower()] = value;
 }
 
-const QString HttpHeader::getMetaData(const QString &field) const
+const TQString HttpHeader::getMetaData(const TQString &field) const
 {
 	return m_Fields[field.lower()];
 }
@@ -640,7 +640,7 @@ const QString HttpHeader::getMetaData(const QString &field) const
 
 
 
-EvaHttp::EvaHttp( const QString & host, const unsigned short port )
+EvaHttp::EvaHttp( const TQString & host, const unsigned short port )
 	: EvaSocket(host, port, EvaSocket::TCP),
 	m_UseProxy(false),
 	m_NeedAuth(false),
@@ -654,20 +654,20 @@ EvaHttp::EvaHttp( const QString & host, const unsigned short port )
 {
 	m_Header.setHost(m_Host);
 
-	QObject::connect(this, SIGNAL(isReady()), SLOT(tcpReady()));
-	QObject::connect(this, SIGNAL(writeReady()), SLOT(slotWriteReady()));
-	QObject::connect(this, SIGNAL(receivedData(int)), SLOT(parseData(int)));
+	TQObject::connect(this, SIGNAL(isReady()), SLOT(tcpReady()));
+	TQObject::connect(this, SIGNAL(writeReady()), SLOT(slotWriteReady()));
+	TQObject::connect(this, SIGNAL(receivedData(int)), SLOT(parseData(int)));
 
 }
 
-void EvaHttp::setHost(const QString &host, const unsigned short port)
+void EvaHttp::setHost(const TQString &host, const unsigned short port)
 {
 	m_Host = host;
 	m_Port = port;
 	m_Header.setHost(m_Host);
 }
 
-void EvaHttp::setProxyServer( const QString & host, unsigned short port )
+void EvaHttp::setProxyServer( const TQString & host, unsigned short port )
 {
 	if(host.isEmpty()) return;
 	m_IsProxyReady = false;
@@ -676,7 +676,7 @@ void EvaHttp::setProxyServer( const QString & host, unsigned short port )
 	m_ProxyPort = port;
 }
 
-void EvaHttp::setProxyAuthInfo( const QString & username, const QString & password )
+void EvaHttp::setProxyAuthInfo( const TQString & username, const TQString & password )
 {
 	if(username.isEmpty() || password.isEmpty()) return;
 	//kdDebug() << "[EvaHttp] u:" << username << ", p" << password << endl;
@@ -685,7 +685,7 @@ void EvaHttp::setProxyAuthInfo( const QString & username, const QString & passwo
 	m_Header.setAuthInfo(username, password);
 }
 
-void EvaHttp::setBase64AuthParam( const QCString & param )
+void EvaHttp::setBase64AuthParam( const TQCString & param )
 {
 	if(param.isEmpty()) return;
 	m_IsProxyReady = false;
@@ -693,39 +693,39 @@ void EvaHttp::setBase64AuthParam( const QCString & param )
 	m_Header.setBase64AuthParam( param);
 }
 
-void EvaHttp::get( const QString & path, QIODevice * to )
+void EvaHttp::get( const TQString & path, TQIODevice * to )
 {
 	m_BytesReceived = 0;
 	m_IODevice = to;
 	if(path.startsWith("/")){
 		m_Header.setGetURI(path);
 	} else{
-		QUrl url(path);
+		TQUrl url(path);
 		if(!url.isValid()){
 			kdDebug() << "[EvaHttp] uri of get is malformed" << endl;
 			emit requestFinished(true);
 			return;
 		} else {
 			//kdDebug() << "[EvaHttp] set host " << url.host() << endl;
-			QString p;
+			TQString p;
 			if(path.startsWith("http://"))
 				p = path.right( path.length() - 7); //get rid of "http://"
 			setHost( url.host());
-			QString rest = p.right( p.length() - p.find("/"));
+			TQString rest = p.right( p.length() - p.find("/"));
 			m_Header.setGetURI(rest);
 		}
 	}
 	if(!m_UseProxy)
 		startDnsLookup(m_Host);
 	else{
-		EvaSocket::setHost(QHostAddress(m_ProxyHost), m_ProxyPort);
+		EvaSocket::setHost(TQHostAddress(m_ProxyHost), m_ProxyPort);
 		startConnecting();
 	}
 }
 
 void EvaHttp::tcpReady( )
 {
-	QCString toSend;
+	TQCString toSend;
 	if(m_UseProxy){
 		toSend = m_Header.getCmdGetHeader(true, m_NeedAuth);
 		//kdDebug() << "[EvaHttp] ("<< toSend.length() << ") connecting to proxy:\r\n" << endl;
@@ -754,7 +754,7 @@ void EvaHttp::parseData( int len )
 	}
 	if(m_BytesReceived && (m_BytesReceived >= m_Header.getContentLength())) return;
 
-	QByteArray buf;
+	TQByteArray buf;
 	buf.setRawData(readBuffer, len);
 	//kdDebug() << "[EvaHttp] raw data:\n" << buf << endl;
 	if(m_Header.parseHeader(buf)){
@@ -770,7 +770,7 @@ void EvaHttp::parseData( int len )
 		case 200:
 			if(m_UseProxy && !m_IsProxyReady){
 				m_IsProxyReady = true;
-				QCString toSend = m_Header.getCmdGetHeader();
+				TQCString toSend = m_Header.getCmdGetHeader();
 				write(toSend.data(), toSend.length());
 			}else{ 
 				// do nothing, just wait for the contents
@@ -831,30 +831,30 @@ void EvaHttp::parseData( int len )
 	}
 }
 
-void EvaHttp::startDnsLookup( const QString & host )
+void EvaHttp::startDnsLookup( const TQString & host )
 {
 	//kdDebug() << "{EvaHttp} looking for IP of " << host << endl;
 	// host should be a URL string
-	QDns * dns =  new QDns(host, QDns::A);
-	QObject::connect(dns, SIGNAL(resultsReady()), this, SLOT(getResultsSlot()));
+	TQDns * dns =  new TQDns(host, TQDns::A);
+	TQObject::connect(dns, SIGNAL(resultsReady()), this, SLOT(getResultsSlot()));
 }
 
 void EvaHttp::getResultsSlot( )
 {
-	QDns *dns = (QDns *)(QObject::sender());
+	TQDns *dns = (TQDns *)(TQObject::sender());
 	if(dns == 0 ){
         	kdDebug() << "[EvaHttp] Dns lookup error" << endl;
 		emit requestFinished(true);
         	return;
 	}
-	QValueList<QHostAddress> list = dns->addresses();
+	TQValueList<TQHostAddress> list = dns->addresses();
 	if(list.count() == 0 ){
         	kdDebug() << "[EvaHttp] Dns lookup error - no address" << endl;
 		emit requestFinished(true);
         	return;
 	}
 	
-	QHostAddress addr = list[0];
+	TQHostAddress addr = list[0];
 	EvaSocket::setHost(addr, m_Port);
 	//kdDebug() << "{EvaHttp] DNS ready" << endl;	
 	startConnecting();

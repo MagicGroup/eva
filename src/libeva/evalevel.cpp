@@ -27,7 +27,7 @@
 #include <cstring>
 
 EvaGetLevelPacket::EvaGetLevelPacket(const std::list<unsigned int> &l)
-	: OutPacket(QQ_CMD_GET_LEVEL, true), 
+	: OutPacket(TQQ_CMD_GET_LEVEL, true), 
 	friends(l)
 {
 }

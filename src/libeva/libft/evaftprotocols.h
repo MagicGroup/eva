@@ -24,15 +24,15 @@
 #include "evaftpacket.h"
 #include <string>
 
-#define QQ_FILE_AGENT_CREATE_OK           0x0000
-#define QQ_FILE_AGENT_CREATE_REDIRECT     0x0001
-#define QQ_FILE_AGENT_CREATE_ERROR        0x0002
-#define QQ_FILE_AGENT_OPERATION_OK        0x00000000
+#define TQQ_FILE_AGENT_CREATE_OK           0x0000
+#define TQQ_FILE_AGENT_CREATE_REDIRECT     0x0001
+#define TQQ_FILE_AGENT_CREATE_ERROR        0x0002
+#define TQQ_FILE_AGENT_OPERATION_OK        0x00000000
 
-#define QQ_FILE_AGENT_TRANSFER_INFO       1
-#define QQ_FILE_AGENT_TRANSFER_DATA       2
-#define QQ_FILE_AGENT_TRANSFER_REPLY      3
-#define QQ_FILE_AGENT_TRANSFER_START      4
+#define TQQ_FILE_AGENT_TRANSFER_INFO       1
+#define TQQ_FILE_AGENT_TRANSFER_DATA       2
+#define TQQ_FILE_AGENT_TRANSFER_REPLY      3
+#define TQQ_FILE_AGENT_TRANSFER_START      4
 
 class EvaFTAgentCreate : public EvaFTAgentPacket
 {
@@ -57,7 +57,7 @@ class EvaFTAgentCreateReply : public EvaFTAgentPacket
 public:
 	EvaFTAgentCreateReply(const unsigned char *buf, const int len);
 	
-	inline const bool isConnected() const { return m_ReplyCode==QQ_FILE_AGENT_CREATE_OK; }
+	inline const bool isConnected() const { return m_ReplyCode==TQQ_FILE_AGENT_CREATE_OK; }
 	const unsigned short getReplyCode() const { return m_ReplyCode; }
 
 	// if isConnect() returns true, the followings are for the server you are connecting with
@@ -96,7 +96,7 @@ class EvaFTAgentLoginReply : public EvaFTAgentPacket
 public:
 	EvaFTAgentLoginReply(const unsigned char *buf, const int len);
 	~EvaFTAgentLoginReply() {};
-	inline const bool isConnected() const { return m_ReplyCode==QQ_FILE_AGENT_OPERATION_OK ;}
+	inline const bool isConnected() const { return m_ReplyCode==TQQ_FILE_AGENT_OPERATION_OK ;}
 protected:
 	const bool parseBody(unsigned char *buf, const int len);
 private:
@@ -147,7 +147,7 @@ public:
 
 	// ask sender to start sending contents at position
 	inline unsigned int getStartPosition() const { return m_ReplyCode;}
-	//inline const bool isTransferNow() const { return m_ReplyCode == QQ_FILE_AGENT_OPERATION_OK; }
+	//inline const bool isTransferNow() const { return m_ReplyCode == TQQ_FILE_AGENT_OPERATION_OK; }
 
 	// ask sender to sending next 50 packets
 	inline const bool isReceivedOk() const { return m_NextReplyCode == 0x02; }
@@ -203,7 +203,7 @@ class EvaFTAgentAskReady : public EvaFTAgentPacket
 public:
 	EvaFTAgentAskReady(const unsigned char *buf, const int len);
 	~EvaFTAgentAskReady() {};
-	inline const bool isAskReady() const { return m_ReplyCode==QQ_FILE_AGENT_OPERATION_OK ;}
+	inline const bool isAskReady() const { return m_ReplyCode==TQQ_FILE_AGENT_OPERATION_OK ;}
 protected:
 	const bool parseBody(unsigned char *buf, const int len);
 private:
@@ -254,7 +254,7 @@ class EvaFTSynCreateReply : public EvaFTSynPacket
 public:
 	EvaFTSynCreateReply(const unsigned char *buf, const int len);
 	
-	inline const bool isSuccessful() const { return m_ReplyCode==QQ_FILE_AGENT_CREATE_OK; }
+	inline const bool isSuccessful() const { return m_ReplyCode==TQQ_FILE_AGENT_CREATE_OK; }
 	const unsigned short getReplyCode() const { return m_ReplyCode; }
 
 	inline const unsigned int getIp() const { return m_Ip; }

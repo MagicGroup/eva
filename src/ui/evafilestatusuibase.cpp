@@ -20,52 +20,52 @@
 
 #include "evafilestatusuibase.h"
 
-#include <qvariant.h>
-#include <qpushbutton.h>
-#include <qlabel.h>
+#include <ntqvariant.h>
+#include <ntqpushbutton.h>
+#include <ntqlabel.h>
 #include <kprogress.h>
 #include <kpushbutton.h>
-#include <qlayout.h>
-#include <qtooltip.h>
-#include <qwhatsthis.h>
-#include <klocale.h>
-#include <qtimer.h>
+#include <ntqlayout.h>
+#include <ntqtooltip.h>
+#include <ntqwhatsthis.h>
+#include <tdelocale.h>
+#include <ntqtimer.h>
 
 
 EvaFileStatusUIBase::EvaFileStatusUIBase( const unsigned int session, const unsigned int size, 
-					QWidget* parent, const char* name, WFlags fl )
-	: QWidget( parent, name, fl ), m_StartPosition(0), m_Session(session), m_IsFinished(false)
+					TQWidget* parent, const char* name, WFlags fl )
+	: TQWidget( parent, name, fl ), m_StartPosition(0), m_Session(session), m_IsFinished(false)
 {
 	if ( !name )
 	setName( "EvaFileStatusUIBase" );
-	setSizePolicy( QSizePolicy( (QSizePolicy::SizeType)0, (QSizePolicy::SizeType)0, 0, 0, sizePolicy().hasHeightForWidth() ) );
-	setMaximumSize( QSize( 110, 200 ) );
-	EvaFileStatusUIBaseLayout = new QGridLayout( this, 1, 1, 2, 2, "EvaFileStatusUIBaseLayout"); 
+	setSizePolicy( TQSizePolicy( (TQSizePolicy::SizeType)0, (TQSizePolicy::SizeType)0, 0, 0, sizePolicy().hasHeightForWidth() ) );
+	setMaximumSize( TQSize( 110, 200 ) );
+	EvaFileStatusUIBaseLayout = new TQGridLayout( this, 1, 1, 2, 2, "EvaFileStatusUIBaseLayout"); 
 	
-	layout10 = new QVBoxLayout( 0, 0, 0, "layout10");
+	layout10 = new TQVBoxLayout( 0, 0, 0, "layout10");
 	
-	layout6 = new QHBoxLayout( 0, 0, 6, "layout6");
+	layout6 = new TQHBoxLayout( 0, 0, 6, "layout6");
 	
-	lblIcon = new QLabel( this, "lblIcon" );
-	lblIcon->setMinimumSize( QSize( 32, 32 ) );
-	lblIcon->setMaximumSize( QSize( 32, 32 ) );
-	lblIcon->setAlignment( int( QLabel::AlignVCenter | QLabel::AlignLeft ) );
+	lblIcon = new TQLabel( this, "lblIcon" );
+	lblIcon->setMinimumSize( TQSize( 32, 32 ) );
+	lblIcon->setMaximumSize( TQSize( 32, 32 ) );
+	lblIcon->setAlignment( int( TQLabel::AlignVCenter | TQLabel::AlignLeft ) );
 	layout6->addWidget( lblIcon );
 	
-	lblFileName = new QLabel( this, "lblFileName" );
-	lblFileName->setMaximumSize( QSize( 70, 32 ) );
-	QFont lblFileName_font( lblFileName->font() );
+	lblFileName = new TQLabel( this, "lblFileName" );
+	lblFileName->setMaximumSize( TQSize( 70, 32 ) );
+	TQFont lblFileName_font( lblFileName->font() );
 	lblFileName_font.setPointSize( 8 );
 	lblFileName->setFont( lblFileName_font ); 
-	lblFileName->setAlignment( int( QLabel::WordBreak | QLabel::AlignVCenter | QLabel::AlignLeft ) );
+	lblFileName->setAlignment( int( TQLabel::WordBreak | TQLabel::AlignVCenter | TQLabel::AlignLeft ) );
 	layout6->addWidget( lblFileName );
 	layout10->addLayout( layout6 );
 	
-	layout1 = new QHBoxLayout( 0, 2, 2, "layout1"); 
+	layout1 = new TQHBoxLayout( 0, 2, 2, "layout1"); 
 	
 	kpgFileStatus = new KProgress( this, "kpgFileStatus" );
-	kpgFileStatus->setMaximumSize( QSize( 75, 15 ) );
-	QFont kpgFileStatus_font(  kpgFileStatus->font() );
+	kpgFileStatus->setMaximumSize( TQSize( 75, 15 ) );
+	TQFont kpgFileStatus_font(  kpgFileStatus->font() );
 	kpgFileStatus_font.setPointSize( 8 );
 	kpgFileStatus->setFont( kpgFileStatus_font ); 
 	kpgFileStatus->setFrameShape( KProgress::NoFrame );
@@ -74,23 +74,23 @@ EvaFileStatusUIBase::EvaFileStatusUIBase( const unsigned int session, const unsi
 	layout1->addWidget( kpgFileStatus );
 	
 	kpbtnClose = new KPushButton( this, "kpbtnClose" );
-	kpbtnClose->setMaximumSize( QSize( 15, 15 ) );
+	kpbtnClose->setMaximumSize( TQSize( 15, 15 ) );
 	kpbtnClose->setFocusPolicy( KPushButton::NoFocus );
 	layout1->addWidget( kpbtnClose );
 	layout10->addLayout( layout1 );
 	
-	layout9 = new QVBoxLayout( 0, 0, 0, "layout9"); 
+	layout9 = new TQVBoxLayout( 0, 0, 0, "layout9"); 
 	
-	lblReceived = new QLabel( this, "lblReceived" );
-	lblReceived->setMaximumSize( QSize( 100, 20 ) );
-	QFont lblReceived_font(lblReceived->font());
+	lblReceived = new TQLabel( this, "lblReceived" );
+	lblReceived->setMaximumSize( TQSize( 100, 20 ) );
+	TQFont lblReceived_font(lblReceived->font());
 	lblReceived_font.setPointSize( 8 );
 	lblReceived->setFont(lblReceived_font);
 	layout9->addWidget( lblReceived );
 	
-	lblSpeed = new QLabel( this, "lblSpeed" );
-	lblSpeed->setMaximumSize( QSize( 100, 20 ) );
-	QFont lblSpeed_font( lblSpeed->font() );
+	lblSpeed = new TQLabel( this, "lblSpeed" );
+	lblSpeed->setMaximumSize( TQSize( 100, 20 ) );
+	TQFont lblSpeed_font( lblSpeed->font() );
 	lblSpeed_font.setPointSize( 8 );
 	lblSpeed->setFont( lblSpeed_font ); 
 	layout9->addWidget( lblSpeed );
@@ -98,9 +98,9 @@ EvaFileStatusUIBase::EvaFileStatusUIBase( const unsigned int session, const unsi
 	
 	EvaFileStatusUIBaseLayout->addLayout( layout10, 0, 0 );
 	languageChange();
-	resize( QSize(100, 107).expandedTo(minimumSizeHint()) );
+	resize( TQSize(100, 107).expandedTo(minimumSizeHint()) );
 	clearWState( WState_Polished );
-	QObject::connect(kpbtnClose, SIGNAL(clicked()), SLOT(slotCloseClicked()));
+	TQObject::connect(kpbtnClose, SIGNAL(clicked()), SLOT(slotCloseClicked()));
 }
 
 /*
@@ -108,45 +108,45 @@ EvaFileStatusUIBase::EvaFileStatusUIBase( const unsigned int session, const unsi
  */
 EvaFileStatusUIBase::~EvaFileStatusUIBase()
 {
-    // no need to delete child widgets, Qt does it all for us
+    // no need to delete child widgets, TQt does it all for us
 }
 
-void EvaFileStatusUIBase::setMimePixmap(const QPixmap &pixmap)
+void EvaFileStatusUIBase::setMimePixmap(const TQPixmap &pixmap)
 {
 	lblIcon->setPixmap(pixmap);
 }
 
-void EvaFileStatusUIBase::setFileName(const QString &fileName)
+void EvaFileStatusUIBase::setFileName(const TQString &fileName)
 {
 	lblFileName->setText(fileName);
-	QToolTip::add(lblFileName, fileName);
+	TQToolTip::add(lblFileName, fileName);
 }
 
 void EvaFileStatusUIBase::updateStatus(const unsigned int size, const unsigned int bytes, 
 					const unsigned int time)
 {
 	kpgFileStatus->setProgress(bytes);
-	QString sizetip = i18n("Size: ") + strFileSize(bytes, 1) + "/" + strFileSize(size, 1);
+	TQString sizetip = i18n("Size: ") + strFileSize(bytes, 1) + "/" + strFileSize(size, 1);
 	lblReceived->setText( sizetip );
-	QToolTip::remove(lblReceived);
-	QToolTip::add(lblReceived, sizetip );
+	TQToolTip::remove(lblReceived);
+	TQToolTip::add(lblReceived, sizetip );
 	float speed = time?(((float)bytes - (float) m_StartPosition)/((float)time)):0;
-	QString speedtip = i18n("Speed: ") + strFileSize(speed, 2) + "/S";
+	TQString speedtip = i18n("Speed: ") + strFileSize(speed, 2) + "/S";
 	lblSpeed->setText( speedtip );
-	QToolTip::remove(lblSpeed);
-	QToolTip::add(lblSpeed, speedtip);
+	TQToolTip::remove(lblSpeed);
+	TQToolTip::add(lblSpeed, speedtip);
 	if(bytes == size ) {
 		m_IsFinished = true;
-		QTimer::singleShot(100, this, SLOT(slotCloseClicked()));
+		TQTimer::singleShot(100, this, SLOT(slotCloseClicked()));
 	}
 }
 
-const QString EvaFileStatusUIBase::strFileSize(const float size, int precise)
+const TQString EvaFileStatusUIBase::strFileSize(const float size, int precise)
 {
-	QString fileSize = (size<0x400)?(QString::number(size) + "B"):
-			((size<0x100000)?(QString::number(size/0x400, 'f', precise) + "KB") :
-			((size<0x40000000)?(QString::number(size/0x100000, 'f', precise) + "MB"):
-			(QString::number(size/0x40000000, 'f', precise) + "GB") ) );
+	TQString fileSize = (size<0x400)?(TQString::number(size) + "B"):
+			((size<0x100000)?(TQString::number(size/0x400, 'f', precise) + "KB") :
+			((size<0x40000000)?(TQString::number(size/0x100000, 'f', precise) + "MB"):
+			(TQString::number(size/0x40000000, 'f', precise) + "GB") ) );
 	return fileSize;
 }
 

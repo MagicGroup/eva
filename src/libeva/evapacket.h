@@ -73,7 +73,7 @@ protected:
 	
 	static unsigned char iniKey[16];
 	
-	// any key is 16 bytes long defined in evadefines as QQ_KEY_LENGTH
+	// any key is 16 bytes long defined in evadefines as TQQ_KEY_LENGTH
 	static unsigned char *getSessionKey()  { return sessionKey; }
 	static unsigned char *getPasswordKey()  { return passwordKey; }
 	static unsigned char *getFileSessionKey()  { return fileSessionKey; }

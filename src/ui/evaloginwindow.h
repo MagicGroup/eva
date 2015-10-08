@@ -22,7 +22,7 @@
 #define LOGINWINDOW_H
 
 #include "loginuibase.h"
-class QPixmap;
+class TQPixmap;
 class EvaSetting;
 
 class EvaLoginWindow : public LoginUIBase
@@ -30,24 +30,24 @@ class EvaLoginWindow : public LoginUIBase
 	Q_OBJECT
 	friend class EvaMain;
 public:
-	EvaLoginWindow(QWidget* parent = 0, const char* name = 0, bool modal = FALSE, WFlags fl = 0 );
+	EvaLoginWindow(TQWidget* parent = 0, const char* name = 0, bool modal = FALSE, WFlags fl = 0 );
 	~EvaLoginWindow();
 	enum Type{UDP, TCP, HTTP_Proxy};
-	void setLogo(const QPixmap *);
+	void setLogo(const TQPixmap *);
 	void setEvaSetting(EvaSetting *setting);
 	const int getQQ() const;
-	const QString getPassword() const;
+	const TQString getPassword() const;
 	const char * getMd5Password() const;
 	const bool isHiddenLoginMode() const;
 	const bool isRememberChecked() const;
 	
 	const Type getConnectionType() const;
-	const QString getProxyIP() const;
+	const TQString getProxyIP() const;
 	const int getProxyPort() const;
-	const QString getProxyUserName() const;
-	const QString getProxyPassword() const;
+	const TQString getProxyUserName() const;
+	const TQString getProxyPassword() const;
 	
-	const QCString getProxyParam();
+	const TQCString getProxyParam();
 public slots:
 	virtual void cancelClickSlot();
 	virtual void loginClickSlot();
@@ -58,20 +58,20 @@ protected slots:
 	void showNetSetup(bool on);
 	void slotSelectChanged(int);
 	void slotLoginTypeChanged(int);
-	void slotIDChanged(const QString &);
-	void slotPasswordChanged(const QString &);
-	void slotProxyUserChanged(const QString &);
-	void slotProxyPasswordChanged(const QString &);
+	void slotIDChanged(const TQString &);
+	void slotPasswordChanged(const TQString &);
+	void slotProxyUserChanged(const TQString &);
+	void slotProxyPasswordChanged(const TQString &);
 private:
 	int qqNum;
 	char md5Pwd[16];
 	int port;
-	QCString proxyParam;
+	TQCString proxyParam;
 	
 	bool pwdChanged;
 	bool proxyPwdChanged;
-	QString proxyUsername;
-	QString proxyPassword;
+	TQString proxyUsername;
+	TQString proxyPassword;
 	int currentIndex;
 	EvaSetting *setting;
 	void iniRecords();

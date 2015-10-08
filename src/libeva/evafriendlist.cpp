@@ -22,24 +22,24 @@
 #include <cstring>
 #include <cstdlib>
 
-QQFriend::sortItem QQFriend::field2Sort = Sort_Nick;
+TQQFriend::sortItem TQQFriend::field2Sort = Sort_Nick;
 
-QQFriend::QQFriend()
+TQQFriend::TQQFriend()
 {
 	initalizeBuddy();
 } 
 
-QQFriend::QQFriend(const unsigned int qqid, const unsigned short qqFace)
+TQQFriend::TQQFriend(const unsigned int qqid, const unsigned short qqFace)
 {
 	initalizeBuddy( qqid, qqFace);
 }
 
-QQFriend::QQFriend(const QQFriend &rhs)
+TQQFriend::TQQFriend(const TQQFriend &rhs)
 {
 	*this = rhs;
 }
 
-void QQFriend::setFriendItem( const FriendItem &item)
+void TQQFriend::setFriendItem( const FriendItem &item)
 {
 	qqNum = item.getQQ();
 	if(face != item.getFace()){
@@ -62,7 +62,7 @@ void QQFriend::setFriendItem( const FriendItem &item)
 	
 }
 
-void QQFriend::setFriendOnlineEntry( const FriendOnlineEntry &entry)
+void TQQFriend::setFriendOnlineEntry( const FriendOnlineEntry &entry)
 {
 	if(qqNum != entry.getQQ()) return;
 	unknown4 = entry.getUnknown1_4();
@@ -76,7 +76,7 @@ void QQFriend::setFriendOnlineEntry( const FriendOnlineEntry &entry)
 	}
 		
 	unknown13_14 = entry.getUnknown3_13_14();
-	memcpy(unknownKey, entry.getUnknownKey(), QQ_KEY_LENGTH);
+	memcpy(unknownKey, entry.getUnknownKey(), TQQ_KEY_LENGTH);
 	
 	unknown31_32 = entry.getUnknown4_31_32();
 	onlineExtFlag = entry.getExtFlag();
@@ -85,7 +85,7 @@ void QQFriend::setFriendOnlineEntry( const FriendOnlineEntry &entry)
 	
 }
 
-void QQFriend::setUserInformation( const ContactInfo &info)
+void TQQFriend::setUserInformation( const ContactInfo &info)
 {
 	userInfo = info;
 	if(info.count()<5) {
@@ -97,7 +97,7 @@ void QQFriend::setUserInformation( const ContactInfo &info)
 	nick  = info.at(ContactInfo::Info_nick);
 }
 
-QQFriend &QQFriend::operator=(const QQFriend &rhs)
+TQQFriend &TQQFriend::operator=(const TQQFriend &rhs)
 {
 	qqNum = rhs.getQQ();
 	face = rhs.getFace();
@@ -118,7 +118,7 @@ QQFriend &QQFriend::operator=(const QQFriend &rhs)
 	unknown11 = rhs.getUnknown2_11();
 	status = rhs.getStatus();
 	unknown13_14 = rhs.getUnknown3_13_14();
-	memcpy(unknownKey, rhs.getUnknownKey(), QQ_KEY_LENGTH);
+	memcpy(unknownKey, rhs.getUnknownKey(), TQQ_KEY_LENGTH);
 	unknown31_32 = rhs.getUnknown4_31_32();
 	onlineExtFlag = rhs.getOnlineExtFlag();
 	onlineCommonFlag = rhs.getOnlineCommFlag();
@@ -136,7 +136,7 @@ QQFriend &QQFriend::operator=(const QQFriend &rhs)
 
 	m_Memo = rhs.getMemo();
 
-	memcpy(fileSessionKey, rhs.getFileSessionKey(), QQ_KEY_LENGTH);
+	memcpy(fileSessionKey, rhs.getFileSessionKey(), TQQ_KEY_LENGTH);
 	
 	userInfo = rhs.getUserInformation();
 	
@@ -153,14 +153,14 @@ QQFriend &QQFriend::operator=(const QQFriend &rhs)
 	return *this;
 }
 
-int QQFriend::operator==(const QQFriend &rhs) const 
+int TQQFriend::operator==(const TQQFriend &rhs) const 
 {
 	if( qqNum != rhs.getQQ()) return 0;
 	return 1;
 }
 
 // for this part, we compare the field by field2Sort
-int QQFriend::operator<(const QQFriend &rhs) const 
+int TQQFriend::operator<(const TQQFriend &rhs) const 
 {
 	switch(field2Sort){
 		case Sort_QQ:
@@ -171,16 +171,16 @@ int QQFriend::operator<(const QQFriend &rhs) const
 			break;
 		case Sort_Status:
 			if(status == rhs.getStatus())  return 1;
-			if(status == QQ_FRIEND_STATUS_ONLINE) return 1;
-			if(rhs.getStatus() == QQ_FRIEND_STATUS_ONLINE) return 0;
-			if(status == QQ_FRIEND_STATUS_LEAVE)  return 1;
-			if(rhs.getStatus() == QQ_FRIEND_STATUS_LEAVE) return 0;
+			if(status == TQQ_FRIEND_STATUS_ONLINE) return 1;
+			if(rhs.getStatus() == TQQ_FRIEND_STATUS_ONLINE) return 0;
+			if(status == TQQ_FRIEND_STATUS_LEAVE)  return 1;
+			if(rhs.getStatus() == TQQ_FRIEND_STATUS_LEAVE) return 0;
 			return 1;
 	}
 	return 0;
 }
 
-void QQFriend::initalizeBuddy(const unsigned int qqid, const unsigned short qqFace)
+void TQQFriend::initalizeBuddy(const unsigned int qqid, const unsigned short qqFace)
 {
 	qqNum = qqid;
 	face = qqFace;
@@ -204,9 +204,9 @@ void QQFriend::initalizeBuddy(const unsigned int qqid, const unsigned short qqFa
 	IP = 0;
 	port = BUDDY_INVALID_FIELD;
 	unknown11 = BUDDY_INVALID_FIELD;
-	status = QQ_FRIEND_STATUS_OFFLINE;
+	status = TQQ_FRIEND_STATUS_OFFLINE;
 	unknown13_14 = BUDDY_INVALID_FIELD;	
-	memset(unknownKey, 0, QQ_KEY_LENGTH);
+	memset(unknownKey, 0, TQQ_KEY_LENGTH);
 	unknown31_32 = BUDDY_INVALID_FIELD;
 	onlineExtFlag = BUDDY_INVALID_FIELD;
 	onlineCommonFlag = BUDDY_INVALID_FIELD;
@@ -225,7 +225,7 @@ void QQFriend::initalizeBuddy(const unsigned int qqid, const unsigned short qqFa
 	m_Memo.note = "";
 	
 	clientVersion = BUDDY_INVALID_FIELD;
-	memset(fileSessionKey, 0, QQ_KEY_LENGTH);
+	memset(fileSessionKey, 0, TQQ_KEY_LENGTH);
 	
 	groupIndex = 0;  // set default to zero, "My Buddies"
 	
@@ -240,7 +240,7 @@ void QQFriend::initalizeBuddy(const unsigned int qqid, const unsigned short qqFa
 	m_evaUpdateFlag = 0xffffffff;
 }
 
-void QQFriend::setOnlineTime(const unsigned int time ) 
+void TQQFriend::setOnlineTime(const unsigned int time ) 
 {
 	timeOnline = time;
 }
@@ -248,16 +248,16 @@ void QQFriend::setOnlineTime(const unsigned int time )
 
 const bool FriendList::hasFriend(const unsigned int id) 
 {
-	std::map<unsigned int, QQFriend>::iterator iter;
+	std::map<unsigned int, TQQFriend>::iterator iter;
 	iter = getFriendPosition(id);
 	if( iter == privateList.end()) return false;
 	else
 		return true;
 }
 
-QQFriend *FriendList::getFriend(const unsigned int id)
+TQQFriend *FriendList::getFriend(const unsigned int id)
 {
-	std::map<unsigned int, QQFriend>::iterator iter = getFriendPosition(id);
+	std::map<unsigned int, TQQFriend>::iterator iter = getFriendPosition(id);
 	if(iter == privateList.end()) return NULL;
 	
 	return &privateList[id];
@@ -265,15 +265,15 @@ QQFriend *FriendList::getFriend(const unsigned int id)
 
 bool FriendList::deleteFriend(const unsigned int id)
 {
-	std::map<unsigned int, QQFriend>::iterator iter = getFriendPosition(id);
+	std::map<unsigned int, TQQFriend>::iterator iter = getFriendPosition(id);
 	if( iter == privateList.end()) return false;
 	privateList.erase(iter);
 	return true;
 }
 
-void FriendList::addFriend(const QQFriend &frd)
+void FriendList::addFriend(const TQQFriend &frd)
 {
-	std::map<unsigned int, QQFriend>::iterator iter = getFriendPosition(frd.getQQ());
+	std::map<unsigned int, TQQFriend>::iterator iter = getFriendPosition(frd.getQQ());
 	if( iter != privateList.end()) {
 		privateList[frd.getQQ()].setGroupIndex(frd.getGroupIndex());
 		//updateFriend(frd);
@@ -282,7 +282,7 @@ void FriendList::addFriend(const QQFriend &frd)
 	privateList[frd.getQQ()] = frd;
 }
 
-void FriendList::updateFriend( const QQFriend &frd)
+void FriendList::updateFriend( const TQQFriend &frd)
 {
 	deleteFriend(frd.getQQ());      // delete it first
 	addFriend(frd);                   // add new one;
@@ -290,7 +290,7 @@ void FriendList::updateFriend( const QQFriend &frd)
 
 bool FriendList::updateFriendIP(const unsigned int id, const unsigned int ip)
 {
-	std::map<unsigned int, QQFriend>::iterator iter = getFriendPosition(id);
+	std::map<unsigned int, TQQFriend>::iterator iter = getFriendPosition(id);
 	if(iter == privateList.end()) return false;
 	
 	privateList[id].setIP(ip);
@@ -299,7 +299,7 @@ bool FriendList::updateFriendIP(const unsigned int id, const unsigned int ip)
 
 bool FriendList::updateFriendFace(const unsigned int id, const unsigned short face)
 {
-	std::map<unsigned int, QQFriend>::iterator iter = getFriendPosition(id);
+	std::map<unsigned int, TQQFriend>::iterator iter = getFriendPosition(id);
 	if(iter == privateList.end()) return false;
 	
 	privateList[id].setFace(face);
@@ -308,7 +308,7 @@ bool FriendList::updateFriendFace(const unsigned int id, const unsigned short fa
 
 bool FriendList::updateFriendPort(const unsigned int id, const unsigned short p)
 {
-	std::map<unsigned int, QQFriend>::iterator iter = getFriendPosition(id);
+	std::map<unsigned int, TQQFriend>::iterator iter = getFriendPosition(id);
 	if(iter == privateList.end()) return false;
 	
 	privateList[id].setPort(p);
@@ -317,7 +317,7 @@ bool FriendList::updateFriendPort(const unsigned int id, const unsigned short p)
 
 bool FriendList::updateFriendStatus(const unsigned int id, const char status)
 {
-	std::map<unsigned int, QQFriend>::iterator iter = getFriendPosition(id);
+	std::map<unsigned int, TQQFriend>::iterator iter = getFriendPosition(id);
 	if(iter == privateList.end()) return false;
 	privateList[id].setStatus(status);
 	return true;
@@ -325,7 +325,7 @@ bool FriendList::updateFriendStatus(const unsigned int id, const char status)
 
 bool FriendList::updateFriendFileSessionKey(const unsigned int id, const unsigned char *key)
 {
-	std::map<unsigned int, QQFriend>::iterator iter = getFriendPosition(id);
+	std::map<unsigned int, TQQFriend>::iterator iter = getFriendPosition(id);
 	if(iter == privateList.end()) return false;
 	
 	privateList[id].setFileSessionKey(key);
@@ -334,7 +334,7 @@ bool FriendList::updateFriendFileSessionKey(const unsigned int id, const unsigne
 
 bool FriendList::updateFriendGroupIndex(const unsigned int id, const int index)
 {
-	std::map<unsigned int, QQFriend>::iterator iter = getFriendPosition(id);
+	std::map<unsigned int, TQQFriend>::iterator iter = getFriendPosition(id);
 	if(iter == privateList.end()) return false;
 	
 	privateList[id].setGroupIndex(index);
@@ -343,7 +343,7 @@ bool FriendList::updateFriendGroupIndex(const unsigned int id, const int index)
 
 bool FriendList::updateFriendLevel(const unsigned int id, const unsigned int online, const unsigned short level, const unsigned short hours)
 {
-	std::map<unsigned int, QQFriend>::iterator iter = getFriendPosition(id);
+	std::map<unsigned int, TQQFriend>::iterator iter = getFriendPosition(id);
 	if(iter == privateList.end()) return false;
 	
 	privateList[id].setOnlineTime(online);
@@ -355,7 +355,7 @@ bool FriendList::updateFriendLevel(const unsigned int id, const unsigned int onl
 
 bool FriendList::addFriendItemTo( const unsigned int id, const FriendItem &item)
 {
-	std::map<unsigned int, QQFriend>::iterator iter = getFriendPosition(id);
+	std::map<unsigned int, TQQFriend>::iterator iter = getFriendPosition(id);
 	if(iter == privateList.end()) return false;
 	
 	privateList[id].setFriendItem(item);
@@ -364,7 +364,7 @@ bool FriendList::addFriendItemTo( const unsigned int id, const FriendItem &item)
 
 bool FriendList::addOnlineFriendEntryTo( const unsigned int id, const FriendOnlineEntry & entry)
 {
-	std::map<unsigned int, QQFriend>::iterator iter = getFriendPosition(id);
+	std::map<unsigned int, TQQFriend>::iterator iter = getFriendPosition(id);
 	if(iter == privateList.end()) return false;
 	
 	privateList[id].setFriendOnlineEntry(entry);
@@ -373,7 +373,7 @@ bool FriendList::addOnlineFriendEntryTo( const unsigned int id, const FriendOnli
 
 bool FriendList::addContactInfoTo( const unsigned int id, const ContactInfo &info)
 {
-	std::map<unsigned int, QQFriend>::iterator iter = getFriendPosition(id);
+	std::map<unsigned int, TQQFriend>::iterator iter = getFriendPosition(id);
 	if(iter == privateList.end()) return false;
 	privateList[id].setUserInformation(info);
 	return true;
@@ -382,28 +382,28 @@ bool FriendList::addContactInfoTo( const unsigned int id, const ContactInfo &inf
 const int FriendList::numberOfOnlines()
 {
 	int onlines = 0;
-        std::map<unsigned int, QQFriend>::iterator iter;
+        std::map<unsigned int, TQQFriend>::iterator iter;
 	for(iter =privateList.begin(); iter != privateList.end(); ++iter){
 		switch(iter->second.getStatus()){
-		case QQ_FRIEND_STATUS_ONLINE:
+		case TQQ_FRIEND_STATUS_ONLINE:
 			onlines++;
 			break;
-		case QQ_FRIEND_STATUS_OFFLINE:
+		case TQQ_FRIEND_STATUS_OFFLINE:
 			break;
-		case QQ_FRIEND_STATUS_LEAVE:
+		case TQQ_FRIEND_STATUS_LEAVE:
 			onlines++;
 			break;
-		case QQ_FRIEND_STATUS_INVISIBLE:
+		case TQQ_FRIEND_STATUS_INVISIBLE:
 			break;
 		}
 	}
 	return onlines;
 }
 
-std::list<QQFriend> FriendList::getFriendsInGroupIndexOf( const int index)
+std::list<TQQFriend> FriendList::getFriendsInGroupIndexOf( const int index)
 {
-	std::list<QQFriend> groupFriends;
-        std::map<unsigned int, QQFriend>::iterator iter;
+	std::list<TQQFriend> groupFriends;
+        std::map<unsigned int, TQQFriend>::iterator iter;
 	for(iter =privateList.begin(); iter != privateList.end(); ++iter){
 		if(index == (iter->second).getGroupIndex())
 			groupFriends.push_back(iter->second);
@@ -411,30 +411,30 @@ std::list<QQFriend> FriendList::getFriendsInGroupIndexOf( const int index)
 	return groupFriends;
 }
 
-std::list<QQFriend> FriendList::getAllFriends( const unsigned int myId )
+std::list<TQQFriend> FriendList::getAllFriends( const unsigned int myId )
 {
-	std::list<QQFriend> allFriends;
-        std::map<unsigned int, QQFriend>::iterator iter;
+	std::list<TQQFriend> allFriends;
+        std::map<unsigned int, TQQFriend>::iterator iter;
 	for(iter =privateList.begin(); iter != privateList.end(); ++iter){
 		allFriends.push_back(iter->second);
 	}
 	if(myId)
-		allFriends.push_back(QQFriend(myId, 0));
-	QQFriend::sortItem order = QQFriend::getSortField();
-	QQFriend::setSortField(QQFriend::Sort_QQ);
+		allFriends.push_back(TQQFriend(myId, 0));
+	TQQFriend::sortItem order = TQQFriend::getSortField();
+	TQQFriend::setSortField(TQQFriend::Sort_QQ);
 	allFriends.sort();
-	QQFriend::setSortField(order);
+	TQQFriend::setSortField(order);
 	return allFriends;
 }
 
-std::map<unsigned int, QQFriend>::iterator FriendList::getFriendPosition(const unsigned int id)
+std::map<unsigned int, TQQFriend>::iterator FriendList::getFriendPosition(const unsigned int id)
 {
 	return privateList.find(id);
 }
 
 bool FriendList::setExtraInfo(const unsigned int id, const short info)
 {
-	std::map<unsigned int, QQFriend>::iterator iter = getFriendPosition(id);
+	std::map<unsigned int, TQQFriend>::iterator iter = getFriendPosition(id);
 	if(iter == privateList.end()) return false;
 	
 	privateList[id].setExtraInfo(info);
@@ -445,8 +445,8 @@ const std::map< unsigned int, unsigned int > FriendList::getMemberSignatureList(
 {
 	std::map< unsigned int, unsigned int > list;
 	int count =0 ;
-	std::list<QQFriend> qqList = getAllFriends(myId);
-	std::list<QQFriend>::iterator qqIter;
+	std::list<TQQFriend> qqList = getAllFriends(myId);
+	std::list<TQQFriend>::iterator qqIter;
 	
 	for(qqIter = qqList.begin(); qqIter != qqList.end(); ++qqIter){
 		//printf(" qq: %d\n", qqIter->getQQ());
@@ -462,7 +462,7 @@ const std::map< unsigned int, unsigned int > FriendList::getMemberSignatureList(
 
 bool FriendList::setSignature( const unsigned int id, const std::string sig, const unsigned int time )
 {
-	std::map<unsigned int, QQFriend>::iterator iter = getFriendPosition(id);
+	std::map<unsigned int, TQQFriend>::iterator iter = getFriendPosition(id);
 	if(iter == privateList.end()) return false;
 	
 	privateList[id].setSignature(sig, time);
@@ -472,8 +472,8 @@ bool FriendList::setSignature( const unsigned int id, const std::string sig, con
 const std::list< unsigned int > FriendList::getUserHeadList(const unsigned int myId, const bool hasUserHead )
 {
  std::list<unsigned int> results;
- std::list<QQFriend> qqList = getAllFriends(myId);
- std::list<QQFriend>::iterator qqIter;
+ std::list<TQQFriend> qqList = getAllFriends(myId);
+ std::list<TQQFriend>::iterator qqIter;
  
  for(qqIter = qqList.begin(); qqIter != qqList.end(); ++qqIter){
 		if( qqIter->hasUserHead() || (qqIter->getQQ() == myId && hasUserHead))
@@ -484,14 +484,14 @@ const std::list< unsigned int > FriendList::getUserHeadList(const unsigned int m
 
 bool FriendList::setMemo( const unsigned int id, const MemoItem& memo )
 {
-	std::map<unsigned int, QQFriend>::iterator iter = getFriendPosition(id);
+	std::map<unsigned int, TQQFriend>::iterator iter = getFriendPosition(id);
 	if(iter == privateList.end()) return false;
 	
 	privateList[id].setMemo(memo);
 	return true;	
 }
 
-QQFriend *FriendList::firstFriend()
+TQQFriend *FriendList::firstFriend()
 {
     m_iter = privateList.begin();
     if(m_iter == privateList.end())
@@ -500,7 +500,7 @@ QQFriend *FriendList::firstFriend()
         return (&(m_iter->second));
 }
 
-QQFriend *FriendList::nextFriend()
+TQQFriend *FriendList::nextFriend()
 {
     ++m_iter;
     if(m_iter == privateList.end())

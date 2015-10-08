@@ -21,29 +21,29 @@
 #define EVANETWORK_H 
 
 
-#include <qobject.h>
-#include <qhostaddress.h>
+#include <ntqobject.h>
+#include <ntqhostaddress.h>
 
 class EvaSocket;
 class EvaHttpProxy;
 
-class EvaNetwork : public QObject{
+class EvaNetwork : public TQObject{
 	Q_OBJECT
 public:
 	enum Type { UDP, TCP, HTTP_Proxy};
 	enum Event { Init, Connecting, Ready, Failed, None, BytesReadWrong, 
 			Proxy_None, Proxy_TCP_Ready, Proxy_Connecting, Proxy_Ready, 
 				Proxy_Need_Auth, Proxy_Read_Error, Proxy_Error  };
-	EvaNetwork(const QHostAddress &host, const short port, const Type type = UDP);
+	EvaNetwork(const TQHostAddress &host, const short port, const Type type = UDP);
 	~EvaNetwork();
 	
-	void setServer(const QHostAddress &address, const short port);
-	const QHostAddress &getHostAddress() const;  // if it's Http Proxy, return the proxy's address
+	void setServer(const TQHostAddress &address, const short port);
+	const TQHostAddress &getHostAddress() const;  // if it's Http Proxy, return the proxy's address
 	const short getHostPort() const;
 	
-	void setDestinationServer(const QString &server, const short port); // for Http Proxy only;
-        void setAuthParameter(const QString &username, const QString &password);
-	void setAuthParameter(const QCString &param);
+	void setDestinationServer(const TQString &server, const short port); // for Http Proxy only;
+        void setAuthParameter(const TQString &username, const TQString &password);
+	void setAuthParameter(const TQCString &param);
 	void newURLRequest();
 	void connect();
 	
@@ -53,7 +53,7 @@ public:
 
 	void close();
 	const Type connectionType() { return type; }
-	const QHostAddress getSocketIp();
+	const TQHostAddress getSocketIp();
 	const unsigned int getSocketPort();
 signals:
 	void isReady();

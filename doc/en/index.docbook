@@ -2,7 +2,7 @@
 <!DOCTYPE book PUBLIC "-//KDE//DTD DocBook XML V4.1.2-Based Variant V1.1//EN" "dtd/kdex.dtd" [
   <!ENTITY eva "<application>Eva 0.5.0</application>">
   <!ENTITY kappname "&eva;"><!-- Do *not* replace kappname-->
-  <!ENTITY package "kde-module"><!-- kdebase, kdeadmin, etc -->
+  <!ENTITY package "kde-module"><!-- tdebase, tdeadmin, etc -->
   <!ENTITY % addindex "IGNORE">
   <!ENTITY % English "INCLUDE"><!-- change language only here -->
   
@@ -168,17 +168,17 @@ patent issues. -->
 
 <para>It slices! It dices! and it comes with a free toaster!</para>
 <para>
-The Squiggle Tool <guiicon><inlinemediaobject>
+The Sttquiggle Tool <guiicon><inlinemediaobject>
 	  <imageobject>
-	    <imagedata fileref="squiggle.png" format="PNG"/>
+	    <imagedata fileref="sttquiggle.png" format="PNG"/>
 	  </imageobject>
 	  <imageobject>
-	    <imagedata fileref="squiggle.eps" format="EPS"/>
+	    <imagedata fileref="sttquiggle.eps" format="EPS"/>
 	  </imageobject>
 	  <textobject>
-	    <phrase>Squiggle</phrase>
+	    <phrase>Sttquiggle</phrase>
 	  </textobject>
-</inlinemediaobject></guiicon> is used to draw squiggly lines all over
+</inlinemediaobject></guiicon> is used to draw sttquiggly lines all over
 the &eva; main window. It's not a bug, it's a feature!
 </para>
 
@@ -451,7 +451,7 @@ Program copyright %{YEAR} yunfan <email>yunfan_zg@163.com</email>
 <para>
 Contributors:
 <itemizedlist>
-<listitem><para>Konqui the KDE Dragon <email>konqui@kde.org</email></para>
+<listitem><para>Konttqui the KDE Dragon <email>konttqui@kde.org</email></para>
 </listitem>
 <listitem><para>Tux the Linux Penguin <email>tux@linux.org</email></para>
 </listitem>
@@ -490,8 +490,8 @@ application -->
 
 <!--
 List any special requirements for your application here. This should include:
-.Libraries or other software that is not included in kdesupport,
-kdelibs, or kdebase.
+.Libraries or other software that is not included in tdesupport,
+tdelibs, or tdebase.
 .Hardware requirements like amount of RAM, disk space, graphics card
 capabilities, screen resolution, special expansion cards, etc.
 .Operating systems the app will run on. If your app is designed only for a

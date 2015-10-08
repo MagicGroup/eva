@@ -28,14 +28,14 @@ class EvaSysBroadcastWindow : public EvaSysBroadcastUIBase
 	Q_OBJECT
 public:
 	EvaSysBroadcastWindow();
-	void setMessage(const QString &msg);
-	void setNews(const QString &title, const QString &brief, const QString &url);
+	void setMessage(const TQString &msg);
+	void setNews(const TQString &title, const TQString &brief, const TQString &url);
 
 private:
-	QString m_Contents;
-	QString m_URL;
+	TQString m_Contents;
+	TQString m_URL;
 
-	virtual void closeEvent( QCloseEvent *);
+	virtual void closeEvent( TQCloseEvent *);
 
 	void moveToRightBottom();
 private slots:

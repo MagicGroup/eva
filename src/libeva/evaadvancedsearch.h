@@ -30,7 +30,7 @@
  	AdvancedUser();
 	~AdvancedUser(){}
 	
-	const int getQQ() const { return m_QQNum; }
+	const int getQQ() const { return m_QTQNum; }
 	const int getGenderIndex() const { return m_GenderIndex; }
 	const int getAge() const { return m_Age; }
 	const bool isOnline() const { return (m_Online == 0x01)? true:false; }
@@ -39,7 +39,7 @@
 	const int getCityIndex() const { return m_CityIndex; }
 	const int getFace() const { return m_Face; }
 	
-	void setQQ( const int id ) { m_QQNum = id; }
+	void setQQ( const int id ) { m_QTQNum = id; }
 	void setGenderIndex( const int genderIndex ) { m_GenderIndex = genderIndex; }
 	void setAge( const int age ) { m_Age = age; }
 	void setOnlineStatus( const unsigned char onlineStatus ) { m_Online = onlineStatus; }
@@ -51,7 +51,7 @@
 	int readData( unsigned char *buf);
 	AdvancedUser &operator=( const AdvancedUser &rhs );
 private:
-	int m_QQNum;
+	int m_QTQNum;
 	int m_GenderIndex;
 	int m_Age;
 	unsigned char m_Online;

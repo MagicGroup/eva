@@ -1,0 +1,12 @@
+#!/bin/bash
+
+top_srcdir=${1}
+top_builddir=${2}
+kde_libs_htmldir=${3}
+installdir=${DESTDIR}
+
+abs_top_srcdir=$(cd ${top_srcdir} && pwd)
+
+cd ${top_builddir}
+mkdir -p ${installdir}/${kde_libs_htmldir}/en
+cp -Rp ${top_builddir}/${kde_libs_htmldir}/en ${installdir}/${kde_libs_htmldir}/

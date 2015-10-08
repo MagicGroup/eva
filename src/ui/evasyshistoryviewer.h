@@ -36,7 +36,7 @@ signals:
 				const unsigned char type,
 				const unsigned int fromQQ,
 				const unsigned int toQQ,
-				const QString message,
+				const TQString message,
 				const unsigned int qunID,
 				const unsigned int commander,
 				const unsigned char *code , const unsigned short codeLen,

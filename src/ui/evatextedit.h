@@ -21,18 +21,18 @@
 #define EVATEXTEDIT_H
 
 #include <ktextedit.h>
-class QKeyEvent;
+class TQKeyEvent;
 class EvaTextEdit : public KTextEdit
 {
 	Q_OBJECT
 public: 
-	EvaTextEdit(const QString &text, const QString &context=QString::null, QWidget *parent=0, const char *name=0);
-	EvaTextEdit(QWidget *parent=0, const char * name=0);
+	EvaTextEdit(const TQString &text, const TQString &context=TQString::null, TQWidget *parent=0, const char *name=0);
+	EvaTextEdit(TQWidget *parent=0, const char * name=0);
 	void setEnterSendEnabled(const bool ok) { isEnterSend = ok; }
 signals:
-	void keyPressed(QKeyEvent *);
+	void keyPressed(TQKeyEvent *);
 protected:
-	virtual void keyPressEvent(QKeyEvent *);
+	virtual void keyPressEvent(TQKeyEvent *);
 private:
 	bool isEnterSend;
 };

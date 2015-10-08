@@ -41,7 +41,7 @@ AM_INIT_AUTOMAKE(@MODULENAME@, @VERSION@) dnl searches for some needed programs
 KDE_SET_PREFIX
 
 dnl generate the config header
-AM_CONFIG_HEADER(config.h) dnl at the distribution this done
+AC_CONFIG_HEADER(config.h) dnl at the distribution this done
 
 dnl Checks for programs.
 AC_PROG_CC

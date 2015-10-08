@@ -20,79 +20,79 @@
 
 #include "evasysbroadcastuibase.h"
 
-#include <qvariant.h>
-#include <qpushbutton.h>
-#include <qframe.h>
-#include <qlabel.h>
+#include <ntqvariant.h>
+#include <ntqpushbutton.h>
+#include <ntqframe.h>
+#include <ntqlabel.h>
 #include <kurllabel.h>
-#include <qlayout.h>
-#include <qtooltip.h>
-#include <qwhatsthis.h>
+#include <ntqlayout.h>
+#include <ntqtooltip.h>
+#include <ntqwhatsthis.h>
 
-#include <klocale.h>
+#include <tdelocale.h>
 #include <kurllabel.h>
-#include <kglobalsettings.h>
+#include <tdeglobalsettings.h>
 
 /*
  *  Constructs a EvaSysBroadcastUIBase as a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'.
  */
-EvaSysBroadcastUIBase::EvaSysBroadcastUIBase( QWidget* parent, const char* name, WFlags fl )
-    : QWidget( parent, name, fl )
+EvaSysBroadcastUIBase::EvaSysBroadcastUIBase( TQWidget* parent, const char* name, WFlags fl )
+    : TQWidget( parent, name, fl )
 {
     if ( !name )
 	setName( "EvaSysBroadcastUIBase" );
-    EvaSysBroadcastUIBaseLayout = new QGridLayout( this, 1, 1, 11, 6, "EvaSysBroadcastUIBaseLayout"); 
+    EvaSysBroadcastUIBaseLayout = new TQGridLayout( this, 1, 1, 11, 6, "EvaSysBroadcastUIBaseLayout"); 
 
-    layout7 = new QVBoxLayout( 0, 0, 6, "layout7"); 
+    layout7 = new TQVBoxLayout( 0, 0, 6, "layout7"); 
 
-    fraContents = new QFrame( this, "fraContents" );
-    fraContents->setPaletteBackgroundColor( QColor( 234, 247, 225 ) );
-    fraContents->setFrameShape( QFrame::StyledPanel );
-    fraContents->setFrameShadow( QFrame::Raised );
-    fraContentsLayout = new QGridLayout( fraContents, 1, 1, 11, 6, "fraContentsLayout"); 
+    fraContents = new TQFrame( this, "fraContents" );
+    fraContents->setPaletteBackgroundColor( TQColor( 234, 247, 225 ) );
+    fraContents->setFrameShape( TQFrame::StyledPanel );
+    fraContents->setFrameShadow( TQFrame::Raised );
+    fraContentsLayout = new TQGridLayout( fraContents, 1, 1, 11, 6, "fraContentsLayout"); 
 
-    layout6 = new QVBoxLayout( 0, 0, 6, "layout6"); 
+    layout6 = new TQVBoxLayout( 0, 0, 6, "layout6"); 
 
-    layout5 = new QHBoxLayout( 0, 0, 6, "layout5"); 
+    layout5 = new TQHBoxLayout( 0, 0, 6, "layout5"); 
 
-    lblTitle = new QLabel( fraContents, "lblTitle" );
+    lblTitle = new TQLabel( fraContents, "lblTitle" );
     layout5->addWidget( lblTitle );
-    spacer2 = new QSpacerItem( 111, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
+    spacer2 = new TQSpacerItem( 111, 20, TQSizePolicy::Expanding, TQSizePolicy::Minimum );
     layout5->addItem( spacer2 );
     layout6->addLayout( layout5 );
 
-    lblContents = new QLabel( fraContents, "lblContents" );
-    lblContents->setSizePolicy( QSizePolicy( (QSizePolicy::SizeType)7, (QSizePolicy::SizeType)7, 0, 0, lblContents->sizePolicy().hasHeightForWidth() ) );
-    QFont lblContents_font = KGlobalSettings::fixedFont();
+    lblContents = new TQLabel( fraContents, "lblContents" );
+    lblContents->setSizePolicy( TQSizePolicy( (TQSizePolicy::SizeType)7, (TQSizePolicy::SizeType)7, 0, 0, lblContents->sizePolicy().hasHeightForWidth() ) );
+    TQFont lblContents_font = TDEGlobalSettings::fixedFont();
     lblContents->setFont( lblContents_font ); 
-    lblContents->setFrameShape( QLabel::NoFrame );
-    lblContents->setTextFormat( QLabel::PlainText );
-    lblContents->setAlignment( int( QLabel::WordBreak | QLabel::AlignTop | QLabel::AlignLeft ) );
+    lblContents->setFrameShape( TQLabel::NoFrame );
+    lblContents->setTextFormat( TQLabel::PlainText );
+    lblContents->setAlignment( int( TQLabel::WordBreak | TQLabel::AlignTop | TQLabel::AlignLeft ) );
     layout6->addWidget( lblContents );
 
     kurllblUrl = new KURLLabel( fraContents, "kurllblUrl" );
-    kurllblUrl->setSizePolicy( QSizePolicy( (QSizePolicy::SizeType)5, (QSizePolicy::SizeType)1, 0, 0, kurllblUrl->sizePolicy().hasHeightForWidth() ) );
+    kurllblUrl->setSizePolicy( TQSizePolicy( (TQSizePolicy::SizeType)5, (TQSizePolicy::SizeType)1, 0, 0, kurllblUrl->sizePolicy().hasHeightForWidth() ) );
     kurllblUrl->setFrameShape( KURLLabel::NoFrame );
     layout6->addWidget( kurllblUrl );
 
     fraContentsLayout->addLayout( layout6, 0, 0 );
     layout7->addWidget( fraContents );
 
-    layout3 = new QHBoxLayout( 0, 0, 6, "layout3"); 
-    spacer1 = new QSpacerItem( 101, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
+    layout3 = new TQHBoxLayout( 0, 0, 6, "layout3"); 
+    spacer1 = new TQSpacerItem( 101, 20, TQSizePolicy::Expanding, TQSizePolicy::Minimum );
     layout3->addItem( spacer1 );
 
-    btnDetails = new QPushButton( this, "btnDetails" );
+    btnDetails = new TQPushButton( this, "btnDetails" );
     layout3->addWidget( btnDetails );
 
-    btnClose = new QPushButton( this, "btnClose" );
+    btnClose = new TQPushButton( this, "btnClose" );
     layout3->addWidget( btnClose );
     layout7->addLayout( layout3 );
 
     EvaSysBroadcastUIBaseLayout->addLayout( layout7, 0, 0 );
     languageChange();
-    resize( QSize(400, 248).expandedTo(minimumSizeHint()) );
+    resize( TQSize(400, 248).expandedTo(minimumSizeHint()) );
     clearWState( WState_Polished );
 }
 
@@ -101,7 +101,7 @@ EvaSysBroadcastUIBase::EvaSysBroadcastUIBase( QWidget* parent, const char* name,
  */
 EvaSysBroadcastUIBase::~EvaSysBroadcastUIBase()
 {
-    // no need to delete child widgets, Qt does it all for us
+    // no need to delete child widgets, TQt does it all for us
 }
 
 /*
@@ -114,10 +114,10 @@ void EvaSysBroadcastUIBase::languageChange()
     lblTitle->setText( i18n( "System Broadcast:" ) );
     //lblContents->setText( tr( "-" ) );
     //kurllblUrl->setText( tr( "-" ) );
-    kurllblUrl->setProperty( "url", QString::null );
+    kurllblUrl->setProperty( "url", TQString::null );
     btnDetails->setText( i18n( "&More Details" ) );
-    btnDetails->setAccel( QKeySequence( tr( "Alt+M" ) ) );
+    btnDetails->setAccel( TQKeySequence( tr( "Alt+M" ) ) );
     btnClose->setText( i18n( "&Close" ) );
-    btnClose->setAccel( QKeySequence( tr( "Alt+C" ) ) );
+    btnClose->setAccel( TQKeySequence( tr( "Alt+C" ) ) );
 }
 

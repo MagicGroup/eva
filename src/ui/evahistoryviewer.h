@@ -29,11 +29,11 @@ class EvaHistoryViewer : public EvaHistoryUIBase
 {
 	Q_OBJECT
 public:
-	EvaHistoryViewer(const int id, const QString &nickname, EvaUserSetting *, const bool isQunMsg = false);
+	EvaHistoryViewer(const int id, const TQString &nickname, EvaUserSetting *, const bool isQunMsg = false);
 	~EvaHistoryViewer();
 signals:
-	void historyDoubleClicked(unsigned int sender, QString sNick, unsigned int receiver, QString rNick, bool isNormal,
-					 QString message, QDateTime time, const char size, 
+	void historyDoubleClicked(unsigned int sender, TQString sNick, unsigned int receiver, TQString rNick, bool isNormal,
+					 TQString message, TQDateTime time, const char size, 
 					const bool u, const bool i, const bool b, 
 					const char blue, const char green, const char red);
 	void windowClosed();
@@ -41,12 +41,12 @@ private:
 	void display();
 	int page;
 	int qqNum;
-	QString nick;
+	TQString nick;
 	EvaUserSetting *setting; // for load messages only
 	bool isQun;
 	std::list<EvaUserSetting::chatMessage> list;
 
-	void closeEvent( QCloseEvent * e );
+	void closeEvent( TQCloseEvent * e );
 	
 private slots:
 	void slotChbSelectClick();

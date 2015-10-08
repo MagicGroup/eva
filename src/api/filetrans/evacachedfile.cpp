@@ -22,9 +22,9 @@
 #include "../../libeva/evautil.h"
 #include <stdio.h>
 #include <string.h>
-#include <qfile.h>
-#include <qfileinfo.h>
-#include <qtextcodec.h>
+#include <ntqfile.h>
+#include <ntqfileinfo.h>
+#include <ntqtextcodec.h>
 #include <cstring>
 
 #define InfoFileName_Ext       ".info"
@@ -40,7 +40,7 @@
 
 
 
-EvaCachedFile::EvaCachedFile(const QString &srcDir, const QString &srcFilename, const unsigned int size)
+EvaCachedFile::EvaCachedFile(const TQString &srcDir, const TQString &srcFilename, const unsigned int size)
 	: m_IsLoading(false), m_DirPath(srcDir), m_FileName(srcFilename), 
 	m_FileSize(size), m_State(ENone)
 {
@@ -48,12 +48,12 @@ EvaCachedFile::EvaCachedFile(const QString &srcDir, const QString &srcFilename, 
 }
 
 // we know that we don't need the info file for loading
-EvaCachedFile::EvaCachedFile(const QString &srcDir, const QString &srcFilename)
+EvaCachedFile::EvaCachedFile(const TQString &srcDir, const TQString &srcFilename)
 	: m_IsLoading(true), m_DirPath(srcDir), m_FileName(srcFilename), m_CachedFileName(""),
 	m_State(ENone)
 {
-	QString filePath = m_DirPath + "/" + m_FileName;
-	QFileInfo info(filePath);
+	TQString filePath = m_DirPath + "/" + m_FileName;
+	TQFileInfo info(filePath);
 	if(!info.exists()){
 		fprintf(stderr, "EvaCachedFile::constructor -- \"%s\" dosen't exist!\n", filePath.ascii());
 		m_State = ENotExists;
@@ -65,7 +65,7 @@ EvaCachedFile::~EvaCachedFile()
 {
 }
 
-const bool EvaCachedFile::setFileInfo(const QString &fileName, const unsigned int size)
+const bool EvaCachedFile::setFileInfo(const TQString &fileName, const unsigned int size)
 {
 	m_FileName = fileName;
 	m_FileSize = size;
@@ -79,8 +79,8 @@ const bool EvaCachedFile::changeFileInfo()
 	m_CachedFileName = m_FileName + CacheFileName_Ext;
 	m_InfoFileName = m_FileName + InfoFileName_Ext;
 
-	QString filePath = m_DirPath + "/" + m_CachedFileName;
-	QFileInfo info(filePath);
+	TQString filePath = m_DirPath + "/" + m_CachedFileName;
+	TQFileInfo info(filePath);
 	if(info.exists()){
 		fprintf(stderr, "EvaCachedFile::constructor -- \"%s\" already exist!\n", filePath.ascii());
 		m_State = EExists;
@@ -91,7 +91,7 @@ const bool EvaCachedFile::changeFileInfo()
 	info.setFile(filePath);
 	if(info.exists()){	
 		fprintf(stderr, "EvaCachedFile::constructor -- \"%s\" already exists! delete it!\n", filePath.ascii());
-		QFile file(filePath);
+		TQFile file(filePath);
 		if(!file.remove()){
 			fprintf(stderr, "EvaCachedFile::constructor -- cannot remove \"%s\"!\n", filePath.ascii());
 			m_State = EError;
@@ -125,8 +125,8 @@ const bool EvaCachedFile::saveFragment(const unsigned int offset,
 		return true; // if we got it already, always return true
 	}
 
-	QString fullpath = m_DirPath + "/" + m_CachedFileName;
-	QFile file(fullpath);
+	TQString fullpath = m_DirPath + "/" + m_CachedFileName;
+	TQFile file(fullpath);
 	if(!file.open(IO_Raw | IO_WriteOnly | IO_Append)){
 		printf("EvaCachedFile::saveFragment -- cannot open \"%s\"!\n", fullpath.ascii());
 		return false;
@@ -162,7 +162,7 @@ const unsigned int EvaCachedFile::getFragment(const unsigned int offset,
 	if(!m_IsLoading) return false;
 
 	unsigned int bytesRead = 0;
-	QFile file(m_DirPath + "/" + m_FileName);
+	TQFile file(m_DirPath + "/" + m_FileName);
 	if(!file.open(IO_Raw | IO_ReadOnly)){
 		printf("EvaCachedFile::getFragment -- \"%s\" dosen't exist!\n", m_FileName.ascii());
 		return bytesRead;
@@ -191,7 +191,7 @@ const bool EvaCachedFile::isFinished()
 const bool EvaCachedFile::isNewFragment(const unsigned int offset, const unsigned int /*len*/)
 {
 	if(m_IsLoading) return false;
-	QMap<unsigned int, unsigned int>::Iterator iter;
+	TQMap<unsigned int, unsigned int>::Iterator iter;
 	iter = m_FragInfo.find(offset);
 	// we might need to check the length of this fragment
 	if(iter != m_FragInfo.end()){
@@ -204,24 +204,24 @@ const bool EvaCachedFile::isNewFragment(const unsigned int offset, const unsigne
 const bool EvaCachedFile::updateInfoFile(const unsigned int offset, const unsigned int len)
 {
 	if(m_IsLoading) return false;
-	QFile file(m_DirPath + "/" + m_InfoFileName);
+	TQFile file(m_DirPath + "/" + m_InfoFileName);
 	if(!file.open(IO_WriteOnly | IO_Truncate)){
 		fprintf(stderr, "EvaCachedFile::updateInfoFile -- cannot update info file!\n");
 		m_State = EInfoOpen;
 		return false;
 	}
 	m_FragInfo[offset] = len;
-	QDataStream stream(&file);
+	TQDataStream stream(&file);
 
-	Q_UINT32 qsize = m_FileSize;
+	TQ_UINT32 qsize = m_FileSize;
 	// we save the basic info first
 	stream<< m_FileName;
 	stream<<qsize;
 	stream.writeRawBytes(m_FileNameMd5, 16);
 	stream.writeRawBytes(m_FileMd5, 16);
 
-	QMap<unsigned int, unsigned int>::Iterator iter;
-	Q_UINT32 qoffset, qlen;
+	TQMap<unsigned int, unsigned int>::Iterator iter;
+	TQ_UINT32 qoffset, qlen;
 	for(iter=m_FragInfo.begin(); iter!=m_FragInfo.end(); ++iter){
 		qoffset = iter.key();
 		qlen = iter.data();
@@ -234,20 +234,20 @@ const bool EvaCachedFile::updateInfoFile(const unsigned int offset, const unsign
 const bool EvaCachedFile::loadInfoFile()
 {
 	if(m_IsLoading) return false;
-	QFile file(m_DirPath + "/" + m_InfoFileName);
+	TQFile file(m_DirPath + "/" + m_InfoFileName);
 	if(!file.open(IO_ReadOnly)){
 		fprintf(stderr, "EvaCachedFile::loadInfoFile -- no info file available.\n");
 		m_State = EInfoOpen;
 		return false;
 	}
 	
-	QDataStream stream(&file);
-	QString fileName;
+	TQDataStream stream(&file);
+	TQString fileName;
 	stream>> fileName;
 	if(fileName != m_FileName)
 		return false;
 	
-	Q_UINT32 tmp;
+	TQ_UINT32 tmp;
 	stream>>tmp;
 	if(tmp != m_FileSize) {
 		file.close();
@@ -274,7 +274,7 @@ const bool EvaCachedFile::loadInfoFile()
 	}
 	delete [] fmd5;
 
-	Q_UINT32 qoffset, qlen;
+	TQ_UINT32 qoffset, qlen;
 	while(!stream.atEnd()){
 		stream>>qoffset>>qlen;
 		m_FragInfo[qoffset]=qlen;
@@ -288,9 +288,9 @@ const bool EvaCachedFile::isInfoFinished()
 {
 	if(m_IsLoading) return false;
 
-	Q_UINT32 tmp = 0;
-	QMap<unsigned int, unsigned int>::Iterator iter;
-	//Q_UINT32 qoffset, qlen;
+	TQ_UINT32 tmp = 0;
+	TQMap<unsigned int, unsigned int>::Iterator iter;
+	//TQ_UINT32 qoffset, qlen;
 	for(iter=m_FragInfo.begin(); iter!=m_FragInfo.end(); ++iter){
 		tmp += iter.data();
 	}
@@ -303,8 +303,8 @@ const unsigned int EvaCachedFile::getNextOffset()
 {
 	if(m_IsLoading) return 0;
 
-	Q_UINT32 offset = 0;
-	QMap<unsigned int, unsigned int>::Iterator iter;
+	TQ_UINT32 offset = 0;
+	TQMap<unsigned int, unsigned int>::Iterator iter;
 	for(iter=m_FragInfo.begin(); iter!=m_FragInfo.end(); ++iter){
 		offset += iter.data();
 	}
@@ -316,7 +316,7 @@ const bool EvaCachedFile::isFileCorrect()
 	if(m_IsLoading) return true; // if we are loading file, this would be always true
 
 	// check dest-file size
-	QFileInfo info(m_DirPath + "/" + m_FileName);
+	TQFileInfo info(m_DirPath + "/" + m_FileName);
 	if(!info.exists())
 		return false;
 	
@@ -347,10 +347,10 @@ const bool EvaCachedFile::generateDestFile()
 {
 	if(m_IsLoading) return false;
 	if(m_DirPath.isEmpty()) return false;
-	QString cachedFileName = m_DirPath + "/" + m_FileName + CacheFileName_Ext;
-	QString destFileName = m_DirPath + "/" + m_FileName;
-	QFile cached(cachedFileName);
-	QFile dest(destFileName);
+	TQString cachedFileName = m_DirPath + "/" + m_FileName + CacheFileName_Ext;
+	TQString destFileName = m_DirPath + "/" + m_FileName;
+	TQFile cached(cachedFileName);
+	TQFile dest(destFileName);
 	if(!cached.open(IO_ReadOnly)){
 		fprintf(stderr, "EvaCachedFile::generateDestFile -- cannot open cached file \"%s\"!\n", cachedFileName.ascii());
 		return false;
@@ -383,15 +383,15 @@ const bool EvaCachedFile::generateDestFile()
 	}
 	// actually we got all we want, we don't care about the result of removing following files
 	cached.remove();
-	QFile info(m_DirPath + "/" + m_InfoFileName);
+	TQFile info(m_DirPath + "/" + m_InfoFileName);
 	info.remove();
 	m_FragInfo.clear();
 	return true;
 }
 
-const bool EvaCachedFile::calculateFileMd5(const QString& fullpath, char *md5Buf)
+const bool EvaCachedFile::calculateFileMd5(const TQString& fullpath, char *md5Buf)
 {
-	QFileInfo info(fullpath);
+	TQFileInfo info(fullpath);
 	if(!info.exists()){
 		fprintf(stderr, "EvaCachedFile::calculateFileMd5 -- \"%s\" dosen't exist!\n", fullpath.ascii());
 		return false;
@@ -401,7 +401,7 @@ const bool EvaCachedFile::calculateFileMd5(const QString& fullpath, char *md5Buf
 		len = MaxMd5CheckLength;
 	char *buf = new char[len];
 
-	QFile file(fullpath);
+	TQFile file(fullpath);
 	if(!file.open(IO_ReadOnly)){
 		printf("EvaCachedFile::calculateFileMd5 -- \"%s\" dosen't exist!\n", fullpath.ascii());
 		delete []buf;
@@ -428,8 +428,8 @@ const bool EvaCachedFile::getSourceFileMd5(char *md5)
 const bool EvaCachedFile::getSourceFileNameMd5(char *md5)
 {
 	if(!md5) return false;
-	QTextCodec *codec = QTextCodec::codecForName("GB18030");
-	QCString tmp = codec->fromUnicode(m_FileName);
+	TQTextCodec *codec = TQTextCodec::codecForName("GB18030");
+	TQCString tmp = codec->fromUnicode(m_FileName);
 	memcpy(md5, EvaUtil::doMd5(tmp.data(), tmp.length()), 16);
 	return true;
 }
@@ -437,13 +437,13 @@ const bool EvaCachedFile::getSourceFileNameMd5(char *md5)
 const unsigned int EvaCachedFile::getFileSize()
 {
 	if(!m_IsLoading) return m_FileSize;
-	QFileInfo info(m_DirPath + "/" + m_FileName);
+	TQFileInfo info(m_DirPath + "/" + m_FileName);
 	if(!info.exists())
 		return 0;
 	return info.size();
 }
 
-void EvaCachedFile::setDestFileDir( const QString & dir )
+void EvaCachedFile::setDestFileDir( const TQString & dir )
 {
 	if(m_IsLoading) return;
 	m_DirPath = dir;

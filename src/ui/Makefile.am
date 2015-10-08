@@ -21,4 +21,4 @@ libevaui_la_SOURCES = evachatuibase.cpp evachatwindow.cpp evadetailswindow.cpp \
 noinst_HEADERS = evaui.h qundetailswindow.h evadcopview.h
 INCLUDES = -I$(top_srcdir)/src -I$(top_srcdir)/src/api \
 	-I$(top_srcdir)/src/libeva $(all_includes)
-libevaui_la_LIBADD = $(LIB_KIO) -lkhtml
+libevaui_la_LIBADD = $(LIB_TDEIO) -ltdehtml

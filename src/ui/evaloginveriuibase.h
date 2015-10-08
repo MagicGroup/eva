@@ -21,48 +21,48 @@
 #ifndef EVALOGINVERIUIBASE_H
 #define EVALOGINVERIUIBASE_H
 
-#include <qvariant.h>
-#include <qdialog.h>
+#include <ntqvariant.h>
+#include <ntqdialog.h>
 
-class QVBoxLayout;
-class QHBoxLayout;
-class QGridLayout;
-class QSpacerItem;
-class QLabel;
-class QToolButton;
-class QLineEdit;
-class QFrame;
-class QPushButton;
+class TQVBoxLayout;
+class TQHBoxLayout;
+class TQGridLayout;
+class TQSpacerItem;
+class TQLabel;
+class TQToolButton;
+class TQLineEdit;
+class TQFrame;
+class TQPushButton;
 
-class EvaLoginVeriUIBase : public QDialog
+class EvaLoginVeriUIBase : public TQDialog
 {
     Q_OBJECT
 
 public:
-    EvaLoginVeriUIBase( QWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
+    EvaLoginVeriUIBase( TQWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
     ~EvaLoginVeriUIBase();
 
-    QLabel* lblTopTip;
-    QLabel* lblGraphicCode;
-    QLabel* lblVeriCode;
-    QLabel* lblGraphic;
-    QToolButton* tbnChangeGraphic;
-    QLineEdit* leCode;
-    QFrame* line1;
-    QPushButton* btnOK;
-    QPushButton* btnCancel;
+    TQLabel* lblTopTip;
+    TQLabel* lblGraphicCode;
+    TQLabel* lblVeriCode;
+    TQLabel* lblGraphic;
+    TQToolButton* tbnChangeGraphic;
+    TQLineEdit* leCode;
+    TQFrame* line1;
+    TQPushButton* btnOK;
+    TQPushButton* btnCancel;
 
 protected:
-    QGridLayout* EvaLoginVeriUIBaseLayout;
-    QVBoxLayout* layout8;
-    QHBoxLayout* layout1;
-    QSpacerItem* spacer1;
-    QHBoxLayout* layout5;
-    QVBoxLayout* layout2;
-    QVBoxLayout* layout4;
-    QHBoxLayout* layout3;
-    QHBoxLayout* layout6;
-    QSpacerItem* spacer2;
+    TQGridLayout* EvaLoginVeriUIBaseLayout;
+    TQVBoxLayout* layout8;
+    TQHBoxLayout* layout1;
+    TQSpacerItem* spacer1;
+    TQHBoxLayout* layout5;
+    TQVBoxLayout* layout2;
+    TQVBoxLayout* layout4;
+    TQHBoxLayout* layout3;
+    TQHBoxLayout* layout6;
+    TQSpacerItem* spacer2;
 
 protected slots:
     virtual void languageChange();

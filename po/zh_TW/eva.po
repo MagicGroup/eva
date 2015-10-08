@@ -1083,7 +1083,7 @@ msgid "Add a screenshot"
 msgstr "加入畫面快照"
 
 #: ui/evachatuibase.cpp:335
-msgid "Select an quick-reply message"
+msgid "Select an tquick-reply message"
 msgstr "選擇快速回覆訊息"
 
 #: ui/evachatuibase.cpp:337 ui/evaqunchatuibase.cpp:312
@@ -1943,7 +1943,7 @@ msgid "Add a screenshot (smaller than 700 x 600)"
 msgstr "加入畫面快照 (小於 700 x 600)"
 
 #: ui/evaqunchatuibase.cpp:311
-msgid "Select a quick-reply message"
+msgid "Select a tquick-reply message"
 msgstr "選擇快速回覆訊息"
 
 #: ui/evaqunchatuibase.cpp:315
@@ -3347,7 +3347,7 @@ msgstr "按下滑鼠左鍵取得<br>畫面快照。"
 msgid "Size (W x H):"
 msgstr "尺寸 (寬 x 高)："
 
-#~ msgid "select an quick-reply message"
+#~ msgid "select an tquick-reply message"
 #~ msgstr "選擇快速回覆訊息"
 
 #~ msgid "view/hide IM history(Alt+H)"

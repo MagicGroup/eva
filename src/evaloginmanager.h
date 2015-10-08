@@ -21,8 +21,8 @@
 #ifndef EVA_LOGIN_MANAGER_H 
 #define EVA_LOGIN_MANAGER_H
 
-#include <qobject.h>
-#include <qhostaddress.h>
+#include <ntqobject.h>
+#include <ntqhostaddress.h>
 
 class EvaPacketManager;
 class ContactInfo;
@@ -51,14 +51,14 @@ class EvaLoginVeriWindow;
  *
  */
 
-class EvaLoginManager : public QObject
+class EvaLoginManager : public TQObject
 {
 	Q_OBJECT
 public:
 	EvaLoginManager();
 	void setPacketManager(EvaPacketManager *pm);
 
-	void login(QHostAddress &server);
+	void login(TQHostAddress &server);
 	void logout();
 	inline void setLoggedOut();
 	inline bool isLoggedIn();
@@ -75,7 +75,7 @@ private:
 	
 	LoginStatus m_status;
 	
-	void notifyEvent(const int eId, const QString &msg = QString::null);
+	void notifyEvent(const int eId, const TQString &msg = TQString::null);
 		
 private:
 	bool m_isLoggedIn;
@@ -85,7 +85,7 @@ private:
 	void loginVerification();
 	void verifyPassed();
 	void loginOK();
-	void wrongPassword(QString);
+	void wrongPassword(TQString);
 	void loginNeedRedirect(const unsigned int fromIp, const unsigned int ip, const short port);
 	void fileAgentInfoReady();
 	void myInfoReady(const ContactInfo info);

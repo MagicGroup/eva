@@ -18,25 +18,25 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef EVAQUNLISTVIEW_H
-#define EVAQUNLISTVIEW_H
+#ifndef EVATQUNLISTVIEW_H
+#define EVATQUNLISTVIEW_H
 
-#include <qlistview.h>
+#include <ntqlistview.h>
 #include <list>
 
-class QPixmap;
+class TQPixmap;
 //class EvaToolTip;
-class QCustomEvent;
-class QPopupMenu;
+class TQCustomEvent;
+class TQPopupMenu;
 
 
-class EvaQunBuddyItem :  public QObject, public QListViewItem
+class EvaQunBuddyItem :  public TQObject, public TQListViewItem
 {
 	Q_OBJECT
 public:
-	EvaQunBuddyItem( QListView *parent, const QString &name, const unsigned int id, const QPixmap *pic, const QPixmap *offPic);
+	EvaQunBuddyItem( TQListView *parent, const TQString &name, const unsigned int id, const TQPixmap *pic, const TQPixmap *offPic);
 	
-	void update(const unsigned int id, const QString &name, const QPixmap *pic, const QPixmap *offPic, const bool isCreator = false);
+	void update(const unsigned int id, const TQString &name, const TQPixmap *pic, const TQPixmap *offPic, const bool isCreator = false);
 	void setCreator(bool isCreator);
 	void setAdmin(bool isAdmin);
 	void setShareHolder();
@@ -44,30 +44,30 @@ public:
 	void setOnline(const bool online);
 	const bool isOnline() const { return mIsOnline; }
 	const unsigned int &getQQ() const { return qqNum; }
-	const QString &getNick() const { return nick; }
+	const TQString &getNick() const { return nick; }
 	
-	virtual QString key( int col, bool ascending) const;
-	QString tip(); 
+	virtual TQString key( int col, bool ascending) const;
+	TQString tip(); 
 protected:
-	virtual void customEvent( QCustomEvent *e);
+	virtual void customEvent( TQCustomEvent *e);
 private:
 	unsigned int qqNum;
-	QString nick;
-	const QPixmap *facePic;
-	const QPixmap *faceOffPic;
+	TQString nick;
+	const TQPixmap *facePic;
+	const TQPixmap *faceOffPic;
 	bool mIsOnline;
 	bool mIsCreator;
 	bool mIsAdmin;
 };
 
-class EvaQunListView : public QListView 
+class EvaQunListView : public TQListView 
 {
 	Q_OBJECT
 public:
-	EvaQunListView( QWidget *parent=0, const char *name =0, WFlags f= 0);
+	EvaQunListView( TQWidget *parent=0, const char *name =0, WFlags f= 0);
 	~EvaQunListView();
 	
-	EvaQunBuddyItem * addQunBuddy(const QString &nick, const unsigned int id, const QPixmap *pic, const QPixmap *offpic);
+	EvaQunBuddyItem * addQunBuddy(const TQString &nick, const unsigned int id, const TQPixmap *pic, const TQPixmap *offpic);
 
 	void updateOnlineMembers(const std::list<unsigned int> &onlines);
 	
@@ -79,13 +79,13 @@ signals:
 	void requestChat(const unsigned int);
 private:
 	//EvaToolTip *mToolTip;
-	QPopupMenu *popupMenu;
+	TQPopupMenu *popupMenu;
 private slots:
-	void slotContextMenu(QListViewItem *, const QPoint & , int);
+	void slotContextMenu(TQListViewItem *, const TQPoint & , int);
 	void slotDetails();
 	void slotDoRefreshMembers();
 	void slotQunCard();
-	void slotBuddyDoubleClick( QListViewItem *item, const QPoint &, int );
+	void slotBuddyDoubleClick( TQListViewItem *item, const TQPoint &, int );
 };
 
 

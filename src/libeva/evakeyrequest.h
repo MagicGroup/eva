@@ -56,7 +56,7 @@ public:
 	const int getTokenLength() const { return tokenLength; }
 	const unsigned char getReplyCode() const { return replyCode; }
 	
-	const bool isReplyOK() const { return replyCode == QQ_REQUEST_KEY_REPLY_OK; }
+	const bool isReplyOK() const { return replyCode == TQQ_REQUEST_KEY_REPLY_OK; }
 
         EvaRequestKeyReplyPacket &operator=(const EvaRequestKeyReplyPacket &rhs);
 protected:

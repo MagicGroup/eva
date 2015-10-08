@@ -20,17 +20,17 @@
 #ifndef EVACONNECTER_H 
 #define EVACONNECTER_H
 
-#include <qobject.h>
-#include <qptrlist.h>
-#include <qhostaddress.h>
-#include <qstring.h>
+#include <ntqobject.h>
+#include <ntqptrlist.h>
+#include <ntqhostaddress.h>
+#include <ntqstring.h>
 #include "evapacket.h"
 #include "evanetwork.h"
 
-class QTimer;
+class TQTimer;
 class InPacket;
 
-class EvaConnecter : public QObject {
+class EvaConnecter : public TQObject {
 	Q_OBJECT
 public:
 	EvaConnecter(EvaNetwork *network);
@@ -46,9 +46,9 @@ public:
 	bool isConnectionReady() const { return connectionReady; }
 	
         const EvaNetwork::Type getConnectionType() const { return connecter->connectionType(); }
-	const QHostAddress getSocketIp();
+	const TQHostAddress getSocketIp();
 	const unsigned int getSocketPort();
-	const QHostAddress &getHostAddress() const { return connecter->getHostAddress();}  // if it's Http Proxy, return the proxy's address
+	const TQHostAddress &getHostAddress() const { return connecter->getHostAddress();}  // if it's Http Proxy, return the proxy's address
 	const short getHostPort() const { return connecter->getHostPort(); }
 public slots:
 	void slotClientReady();
@@ -58,16 +58,16 @@ signals:
 	void networkException(int);
 	void packetException(int);
 	void sendMessage(unsigned int, bool);
-	void sendQunMessage(unsigned int, bool, QString);
+	void sendQunMessage(unsigned int, bool, TQString);
 	void newPacket();
 	void clientNotReady();
 private:
 	bool connectionReady;
 	bool m_IsDetecting;
 	bool isClientSetup;
-	QPtrList<InPacket> inPool;
-	QPtrList<OutPacket> outPool;
-	QTimer *timer;
+	TQPtrList<InPacket> inPool;
+	TQPtrList<OutPacket> outPool;
+	TQTimer *timer;
 	bool isConnected;
 	EvaNetwork *connecter;
 	

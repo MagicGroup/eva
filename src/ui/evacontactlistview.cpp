@@ -31,15 +31,15 @@
 #include "evauhmanager.h"
 #include "evaqunlist.h"
 
-#include <qdragobject.h>
-#include <qtextcodec.h>
-#include <qpopupmenu.h>
-#include <kmessagebox.h>
+#include <ntqdragobject.h>
+#include <ntqtextcodec.h>
+#include <ntqpopupmenu.h>
+#include <tdemessagebox.h>
 #include <kdebug.h>
-#include <klocale.h>
-#include <kconfig.h>
+#include <tdelocale.h>
+#include <tdeconfig.h>
 
-EvaBuddyItem::EvaBuddyItem( const QQFriend& buddy, QListViewItem *parent)
+EvaBuddyItem::EvaBuddyItem( const TQQFriend& buddy, TQListViewItem *parent)
     : EvaListViewItem(parent,""),
     m_buddy(buddy),
     m_numOfMessages(0)
@@ -94,10 +94,10 @@ void EvaBuddyItem::update( )
 	
 // 	if((m_buddy.isStatusChanged() && s != m_buddy.getStatus()) || !m_icon ){
 // 		m_buddy.inactiveEvaUpdateFlag(StatusChanged);
-		QPixmap *pixmap = images->getFaceByID(m_buddy.getFace(), false);
+		TQPixmap *pixmap = images->getFaceByID(m_buddy.getFace(), false);
 		switch(m_buddy.getStatus()){
-		case QQ_FRIEND_STATUS_ONLINE:
-		case QQ_FRIEND_STATUS_LEAVE:
+		case TQQ_FRIEND_STATUS_ONLINE:
+		case TQQ_FRIEND_STATUS_LEAVE:
 			if(m_buddy.hasUserHead()){
 				if(images->getUserHeadPixmap(m_buddy.getQQ())) {
 					pixmap = images->getUserHeadPixmap(m_buddy.getQQ());
@@ -107,8 +107,8 @@ void EvaBuddyItem::update( )
 			}else
 				pixmap =  images->getFaceByID(m_buddy.getFace(), true);
 			break;
-		case QQ_FRIEND_STATUS_OFFLINE:
-		case QQ_FRIEND_STATUS_INVISIBLE:
+		case TQQ_FRIEND_STATUS_OFFLINE:
+		case TQQ_FRIEND_STATUS_INVISIBLE:
 			if(m_buddy.hasUserHead()){
 				if(images->getUserHeadPixmap(m_buddy.getQQ())) {
 					pixmap = images->getUserHeadPixmap(m_buddy.getQQ(), true);
@@ -117,11 +117,11 @@ void EvaBuddyItem::update( )
 			break;
 		}
 	
-		if(m_buddy.getStatus() == QQ_FRIEND_STATUS_LEAVE){
-				QPixmap *na = images->getIcon("NA");
+		if(m_buddy.getStatus() == TQQ_FRIEND_STATUS_LEAVE){
+				TQPixmap *na = images->getIcon("NA");
 				if(na){
-//					QPixmap scaledNa = na->convertToImage().smoothScale(EvaMain::global->getFaceSize()/ 1.5);
-					QPixmap scaledNa = na->convertToImage().smoothScale(QSize(12,12));
+//					TQPixmap scaledNa = na->convertToImage().smoothScale(EvaMain::global->getFaceSize()/ 1.5);
+					TQPixmap scaledNa = na->convertToImage().smoothScale(TQSize(12,12));
 					copyBlt(pixmap, pixmap->width() - scaledNa.width(), pixmap->height()- scaledNa.height(), 
 									&scaledNa, 0, 0, scaledNa.width(), scaledNa.height());
 				} else
@@ -131,7 +131,7 @@ void EvaBuddyItem::update( )
 		if( !pixmap || pixmap->isNull())
 			pixmap = images->getFaceByID(0, false);
 	
-//		QPixmap head = pixmap->convertToImage().smoothScale(EvaMain::global->getFaceSize());
+//		TQPixmap head = pixmap->convertToImage().smoothScale(EvaMain::global->getFaceSize());
 //		updateIcon(&head);
 		updateIcon(pixmap);
 //   }
@@ -143,19 +143,19 @@ void EvaBuddyItem::update( )
 // 		m_buddy->inactiveEvaUpdateFlag(SignatureChanged);
 		setting->setNeedRepaint(false);
 		
-		QString nick = EvaTextFilter::filter(codec->toUnicode(m_buddy.getMemo().name.c_str()));
+		TQString nick = EvaTextFilter::filter(codec->toUnicode(m_buddy.getMemo().name.c_str()));
 		if(nick.isEmpty())
 			nick = EvaTextFilter::filter(codec->toUnicode(m_buddy.getNick().c_str()));
 
-		QString signature = EvaTextFilter::filter(codec->toUnicode(m_buddy.getSignature().c_str()));
+		TQString signature = EvaTextFilter::filter(codec->toUnicode(m_buddy.getSignature().c_str()));
 		
-		QString htmlName = nick;
+		TQString htmlName = nick;
 		if(setting->isShowSmileyInNickName()){
 						EvaHtmlParser parser;
 						parser.setAbsImagePath(EvaMain::images->getSmileyPath());
 						parser.convertToHtml(htmlName, false, true);
 		}
-		QColor showColor = Qt::black;
+		TQColor showColor = TQt::black;
 		if(m_numOfMessages){
 						if(setting->isBuddyFlashBold())
 										htmlName = ("<b>" + htmlName + "</b>");
@@ -174,9 +174,9 @@ void EvaBuddyItem::update( )
 						showColor = setting->getBuddyNameColor();
 		}
 		//printf("html name: %s\n", htmlName.ascii());
-		QString showName = "<nobr><font color=\"" + showColor.name() + "\">&nbsp;" + htmlName + "</font></nobr>";
+		TQString showName = "<nobr><font color=\"" + showColor.name() + "\">&nbsp;" + htmlName + "</font></nobr>";
 	
-		QString showSig = signature;
+		TQString showSig = signature;
 		if( !signature.isEmpty() ){
 						if(setting->isShowSignatureInSeperateLine())
 										showName += "<br>";
@@ -198,48 +198,48 @@ void EvaBuddyItem::update( )
 		listView()->repaintItem(this);
 }
 
-void EvaBuddyItem::updateIcon(QPixmap *p)
+void EvaBuddyItem::updateIcon(TQPixmap *p)
 {
 	if(!p) return;
 	if(m_icon) delete m_icon;
-	m_icon = new QPixmap( p->convertToImage().smoothScale(EvaMain::global->getFaceSize() ));
+	m_icon = new TQPixmap( p->convertToImage().smoothScale(EvaMain::global->getFaceSize() ));
 }
 
 
-QString EvaBuddyItem::tip()
+TQString EvaBuddyItem::tip()
 {
-	QString tip = "<qt>";
+	TQString tip = "<qt>";
 	//	if(getFriend()){
 	EvaIPSeeker ipAddr(EvaGlobal::getDirPath().latin1());
-	QTextCodec *codec = QTextCodec::codecForName("GB18030");
-	QString addr = codec->toUnicode(ipAddr.getIPLocation(m_buddy.getIP()).c_str());
+	TQTextCodec *codec = TQTextCodec::codecForName("GB18030");
+	TQString addr = codec->toUnicode(ipAddr.getIPLocation(m_buddy.getIP()).c_str());
 	if(addr.length()<4) addr = "0.0.0.0";
 
-	QString htmlName = EvaTextFilter::filter(codec->toUnicode(m_buddy.getNick().c_str()));
+	TQString htmlName = EvaTextFilter::filter(codec->toUnicode(m_buddy.getNick().c_str()));
 	EvaHtmlParser parser;
 	parser.setAbsImagePath(EvaMain::images->getSmileyPath());
 	parser.convertToHtml(htmlName, false, true);
-	QString signature = codec->toUnicode(m_buddy.getSignature().c_str());
+	TQString signature = codec->toUnicode(m_buddy.getSignature().c_str());
 	if(signature.length() > 40)
 		signature = signature.left(37) + "...";
 	//		if(!signature.isEmpty())
 	//			signature = "[" + signature + "]";
-	QString facePath = "<img src=\"" + EvaMain::images->getFacePath() + "/" +
-		QString::number(EvaMain::images->getFaceFileIndex(m_buddy.getFace())) + 
+	TQString facePath = "<img src=\"" + EvaMain::images->getFacePath() + "/" +
+		TQString::number(EvaMain::images->getFaceFileIndex(m_buddy.getFace())) + 
 		".png\"></img>";
 	if(m_buddy.hasUserHead() && EvaMain::uhManager){
-		QString uhFileName = EvaMain::uhManager->getFileName(m_buddy.getQQ());
+		TQString uhFileName = EvaMain::uhManager->getFileName(m_buddy.getQQ());
 		if(!uhFileName.isEmpty())
 			facePath = "<img src=\"" + uhFileName + "\"></img>";
 	}
-	QString level = "";
+	TQString level = "";
 	if ( m_buddy.getLevel() != 0)
 	{
 		int suns, moons, stars;
 		EvaUtil::calcSuns(m_buddy.getLevel(), &suns, &moons, &stars);
-		QString strSun =  "<img src=\"" + EvaMain::images->getIconFullPath("TIME_SUN") + "\"></img>";
-		QString strMoon = "<img src=\"" + EvaMain::images->getIconFullPath("TIME_MOON") + "\"></img>";
-		QString strStar = "<img src=\"" + EvaMain::images->getIconFullPath("TIME_STAR") + "\"></img>";
+		TQString strSun =  "<img src=\"" + EvaMain::images->getIconFullPath("TIME_SUN") + "\"></img>";
+		TQString strMoon = "<img src=\"" + EvaMain::images->getIconFullPath("TIME_MOON") + "\"></img>";
+		TQString strStar = "<img src=\"" + EvaMain::images->getIconFullPath("TIME_STAR") + "\"></img>";
 		for(int i=0; i<suns; i++){
 			level += strSun;
 		}
@@ -250,18 +250,18 @@ QString EvaBuddyItem::tip()
 			level += strStar;
 		}
 
-		level += "(" + QString::number(m_buddy.getLevel()) +")";
+		level += "(" + TQString::number(m_buddy.getLevel()) +")";
 	}
 
 	tip += "<table width = 250><tr><td width=50 align = left valign = top>" + facePath + 
 		"</td><td align = left valign = middle><b><font color = blue>" + htmlName + " (" +  
-		QString::number(m_buddy.getQQ()) + ") </font></b>" +
+		TQString::number(m_buddy.getQQ()) + ") </font></b>" +
 		"</nobr><br>"+ signature + "<br>" + 
 		level + "</td></tr></table>";
 	/*
 	   } else
 	   tip += "<b><font color = blue>" + EvaTextFilter::filter(codec->toUnicode(m_buddy.getNick().c_str())) + 
-	   " ("+ QString::number(m_buddy.getQQ()) +
+	   " ("+ TQString::number(m_buddy.getQQ()) +
 	   ") </font></b>";
 	   */
 	tip += "</qt>";
@@ -269,30 +269,30 @@ QString EvaBuddyItem::tip()
 }
 
 
-QString EvaBuddyItem::key( int, bool ) const
+TQString EvaBuddyItem::key( int, bool ) const
 {
-    QString prefix;
+    TQString prefix;
     if(m_numOfMessages)
         prefix = "0";
     else
         prefix = "1";
 
     switch(m_buddy.getStatus()){
-        case QQ_FRIEND_STATUS_ONLINE:
+        case TQQ_FRIEND_STATUS_ONLINE:
             prefix = "0";
             break;
-        case QQ_FRIEND_STATUS_LEAVE:
+        case TQQ_FRIEND_STATUS_LEAVE:
             prefix = "1";
             break;
-        case QQ_FRIEND_STATUS_INVISIBLE:
+        case TQQ_FRIEND_STATUS_INVISIBLE:
             prefix = "2";
             break;
-        case QQ_FRIEND_STATUS_OFFLINE:
+        case TQQ_FRIEND_STATUS_OFFLINE:
         default:
             prefix = "3";
     }
 
-    QString nick = EvaTextFilter::filter(codec->toUnicode(m_buddy.getMemo().name.c_str()));
+    TQString nick = EvaTextFilter::filter(codec->toUnicode(m_buddy.getMemo().name.c_str()));
     if(nick.isEmpty())
         nick = EvaTextFilter::filter(codec->toUnicode(m_buddy.getNick().c_str()));
     return prefix + nick;
@@ -302,7 +302,7 @@ QString EvaBuddyItem::key( int, bool ) const
 /** ============================================================== */
 
 
-EvaGroupItem::EvaGroupItem( int groupIndex, QListView *parent)
+EvaGroupItem::EvaGroupItem( int groupIndex, TQListView *parent)
     : EvaListViewItem(parent),
     m_groupIndex(groupIndex)
 {
@@ -324,35 +324,35 @@ bool EvaGroupItem::hasMessage()
 
 void EvaGroupItem::setOpen(bool o)
 {
-    KConfig* const config = EvaMain::user->config( "Group Open Status" );
+    TDEConfig* const config = EvaMain::user->config( "Group Open Status" );
     config->writeEntry(groupName(), o);
 
     EvaImageResource *images = EvaMain::images;
-    QPixmap *p;
+    TQPixmap *p;
     if(o){
             p = images->getIcon("OPEN");
     }else{
             p = images->getIcon("CLOSE");
     }
     updateIcon(p);
-    QListViewItem::setOpen(o);
+    TQListViewItem::setOpen(o);
 }
 	
 void EvaGroupItem::okRename( int col )
 {
-	QListViewItem::okRename(col);
+	TQListViewItem::okRename(col);
 	setRenameEnabled( 0, false );
 	update();
 }
 
 void EvaGroupItem::cancelRename( int col )
 {
-	QListViewItem::cancelRename(col);
+	TQListViewItem::cancelRename(col);
 	setRenameEnabled( 0, false );
 	update();
 }
 
-QString EvaGroupItem::groupName()
+TQString EvaGroupItem::groupName()
 {
     return codec->toUnicode(EvaMain::user->groupNameAtIndex(m_groupIndex).c_str());
 }
@@ -360,11 +360,11 @@ QString EvaGroupItem::groupName()
 const int EvaGroupItem::countOnlineFriends()
 {
 	EvaBuddyItem *item = dynamic_cast<EvaBuddyItem *>(firstChild());
-	char s = QQ_FRIEND_STATUS_OFFLINE;
+	char s = TQQ_FRIEND_STATUS_OFFLINE;
 	int numOnlineFriends = 0;
 	while(item){
 		s = item->getFriend().getStatus();
-		if(s==QQ_FRIEND_STATUS_ONLINE || s==QQ_FRIEND_STATUS_LEAVE)
+		if(s==TQQ_FRIEND_STATUS_ONLINE || s==TQQ_FRIEND_STATUS_LEAVE)
 			numOnlineFriends++;
 		item = dynamic_cast<EvaBuddyItem *>(item->nextSibling());
 	}
@@ -377,8 +377,8 @@ void EvaGroupItem::update()
 	int num = countOnlineFriends();
 
 	EvaUserSetting * setting = EvaMain::user->getSetting();
-	QColor showColor = Qt::black;
-	QString fontedName = groupName();
+	TQColor showColor = TQt::black;
+	TQString fontedName = groupName();
 	if(hasMessage()){
 		if(setting->isGroupFlashBold())
 			fontedName = ("<b>" + fontedName + "</b>");
@@ -396,10 +396,10 @@ void EvaGroupItem::update()
 			fontedName = ("<i>" + fontedName + "</i>");
 		showColor = setting->getGroupNameColor();
 	}
-	//QColor showColor = isMsgShown?setting->getGroupFlashColor():setting->getGroupNameColor();
-	QString showName = "<font color=\"" + showColor.name() + "\">&nbsp;" + fontedName + "</font>";
+	//TQColor showColor = isMsgShown?setting->getGroupFlashColor():setting->getGroupNameColor();
+	TQString showName = "<font color=\"" + showColor.name() + "\">&nbsp;" + fontedName + "</font>";
 
-	QString counting = QString::number(num) + "/" +  QString::number(childCount());
+	TQString counting = TQString::number(num) + "/" +  TQString::number(childCount());
 	if(setting->isGroupOnlineCountBold())
 		counting = ("<b>" + counting + "</b>");
 	if(setting->isGroupOnlineCountUnderline())
@@ -417,16 +417,16 @@ void EvaGroupItem::update()
 	}
 }
 
-QString EvaGroupItem::tip()
+TQString EvaGroupItem::tip()
 {
-	QString tip = "<table><tr><td align = left valign = middle><nobr><font color = red><b>"+
+	TQString tip = "<table><tr><td align = left valign = middle><nobr><font color = red><b>"+
 			i18n("Group") + ": </b></font>"+ groupName() +"</nobr><br><b><font color = red>"+ 
-			i18n("Members") +": </font></b>"+ QString::number(childCount()) +
+			i18n("Members") +": </font></b>"+ TQString::number(childCount()) +
 			"</td></tr></table>";
 	return tip;
 }
 
-void EvaGroupItem::setGroupName(const QString name)
+void EvaGroupItem::setGroupName(const TQString name)
 {
 	setText(name);
 	if(listView() && isVisible()){
@@ -435,16 +435,16 @@ void EvaGroupItem::setGroupName(const QString name)
 	}
 }
 
-QString EvaGroupItem::key( int, bool ) const
+TQString EvaGroupItem::key( int, bool ) const
 {
-	QString sKey = "";
+	TQString sKey = "";
 	if(m_groupIndex == 0)
 		sKey = "A";
 	else	if(m_groupIndex == EvaUser::getAnonymousIndex() || m_groupIndex == EvaUser::getBlackIndex())
 				sKey = "Z";
 			else
 				sKey = "B";
-        sKey += (QString("%1").arg(m_groupIndex, 3));
+        sKey += (TQString("%1").arg(m_groupIndex, 3));
 	return sKey;
 }
 
@@ -453,7 +453,7 @@ QString EvaGroupItem::key( int, bool ) const
 /** ============================================================== */
 
 
-EvaContactListView::EvaContactListView(QWidget *parent, const char *name, WFlags f)
+EvaContactListView::EvaContactListView(TQWidget *parent, const char *name, WFlags f)
 	: EvaListView(parent, name, f)
 {
 	setPaletteBackgroundPixmap(*EvaMain::images->getIcon("BACK_GROUND"));
@@ -462,20 +462,20 @@ EvaContactListView::EvaContactListView(QWidget *parent, const char *name, WFlags
 	initPopup();
 
 
-	QObject::connect(this, SIGNAL(itemRenamed(QListViewItem *, int)),
-			 		SLOT(slotItemRenamed(QListViewItem *, int)));
-	QObject::connect(this, SIGNAL(contextMenuRequested(QListViewItem *, const QPoint & , int)),
-					SLOT(slotContextMenu(QListViewItem *, const QPoint & , int)));
-	QObject::connect(this, SIGNAL(doubleClicked(QListViewItem *, const QPoint & , int)),
-					SLOT(slotBuddyDoubleClick(QListViewItem *, const QPoint & , int)));
-	QObject::connect(this, SIGNAL(clicked(QListViewItem *)),
-					SLOT(slotListViewClicked(QListViewItem *)));
+	TQObject::connect(this, SIGNAL(itemRenamed(TQListViewItem *, int)),
+			 		SLOT(slotItemRenamed(TQListViewItem *, int)));
+	TQObject::connect(this, SIGNAL(contextMenuRequested(TQListViewItem *, const TQPoint & , int)),
+					SLOT(slotContextMenu(TQListViewItem *, const TQPoint & , int)));
+	TQObject::connect(this, SIGNAL(doubleClicked(TQListViewItem *, const TQPoint & , int)),
+					SLOT(slotBuddyDoubleClick(TQListViewItem *, const TQPoint & , int)));
+	TQObject::connect(this, SIGNAL(clicked(TQListViewItem *)),
+					SLOT(slotListViewClicked(TQListViewItem *)));
 }
 
 void EvaContactListView::loadContacts()
 {
 	/// clear first
-//	QListView::clear();	
+//	TQListView::clear();	
 /*	
 	/// load groups
 	EvaUser *user =  EvaMain::user;
@@ -495,7 +495,7 @@ void EvaContactListView::loadContacts()
 	m_groups[user->getBlackIndex()] = new EvaGroupItem(user->getBlackIndex(), this);
 	/// load all contacts
 	FriendList *list = EvaMain::user->getFriends();
-	QQFriend *f = list->firstFriend();
+	TQQFriend *f = list->firstFriend();
 	while( f ){
 		m_contacts[f->getQQ()] = new EvaBuddyItem(*f, m_groups[f->getGroupIndex()]);
 		f = list->nextFriend();
@@ -505,7 +505,7 @@ void EvaContactListView::loadContacts()
 	else
 		showAll();
 	// update group online counts
-	KConfig* const config = EvaMain::user->config( "Group Open Status" );
+	TDEConfig* const config = EvaMain::user->config( "Group Open Status" );
 	std::map<int, EvaGroupItem *>::iterator it = m_groups.begin();
 	while(it != m_groups.end()){
 		it->second->setOpen( config->readBoolEntry(it->second->groupName(), false) );
@@ -539,7 +539,7 @@ void EvaContactListView::updateContacts()
 	/// load all contacts
 	int gIndex = 0;
 	FriendList *list = EvaMain::user->getFriends();
-	QQFriend *f = list->firstFriend();
+	TQQFriend *f = list->firstFriend();
 	while( f ){
 		if ((!m_contacts.count(f->getQQ()))&&(f->getQQ()!=0)){
 			gIndex = m_groups.count(f->getGroupIndex())?f->getGroupIndex():0;
@@ -554,7 +554,7 @@ void EvaContactListView::updateContacts()
 		showAll();
 	
 	// update group online counts
-	KConfig* const config = EvaMain::user->config( "Group Open Status" );
+	TDEConfig* const config = EvaMain::user->config( "Group Open Status" );
 	std::map<int, EvaGroupItem *>::iterator it = m_groups.begin();
 	while(it != m_groups.end()){
 		it->second->setOpen( config->readBoolEntry(it->second->groupName(), false) );
@@ -566,7 +566,7 @@ void EvaContactListView::updateContacts()
 void EvaContactListView::slotFaceSizeChanged()
 {
 	FriendList *list = EvaMain::user->getFriends();
-	QQFriend *f = list->firstFriend();
+	TQQFriend *f = list->firstFriend();
 	while( f ){
 		if (!m_contacts.count(f->getQQ()))
 			m_contacts[f->getQQ()] = new EvaBuddyItem(*f, m_groups[f->getGroupIndex()]);
@@ -582,7 +582,7 @@ void EvaContactListView::clear()
 {
 	m_groups.clear();
 	m_contacts.clear();
-	QListView::clear();
+	TQListView::clear();
 }
 
 void EvaContactListView::showAll()
@@ -598,12 +598,12 @@ void EvaContactListView::showAll()
 void EvaContactListView::showOnlineOnly()
 {
 	std::map<unsigned int, EvaBuddyItem *>::iterator iter;
-	QQFriend f;
-	char s = QQ_FRIEND_STATUS_OFFLINE;
+	TQQFriend f;
+	char s = TQQ_FRIEND_STATUS_OFFLINE;
 	for(iter = m_contacts.begin(); iter != m_contacts.end(); ++iter){
 		f = iter->second->getFriend();
 		s = f.getStatus();
-		if( s==QQ_FRIEND_STATUS_ONLINE || s==QQ_FRIEND_STATUS_LEAVE )
+		if( s==TQQ_FRIEND_STATUS_ONLINE || s==TQQ_FRIEND_STATUS_LEAVE )
 			iter->second->setVisible(true);
 		else
 			iter->second->setVisible(false);
@@ -612,15 +612,15 @@ void EvaContactListView::showOnlineOnly()
 	EvaMain::user->getSetting()->saveSettings();
 }
 
-void EvaContactListView::keyPressEvent( QKeyEvent *e )
+void EvaContactListView::keyPressEvent( TQKeyEvent *e )
 {
     EvaGroupItem *item = dynamic_cast<EvaGroupItem *>(currentItem());
-    if ( (e->key() == Qt::Key_F2) && item ){
+    if ( (e->key() == TQt::Key_F2) && item ){
         item->setGroupName(item->groupName());  // this is to elimate the online number statistics
         item->setRenameEnabled(0, true);
         item->startRename(0);
     }else
-        QListView::keyPressEvent(e);
+        TQListView::keyPressEvent(e);
 }
 
 void EvaContactListView::startDrag()
@@ -631,19 +631,19 @@ void EvaContactListView::startDrag()
     if(!group) return;
 
     closeAllGroups();
-    QDragObject *d = new QTextDrag(QString::number(item->QQ()), this);
+    TQDragObject *d = new TQTextDrag(TQString::number(item->QQ()), this);
     d->dragCopy();
 }
 
-void EvaContactListView::dragEnterEvent(QDragEnterEvent *event)
+void EvaContactListView::dragEnterEvent(TQDragEnterEvent *event)
 {
-    event->accept(QTextDrag::canDecode(event));
+    event->accept(TQTextDrag::canDecode(event));
 }
 
-void EvaContactListView::dropEvent(QDropEvent *event)
+void EvaContactListView::dropEvent(TQDropEvent *event)
 {
-    QPoint p(contentsToViewport(event->pos()));
-    QListViewItem *i=itemAt( p );
+    TQPoint p(contentsToViewport(event->pos()));
+    TQListViewItem *i=itemAt( p );
     if(!i) return;
     EvaGroupItem * group = dynamic_cast<EvaGroupItem *>(i);
     if(!group){
@@ -654,15 +654,15 @@ void EvaContactListView::dropEvent(QDropEvent *event)
     if( EvaUser::getAnonymousIndex() == group->groupIndex()) return; // cannot drop buddy in Anonymous group
 
 
-    QString text;
-    if(QTextDrag::decode(event, text)){
+    TQString text;
+    if(TQTextDrag::decode(event, text)){
         bool ok;
         unsigned int id = text.toUInt(&ok);
 
         // if id is in my friend list
         if( EvaMain::user->getFriends()->hasFriend(id)){
 
-		QQFriend* f = EvaMain::user->getFriends()->getFriend(id);
+		TQQFriend* f = EvaMain::user->getFriends()->getFriend(id);
             int index = f->getGroupIndex();
             // drop in same group
             if( index == group->groupIndex())
@@ -741,12 +741,12 @@ void EvaContactListView::friendStatusChanged(const int id)
 	}
 	EvaBuddyItem *b = it->second;
 	
-	QQFriend *f;
-	char s = QQ_FRIEND_STATUS_OFFLINE;
+	TQQFriend *f;
+	char s = TQQ_FRIEND_STATUS_OFFLINE;
 	f = EvaMain::user->getFriends()->getFriend(id);
 	if(!f->isStatusChanged()) return;
 	s = f->getStatus();
-	if( s==QQ_FRIEND_STATUS_ONLINE || s==QQ_FRIEND_STATUS_LEAVE )
+	if( s==TQQ_FRIEND_STATUS_ONLINE || s==TQQ_FRIEND_STATUS_LEAVE )
 		b->setVisible(true);
 	else if(EvaMain::user->getSetting()->isShowOnlineEnabled())
 		b->setVisible(false);
@@ -774,7 +774,7 @@ void EvaContactListView::newMessage(const unsigned int id)
 {
 	std::map<unsigned int,  EvaBuddyItem *>::iterator it = m_contacts.find(id);
 	if(it == m_contacts.end()) {
-		QQFriend *f = EvaMain::user->getFriends()->getFriend(id);
+		TQQFriend *f = EvaMain::user->getFriends()->getFriend(id);
 		if(!f) {
 			kdDebug() << "[EvaContactListView] no friend in the friend list" << endl;
 			return;
@@ -814,28 +814,28 @@ void EvaContactListView::deleteBuddy( const unsigned int id)
 void EvaContactListView::initPopup( )
 {
 	EvaImageResource *img = EvaMain::images;
-	m_groupMenu = new QPopupMenu();
-	m_groupMenu->insertItem(QIconSet(*(img->getIcon("RENAME"))), i18n("Rename"), this, SLOT(slotRenameGroup()), -1, 0);
-	m_groupMenu->insertItem(QIconSet(*(img->getIcon("ADD_GROUP"))), i18n( "New Group"), this, SLOT(slotNewGroup()), -1, 1);
-	m_groupMenu->insertItem(QIconSet(*(img->getIcon("DEL_GROUP"))), i18n( "Delele Group"), this, SLOT(slotDelGroup()), -1, 2);	
+	m_groupMenu = new TQPopupMenu();
+	m_groupMenu->insertItem(TQIconSet(*(img->getIcon("RENAME"))), i18n("Rename"), this, SLOT(slotRenameGroup()), -1, 0);
+	m_groupMenu->insertItem(TQIconSet(*(img->getIcon("ADD_GROUP"))), i18n( "New Group"), this, SLOT(slotNewGroup()), -1, 1);
+	m_groupMenu->insertItem(TQIconSet(*(img->getIcon("DEL_GROUP"))), i18n( "Delele Group"), this, SLOT(slotDelGroup()), -1, 2);	
 	m_groupMenu->insertSeparator(-1);
-	//m_groupMenu->insertItem(QIconSet(*qun), i18n( "Create Qun"), this, SLOT(slotQunCreate()), -1);
+	//m_groupMenu->insertItem(TQIconSet(*qun), i18n( "Create Qun"), this, SLOT(slotQunCreate()), -1);
 	//m_groupMenu->insertSeparator(-1);
-	m_groupMenu->insertItem(QIconSet(*(img->getIcon("SHOW_ONLINE_BUDDIES"))), i18n( "Show Online"), this, 
+	m_groupMenu->insertItem(TQIconSet(*(img->getIcon("SHOW_ONLINE_BUDDIES"))), i18n( "Show Online"), this, 
 				SLOT(showOnlineOnly()), -1);
-	m_groupMenu->insertItem(QIconSet(*(img->getIcon("SHOW_ALL_BUDDIES"))), i18n( "Show All"), this, SLOT(showAll()), -1);
+	m_groupMenu->insertItem(TQIconSet(*(img->getIcon("SHOW_ALL_BUDDIES"))), i18n( "Show All"), this, SLOT(showAll()), -1);
 
-	m_buddyMenu = new QPopupMenu();
-	m_buddyMenu->insertItem(QIconSet(*(img->getIcon("CHAT"))), i18n( "Chat"), this, SLOT(slotIMChat()), -1);
-	m_buddyMenu->insertItem(QIconSet(*(img->getIcon("FILE_TRANSFER"))), i18n( "Send File"), this, SLOT(slotSendFile()), -1);
+	m_buddyMenu = new TQPopupMenu();
+	m_buddyMenu->insertItem(TQIconSet(*(img->getIcon("CHAT"))), i18n( "Chat"), this, SLOT(slotIMChat()), -1);
+	m_buddyMenu->insertItem(TQIconSet(*(img->getIcon("FILE_TRANSFER"))), i18n( "Send File"), this, SLOT(slotSendFile()), -1);
 	m_buddyMenu->insertSeparator(-1);
-	m_buddyMenu->insertItem(QIconSet(*(img->getIcon("TIME_SUN"))), i18n( "Update Level"), this, SLOT(slotUpdataLevel()), -1);
-	m_buddyMenu->insertItem(QIconSet(*(img->getIcon("DETAILS"))), i18n( "Details"), this, SLOT(slotDetails()), -1);
-	m_buddyMenu->insertItem(QIconSet(*(img->getIcon("MEMO"))), i18n("Modify Memo"), this, SLOT(slotModifyMemo()),-1);
-	m_buddyMenu->insertItem(QIconSet(*(img->getIcon("HISTORY"))), i18n( "History"), this, SLOT(slotHistory()), -1);
+	m_buddyMenu->insertItem(TQIconSet(*(img->getIcon("TIME_SUN"))), i18n( "Update Level"), this, SLOT(slotUpdataLevel()), -1);
+	m_buddyMenu->insertItem(TQIconSet(*(img->getIcon("DETAILS"))), i18n( "Details"), this, SLOT(slotDetails()), -1);
+	m_buddyMenu->insertItem(TQIconSet(*(img->getIcon("MEMO"))), i18n("Modify Memo"), this, SLOT(slotModifyMemo()),-1);
+	m_buddyMenu->insertItem(TQIconSet(*(img->getIcon("HISTORY"))), i18n( "History"), this, SLOT(slotHistory()), -1);
 	m_buddyMenu->insertSeparator(-1);
 	
-	m_buddyMenu->insertItem(QIconSet(*(img->getIcon("DEL_BUDDY"))), i18n( "Delete Buddy"), this, SLOT(slotDelBuddy()), -1);
+	m_buddyMenu->insertItem(TQIconSet(*(img->getIcon("DEL_BUDDY"))), i18n( "Delete Buddy"), this, SLOT(slotDelBuddy()), -1);
 }
 
 void EvaContactListView::slotRenameGroup( )
@@ -850,7 +850,7 @@ void EvaContactListView::slotRenameGroup( )
 
 void EvaContactListView::slotNewGroup( )
 {
-	QString name(i18n( "new group"));
+	TQString name(i18n( "new group"));
 	std::string gname = std::string(codec->fromUnicode(name));
 	EvaMain::user->newGroup( gname );
 	
@@ -872,7 +872,7 @@ void EvaContactListView::slotDelGroup( )
 	if(!g) return;
 	if(g->groupIndex() == 0) return;   // first group cannot be deleted
 	if(g->childCount()){
-		QMessageBox::information( this, i18n( "Delete group"),
+		TQMessageBox::information( this, i18n( "Delete group"),
 			i18n( "Only empty group can be deleted.\n\n"));
 		return;
 	}
@@ -929,7 +929,7 @@ void EvaContactListView::slotDelBuddy( )
 {
 	EvaBuddyItem *b = dynamic_cast<EvaBuddyItem *>(selectedItem());
 	if(!b) return;
-	QString info = QString(i18n("Delete friend \"%1\" from your list, are you sure?\n\n")).arg(b->text(0));
+	TQString info = TQString(i18n("Delete friend \"%1\" from your list, are you sure?\n\n")).arg(b->text(0));
 	
 	if(KMessageBox::Cancel == KMessageBox::warningContinueCancel( this,
 			info, i18n( "Delete a friend" ), i18n( "Deleting" ) ))
@@ -944,11 +944,11 @@ void EvaContactListView::slotModifyMemo( )
 	emit requestModifyMemo(b->QQ());
 }
 
-void EvaContactListView::slotBuddyDoubleClick( QListViewItem *item, const QPoint &, int )
+void EvaContactListView::slotBuddyDoubleClick( TQListViewItem *item, const TQPoint &, int )
 {
 	EvaBuddyItem *b = dynamic_cast<EvaBuddyItem *>(item);
 	if(b){
-		EvaGroupItem *group = dynamic_cast<EvaGroupItem *>(((QListViewItem*)b)->parent());
+		EvaGroupItem *group = dynamic_cast<EvaGroupItem *>(((TQListViewItem*)b)->parent());
 		if(!group) return;
 		b->takeMessage();
 		group->update();
@@ -956,7 +956,7 @@ void EvaContactListView::slotBuddyDoubleClick( QListViewItem *item, const QPoint
 	}
 }
 
-void EvaContactListView::slotListViewClicked( QListViewItem * item)
+void EvaContactListView::slotListViewClicked( TQListViewItem * item)
 {
 	EvaGroupItem *g = dynamic_cast<EvaGroupItem *>(item);
 	if(g && g->childCount() ){
@@ -964,7 +964,7 @@ void EvaContactListView::slotListViewClicked( QListViewItem * item)
 	}
 }
 
-void EvaContactListView::slotContextMenu( QListViewItem *item, const QPoint &p, int col)
+void EvaContactListView::slotContextMenu( TQListViewItem *item, const TQPoint &p, int col)
 {
 	if(col!=0) return;
 	EvaGroupItem *g = dynamic_cast<EvaGroupItem *>(item);
@@ -991,7 +991,7 @@ void EvaContactListView::slotContextMenu( QListViewItem *item, const QPoint &p, 
 	}
 }
 
-void EvaContactListView::slotItemRenamed( QListViewItem * item, int )
+void EvaContactListView::slotItemRenamed( TQListViewItem * item, int )
 {
 	EvaGroupItem *g = dynamic_cast<EvaGroupItem *>(item);
 	if(!g) return;
@@ -1003,7 +1003,7 @@ void EvaContactListView::buddyAdded( const unsigned int id )
 {
 	/// load all contacts
 	
-	std::map<unsigned int, QQFriend> list = EvaMain::user->getFriendList().getAllFriendsMap();
+	std::map<unsigned int, TQQFriend> list = EvaMain::user->getFriendList().getAllFriendsMap();
 
 	if (m_groups.size() == 0)
 		return;
@@ -1011,7 +1011,7 @@ void EvaContactListView::buddyAdded( const unsigned int id )
 	printf("add friend: %d\n", id);
 	if( list.count(id) ){
 
-		QQFriend f = list[id];
+		TQQFriend f = list[id];
 		printf("add friend: %d\n", f.getQQ());
 		m_contacts[f.getQQ()] = new EvaBuddyItem(f, m_groups[f.getGroupIndex()]);
 		m_groups[f.getGroupIndex()]->update();
@@ -1026,17 +1026,17 @@ void EvaContactListView::buddyAdded( const unsigned int id )
 /// * ================================================ */
 
 
-EvaQunListViewItem::EvaQunListViewItem( Qun * q, QListView * parent )
+EvaQunListViewItem::EvaQunListViewItem( Qun * q, TQListView * parent )
     : EvaListViewItem(parent),
 	m_qun(q),
 	m_numOfMessages(0)
 {
 	m_type = E_LVIQun;
-	updateIcon( EvaMain::images->getIcon("QUN"));
+	updateIcon( EvaMain::images->getIcon("TQUN"));
 	update();
 }
 
-const QString EvaQunListViewItem::name( )
+const TQString EvaQunListViewItem::name( )
 {
 	return codec->toUnicode(m_qun->getDetails().getName().c_str());
 }
@@ -1057,8 +1057,8 @@ void EvaQunListViewItem::getMessage( )
 void EvaQunListViewItem::update( )
 {
 	EvaUserSetting * setting = EvaMain::user->getSetting();
-	QString fontedName = name();
-	QColor showColor = Qt::black;
+	TQString fontedName = name();
+	TQColor showColor = TQt::black;
 	if(m_numOfMessages){
 		if(setting->isQunFlashBold())
 			fontedName = ("<b>" + fontedName + "</b>");
@@ -1077,10 +1077,10 @@ void EvaQunListViewItem::update( )
 		showColor = setting->getQunNameColor();
 	}
 	
-	QString showName = "<font color=\"" + showColor.name() + "\">&nbsp;" + fontedName + "</font>";
+	TQString showName = "<font color=\"" + showColor.name() + "\">&nbsp;" + fontedName + "</font>";
 
 	if(m_numOfMessages)
-		showName += ("&nbsp;&nbsp;("+QString::number(m_numOfMessages) +")");
+		showName += ("&nbsp;&nbsp;("+TQString::number(m_numOfMessages) +")");
 	setText("<nobr>" + showName + "</nobr>" );
 	if(listView() && isVisible())
 		listView()->repaintItem(this);
@@ -1088,16 +1088,16 @@ void EvaQunListViewItem::update( )
 }
 
 
-QString EvaQunListViewItem::tip( )
+TQString EvaQunListViewItem::tip( )
 {
-	QString decription = "";
+	TQString decription = "";
 	if(m_qun && m_qun->getDetails().getQunID() ){
 		decription = codec->toUnicode(m_qun->getDetails().getDescription().c_str());
 	}else
 		printf("--------------------------No Qun description\n");
-	QString tip = "<table><tr><td align = left valign = middle><font color = blue><b>"+
+	TQString tip = "<table><tr><td align = left valign = middle><font color = blue><b>"+
 			i18n("Qun name") + ": </b></font>"+ name() +"<br><b><font color = blue>"+ 
-			i18n("Qun Number") + ": </b></font>"+ QString::number(m_qun->getDetails().getExtID()) +"<br><br><b><font color = blue>" + 
+			i18n("Qun Number") + ": </b></font>"+ TQString::number(m_qun->getDetails().getExtID()) +"<br><br><b><font color = blue>" + 
 			i18n("Qun Description") +": </font></b><br>  "+ decription + "</td></tr></table>";
 	return tip;
 }
@@ -1111,7 +1111,7 @@ const unsigned int EvaQunListViewItem::getQunID( ) const
 /// * ================================================ */
 
 
-EvaQunsListView::EvaQunsListView( QWidget * parent, const char * name, WFlags f )
+EvaQunsListView::EvaQunsListView( TQWidget * parent, const char * name, WFlags f )
 	: EvaListView(parent, name, f)
 {
 	setPaletteBackgroundPixmap(*EvaMain::images->getIcon("BACK_GROUND"));
@@ -1120,27 +1120,27 @@ EvaQunsListView::EvaQunsListView( QWidget * parent, const char * name, WFlags f 
 	initPopup();
 
 
-// 	QObject::connect(this, SIGNAL(itemRenamed(QListViewItem *, int)),
-// 					SLOT((QListViewItem *, int)));
-	QObject::connect(this, SIGNAL(contextMenuRequested(QListViewItem *, const QPoint & , int)),
-					SLOT(slotContextMenu(QListViewItem *, const QPoint & , int)));
-	QObject::connect(this, SIGNAL(doubleClicked(QListViewItem *, const QPoint & , int)),
-					SLOT(slotQunDoubleClick(QListViewItem *, const QPoint & , int)));
-// 	QObject::connect(this, SIGNAL(clicked(QListViewItem *)),
-// 					SLOT(slotListViewClicked(QListViewItem *)));
+// 	TQObject::connect(this, SIGNAL(itemRenamed(TQListViewItem *, int)),
+// 					SLOT((TQListViewItem *, int)));
+	TQObject::connect(this, SIGNAL(contextMenuRequested(TQListViewItem *, const TQPoint & , int)),
+					SLOT(slotContextMenu(TQListViewItem *, const TQPoint & , int)));
+	TQObject::connect(this, SIGNAL(doubleClicked(TQListViewItem *, const TQPoint & , int)),
+					SLOT(slotQunDoubleClick(TQListViewItem *, const TQPoint & , int)));
+// 	TQObject::connect(this, SIGNAL(clicked(TQListViewItem *)),
+// 					SLOT(slotListViewClicked(TQListViewItem *)));
 }
 
 void EvaQunsListView::initPopup( )
 {
 	EvaImageResource *img = EvaMain::images;
-	m_popup =  new QPopupMenu();
-	m_popup->insertItem(QIconSet(*(img->getIcon("CHAT"))), i18n( "Chat"), this, SLOT(slotIMQunChat()), -1);
+	m_popup =  new TQPopupMenu();
+	m_popup->insertItem(TQIconSet(*(img->getIcon("CHAT"))), i18n( "Chat"), this, SLOT(slotIMQunChat()), -1);
 	m_popup->insertSeparator(-1);
-	m_popup->insertItem(QIconSet(*(img->getIcon("DETAILS"))), i18n( "Details"), this, SLOT(slotQunDetails()), -1);
-	m_popup->insertItem(QIconSet(*(img->getIcon("HISTORY"))), i18n( "History"), this, SLOT(slotQunHistory()), -1);
+	m_popup->insertItem(TQIconSet(*(img->getIcon("DETAILS"))), i18n( "Details"), this, SLOT(slotQunDetails()), -1);
+	m_popup->insertItem(TQIconSet(*(img->getIcon("HISTORY"))), i18n( "History"), this, SLOT(slotQunHistory()), -1);
 	m_popup->insertSeparator(-1);
-	m_popup->insertItem(QIconSet(*(img->getIcon("QUN"))), i18n( "Create Qun"), this, SIGNAL(requestQunCreate()), -1);
-	m_popup->insertItem(QIconSet(*(img->getIcon("QUN_EXIT"))), i18n( "Exit Qun" ), this, SLOT(slotQunExit()), -1);
+	m_popup->insertItem(TQIconSet(*(img->getIcon("TQUN"))), i18n( "Create Qun"), this, SIGNAL(requestQunCreate()), -1);
+	m_popup->insertItem(TQIconSet(*(img->getIcon("TQUN_EXIT"))), i18n( "Exit Qun" ), this, SLOT(slotQunExit()), -1);
 }
 
 void EvaQunsListView::slotIMQunChat( )
@@ -1171,7 +1171,7 @@ void EvaQunsListView::slotQunExit( )
 	emit requestQunExit(q->getQunID());
 }
 
-void EvaQunsListView::slotContextMenu( QListViewItem *item, const QPoint &p, int col)
+void EvaQunsListView::slotContextMenu( TQListViewItem *item, const TQPoint &p, int col)
 {
 	if(col!=0) return;
 	EvaQunListViewItem *q = dynamic_cast<EvaQunListViewItem *>(item);
@@ -1188,7 +1188,7 @@ void EvaQunsListView::slotContextMenu( QListViewItem *item, const QPoint &p, int
 	}
 }
 
-void EvaQunsListView::slotQunDoubleClick( QListViewItem *item, const QPoint &, int )
+void EvaQunsListView::slotQunDoubleClick( TQListViewItem *item, const TQPoint &, int )
 {
 	EvaQunListViewItem *q = dynamic_cast<EvaQunListViewItem *>(item);
 	if(q){
@@ -1200,7 +1200,7 @@ void EvaQunsListView::slotQunDoubleClick( QListViewItem *item, const QPoint &, i
 
 void EvaQunsListView::loadAllQuns( )
 {	
-	QListView::clear();
+	TQListView::clear();
 
 	EvaUser *user = EvaMain::user;
 	if(!user) return;
@@ -1275,7 +1275,7 @@ void EvaQunsListView::addQun( const unsigned int id )
 
 
 
-EvaRecentContactLVItem::EvaRecentContactLVItem( const bool isQun, QQFriend * f, Qun * q, QListView * parent )
+EvaRecentContactLVItem::EvaRecentContactLVItem( const bool isQun, TQQFriend * f, Qun * q, TQListView * parent )
 	: EvaListViewItem(parent),
 	m_qun(q),
 	m_buddy(f),
@@ -1284,7 +1284,7 @@ EvaRecentContactLVItem::EvaRecentContactLVItem( const bool isQun, QQFriend * f, 
 {
 	if(isQun){
 		m_type = E_LVIQun;
-		updateIcon( EvaMain::images->getIcon("QUNS"));
+		updateIcon( EvaMain::images->getIcon("TQUNS"));
 	} else {
 		m_type = E_LVIBuddy;
 	}
@@ -1313,7 +1313,7 @@ void EvaRecentContactLVItem::getMessage( )
 	update();
 }
 
-const QString EvaRecentContactLVItem::QunName( )
+const TQString EvaRecentContactLVItem::QunName( )
 {
 	if(!isQun()) return "";
 	return codec->toUnicode(m_qun->getDetails().getName().c_str());
@@ -1342,22 +1342,22 @@ void EvaRecentContactLVItem::buddyUpdate( )
 
     EvaImageResource *images = EvaMain::images;
 
-    QString nick = EvaTextFilter::filter(codec->toUnicode(m_buddy->getMemo().name.c_str()));
+    TQString nick = EvaTextFilter::filter(codec->toUnicode(m_buddy->getMemo().name.c_str()));
     if(nick.isEmpty())
         nick = EvaTextFilter::filter(codec->toUnicode(m_buddy->getNick().c_str()));
-    QString signature = EvaTextFilter::filter(codec->toUnicode(m_buddy->getSignature().c_str()));
+    TQString signature = EvaTextFilter::filter(codec->toUnicode(m_buddy->getSignature().c_str()));
 
-    QPixmap *pixmap = images->getFaceByID(m_buddy->getFace(), false);
+    TQPixmap *pixmap = images->getFaceByID(m_buddy->getFace(), false);
     switch(m_buddy->getStatus()){
-    case QQ_FRIEND_STATUS_ONLINE:
-    case QQ_FRIEND_STATUS_LEAVE:
+    case TQQ_FRIEND_STATUS_ONLINE:
+    case TQQ_FRIEND_STATUS_LEAVE:
             if(m_buddy->hasUserHead()){
                 pixmap = images->getUserHeadPixmap(m_buddy->getQQ());
             }else
                 pixmap =  images->getFaceByID(m_buddy->getFace(), true);
             break;
-    case QQ_FRIEND_STATUS_OFFLINE:
-    case QQ_FRIEND_STATUS_INVISIBLE:
+    case TQQ_FRIEND_STATUS_OFFLINE:
+    case TQQ_FRIEND_STATUS_INVISIBLE:
             if(m_buddy->hasUserHead()){
                 pixmap = images->getUserHeadPixmap(m_buddy->getQQ(), true);
             }
@@ -1367,25 +1367,25 @@ void EvaRecentContactLVItem::buddyUpdate( )
 		if(!pixmap || pixmap->isNull())
 			pixmap = images->getFaceByID(0);
 		
-    if(m_buddy->getStatus() == QQ_FRIEND_STATUS_LEAVE){
-			QPixmap *na = images->getIcon("NA");
+    if(m_buddy->getStatus() == TQQ_FRIEND_STATUS_LEAVE){
+			TQPixmap *na = images->getIcon("NA");
 			copyBlt(pixmap, pixmap->width() - na->width(), pixmap->height()- na->height(), 
 							na, 0, 0, na->width(), na->height());
     }
 
-//    QPixmap head = pixmap->convertToImage().smoothScale(EvaMain::global->getFaceSize());
+//    TQPixmap head = pixmap->convertToImage().smoothScale(EvaMain::global->getFaceSize());
 //		updateIcon(&head);
     updateIcon(pixmap);
 
 
     EvaUserSetting * setting = EvaMain::user->getSetting();
-    QString htmlName = nick;
+    TQString htmlName = nick;
     if(setting->isShowSmileyInNickName()){
             EvaHtmlParser parser;
             parser.setAbsImagePath(EvaMain::images->getSmileyPath());
             parser.convertToHtml(htmlName, false, true);
     }
-    QColor showColor = Qt::black;
+    TQColor showColor = TQt::black;
     if(m_numOfMessages){
             if(setting->isBuddyFlashBold())
                     htmlName = ("<b>" + htmlName + "</b>");
@@ -1404,9 +1404,9 @@ void EvaRecentContactLVItem::buddyUpdate( )
             showColor = setting->getBuddyNameColor();
     }
     //printf("html name: %s\n", htmlName.ascii());
-    QString showName = "<nobr><font color=\"" + showColor.name() + "\">&nbsp;" + htmlName + "</font></nobr>";
+    TQString showName = "<nobr><font color=\"" + showColor.name() + "\">&nbsp;" + htmlName + "</font></nobr>";
 
-    QString showSig = signature;
+    TQString showSig = signature;
     if( !signature.isEmpty() ){
             if(setting->isShowSignatureInSeperateLine())
                     showName += "<br>";
@@ -1430,17 +1430,17 @@ void EvaRecentContactLVItem::buddyUpdate( )
 void EvaRecentContactLVItem::qunUpdate( )
 {
 	if(m_icon && m_icon->size() != EvaMain::global->getFaceSize()){
-		QPixmap *pixmap = EvaMain::images->getIcon("QUNS");
+		TQPixmap *pixmap = EvaMain::images->getIcon("TQUNS");
 		if(pixmap){
-  //		QPixmap head = pixmap->convertToImage().smoothScale(EvaMain::global->getFaceSize());
+  //		TQPixmap head = pixmap->convertToImage().smoothScale(EvaMain::global->getFaceSize());
 //			updateIcon(&head);
 			updateIcon(pixmap);
 		}
 	}
 	
 	EvaUserSetting * setting = EvaMain::user->getSetting();
-	QString fontedName = QunName();
-	QColor showColor = Qt::black;
+	TQString fontedName = QunName();
+	TQColor showColor = TQt::black;
 	if(m_numOfMessages){
 		if(setting->isQunFlashBold())
 			fontedName = ("<b>" + fontedName + "</b>");
@@ -1459,10 +1459,10 @@ void EvaRecentContactLVItem::qunUpdate( )
 		showColor = setting->getQunNameColor();
 	}
 	
-	QString showName = "<font color=\"" + showColor.name() + "\">&nbsp;" + fontedName + "</font>";
+	TQString showName = "<font color=\"" + showColor.name() + "\">&nbsp;" + fontedName + "</font>";
 	
 	if(m_numOfMessages)
-		showName += ("&nbsp;&nbsp;("+QString::number(m_numOfMessages) +")");
+		showName += ("&nbsp;&nbsp;("+TQString::number(m_numOfMessages) +")");
 
 	showName = "<nobr>" + showName + "</nobr>";
 	//just to make sure Qun item got the same height as Buddy item
@@ -1476,7 +1476,7 @@ void EvaRecentContactLVItem::qunUpdate( )
 	//widthChanged( 0 );
 }
 
-QString EvaRecentContactLVItem::tip( )
+TQString EvaRecentContactLVItem::tip( )
 {
 	if(isQun())
 		return qunTip();
@@ -1484,40 +1484,40 @@ QString EvaRecentContactLVItem::tip( )
 		return buddyTip();
 }
 
-QString EvaRecentContactLVItem::buddyTip( )
+TQString EvaRecentContactLVItem::buddyTip( )
 {
-	QString tip = "<qt>";
+	TQString tip = "<qt>";
 	if(m_buddy){
 		EvaIPSeeker ipAddr(EvaGlobal::getDirPath().latin1());
-		QTextCodec *codec = QTextCodec::codecForName("GB18030");
-		QString addr = codec->toUnicode(ipAddr.getIPLocation(m_buddy->getIP()).c_str());
+		TQTextCodec *codec = TQTextCodec::codecForName("GB18030");
+		TQString addr = codec->toUnicode(ipAddr.getIPLocation(m_buddy->getIP()).c_str());
 		if(addr.length()<4) addr = "0.0.0.0";
 		
-		QString htmlName = EvaTextFilter::filter(codec->toUnicode(m_buddy->getNick().c_str()));
+		TQString htmlName = EvaTextFilter::filter(codec->toUnicode(m_buddy->getNick().c_str()));
 		EvaHtmlParser parser;
 		parser.setAbsImagePath(EvaMain::images->getSmileyPath());
 		parser.convertToHtml(htmlName, false, true);
-		QString signature = codec->toUnicode(m_buddy->getSignature().c_str());
+		TQString signature = codec->toUnicode(m_buddy->getSignature().c_str());
 		if(signature.length() > 40)
 			signature = signature.left(37) + "...";
 //		if(!signature.isEmpty())
 //			signature = "[" + signature + "]";
-		QString facePath = "<img src=\"" + EvaMain::images->getFacePath() + "/" +
-				QString::number(EvaMain::images->getFaceFileIndex(m_buddy->getFace())) + 
+		TQString facePath = "<img src=\"" + EvaMain::images->getFacePath() + "/" +
+				TQString::number(EvaMain::images->getFaceFileIndex(m_buddy->getFace())) + 
 				".png\"></img>";
 		if(m_buddy->hasUserHead() && EvaMain::uhManager){
-			QString uhFileName = EvaMain::uhManager->getFileName(m_buddy->getQQ());
+			TQString uhFileName = EvaMain::uhManager->getFileName(m_buddy->getQQ());
 			if(!uhFileName.isEmpty())
 				facePath = "<img src=\"" + uhFileName + "\"></img>";
 		}
-		QString level = "";
+		TQString level = "";
 		if ( m_buddy->getLevel() != 0)
 		{
 			int suns, moons, stars;
 			EvaUtil::calcSuns(m_buddy->getLevel(), &suns, &moons, &stars);
-			QString strSun =  "<img src=\"" + EvaMain::images->getIconFullPath("TIME_SUN") + "\"></img>";
-			QString strMoon = "<img src=\"" + EvaMain::images->getIconFullPath("TIME_MOON") + "\"></img>";
-			QString strStar = "<img src=\"" + EvaMain::images->getIconFullPath("TIME_STAR") + "\"></img>";
+			TQString strSun =  "<img src=\"" + EvaMain::images->getIconFullPath("TIME_SUN") + "\"></img>";
+			TQString strMoon = "<img src=\"" + EvaMain::images->getIconFullPath("TIME_MOON") + "\"></img>";
+			TQString strStar = "<img src=\"" + EvaMain::images->getIconFullPath("TIME_STAR") + "\"></img>";
 			for(int i=0; i<suns; i++){
 				level += strSun;
 			}
@@ -1528,27 +1528,27 @@ QString EvaRecentContactLVItem::buddyTip( )
 				level += strStar;
 			}
 
-			level += "(" + QString::number(m_buddy->getLevel()) +")";
+			level += "(" + TQString::number(m_buddy->getLevel()) +")";
 		}
 		
 		
 		tip += "<table width = 250><tr><td width=50 align = left valign = top>" + facePath + 
 			"</td><td align = left valign = middle><b><font color = blue>" + htmlName + " (" +  
-		QString::number(m_buddy->getQQ()) + ") </font></b>" +
+		TQString::number(m_buddy->getQQ()) + ") </font></b>" +
 			"</nobr><br>"+ signature + "<br>" + 
 			level + "</td></tr></table>";
 
 	} else
 		tip += "<b><font color = blue>" + EvaTextFilter::filter(codec->toUnicode(m_buddy->getNick().c_str())) + 
-			" ("+ QString::number(m_buddy->getQQ()) +
+			" ("+ TQString::number(m_buddy->getQQ()) +
 			") </font></b>";
 /*
 		int suns, moons, stars;
 		EvaUtil::calcSuns(m_buddy->getLevel(), &suns, &moons, &stars);
-		QString strSun =  "<img src=\"" + EvaMain::images->getIconFullPath("TIME_SUN") + "\"></img>";
-		QString strMoon = "<img src=\"" + EvaMain::images->getIconFullPath("TIME_MOON") + "\"></img>";
-		QString strStar = "<img src=\"" + EvaMain::images->getIconFullPath("TIME_STAR") + "\"></img>";
-		QString level;
+		TQString strSun =  "<img src=\"" + EvaMain::images->getIconFullPath("TIME_SUN") + "\"></img>";
+		TQString strMoon = "<img src=\"" + EvaMain::images->getIconFullPath("TIME_MOON") + "\"></img>";
+		TQString strStar = "<img src=\"" + EvaMain::images->getIconFullPath("TIME_STAR") + "\"></img>";
+		TQString level;
 		for(int i=0; i<suns; i++){
 			level += strSun;
 		}
@@ -1561,34 +1561,34 @@ QString EvaRecentContactLVItem::buddyTip( )
 		
 		tip += "<table width = 200><tr><td width=50 align = center valign = middle>" + facePath + 
 			"</td><td align = left valign = middle><b><font color = blue>"+
-			i18n("QQ") +": </font></b>"+ QString::number(m_buddy->getQQ()) +"<br><nobr><b><font color = blue>"+
+			i18n("QQ") +": </font></b>"+ TQString::number(m_buddy->getQQ()) +"<br><nobr><b><font color = blue>"+
 			i18n("Nickname:") + " </font></b>"+htmlName +"</nobr><br>"+ signature + "<br><b><font color = blue>"+ 
-			i18n("Level") +": </font></b>"+ level + "  (" + QString::number(m_buddy->getLevel()) +")<br><b><font color = blue>"+
+			i18n("Level") +": </font></b>"+ level + "  (" + TQString::number(m_buddy->getLevel()) +")<br><b><font color = blue>"+
 			i18n("IP:") +" </font></b>"+ addr + "</td></tr></table>";
 	} else
 		tip += "<b><font color = blue>" + 
-			i18n("QQ") +": </font></b><br>"+ QString::number(m_buddy->getQQ()) +
+			i18n("QQ") +": </font></b><br>"+ TQString::number(m_buddy->getQQ()) +
 			i18n("Nickname:") +" </font></b>"+ EvaTextFilter::filter(codec->toUnicode(m_buddy->getNick().c_str())) +"<br><b><font color = blue>"; */
 	tip += "</qt>";
 	return tip;
 }
 
-QString EvaRecentContactLVItem::qunTip( )
+TQString EvaRecentContactLVItem::qunTip( )
 {
-	QString decription = "";
+	TQString decription = "";
 	if(m_qun && m_qun->getDetails().getQunID() ){
 		decription = codec->toUnicode(m_qun->getDetails().getDescription().c_str());
 	}
-	QString tip = "<table><tr><td align = left valign = middle><font color = blue><b>"+
+	TQString tip = "<table><tr><td align = left valign = middle><font color = blue><b>"+
 			i18n("Qun name") + ": </b></font>"+ QunName() +"<br><b><font color = blue>"+ 
-			i18n("Qun Number") + ": </b></font>"+ QString::number(m_qun->getDetails().getExtID()) +"<br><br><b><font color = blue>" + 
+			i18n("Qun Number") + ": </b></font>"+ TQString::number(m_qun->getDetails().getExtID()) +"<br><br><b><font color = blue>" + 
 			i18n("Qun Description") +": </font></b><br>  "+ decription + "</td></tr></table>";
 	return tip;
 }
 
-QString EvaRecentContactLVItem::key( int /*col*/, bool /*ascending*/ ) const
+TQString EvaRecentContactLVItem::key( int /*col*/, bool /*ascending*/ ) const
 {
-	return QString("%1").arg(m_time, 8, 16);
+	return TQString("%1").arg(m_time, 8, 16);
 }
 
 
@@ -1600,7 +1600,7 @@ QString EvaRecentContactLVItem::key( int /*col*/, bool /*ascending*/ ) const
 
 
 
-EvaRecentContactsListView::EvaRecentContactsListView( QWidget * parent, const char * name, WFlags f )
+EvaRecentContactsListView::EvaRecentContactsListView( TQWidget * parent, const char * name, WFlags f )
 	: EvaListView(parent, name, f)
 {
 	setPaletteBackgroundPixmap(*EvaMain::images->getIcon("BACK_GROUND"));
@@ -1611,42 +1611,42 @@ EvaRecentContactsListView::EvaRecentContactsListView( QWidget * parent, const ch
 	initQunPopup();
 
 
-	QObject::connect(this, SIGNAL(contextMenuRequested(QListViewItem *, const QPoint & , int)),
-					SLOT(slotContextMenu(QListViewItem *, const QPoint & , int)));
-	QObject::connect(this, SIGNAL(doubleClicked(QListViewItem *, const QPoint & , int)),
-					SLOT(slotContactDoubleClick(QListViewItem *, const QPoint & , int)));
+	TQObject::connect(this, SIGNAL(contextMenuRequested(TQListViewItem *, const TQPoint & , int)),
+					SLOT(slotContextMenu(TQListViewItem *, const TQPoint & , int)));
+	TQObject::connect(this, SIGNAL(doubleClicked(TQListViewItem *, const TQPoint & , int)),
+					SLOT(slotContactDoubleClick(TQListViewItem *, const TQPoint & , int)));
 }
 
 void EvaRecentContactsListView::initBuddyPopup( )
 {
 	EvaImageResource *img = EvaMain::images;
-	m_buddyMenu = new QPopupMenu();
-	m_buddyMenu->insertItem(QIconSet(*(img->getIcon("CHAT"))), i18n( "Chat"), this, SLOT(slotIMChat()), -1);
-	m_buddyMenu->insertItem(QIconSet(*(img->getIcon("FILE_TRANSFER"))), i18n( "Send File"), this, SLOT(slotSendFile()), -1);
+	m_buddyMenu = new TQPopupMenu();
+	m_buddyMenu->insertItem(TQIconSet(*(img->getIcon("CHAT"))), i18n( "Chat"), this, SLOT(slotIMChat()), -1);
+	m_buddyMenu->insertItem(TQIconSet(*(img->getIcon("FILE_TRANSFER"))), i18n( "Send File"), this, SLOT(slotSendFile()), -1);
 	m_buddyMenu->insertSeparator(-1);
-	m_buddyMenu->insertItem(QIconSet(*(img->getIcon("TIME_SUN"))), i18n( "Update Level"), this, SLOT(slotUpdataLevel()), -1);
-	m_buddyMenu->insertItem(QIconSet(*(img->getIcon("DETAILS"))), i18n( "Details"), this, SLOT(slotDetails()), -1);
-	m_buddyMenu->insertItem(QIconSet(*(img->getIcon("MEMO"))), i18n("Modify Memo"), this, SLOT(slotModifyMemo()),-1);
-	m_buddyMenu->insertItem(QIconSet(*(img->getIcon("HISTORY"))), i18n( "History"), this, SLOT(slotHistory()), -1);
+	m_buddyMenu->insertItem(TQIconSet(*(img->getIcon("TIME_SUN"))), i18n( "Update Level"), this, SLOT(slotUpdataLevel()), -1);
+	m_buddyMenu->insertItem(TQIconSet(*(img->getIcon("DETAILS"))), i18n( "Details"), this, SLOT(slotDetails()), -1);
+	m_buddyMenu->insertItem(TQIconSet(*(img->getIcon("MEMO"))), i18n("Modify Memo"), this, SLOT(slotModifyMemo()),-1);
+	m_buddyMenu->insertItem(TQIconSet(*(img->getIcon("HISTORY"))), i18n( "History"), this, SLOT(slotHistory()), -1);
 	m_buddyMenu->insertSeparator(-1);
 	
-	m_buddyMenu->insertItem(QIconSet(*(img->getIcon("DEL_BUDDY"))), i18n( "Delete Buddy"), this, SLOT(slotDelBuddy()), -1);
+	m_buddyMenu->insertItem(TQIconSet(*(img->getIcon("DEL_BUDDY"))), i18n( "Delete Buddy"), this, SLOT(slotDelBuddy()), -1);
 }
 
 void EvaRecentContactsListView::initQunPopup( )
 {
 	EvaImageResource *img = EvaMain::images;
-	m_qunMenu =  new QPopupMenu();
-	m_qunMenu->insertItem(QIconSet(*(img->getIcon("CHAT"))), i18n( "Chat"), this, SLOT(slotIMQunChat()), -1);
+	m_qunMenu =  new TQPopupMenu();
+	m_qunMenu->insertItem(TQIconSet(*(img->getIcon("CHAT"))), i18n( "Chat"), this, SLOT(slotIMQunChat()), -1);
 	m_qunMenu->insertSeparator(-1);
-	m_qunMenu->insertItem(QIconSet(*(img->getIcon("DETAILS"))), i18n( "Details"), this, SLOT(slotQunDetails()), -1);
-	m_qunMenu->insertItem(QIconSet(*(img->getIcon("HISTORY"))), i18n( "History"), this, SLOT(slotQunHistory()), -1);
+	m_qunMenu->insertItem(TQIconSet(*(img->getIcon("DETAILS"))), i18n( "Details"), this, SLOT(slotQunDetails()), -1);
+	m_qunMenu->insertItem(TQIconSet(*(img->getIcon("HISTORY"))), i18n( "History"), this, SLOT(slotQunHistory()), -1);
 	m_qunMenu->insertSeparator(-1);
-	m_qunMenu->insertItem(QIconSet(*(img->getIcon("QUN"))), i18n( "Create Qun"), this, SIGNAL(requestQunCreate()), -1);
-	m_qunMenu->insertItem(QIconSet(*(img->getIcon("QUN_EXIT"))), i18n( "Exit Qun" ), this, SLOT(slotQunExit()), -1);
+	m_qunMenu->insertItem(TQIconSet(*(img->getIcon("TQUN"))), i18n( "Create Qun"), this, SIGNAL(requestQunCreate()), -1);
+	m_qunMenu->insertItem(TQIconSet(*(img->getIcon("TQUN_EXIT"))), i18n( "Exit Qun" ), this, SLOT(slotQunExit()), -1);
 }
 
-void EvaRecentContactsListView::slotContextMenu( QListViewItem *item, const QPoint  &p, int col)
+void EvaRecentContactsListView::slotContextMenu( TQListViewItem *item, const TQPoint  &p, int col)
 {
 	if(col!=0) return;
 	EvaRecentContactLVItem *q = dynamic_cast<EvaRecentContactLVItem *>(item);
@@ -1666,7 +1666,7 @@ void EvaRecentContactsListView::slotContextMenu( QListViewItem *item, const QPoi
 	}
 }
 
-void EvaRecentContactsListView::slotContactDoubleClick( QListViewItem *item, const QPoint &, int )
+void EvaRecentContactsListView::slotContactDoubleClick( TQListViewItem *item, const TQPoint &, int )
 {
 	EvaRecentContactLVItem *b = dynamic_cast<EvaRecentContactLVItem *>(item);
 	if(b){
@@ -1719,7 +1719,7 @@ void EvaRecentContactsListView::slotDelBuddy( )
 {
 	EvaRecentContactLVItem *b = dynamic_cast<EvaRecentContactLVItem *>(selectedItem());
 	if(!b) return;
-	QString info = QString(i18n("Delete friend \"%1\" from your list, are you sure?\n\n")).arg(b->text(0));
+	TQString info = TQString(i18n("Delete friend \"%1\" from your list, are you sure?\n\n")).arg(b->text(0));
 	
 	if(KMessageBox::Cancel == KMessageBox::warningContinueCancel( this,
 			info, i18n( "Delete a friend" ), i18n( "Deleting" ) ))
@@ -1765,7 +1765,7 @@ void EvaRecentContactsListView::slotQunExit( )
 
 void EvaRecentContactsListView::loadRecentContacts( )
 {
-	QListView::clear();
+	TQListView::clear();
 
 	EvaUser *user = EvaMain::user;
 	if(!user) return;
@@ -1776,7 +1776,7 @@ void EvaRecentContactsListView::loadRecentContacts( )
 	for(it = list.begin(); it != list.end(); ++it){
 		RecentContact c = *it;
 		Qun *q = 0;
-		QQFriend *f = 0;
+		TQQFriend *f = 0;
 		if(c.isQun){
 			q = user->getQunList()->getQun( c.id );
 			if(!q) continue;
@@ -1872,7 +1872,7 @@ EvaRecentContactLVItem * EvaRecentContactsListView::addBuddy( const unsigned int
 		delete oldest;
 	}
 
-	QQFriend *f = EvaMain::user->getFriends()->getFriend(id);
+	TQQFriend *f = EvaMain::user->getFriends()->getFriend(id);
 	if(f){
 		item = new EvaRecentContactLVItem(false, f, 0, this);
 		item->setTime(time);
@@ -1884,11 +1884,11 @@ EvaRecentContactLVItem * EvaRecentContactsListView::addBuddy( const unsigned int
 	return item;
 }
 
-void EvaRecentContactLVItem::updateIcon(QPixmap *p)
+void EvaRecentContactLVItem::updateIcon(TQPixmap *p)
 {
 	if(!p) return;
 	if(m_icon) delete m_icon;
-	m_icon = new QPixmap( p->convertToImage().smoothScale(EvaMain::global->getFaceSize() ));
+	m_icon = new TQPixmap( p->convertToImage().smoothScale(EvaMain::global->getFaceSize() ));
 }
 
 EvaRecentContactLVItem * EvaRecentContactsListView::addQun( const unsigned int id, const unsigned int time )

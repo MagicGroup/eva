@@ -18,83 +18,83 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef EVAQUNCHATUIBASE_H
-#define EVAQUNCHATUIBASE_H
+#ifndef EVATQUNCHATUIBASE_H
+#define EVATQUNCHATUIBASE_H
 
-#include <qvariant.h>
-#include <qwidget.h>
-#include <qtextedit.h>
+#include <ntqvariant.h>
+#include <ntqwidget.h>
+#include <ntqtextedit.h>
 
-class QVBoxLayout;
-class QHBoxLayout;
-class QGridLayout;
-class QSpacerItem;
-class QToolButton;
-class QPushButton;
-class QFrame;
+class TQVBoxLayout;
+class TQHBoxLayout;
+class TQGridLayout;
+class TQSpacerItem;
+class TQToolButton;
+class TQPushButton;
+class TQFrame;
 class KSqueezedTextLabel;
-class QLabel;
+class TQLabel;
 class EvaTextEdit;
 class EvaChatView;
-class QListView;
+class TQListView;
 class EvaQunListView;
-class QSplitter;
+class TQSplitter;
 
-class EvaQunChatUIBase : public QWidget
+class EvaQunChatUIBase : public TQWidget
 {
 	Q_OBJECT
 
 public:
-	EvaQunChatUIBase( QWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
+	EvaQunChatUIBase( TQWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
 	~EvaQunChatUIBase();
 	
-	QToolButton* tbQunDetails;
+	TQToolButton* tbQunDetails;
 	EvaChatView* chatDisplay;
-	QWidget *lowerLayoutWidget;
-	QToolButton* tbSmiley;
-	QToolButton* tbFont;
-	QToolButton* tbB;
-	QToolButton* tbU;
-	QToolButton* tbI;
-	QToolButton* tbImageFile;
-	QToolButton* tbScreenShot;
-	QToolButton* tbQuickReply;
-	QToolButton* tbEnableSound;
+	TQWidget *lowerLayoutWidget;
+	TQToolButton* tbSmiley;
+	TQToolButton* tbFont;
+	TQToolButton* tbB;
+	TQToolButton* tbU;
+	TQToolButton* tbI;
+	TQToolButton* tbImageFile;
+	TQToolButton* tbScreenShot;
+	TQToolButton* tbQuickReply;
+	TQToolButton* tbEnableSound;
 	EvaTextEdit* teInput;
-	QPushButton* pbHistory;
-	QPushButton* pbClose;
-	QPushButton* pbSend;
-	QPushButton* pbSendKey;
-	QFrame* frmNotice;
-	QToolButton* tbtnNotice;
-	QTextEdit *teNotice;
-	QFrame *frmMembers;
-	QLabel* lblMembers;
+	TQPushButton* pbHistory;
+	TQPushButton* pbClose;
+	TQPushButton* pbSend;
+	TQPushButton* pbSendKey;
+	TQFrame* frmNotice;
+	TQToolButton* tbtnNotice;
+	TQTextEdit *teNotice;
+	TQFrame *frmMembers;
+	TQLabel* lblMembers;
 	EvaQunListView* memberList;
-	QSplitter *memberSplitter;
-	QSplitter *splitter;
+	TQSplitter *memberSplitter;
+	TQSplitter *splitter;
 
 protected:
-	QGridLayout* EvaQunChatUIBaseLayout;
-	QHBoxLayout* layout16;
-	QVBoxLayout* layout15;
-	QHBoxLayout* layout6;
-	QSpacerItem* spacer4;
-	QHBoxLayout* layout14;
-	QSpacerItem* spacer2;
-	QSpacerItem* spacer3;
-	QSpacerItem* spacer5;
-	QHBoxLayout* layout3;
-	QSpacerItem* spacer1;
-	QVBoxLayout* layout12;
-	QGridLayout* frmNoticeLayout;
-	QVBoxLayout* frmMemberLayout;
-	QVBoxLayout* layout4;
-	QVBoxLayout* lowerLayout;
+	TQGridLayout* EvaQunChatUIBaseLayout;
+	TQHBoxLayout* layout16;
+	TQVBoxLayout* layout15;
+	TQHBoxLayout* layout6;
+	TQSpacerItem* spacer4;
+	TQHBoxLayout* layout14;
+	TQSpacerItem* spacer2;
+	TQSpacerItem* spacer3;
+	TQSpacerItem* spacer5;
+	TQHBoxLayout* layout3;
+	TQSpacerItem* spacer1;
+	TQVBoxLayout* layout12;
+	TQGridLayout* frmNoticeLayout;
+	TQVBoxLayout* frmMemberLayout;
+	TQVBoxLayout* layout4;
+	TQVBoxLayout* lowerLayout;
 
 protected slots:
 	virtual void languageChange();
 
 };
 
-#endif // EVAQUNCHATUIBASE_H
+#endif // EVATQUNCHATUIBASE_H

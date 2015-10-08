@@ -21,44 +21,44 @@
 #ifndef EVAHISTORYUIBASE_H
 #define EVAHISTORYUIBASE_H
 
-#include <qvariant.h>
-#include <qwidget.h>
+#include <ntqvariant.h>
+#include <ntqwidget.h>
 
-class QVBoxLayout;
-class QHBoxLayout;
-class QGridLayout;
-class QSpacerItem;
-class QCheckBox;
-class QLabel;
-class QDateEdit;
-class QPushButton;
-class QTable;
+class TQVBoxLayout;
+class TQHBoxLayout;
+class TQGridLayout;
+class TQSpacerItem;
+class TQCheckBox;
+class TQLabel;
+class TQDateEdit;
+class TQPushButton;
+class TQTable;
 
-class EvaHistoryUIBase : public QWidget
+class EvaHistoryUIBase : public TQWidget
 {
     Q_OBJECT
 
 public:
-    EvaHistoryUIBase( QWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
+    EvaHistoryUIBase( TQWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
     ~EvaHistoryUIBase();
 
-    QCheckBox* chbSelect;
-    QLabel* lblFrom;
-    QDateEdit* deFrom;
-    QLabel* lblTo;
-    QDateEdit* deTo;
-    QPushButton* pbShow;
-    QTable* tblDisplay;
-    QPushButton* pbPrev;
-    QPushButton* pbNext;
+    TQCheckBox* chbSelect;
+    TQLabel* lblFrom;
+    TQDateEdit* deFrom;
+    TQLabel* lblTo;
+    TQDateEdit* deTo;
+    TQPushButton* pbShow;
+    TQTable* tblDisplay;
+    TQPushButton* pbPrev;
+    TQPushButton* pbNext;
 
 protected:
-    QGridLayout* EvaHistoryUIBaseLayout;
-    QVBoxLayout* layout1;
-    QHBoxLayout* layout2;
-    QHBoxLayout* layout3;
-    QSpacerItem* spacer1;
-    QSpacerItem* spacer2;
+    TQGridLayout* EvaHistoryUIBaseLayout;
+    TQVBoxLayout* layout1;
+    TQHBoxLayout* layout2;
+    TQHBoxLayout* layout3;
+    TQSpacerItem* spacer1;
+    TQSpacerItem* spacer2;
 
 protected slots:
     virtual void languageChange();

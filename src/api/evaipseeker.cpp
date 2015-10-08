@@ -28,7 +28,7 @@
 #define IP_RECORD_LENGTH  7
 #define REDIRECT_MODE_1   0x01
 #define REDIRECT_MODE_2   0x02
-#define DATAFILENAME      "QQWry.dat"
+#define DATAFILENAME      "TQQWry.dat"
 
 #define READINT3(X) (( X[0] & 0xFF )|(( X[1] & 0xFF)<< 8 )|(( X[2] & 0xFF )<< 16 ))
 #define READINT4(X) (( X[0] & 0xFF )|(( X[1] & 0xFF)<< 8 )|(( X[2] & 0xFF )<< 16 )|(( X[3] & 0xFF ) << 24 ))
@@ -60,10 +60,10 @@ EvaIPSeeker::~EvaIPSeeker()
       ipFile.close();
 }
 
-//check if QQWry.dat exists
+//check if TQQWry.dat exists
 //param: null
 //return: true or false
-const bool EvaIPSeeker::isQQWryExisted()
+const bool EvaIPSeeker::isTQQWryExisted()
 {
   ipFile.open(fileName.c_str(), ios::in);
   if(!ipFile)
@@ -276,7 +276,7 @@ bool EvaIPSeeker::getIndexOffset(fstream& infile)
 const string EvaIPSeeker::getIPLocation(const unsigned int ip)
 {
   EvaIPAddress addr(ip);
-  if(!isQQWryExisted())
+  if(!isTQQWryExisted())
     return addr.toString();
   ipFile.open(fileName.c_str(), ios::in|ios::binary);
   if(!ipFile)
@@ -300,7 +300,7 @@ const string EvaIPSeeker::getIPLocation(const string ip)
   EvaIPAddress addr(ip);
   if(!addr.isValid())
     return addr.toString();
-  if(!isQQWryExisted())
+  if(!isTQQWryExisted())
     return addr.toString();
   ipFile.open(fileName.c_str(), ios::in|ios::binary);
   if(!ipFile)

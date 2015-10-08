@@ -31,26 +31,26 @@
 #include "evapacket.h"
 #include "evauser.h"
 #include "evautil.h"
-#include <qvariant.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
-#include <qlineedit.h>
-#include <qiconview.h>
-#include <qradiobutton.h>
-#include <qtextedit.h>
-#include <qpixmap.h>
-#include <qgroupbox.h>
-#include <qmessagebox.h>
-#include <qtimer.h>
-#include <qstringlist.h>
-#include <qtoolbutton.h>
-#include <qtextcodec.h>
+#include <ntqvariant.h>
+#include <ntqlabel.h>
+#include <ntqpushbutton.h>
+#include <ntqlineedit.h>
+#include <ntqiconview.h>
+#include <ntqradiobutton.h>
+#include <ntqtextedit.h>
+#include <ntqpixmap.h>
+#include <ntqgroupbox.h>
+#include <ntqmessagebox.h>
+#include <ntqtimer.h>
+#include <ntqstringlist.h>
+#include <ntqtoolbutton.h>
+#include <ntqtextcodec.h>
 #include <kpushbutton.h>
 #include <krun.h>
-#include <klocale.h>
-#include <kapplication.h>
-#include <qtabwidget.h>
-#include <qcheckbox.h>
+#include <tdelocale.h>
+#include <tdeapplication.h>
+#include <ntqtabwidget.h>
+#include <ntqcheckbox.h>
 
 //#include "../usermsg.ui.h"
 /*
@@ -62,26 +62,26 @@
  */
  
 EvaImageResource *EvaDetailsWindow::faces = NULL;
-EvaDetailsWindow::EvaDetailsWindow(  QStringList &user, QWidget* parent, const char* name, bool modal, WFlags fl)
+EvaDetailsWindow::EvaDetailsWindow(  TQStringList &user, TQWidget* parent, const char* name, bool modal, WFlags fl)
 	: EvaUserUIBase( parent, name, modal, fl ),
 	details( user ),selectedFaceIndex( 0 )
 {
   
         
-	QObject::connect( pbUpdate, SIGNAL( clicked() ), this, SLOT( slotUpdateClick() ) );	//Click the update button
-	QObject::connect( pbClose, SIGNAL( clicked() ), this, SLOT( close() ) );	//Click the close button
+	TQObject::connect( pbUpdate, SIGNAL( clicked() ), this, SLOT( slotUpdateClick() ) );	//Click the update button
+	TQObject::connect( pbClose, SIGNAL( clicked() ), this, SLOT( close() ) );	//Click the close button
 	
-	QObject::connect( tbtnShop, SIGNAL( clicked() ), this, SLOT( slotShopClicked() ) );
-	QObject::connect( tbtnAlbum, SIGNAL( clicked() ), this, SLOT( slotAlbumClicked() ) );
+	TQObject::connect( tbtnShop, SIGNAL( clicked() ), this, SLOT( slotShopClicked() ) );
+	TQObject::connect( tbtnAlbum, SIGNAL( clicked() ), this, SLOT( slotAlbumClicked() ) );
 	
-	QObject::connect( kpbUpdateShow, SIGNAL( clicked() ), this, SLOT( slotUpdateQQShow() ) );
-	QObject::connect( twTabMain, SIGNAL(currentChanged(QWidget*)), this, SLOT( slotCurrentChanged(QWidget*)));
+	TQObject::connect( kpbUpdateShow, SIGNAL( clicked() ), this, SLOT( slotUpdateTQQShow() ) );
+	TQObject::connect( twTabMain, SIGNAL(currentChanged(TQWidget*)), this, SLOT( slotCurrentChanged(TQWidget*)));
 	
-	QObject::connect( pbDownloadMemo, SIGNAL( clicked() ), this, SLOT( slotDownloadMemo() ));
-	//QObject::connect( tabWidget, SIGNAL(currentChanged(QWidget*)), this, SLOT(currentChanged(QWidget*)) );
+	TQObject::connect( pbDownloadMemo, SIGNAL( clicked() ), this, SLOT( slotDownloadMemo() ));
+	//TQObject::connect( tabWidget, SIGNAL(currentChanged(TQWidget*)), this, SLOT(currentChanged(TQWidget*)) );
 	
 	m_IsModifyMemo = false;
-	codec = QTextCodec::codecForName("GB18030");
+	codec = TQTextCodec::codecForName("GB18030");
 	
 	bool ok;
 	id = details[0].toUInt(&ok, 10);
@@ -99,19 +99,19 @@ EvaDetailsWindow::EvaDetailsWindow(  QStringList &user, QWidget* parent, const c
 		twTabMain->setTabEnabled(twTabMain->page(2), false);
 	}
 	if(faces){
-		QPixmap *icon = faces->getIcon("QQ_SHOP");
+		TQPixmap *icon = faces->getIcon("TQQ_SHOP");
 		if(icon)
-			tbtnShop->setIconSet(QIconSet(*icon));// add Icon to QQShow shop button
+			tbtnShop->setIconSet(TQIconSet(*icon));// add Icon to TQQShow shop button
 	} 
 	if(faces){
-		QPixmap *icon = faces->getIcon("QQ_ALBUM");
+		TQPixmap *icon = faces->getIcon("TQQ_ALBUM");
 		if(icon)
-			tbtnAlbum->setIconSet(QIconSet(*icon));
+			tbtnAlbum->setIconSet(TQIconSet(*icon));
 	}
 	
 	UpdateData(true);
 	if(details.size()!=37) {
-		QTimer::singleShot(500, this, SLOT(slotFirstUpdate()));
+		TQTimer::singleShot(500, this, SLOT(slotFirstUpdate()));
 	}
 	
 	
@@ -119,7 +119,7 @@ EvaDetailsWindow::EvaDetailsWindow(  QStringList &user, QWidget* parent, const c
 
 EvaDetailsWindow::~EvaDetailsWindow()
 {
-    // no need to delete child widgets, Qt does it all for us
+    // no need to delete child widgets, TQt does it all for us
 }
 
 void EvaDetailsWindow::slotFirstUpdate()
@@ -148,7 +148,7 @@ void EvaDetailsWindow::slotUpdateClick()
 			//save memo to local file
 			
 			emit memoChanged(frd->getQQ(), m_Memo);
-			QMessageBox::information(this, i18n( "Store Memo"), i18n( "Store memo successfully"));
+			TQMessageBox::information(this, i18n( "Store Memo"), i18n( "Store memo successfully"));
 		}	
 		
 	}
@@ -157,7 +157,7 @@ void EvaDetailsWindow::slotUpdateClick()
 	}
 }
 
-void EvaDetailsWindow::slotDetailsUpdated( QStringList list)
+void EvaDetailsWindow::slotDetailsUpdated( TQStringList list)
 {
 	if(details[0] != list[0] ) return;
 	details = list;
@@ -170,10 +170,10 @@ const bool EvaDetailsWindow::UpdateData(const bool toShow)
 	
 	if(details.size()!=37) return false;
 	
-	slotBuddyQQShowReady(id);
+	slotBuddyTQQShowReady(id);
 	
 	int level = 0;
-	QString signature = "";
+	TQString signature = "";
 	if(id == EvaMain::user->getQQ() ){
 		level = EvaMain::user->getLevel();
 		signature = codec->toUnicode(EvaMain::user->getSignature().c_str());
@@ -187,10 +187,10 @@ const bool EvaDetailsWindow::UpdateData(const bool toShow)
 	}
 	int suns, moons, stars;
 	EvaUtil::calcSuns(level, &suns, &moons, &stars);
-	QString strSun =  "<img src=\"" + faces->getIconFullPath("TIME_SUN") + "\"></img>";
-	QString strMoon = "<img src=\"" + faces->getIconFullPath("TIME_MOON") + "\"></img>";
-	QString strStar = "<img src=\"" + faces->getIconFullPath("TIME_STAR") + "\"></img>";
-	QString strLevel;
+	TQString strSun =  "<img src=\"" + faces->getIconFullPath("TIME_SUN") + "\"></img>";
+	TQString strMoon = "<img src=\"" + faces->getIconFullPath("TIME_MOON") + "\"></img>";
+	TQString strStar = "<img src=\"" + faces->getIconFullPath("TIME_STAR") + "\"></img>";
+	TQString strLevel;
 	for(int i=0; i<suns; i++){
 		strLevel += strSun;
 	}
@@ -200,7 +200,7 @@ const bool EvaDetailsWindow::UpdateData(const bool toShow)
 	for(int i=0; i<stars; i++){
 		strLevel += strStar;
 	}
-	qwUserInfo->lblLevelDisplay->setText("(" + QString::number(level) + ")" + strLevel);
+	qwUserInfo->lblLevelDisplay->setText("(" + TQString::number(level) + ")" + strLevel);
 	qwUserInfo->lblLevelDisplay->adjustSize();
 	//lE_Num->setReadOnly(true);
 	if (toShow)
@@ -217,7 +217,7 @@ const bool EvaDetailsWindow::UpdateData(const bool toShow)
 		int faceId = details[21].toInt(&ok, 10);
 		if(ok){
 			selectedFaceIndex = faceId;
-			QPixmap *pix = faces->getUserHeadPixmap(id);
+			TQPixmap *pix = faces->getUserHeadPixmap(id);
 			if(!pix) pix = faces->getFace(faces->getFaceFileIndex(faceId));
 			if(pix) qwUserInfo->lblFace->setPixmap( *pix );
 		}else
@@ -237,9 +237,9 @@ const bool EvaDetailsWindow::UpdateData(const bool toShow)
 		qwUserInfo->teSignature->setText(signature);
 		
 		
-		QStringList ZodiacList( QString::null );
-		QStringList BloodList( QString::null );
-		QStringList HoroscapeList( QString::null );
+		TQStringList ZodiacList( TQString::null );
+		TQStringList BloodList( TQString::null );
+		TQStringList HoroscapeList( TQString::null );
 		
 		
 		ZodiacList += ( i18n( "Rat" ) );
@@ -281,17 +281,17 @@ const bool EvaDetailsWindow::UpdateData(const bool toShow)
 	return true;
 }
 
-void EvaDetailsWindow::slotLinkClicked( const QString & url )
+void EvaDetailsWindow::slotLinkClicked( const TQString & url )
 {
-	QStringList args;
+	TQStringList args;
 	args<<"exec"<< url;
-	//kapp->kdeinitExec("kfmclient",args);
+	//kapp->tdeinitExec("kfmclient",args);
 	KRun::runCommand("konqueror \""+url+"\"");
 }
 
 void EvaDetailsWindow::slotShopClicked( )
 {
-	QString url = "http://jump.qq.com/clienturl_simp_17?clientuin=" + QString::number(EvaMain::user->getQQ());
+	TQString url = "http://jump.qq.com/clienturl_simp_17?clientuin=" + TQString::number(EvaMain::user->getQQ());
 	url+="&clientkey=";
 	url+=getClientKeyString();
 	slotLinkClicked(url);
@@ -299,18 +299,18 @@ void EvaDetailsWindow::slotShopClicked( )
 
 void EvaDetailsWindow::slotAlbumClicked( )
 {
-	QString url = "http://ptlogin.qq.com/qqshowalbum?clientuin=" + QString::number(EvaMain::user->getQQ());
+	TQString url = "http://ptlogin.qq.com/qqshowalbum?clientuin=" + TQString::number(EvaMain::user->getQQ());
 	url+="&clientkey=";
 	url+=getClientKeyString();
 	slotLinkClicked(url);
 }
 
-const QString EvaDetailsWindow::getClientKeyString()
+const TQString EvaDetailsWindow::getClientKeyString()
 {
-	QString key="";
+	TQString key="";
 	int len = Packet::getClientKeyLength();
 	for(int i=0; i<len; i++){
-		QString tmp = QString::number((unsigned char)(Packet::getClientKey()[i]), 16);
+		TQString tmp = TQString::number((unsigned char)(Packet::getClientKey()[i]), 16);
 		if(tmp.length()==1)
 			tmp = "0" + tmp;
 		key+=tmp;
@@ -318,24 +318,24 @@ const QString EvaDetailsWindow::getClientKeyString()
 	return key.upper();
 }
 
-void EvaDetailsWindow::slotUpdateQQShow()
+void EvaDetailsWindow::slotUpdateTQQShow()
 {
-	emit requestQQShow(id);
+	emit requestTQQShow(id);
 }
 
-void EvaDetailsWindow::slotBuddyQQShowReady(const unsigned int id)
+void EvaDetailsWindow::slotBuddyTQQShowReady(const unsigned int id)
 {
 	bool ok;
 	unsigned int qq = details[0].toUInt(&ok, 10);
 	if(!ok) return;
 	if(id != qq) return;
-	QPixmap *pix = faces->getQQShow(id);
+	TQPixmap *pix = faces->getTQQShow(id);
 	if(pix){
-		lblQQShow->setPixmap( *pix);
+		lblTQQShow->setPixmap( *pix);
 	}
 }
 
-void EvaDetailsWindow::slotCurrentChanged( QWidget *wCurrentPage)
+void EvaDetailsWindow::slotCurrentChanged( TQWidget *wCurrentPage)
 {
 	if(!strcmp(wCurrentPage->name(), "TabMemo")){
 		m_IsMemoPage = true;
@@ -369,18 +369,18 @@ void EvaDetailsWindow::slotUpdateMemo(const MemoItem &memo)
 void EvaDetailsWindow::slotUploadMemoReply(const bool flag)
 {
 	if(flag)
-		QMessageBox::information(this, i18n( "Upload Memo"), i18n( "upload memo successfully"));
+		TQMessageBox::information(this, i18n( "Upload Memo"), i18n( "upload memo successfully"));
 	else
-		QMessageBox::information(this, i18n( "Upload Memo"), i18n( "failed to upload memo."));
+		TQMessageBox::information(this, i18n( "Upload Memo"), i18n( "failed to upload memo."));
 	
 }
 
 void EvaDetailsWindow::slotNoMemoFound()
 {
-	QMessageBox::information(this, i18n( "Downlad Memo"), i18n( "no memo found on the server"));
+	TQMessageBox::information(this, i18n( "Downlad Memo"), i18n( "no memo found on the server"));
 }
 
-void EvaDetailsWindow::closeEvent( QCloseEvent * /*e*/ )
+void EvaDetailsWindow::closeEvent( TQCloseEvent * /*e*/ )
 {
 	deleteLater();
 }

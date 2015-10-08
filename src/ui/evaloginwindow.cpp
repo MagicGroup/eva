@@ -24,26 +24,26 @@
 #include "qmdcodec.h"
 
 #include <cstring>
-#include <qpixmap.h>
-#include <qlineedit.h>
-#include <qcombobox.h>
-#include <qpushbutton.h>
-#include <qtoolbutton.h>
-#include <qcheckbox.h>
-#include <qmessagebox.h>
-#include <qlabel.h>
-#include <qhostaddress.h>
-#include <klocale.h>
+#include <ntqpixmap.h>
+#include <ntqlineedit.h>
+#include <ntqcombobox.h>
+#include <ntqpushbutton.h>
+#include <ntqtoolbutton.h>
+#include <ntqcheckbox.h>
+#include <ntqmessagebox.h>
+#include <ntqlabel.h>
+#include <ntqhostaddress.h>
+#include <tdelocale.h>
 
-EvaLoginWindow::EvaLoginWindow(QWidget* parent, const char* name, bool modal, WFlags fl)
+EvaLoginWindow::EvaLoginWindow(TQWidget* parent, const char* name, bool modal, WFlags fl)
     : LoginUIBase(parent,name, modal,fl), qqNum(0), port(0)
 {
-	QObject::connect(tbNetSetup,SIGNAL(toggled(bool)),SLOT(showNetSetup(bool)));
-	QObject::connect(cbQQ,SIGNAL(activated(int)),SLOT(slotSelectChanged(int)));
-	QObject::connect(lePwd,SIGNAL(textChanged(const QString &)),SLOT(slotPasswordChanged(const QString &)));
-	QObject::connect(cbbLoginType,SIGNAL(activated(int)),SLOT(slotLoginTypeChanged(int)));
-	QObject::connect(leUserName,SIGNAL(textChanged(const QString &)),SLOT(slotProxyUserChanged(const QString &)));
-	QObject::connect(lePassword,SIGNAL(textChanged(const QString &)),SLOT(slotProxyPasswordChanged(const QString &)));
+	TQObject::connect(tbNetSetup,SIGNAL(toggled(bool)),SLOT(showNetSetup(bool)));
+	TQObject::connect(cbQQ,SIGNAL(activated(int)),SLOT(slotSelectChanged(int)));
+	TQObject::connect(lePwd,SIGNAL(textChanged(const TQString &)),SLOT(slotPasswordChanged(const TQString &)));
+	TQObject::connect(cbbLoginType,SIGNAL(activated(int)),SLOT(slotLoginTypeChanged(int)));
+	TQObject::connect(leUserName,SIGNAL(textChanged(const TQString &)),SLOT(slotProxyUserChanged(const TQString &)));
+	TQObject::connect(lePassword,SIGNAL(textChanged(const TQString &)),SLOT(slotProxyPasswordChanged(const TQString &)));
 	
 	md5Pwd[0] = 0x00;
 	setting=NULL;
@@ -57,7 +57,7 @@ EvaLoginWindow::~EvaLoginWindow()
 {
 }
 
-void EvaLoginWindow::setLogo(const QPixmap *logo)
+void EvaLoginWindow::setLogo(const TQPixmap *logo)
 {
 	if(!logo) return;
 	lblLogo->setPixmap(*logo);
@@ -74,7 +74,7 @@ const int EvaLoginWindow::getQQ() const
 	return qqNum;
 }
 
-const QString EvaLoginWindow::getPassword() const
+const TQString EvaLoginWindow::getPassword() const
 {
 	return lePwd->text();
 }
@@ -103,7 +103,7 @@ const EvaLoginWindow::Type EvaLoginWindow::getConnectionType() const
 	return UDP;
 }
 
-const QString EvaLoginWindow::getProxyIP() const
+const TQString EvaLoginWindow::getProxyIP() const
 {
 	return leIP->text();
 }
@@ -113,17 +113,17 @@ const int EvaLoginWindow::getProxyPort() const
 	return port;
 }
 
-const QString EvaLoginWindow::getProxyUserName() const
+const TQString EvaLoginWindow::getProxyUserName() const
 {
 	return leUserName->text();
 }
 
-const QString EvaLoginWindow::getProxyPassword() const
+const TQString EvaLoginWindow::getProxyPassword() const
 {
 	return lePassword->text();
 }
 
-const QCString EvaLoginWindow::getProxyParam()
+const TQCString EvaLoginWindow::getProxyParam()
 {
 	return proxyParam;
 }
@@ -138,7 +138,7 @@ void EvaLoginWindow::loginClickSlot()
 	bool qqok, portok;
 	qqNum = cbQQ->currentText().toInt(&qqok, 10);
 	if(!qqok){
-		QMessageBox::information(this, i18n( "Eva Login"), 
+		TQMessageBox::information(this, i18n( "Eva Login"), 
 			i18n( "Sorry, account is not an integer number."));
 		cbQQ->setFocus();
 		return;
@@ -146,7 +146,7 @@ void EvaLoginWindow::loginClickSlot()
 	if(getConnectionType() == HTTP_Proxy){
 		port = lePort->text().toInt(&portok, 10);
 		if(!portok){
-			QMessageBox::information(this, i18n( "Eva Login"), 
+			TQMessageBox::information(this, i18n( "Eva Login"), 
 				i18n( "Sorry, proxy server port is not an integer number."));
 			lePort->setFocus();
 			return;
@@ -178,7 +178,7 @@ void EvaLoginWindow::iniRecords( )
 	cbQQ->clear();
 	for(uint i=0; i<setting->getRecordedList().count();i++){
 		int id = setting->getRecordedList().at(i)->id;
-		cbQQ->insertItem(QString::number(id));
+		cbQQ->insertItem(TQString::number(id));
 	}
 	cbQQ->setCurrentItem(setting->getLastUserIndex());
 
@@ -187,7 +187,7 @@ void EvaLoginWindow::iniRecords( )
 }
 
 
-void EvaLoginWindow::slotIDChanged( const QString &)
+void EvaLoginWindow::slotIDChanged( const TQString &)
 {
 }
 
@@ -202,7 +202,7 @@ void EvaLoginWindow::slotSelectChanged( int index)
 }
 
 
-void EvaLoginWindow::slotPasswordChanged( const QString &newPwd)
+void EvaLoginWindow::slotPasswordChanged( const TQString &newPwd)
 {
 	if(newPwd.isEmpty()) return;
 	int pwdLen = strlen(newPwd.ascii());
@@ -213,13 +213,13 @@ void EvaLoginWindow::slotPasswordChanged( const QString &newPwd)
 	delete pwd;
 }
 
-void EvaLoginWindow::slotProxyUserChanged(const QString &)
+void EvaLoginWindow::slotProxyUserChanged(const TQString &)
 {
 	updateProxyLoginParam();
 	lePassword->setText("");
 }
 
-void EvaLoginWindow::slotProxyPasswordChanged(const QString &)
+void EvaLoginWindow::slotProxyPasswordChanged(const TQString &)
 {
 	if(proxyPwdChanged){
 		proxyPwdChanged = false;
@@ -230,8 +230,8 @@ void EvaLoginWindow::slotProxyPasswordChanged(const QString &)
 
 void EvaLoginWindow::updateProxyLoginParam()
 {
-	QCString para = (leUserName->text() + ':' + lePassword->text()).local8Bit();
-	proxyParam = QCodecs::base64Encode(para);
+	TQCString para = (leUserName->text() + ':' + lePassword->text()).local8Bit();
+	proxyParam = TQCodecs::base64Encode(para);
 }
 
 void EvaLoginWindow::setupOtherSetings( int index )
@@ -239,7 +239,7 @@ void EvaLoginWindow::setupOtherSetings( int index )
 	if(!setting) return;
 	if((uint)(index) >= setting->getRecordedList().count()) return;
 		
-	QString sid = cbQQ->text(index);
+	TQString sid = cbQQ->text(index);
 	bool ok;
 	int id = sid.toInt(&ok);
 	if(!ok) return;
@@ -286,8 +286,8 @@ void EvaLoginWindow::setupOtherSetings( int index )
 	}
 	
 	if(setting->getConnectType(id) == 2){
-		leIP->setText(QHostAddress(setting->getServer(id)).toString());
-		lePort->setText(QString::number(setting->getPort(id)) );
+		leIP->setText(TQHostAddress(setting->getServer(id)).toString());
+		lePort->setText(TQString::number(setting->getPort(id)) );
 		leUserName->setText(setting->getProxyUsername(id));		
 		lePassword->setText("@@@@@@@@");
 		proxyParam = setting->getProxyParam(id);

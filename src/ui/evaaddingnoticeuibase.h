@@ -21,61 +21,61 @@
 #ifndef EVAADDINGNOTICEUIBASE_H
 #define EVAADDINGNOTICEUIBASE_H
 
-#include <qvariant.h>
-#include <qwidget.h>
+#include <ntqvariant.h>
+#include <ntqwidget.h>
 
-class QVBoxLayout;
-class QHBoxLayout;
-class QGridLayout;
-class QSpacerItem;
-class QFrame;
-class QLabel;
-class QToolButton;
-class QButtonGroup;
-class QRadioButton;
-class QLineEdit;
-class QCheckBox;
-class QPushButton;
+class TQVBoxLayout;
+class TQHBoxLayout;
+class TQGridLayout;
+class TQSpacerItem;
+class TQFrame;
+class TQLabel;
+class TQToolButton;
+class TQButtonGroup;
+class TQRadioButton;
+class TQLineEdit;
+class TQCheckBox;
+class TQPushButton;
 
-class EvaAddingNoticeUIBase : public QWidget
+class EvaAddingNoticeUIBase : public TQWidget
 {
     Q_OBJECT
 
 public:
-    EvaAddingNoticeUIBase( QWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
+    EvaAddingNoticeUIBase( TQWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
     ~EvaAddingNoticeUIBase();
 
-    QFrame* fraMain;
-    QLabel* lblTitle;
-    QLabel* lblMessageTag;
-    QToolButton* tbFace;
-    QLabel* lblMessage;
-    QButtonGroup* btngrpActions;
-    QRadioButton* rbtnAcceptAdd;
-    QRadioButton* rbtnAccept;
-    QRadioButton* rbtnReject;
-    QFrame* fraRejectContents;
-    QLineEdit* leRejectMessage;
-    QCheckBox* chbRejectForever;
-    QToolButton* tbtnAuthSettings;
-    QPushButton* btnOk;
-    QPushButton* btnCancel;
+    TQFrame* fraMain;
+    TQLabel* lblTitle;
+    TQLabel* lblMessageTag;
+    TQToolButton* tbFace;
+    TQLabel* lblMessage;
+    TQButtonGroup* btngrpActions;
+    TQRadioButton* rbtnAcceptAdd;
+    TQRadioButton* rbtnAccept;
+    TQRadioButton* rbtnReject;
+    TQFrame* fraRejectContents;
+    TQLineEdit* leRejectMessage;
+    TQCheckBox* chbRejectForever;
+    TQToolButton* tbtnAuthSettings;
+    TQPushButton* btnOk;
+    TQPushButton* btnCancel;
 
 protected:
-    QGridLayout* EvaAddingNoticeUIBaseLayout;
-    QVBoxLayout* layout15;
-    QSpacerItem* spacer1;
-    QGridLayout* fraMainLayout;
-    QVBoxLayout* layout10;
-    QHBoxLayout* layout9;
-    QSpacerItem* spacer3;
-    QVBoxLayout* layout4;
-    QGridLayout* btngrpActionsLayout;
-    QHBoxLayout* layout14;
-    QGridLayout* fraRejectContentsLayout;
-    QVBoxLayout* layout2;
-    QHBoxLayout* layout3;
-    QSpacerItem* spacer2;
+    TQGridLayout* EvaAddingNoticeUIBaseLayout;
+    TQVBoxLayout* layout15;
+    TQSpacerItem* spacer1;
+    TQGridLayout* fraMainLayout;
+    TQVBoxLayout* layout10;
+    TQHBoxLayout* layout9;
+    TQSpacerItem* spacer3;
+    TQVBoxLayout* layout4;
+    TQGridLayout* btngrpActionsLayout;
+    TQHBoxLayout* layout14;
+    TQGridLayout* fraRejectContentsLayout;
+    TQVBoxLayout* layout2;
+    TQHBoxLayout* layout3;
+    TQSpacerItem* spacer2;
 
 protected slots:
     virtual void languageChange();

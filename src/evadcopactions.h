@@ -32,12 +32,12 @@ class EvaDCOPActionsInterface : virtual public DCOPObject
 	virtual void changeToOffline() = 0;
 	virtual void changeToLeave() = 0;
 	virtual void changeToInvisible() = 0;
-	virtual void changeNick(QString nick) = 0;
-	virtual void changeSignature( QString contents) = 0;
-	virtual void sendToContact(unsigned int id, QString msg) = 0;
-	virtual void sendToQun(unsigned int ext, QString) = 0;
-	virtual void textReady(unsigned int id, QString text, bool isQun) = 0;
-	virtual void imageReady(unsigned int id, QString path, bool isQun) = 0;
+	virtual void changeNick(TQString nick) = 0;
+	virtual void changeSignature( TQString contents) = 0;
+	virtual void sendToContact(unsigned int id, TQString msg) = 0;
+	virtual void sendToQun(unsigned int ext, TQString) = 0;
+	virtual void textReady(unsigned int id, TQString text, bool isQun) = 0;
+	virtual void imageReady(unsigned int id, TQString path, bool isQun) = 0;
 	virtual void openAddFriendDialog(unsigned int id) = 0;
 };
 

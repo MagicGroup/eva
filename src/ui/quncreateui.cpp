@@ -19,151 +19,151 @@
  ***************************************************************************/
 #include "quncreateui.h"
 
-#include <qvariant.h>
-#include <qpushbutton.h>
-#include <qlabel.h>
-#include <qframe.h>
-#include <qwidgetstack.h>
-#include <qlineedit.h>
-#include <qtoolbutton.h>
-#include <qgroupbox.h>
-#include <qtextedit.h>
-#include <qbuttongroup.h>
-#include <qradiobutton.h>
-#include <qtable.h>
-#include <qlayout.h>
-#include <qtooltip.h>
-#include <qwhatsthis.h>
-#include <klocale.h>
+#include <ntqvariant.h>
+#include <ntqpushbutton.h>
+#include <ntqlabel.h>
+#include <ntqframe.h>
+#include <ntqwidgetstack.h>
+#include <ntqlineedit.h>
+#include <ntqtoolbutton.h>
+#include <ntqgroupbox.h>
+#include <ntqtextedit.h>
+#include <ntqbuttongroup.h>
+#include <ntqradiobutton.h>
+#include <ntqtable.h>
+#include <ntqlayout.h>
+#include <ntqtooltip.h>
+#include <ntqwhatsthis.h>
+#include <tdelocale.h>
 
 /*
  *  Constructs a QunCreateUI as a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'.
  */
-QunCreateUI::QunCreateUI( QWidget* parent, const char* name, WFlags fl )
-    : QWidget( parent, name, fl )
+QunCreateUI::QunCreateUI( TQWidget* parent, const char* name, WFlags fl )
+    : TQWidget( parent, name, fl )
 {
     if ( !name )
 	setName( "QunCreateUI" );
-    QunCreateUILayout = new QVBoxLayout( this, 11, 6, "QunCreateUILayout"); 
+    QunCreateUILayout = new TQVBoxLayout( this, 11, 6, "QunCreateUILayout"); 
 
-    lblTip = new QLabel( this, "lblTip" );
+    lblTip = new TQLabel( this, "lblTip" );
     QunCreateUILayout->addWidget( lblTip );
 
-    line1 = new QFrame( this, "line1" );
-    line1->setFrameShape( QFrame::HLine );
-    line1->setFrameShadow( QFrame::Sunken );
-    line1->setFrameShape( QFrame::HLine );
+    line1 = new TQFrame( this, "line1" );
+    line1->setFrameShape( TQFrame::HLine );
+    line1->setFrameShadow( TQFrame::Sunken );
+    line1->setFrameShape( TQFrame::HLine );
     QunCreateUILayout->addWidget( line1 );
 
-    wsMain = new QWidgetStack( this, "wsMain" );
+    wsMain = new TQWidgetStack( this, "wsMain" );
 
-    wsDetails = new QWidget( wsMain, "wsDetails" );
-    wsDetailsLayout = new QGridLayout( wsDetails, 1, 1, 11, 6, "wsDetailsLayout"); 
+    wsDetails = new TQWidget( wsMain, "wsDetails" );
+    wsDetailsLayout = new TQGridLayout( wsDetails, 1, 1, 11, 6, "wsDetailsLayout"); 
 
-    layout44 = new QVBoxLayout( 0, 0, 16, "layout44"); 
+    layout44 = new TQVBoxLayout( 0, 0, 16, "layout44"); 
 
-    layout40 = new QHBoxLayout( 0, 0, 9, "layout40"); 
+    layout40 = new TQHBoxLayout( 0, 0, 9, "layout40"); 
 
-    lblName = new QLabel( wsDetails, "lblName" );
+    lblName = new TQLabel( wsDetails, "lblName" );
     layout40->addWidget( lblName );
 
-    leQunName = new QLineEdit( wsDetails, "leQunName" );
+    leQunName = new TQLineEdit( wsDetails, "leQunName" );
     layout40->addWidget( leQunName );
-    spacer15 = new QSpacerItem( 51, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
+    spacer15 = new TQSpacerItem( 51, 20, TQSizePolicy::Expanding, TQSizePolicy::Minimum );
     layout40->addItem( spacer15 );
     layout44->addLayout( layout40 );
 
-    layout41 = new QHBoxLayout( 0, 0, 7, "layout41"); 
+    layout41 = new TQHBoxLayout( 0, 0, 7, "layout41"); 
 
-    lblCategory = new QLabel( wsDetails, "lblCategory" );
-    lblCategory->setMaximumSize( QSize( 50, 32767 ) );
+    lblCategory = new TQLabel( wsDetails, "lblCategory" );
+    lblCategory->setMaximumSize( TQSize( 50, 32767 ) );
     layout41->addWidget( lblCategory );
 
-    tbCategory = new QToolButton( wsDetails, "tbCategory" );
-    tbCategory->setMaximumSize( QSize( 32767, 30 ) );
+    tbCategory = new TQToolButton( wsDetails, "tbCategory" );
+    tbCategory->setMaximumSize( TQSize( 32767, 30 ) );
     layout41->addWidget( tbCategory );
-    spacer16 = new QSpacerItem( 51, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
+    spacer16 = new TQSpacerItem( 51, 20, TQSizePolicy::Expanding, TQSizePolicy::Minimum );
     layout41->addItem( spacer16 );
     layout44->addLayout( layout41 );
 
-    gbNotice = new QGroupBox( wsDetails, "gbNotice" );
-    gbNotice->setColumnLayout(0, Qt::Vertical );
+    gbNotice = new TQGroupBox( wsDetails, "gbNotice" );
+    gbNotice->setColumnLayout(0, TQt::Vertical );
     gbNotice->layout()->setSpacing( 6 );
     gbNotice->layout()->setMargin( 11 );
-    gbNoticeLayout = new QGridLayout( gbNotice->layout() );
-    gbNoticeLayout->setAlignment( Qt::AlignTop );
+    gbNoticeLayout = new TQGridLayout( gbNotice->layout() );
+    gbNoticeLayout->setAlignment( TQt::AlignTop );
 
-    teNotice = new QTextEdit( gbNotice, "teNotice" );
-    teNotice->setSizePolicy( QSizePolicy( (QSizePolicy::SizeType)7, (QSizePolicy::SizeType)5, 0, 0, teNotice->sizePolicy().hasHeightForWidth() ) );
-    teNotice->setMaximumSize( QSize( 32767, 50 ) );
+    teNotice = new TQTextEdit( gbNotice, "teNotice" );
+    teNotice->setSizePolicy( TQSizePolicy( (TQSizePolicy::SizeType)7, (TQSizePolicy::SizeType)5, 0, 0, teNotice->sizePolicy().hasHeightForWidth() ) );
+    teNotice->setMaximumSize( TQSize( 32767, 50 ) );
 
     gbNoticeLayout->addWidget( teNotice, 0, 0 );
     layout44->addWidget( gbNotice );
 
-    gbDescription = new QGroupBox( wsDetails, "gbDescription" );
-    gbDescription->setColumnLayout(0, Qt::Vertical );
+    gbDescription = new TQGroupBox( wsDetails, "gbDescription" );
+    gbDescription->setColumnLayout(0, TQt::Vertical );
     gbDescription->layout()->setSpacing( 6 );
     gbDescription->layout()->setMargin( 11 );
-    gbDescriptionLayout = new QGridLayout( gbDescription->layout() );
-    gbDescriptionLayout->setAlignment( Qt::AlignTop );
+    gbDescriptionLayout = new TQGridLayout( gbDescription->layout() );
+    gbDescriptionLayout->setAlignment( TQt::AlignTop );
 
-    teDescription = new QTextEdit( gbDescription, "teDescription" );
-    teDescription->setSizePolicy( QSizePolicy( (QSizePolicy::SizeType)7, (QSizePolicy::SizeType)5, 0, 0, teDescription->sizePolicy().hasHeightForWidth() ) );
-    teDescription->setMaximumSize( QSize( 32767, 60 ) );
+    teDescription = new TQTextEdit( gbDescription, "teDescription" );
+    teDescription->setSizePolicy( TQSizePolicy( (TQSizePolicy::SizeType)7, (TQSizePolicy::SizeType)5, 0, 0, teDescription->sizePolicy().hasHeightForWidth() ) );
+    teDescription->setMaximumSize( TQSize( 32767, 60 ) );
 
     gbDescriptionLayout->addWidget( teDescription, 0, 0 );
     layout44->addWidget( gbDescription );
 
-    bgAuthen = new QButtonGroup( wsDetails, "bgAuthen" );
+    bgAuthen = new TQButtonGroup( wsDetails, "bgAuthen" );
     bgAuthen->setExclusive( TRUE );
-    bgAuthen->setColumnLayout(0, Qt::Vertical );
+    bgAuthen->setColumnLayout(0, TQt::Vertical );
     bgAuthen->layout()->setSpacing( 6 );
     bgAuthen->layout()->setMargin( 11 );
-    bgAuthenLayout = new QVBoxLayout( bgAuthen->layout() );
-    bgAuthenLayout->setAlignment( Qt::AlignTop );
+    bgAuthenLayout = new TQVBoxLayout( bgAuthen->layout() );
+    bgAuthenLayout->setAlignment( TQt::AlignTop );
 
-    rbNoAuthenNeed = new QRadioButton( bgAuthen, "rbNoAuthenNeed" );
+    rbNoAuthenNeed = new TQRadioButton( bgAuthen, "rbNoAuthenNeed" );
     bgAuthenLayout->addWidget( rbNoAuthenNeed );
 
-    rbNeedAuthen = new QRadioButton( bgAuthen, "rbNeedAuthen" );
+    rbNeedAuthen = new TQRadioButton( bgAuthen, "rbNeedAuthen" );
     rbNeedAuthen->setChecked( TRUE );
     bgAuthenLayout->addWidget( rbNeedAuthen );
 
-    rbRejectAnyone = new QRadioButton( bgAuthen, "rbRejectAnyone" );
+    rbRejectAnyone = new TQRadioButton( bgAuthen, "rbRejectAnyone" );
     bgAuthenLayout->addWidget( rbRejectAnyone );
     layout44->addWidget( bgAuthen );
 
     wsDetailsLayout->addLayout( layout44, 0, 0 );
     wsMain->addWidget( wsDetails, 0 );
 
-    wsMembers = new QWidget( wsMain, "wsMembers" );
-    wsMembersLayout = new QGridLayout( wsMembers, 1, 1, 11, 6, "wsMembersLayout"); 
+    wsMembers = new TQWidget( wsMain, "wsMembers" );
+    wsMembersLayout = new TQGridLayout( wsMembers, 1, 1, 11, 6, "wsMembersLayout"); 
 
-    layout43 = new QHBoxLayout( 0, 0, 6, "layout43"); 
+    layout43 = new TQHBoxLayout( 0, 0, 6, "layout43"); 
 
-    tblMembers = new QTable( wsMembers, "tblMembers" );
+    tblMembers = new TQTable( wsMembers, "tblMembers" );
     tblMembers->setNumCols( tblMembers->numCols() + 1 );
     tblMembers->horizontalHeader()->setLabel( tblMembers->numCols() - 1, i18n( "QQ" ) );
     tblMembers->setNumCols( tblMembers->numCols() + 1 );
     tblMembers->horizontalHeader()->setLabel( tblMembers->numCols() - 1, i18n( "Nick" ) );
     tblMembers->setNumCols( tblMembers->numCols() + 1 );
     tblMembers->horizontalHeader()->setLabel( tblMembers->numCols() - 1, i18n( "Gender" ) );
-    tblMembers->setMinimumSize( QSize( 250, 0 ) );
-    tblMembers->setMaximumSize( QSize( 32767, 32767 ) );
-    tblMembers->setHScrollBarMode( QTable::AlwaysOff );
+    tblMembers->setMinimumSize( TQSize( 250, 0 ) );
+    tblMembers->setMaximumSize( TQSize( 32767, 32767 ) );
+    tblMembers->setHScrollBarMode( TQTable::AlwaysOff );
     tblMembers->setNumRows( 3 );
     tblMembers->setNumCols( 4 );
     layout43->addWidget( tblMembers );
 
-    layout42 = new QVBoxLayout( 0, 0, 6, "layout42"); 
+    layout42 = new TQVBoxLayout( 0, 0, 6, "layout42"); 
 
-    pbSetMembers = new QPushButton( wsMembers, "pbSetMembers" );
+    pbSetMembers = new TQPushButton( wsMembers, "pbSetMembers" );
     layout42->addWidget( pbSetMembers );
 
-    pbDelMembers = new QPushButton( wsMembers, "pbDelMembers" );
+    pbDelMembers = new TQPushButton( wsMembers, "pbDelMembers" );
     layout42->addWidget( pbDelMembers );
-    spacer17 = new QSpacerItem( 20, 141, QSizePolicy::Minimum, QSizePolicy::Expanding );
+    spacer17 = new TQSpacerItem( 20, 141, TQSizePolicy::Minimum, TQSizePolicy::Expanding );
     layout42->addItem( spacer17 );
     layout43->addLayout( layout42 );
 
@@ -171,21 +171,21 @@ QunCreateUI::QunCreateUI( QWidget* parent, const char* name, WFlags fl )
     wsMain->addWidget( wsMembers, 1 );
     QunCreateUILayout->addWidget( wsMain );
 
-    layout7 = new QHBoxLayout( 0, 0, 6, "layout7"); 
-    spacer18 = new QSpacerItem( 270, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
+    layout7 = new TQHBoxLayout( 0, 0, 6, "layout7"); 
+    spacer18 = new TQSpacerItem( 270, 20, TQSizePolicy::Expanding, TQSizePolicy::Minimum );
     layout7->addItem( spacer18 );
 
-    pbPrev = new QPushButton( this, "pbPrev" );
+    pbPrev = new TQPushButton( this, "pbPrev" );
     layout7->addWidget( pbPrev );
 
-    pbNext = new QPushButton( this, "pbNext" );
+    pbNext = new TQPushButton( this, "pbNext" );
     layout7->addWidget( pbNext );
 
-    pbCancel = new QPushButton( this, "pbCancel" );
+    pbCancel = new TQPushButton( this, "pbCancel" );
     layout7->addWidget( pbCancel );
     QunCreateUILayout->addLayout( layout7 );
     languageChange();
-    resize( QSize(487, 502).expandedTo(minimumSizeHint()) );
+    resize( TQSize(487, 502).expandedTo(minimumSizeHint()) );
     clearWState( WState_Polished );
 
     // tab order
@@ -204,7 +204,7 @@ QunCreateUI::QunCreateUI( QWidget* parent, const char* name, WFlags fl )
  */
 QunCreateUI::~QunCreateUI()
 {
-    // no need to delete child widgets, Qt does it all for us
+    // no need to delete child widgets, TQt does it all for us
 }
 
 /*
@@ -228,14 +228,14 @@ void QunCreateUI::languageChange()
     tblMembers->horizontalHeader()->setLabel( 1, i18n( "Nick" ) );
     tblMembers->horizontalHeader()->setLabel( 2, i18n( "Gender" ) );
     pbSetMembers->setText( i18n( "&Members >>" ) );
-    pbSetMembers->setAccel( QKeySequence( i18n( "Alt+M" ) ) );
+    pbSetMembers->setAccel( TQKeySequence( i18n( "Alt+M" ) ) );
     pbDelMembers->setText( i18n( "&Del Members" ) );
-    pbDelMembers->setAccel( QKeySequence( i18n( "Alt+D" ) ) );
+    pbDelMembers->setAccel( TQKeySequence( i18n( "Alt+D" ) ) );
     pbPrev->setText( i18n( "&Prev" ) );
-    pbPrev->setAccel( QKeySequence( i18n( "Alt+P" ) ) );
+    pbPrev->setAccel( TQKeySequence( i18n( "Alt+P" ) ) );
     pbNext->setText( i18n( "&Next" ) );
-    pbNext->setAccel( QKeySequence( i18n( "Alt+N" ) ) );
+    pbNext->setAccel( TQKeySequence( i18n( "Alt+N" ) ) );
     pbCancel->setText( i18n( "&Cancel" ) );
-    pbCancel->setAccel( QKeySequence( i18n( "Alt+C" ) ) );
+    pbCancel->setAccel( TQKeySequence( i18n( "Alt+C" ) ) );
 }
 

@@ -29,13 +29,13 @@
 #include <cstring>
 
 GroupNameOpPacket::GroupNameOpPacket( )
-	: OutPacket(QQ_CMD_GROUP_NAME_OP, true),
-	type(QQ_UPLOAD_GROUP_NAME)
+	: OutPacket(TQQ_CMD_GROUP_NAME_OP, true),
+	type(TQQ_UPLOAD_GROUP_NAME)
 {
 } 
 
 GroupNameOpPacket::GroupNameOpPacket(const char cmdType)
-	: OutPacket(QQ_CMD_GROUP_NAME_OP, true),
+	: OutPacket(TQQ_CMD_GROUP_NAME_OP, true),
 	type(cmdType)
 {
 }
@@ -59,18 +59,18 @@ int GroupNameOpPacket::putBody( unsigned char * buf )
 {
     int pos = 0;
     buf[pos++] = type;
-    if(type == QQ_UPLOAD_GROUP_NAME) {
+    if(type == TQQ_UPLOAD_GROUP_NAME) {
             unsigned char groupIndex = 0x00;
 	    std::list<std::string>::iterator iter = groups.begin();
 	    for(++iter; iter != groups.end(); ++iter){  // we should ignore the first group name(default fixed string)
                     buf[pos++]=(unsigned char)(++groupIndex);
-                    if(iter->length() > (uint)QQ_MAX_GROUP_NAME_BYTE){
-                            memcpy(buf+pos, iter->c_str(), QQ_MAX_GROUP_NAME_BYTE);					
-                            pos+=QQ_MAX_GROUP_NAME_BYTE;
+                    if(iter->length() > (uint)TQQ_MAX_GROUP_NAME_BYTE){
+                            memcpy(buf+pos, iter->c_str(), TQQ_MAX_GROUP_NAME_BYTE);					
+                            pos+=TQQ_MAX_GROUP_NAME_BYTE;
                     }else {
                             memcpy(buf+pos, iter->c_str(), iter->length());
                             pos+=iter->length();
-                            int j = QQ_MAX_GROUP_NAME_BYTE - iter->length();
+                            int j = TQQ_MAX_GROUP_NAME_BYTE - iter->length();
                             while(j-- > 0)
                                     buf[pos++]=0x00;
                     }
@@ -88,7 +88,7 @@ int GroupNameOpPacket::putBody( unsigned char * buf )
 
 GroupNameOpReplyPacket::GroupNameOpReplyPacket(unsigned char* buf, int len)
 	: InPacket(buf, len),
-	type(QQ_DOWNLOAD_GROUP_NAME)
+	type(TQQ_DOWNLOAD_GROUP_NAME)
 {
 }
 
@@ -111,7 +111,7 @@ void GroupNameOpReplyPacket::parseBody()
 {
 	groupNames.clear();	
 	type = decryptedBuf[0];
-	if(type == QQ_DOWNLOAD_GROUP_NAME) {
+	if(type == TQQ_DOWNLOAD_GROUP_NAME) {
 		int offset=7;
 		while(bodyLength>offset) {
 			std::string name((char*)(decryptedBuf+offset));
@@ -123,7 +123,7 @@ void GroupNameOpReplyPacket::parseBody()
 
 const bool GroupNameOpReplyPacket::isDownloadReply() const 
 { 
-	return type == QQ_DOWNLOAD_GROUP_NAME; 
+	return type == TQQ_DOWNLOAD_GROUP_NAME; 
 } 
 
 /* =========================================================== */
@@ -158,19 +158,19 @@ const int DownloadFriendEntry::readData(const char *buf)
 
 const bool DownloadFriendEntry::isQun() const
 {
-	return type == QQ_ID_IS_QUN;
+	return type == TQQ_ID_IS_QUN;
 }
 
 /* =========================================================== */
 
 DownloadGroupFriendPacket::DownloadGroupFriendPacket()
-	: OutPacket(QQ_CMD_DOWNLOAD_GROUP_FRIEND, true),
+	: OutPacket(TQQ_CMD_DOWNLOAD_GROUP_FRIEND, true),
 	startID(0)
 {
 }
 
 DownloadGroupFriendPacket::DownloadGroupFriendPacket(const int start)
-	: OutPacket(QQ_CMD_DOWNLOAD_GROUP_FRIEND, true),
+	: OutPacket(TQQ_CMD_DOWNLOAD_GROUP_FRIEND, true),
 	startID(start)
 {
 }
@@ -246,7 +246,7 @@ void DownloadGroupFriendReplyPacket::parseBody()
 /* =========================================================== */
 
 UploadGroupFriendPacket::UploadGroupFriendPacket()
-	: OutPacket(QQ_CMD_UPLOAD_GROUP_FRIEND, true)
+	: OutPacket(TQQ_CMD_UPLOAD_GROUP_FRIEND, true)
 {
 }
 

@@ -20,64 +20,64 @@
 
 #include "evaqunmemberpickerui.h"
 
-#include <qvariant.h>
-#include <qpushbutton.h>
-#include <qframe.h>
-#include <qlabel.h>
-#include <qheader.h>
-#include <qlistview.h>
-#include <qlayout.h>
-#include <qtooltip.h>
-#include <qwhatsthis.h>
-#include <qimage.h>
-#include <qpixmap.h>
-#include <klocale.h>
+#include <ntqvariant.h>
+#include <ntqpushbutton.h>
+#include <ntqframe.h>
+#include <ntqlabel.h>
+#include <ntqheader.h>
+#include <ntqlistview.h>
+#include <ntqlayout.h>
+#include <ntqtooltip.h>
+#include <ntqwhatsthis.h>
+#include <ntqimage.h>
+#include <ntqpixmap.h>
+#include <tdelocale.h>
 
 /*
  *  Constructs a EvaQunMemberPickerUI as a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'.
  */
-EvaQunMemberPickerUI::EvaQunMemberPickerUI( QWidget* parent, const char* name, WFlags fl )
-    : QWidget( parent, name, fl )
+EvaQunMemberPickerUI::EvaQunMemberPickerUI( TQWidget* parent, const char* name, WFlags fl )
+    : TQWidget( parent, name, fl )
 {
 	if ( !name )
 		setName( "EvaQunMemberPickerUI" );
-	EvaQunMemberPickerUILayout = new QGridLayout( this, 1, 1, 0, 0, "EvaQunMemberPickerUILayout"); 
+	EvaQunMemberPickerUILayout = new TQGridLayout( this, 1, 1, 0, 0, "EvaQunMemberPickerUILayout"); 
 	
-	fraMain = new QFrame( this, "fraMain" );
-	fraMain->setSizePolicy( QSizePolicy( (QSizePolicy::SizeType)1, (QSizePolicy::SizeType)5, 0, 0, fraMain->sizePolicy().hasHeightForWidth() ) );
-	fraMain->setFrameShape( QFrame::GroupBoxPanel );
-	fraMain->setFrameShadow( QFrame::Raised );
-	fraMainLayout = new QGridLayout( fraMain, 1, 1, 6, 3, "fraMainLayout"); 
+	fraMain = new TQFrame( this, "fraMain" );
+	fraMain->setSizePolicy( TQSizePolicy( (TQSizePolicy::SizeType)1, (TQSizePolicy::SizeType)5, 0, 0, fraMain->sizePolicy().hasHeightForWidth() ) );
+	fraMain->setFrameShape( TQFrame::GroupBoxPanel );
+	fraMain->setFrameShadow( TQFrame::Raised );
+	fraMainLayout = new TQGridLayout( fraMain, 1, 1, 6, 3, "fraMainLayout"); 
 	
-	layout1 = new QVBoxLayout( 0, 0, 6, "layout1"); 
+	layout1 = new TQVBoxLayout( 0, 0, 6, "layout1"); 
 	
-	line1 = new QFrame( fraMain, "line1" );
-	line1->setFrameShape( QFrame::HLine );
-	line1->setFrameShadow( QFrame::Raised );
-	line1->setFrameShape( QFrame::HLine );
+	line1 = new TQFrame( fraMain, "line1" );
+	line1->setFrameShape( TQFrame::HLine );
+	line1->setFrameShadow( TQFrame::Raised );
+	line1->setFrameShape( TQFrame::HLine );
 	layout1->addWidget( line1 );
 	
-	line2 = new QFrame( fraMain, "line2" );
-	line2->setFrameShape( QFrame::HLine );
-	line2->setFrameShadow( QFrame::Raised );
-	line2->setFrameShape( QFrame::HLine );
+	line2 = new TQFrame( fraMain, "line2" );
+	line2->setFrameShape( TQFrame::HLine );
+	line2->setFrameShadow( TQFrame::Raised );
+	line2->setFrameShape( TQFrame::HLine );
 	layout1->addWidget( line2 );
 	
-	lblTitle = new QLabel( fraMain, "lblTitle" );
+	lblTitle = new TQLabel( fraMain, "lblTitle" );
 	layout1->addWidget( lblTitle );
 	
-	lvBuddyList = new QListView( fraMain, "lvBuddyList" );
-	lvBuddyList->setSizePolicy( QSizePolicy( (QSizePolicy::SizeType)5, (QSizePolicy::SizeType)7, 0, 0, lvBuddyList->sizePolicy().hasHeightForWidth() ) );
+	lvBuddyList = new TQListView( fraMain, "lvBuddyList" );
+	lvBuddyList->setSizePolicy( TQSizePolicy( (TQSizePolicy::SizeType)5, (TQSizePolicy::SizeType)7, 0, 0, lvBuddyList->sizePolicy().hasHeightForWidth() ) );
 	lvBuddyList->addColumn("");
-	lvBuddyList->setSelectionMode(QListView::Single);
+	lvBuddyList->setSelectionMode(TQListView::Single);
 	layout1->addWidget( lvBuddyList );
 	
 	fraMainLayout->addLayout( layout1, 0, 0 );
 	
 	EvaQunMemberPickerUILayout->addWidget( fraMain, 0, 0 );
 	languageChange();
-	resize( QSize(220, 337).expandedTo(minimumSizeHint()) );
+	resize( TQSize(220, 337).expandedTo(minimumSizeHint()) );
 	clearWState( WState_Polished );
 }
 
@@ -86,7 +86,7 @@ EvaQunMemberPickerUI::EvaQunMemberPickerUI( QWidget* parent, const char* name, W
  */
 EvaQunMemberPickerUI::~EvaQunMemberPickerUI()
 {
-    // no need to delete child widgets, Qt does it all for us
+    // no need to delete child widgets, TQt does it all for us
 }
 
 /*

@@ -25,17 +25,17 @@
 #include "evacontactmanager.h"
 #include "evamain.h"
 #include "evaapi.h"
-#include <qapplication.h>
-#include <qdatetime.h>
-#include <qtimer.h>
-#include <qtextcodec.h>
+#include <ntqapplication.h>
+#include <ntqdatetime.h>
+#include <ntqtimer.h>
+#include <ntqtextcodec.h>
 #include <kdebug.h>
 #include <stdlib.h>
 #include <map>
 
 EvaPacketManager::EvaPacketManager(EvaUser *user, EvaConnecter *connecter)
 {
-	codec = QTextCodec::codecForName("GB18030");
+	codec = TQTextCodec::codecForName("GB18030");
 	this->user = user;
 	addingBuddyQQ = 0;
 	deletingBuddyQQ = 0;
@@ -46,14 +46,14 @@ EvaPacketManager::EvaPacketManager(EvaUser *user, EvaConnecter *connecter)
 	this->connecter = connecter;
 	Packet::setUDP(connecter->getConnectionType() == EvaNetwork::UDP);	
 	// connet the signal of connecter so that I will know the network is ready
-	QObject::connect(connecter, SIGNAL(isReady()), SLOT(slotConnectReady()));
-	QObject::connect(connecter, SIGNAL(newPacket()), SLOT(newPacketSlot()));
-	QObject::connect(connecter, SIGNAL(networkException(int)), SLOT(networkExceptionSlot(int)));
-	QObject::connect(connecter, SIGNAL(packetException(int)), SLOT(packetExceptionSlot(int)));
-	QObject::connect(connecter, SIGNAL(clientNotReady()), SLOT(slotClientNotReady()));
+	TQObject::connect(connecter, SIGNAL(isReady()), SLOT(slotConnectReady()));
+	TQObject::connect(connecter, SIGNAL(newPacket()), SLOT(newPacketSlot()));
+	TQObject::connect(connecter, SIGNAL(networkException(int)), SLOT(networkExceptionSlot(int)));
+	TQObject::connect(connecter, SIGNAL(packetException(int)), SLOT(packetExceptionSlot(int)));
+	TQObject::connect(connecter, SIGNAL(clientNotReady()), SLOT(slotClientNotReady()));
 
-	timer = new QTimer(this);
-	QObject::connect(timer, SIGNAL(timeout()), SLOT(timerSlot()) );
+	timer = new TQTimer(this);
+	TQObject::connect(timer, SIGNAL(timeout()), SLOT(timerSlot()) );
 }
 
 EvaPacketManager::~EvaPacketManager()
@@ -126,144 +126,144 @@ const int EvaPacketManager::getSavedBuddyQQ(const short seq)
 void EvaPacketManager::parsePacket(InPacket *packet)
 {
 	int index = receivedPacketList.findIndex(packet->hashCode());
-	if(index != -1 && packet->getCommand() != QQ_CMD_RECV_IM) {
+	if(index != -1 && packet->getCommand() != TQQ_CMD_RECV_IM) {
 		delete packet;
 		return;
 	}
 	receivedPacketList.append(packet->hashCode());
 	
 	switch(packet->getCommand()){
-	case QQ_CMD_LOGIN:
+	case TQQ_CMD_LOGIN:
 		processLoginReply(packet);
 		break;
-	case QQ_CMD_KEEP_ALIVE:
+	case TQQ_CMD_KEEP_ALIVE:
 		processKeepAliveReply(packet);
 		break;
-	case QQ_CMD_GET_USER_INFO:
+	case TQQ_CMD_GET_USER_INFO:
 		printf("user info\n"); 
 		processGetUserInfoReply(packet);
 		break;
-	case QQ_CMD_CHANGE_STATUS:
+	case TQQ_CMD_CHANGE_STATUS:
 		printf("change status reply\n");
 		processChangeStatusReply(packet);
 		break;
-	case QQ_CMD_GET_FRIEND_LIST:
+	case TQQ_CMD_GET_FRIEND_LIST:
 		printf("friend list\n");
 		processGetFriendListReply(packet);
 		break;
-	case QQ_CMD_GET_FRIEND_ONLINE:
+	case TQQ_CMD_GET_FRIEND_ONLINE:
 		//printf("online-friend list\n");
 		processGetOnlineFriendReply(packet);
 		break;
-	case QQ_CMD_SEND_IM:
+	case TQQ_CMD_SEND_IM:
 		printf("send im reply\n");
 		processSendIMReply(packet);
 		break;
-	case QQ_CMD_RECV_IM:
+	case TQQ_CMD_RECV_IM:
 		printf("received new message\n");
 		processReceiveIM(packet);
 		break;
-	case QQ_CMD_RECV_MSG_FRIEND_CHANGE_STATUS:
+	case TQQ_CMD_RECV_MSG_FRIEND_CHANGE_STATUS:
 		printf("friend change status\n");
 		processFriendChangeStatus(packet);
 		break;
-	case QQ_CMD_GROUP_NAME_OP:
+	case TQQ_CMD_GROUP_NAME_OP:
 		printf("upload/download group names reply\n");
 		processGroupNameOp(packet);
 		break;
-	case QQ_CMD_DOWNLOAD_GROUP_FRIEND:
+	case TQQ_CMD_DOWNLOAD_GROUP_FRIEND:
 		printf("grouped friends reply\n");
 		processDownloadGroupFriendReply(packet);
 		break;	
-	case QQ_CMD_UPLOAD_GROUP_FRIEND:
+	case TQQ_CMD_UPLOAD_GROUP_FRIEND:
 		printf("upload grouped friend reply\n");
 		processUploadGroupFriendReply(packet);
 		break;
-	case QQ_CMD_DELETE_FRIEND:
+	case TQQ_CMD_DELETE_FRIEND:
 		printf("delete friend reply\n");
 		processDeleteFriendReply(packet);
 		break;
-	case QQ_CMD_ADD_FRIEND:
+	case TQQ_CMD_ADD_FRIEND:
 		printf("add friend reply\n");
 		processAddFriendReply(packet);
 		break;
-	case QQ_CMD_ADD_FRIEND_AUTH:
+	case TQQ_CMD_ADD_FRIEND_AUTH:
 		printf("add friend auth reply\n");
 		processAddFriendAuthReply(packet);
 		break;				
-	case QQ_CMD_RECV_MSG_SYS:
+	case TQQ_CMD_RECV_MSG_SYS:
 		printf("system message\n");
 		processSystemNotification(packet);
 		break;
-	case QQ_CMD_MODIFY_INFO:
+	case TQQ_CMD_MODIFY_INFO:
 		printf("received modify info\n");
 		processModifyInfoReply(packet);
 		break;
-	case QQ_CMD_SEARCH_USER:
+	case TQQ_CMD_SEARCH_USER:
 		printf("search reply\n");
 		processSearchUserReply(packet);
 		break;
-	case QQ_CMD_DELETE_ME:
+	case TQQ_CMD_DELETE_ME:
 		printf("delete me reply\n");
 		processDeleteMeReply(packet);
 		break;
-	case QQ_CMD_REQUEST_LOGIN_TOKEN:
+	case TQQ_CMD_REQUEST_LOGIN_TOKEN:
 		printf("got login token\n");
 		processRequestLoginTokenReply(packet);
 		break;
-	case QQ_CMD_REQUEST_LOGIN_TOKEN_EX:
+	case TQQ_CMD_REQUEST_LOGIN_TOKEN_EX:
 		printf("got login token ex\n");
 		processRequestLoginTokenExReply(packet);
 		break;
-	case QQ_CMD_QUN_CMD:
+	case TQQ_CMD_QUN_CMD:
 		printf("got Qun operation reply\n");
 		processQunReply(packet);
 		break;
-	case QQ_CMD_GET_LEVEL:
+	case TQQ_CMD_GET_LEVEL:
 		printf("got level reply\n");
 		processGetLevelReply(packet);
 		break;
-	case QQ_CMD_REQUEST_KEY:
+	case TQQ_CMD_REQUEST_KEY:
 		printf("got keys reply\n");
 		processRequestKeyReply(packet);
 		break;
-	case QQ_CMD_REQUEST_EXTRA_INFORMATION:
+	case TQQ_CMD_REQUEST_EXTRA_INFORMATION:
 		printf("got extra info reply\n");
 		processRequestExtraInfoReply(packet);
 		break;
-	case QQ_CMD_SIGNATURE_OP:
+	case TQQ_CMD_SIGNATURE_OP:
 		printf("got signature op reply\n");
 		processSignatureReply(packet);
 		break;
-	case QQ_CMD_MEMO_OP:
+	case TQQ_CMD_MEMO_OP:
 		printf("got memo op reply\n");
 		processMemoReply(packet);
 		break;
-	case QQ_CMD_ADVANCED_SEARCH:
+	case TQQ_CMD_ADVANCED_SEARCH:
 		printf("advanced search reply\n");
 		processAdvancedSearchReply(packet);
 		break;
-	case QQ_CMD_ADD_FRIEND_EX:
+	case TQQ_CMD_ADD_FRIEND_EX:
 		printf("add friend ex reply\n");
 		processAddFriendExReply(packet);
 		break;
-	case QQ_CMD_ADD_FRIEND_AUTH_EX:
+	case TQQ_CMD_ADD_FRIEND_AUTH_EX:
 		printf("add friend auth ex reply\n");
 		processAddFriendAuthExReply(packet);
 		break;
-	case QQ_CMD_ADD_FRIEND_AUTH_INFO:
+	case TQQ_CMD_ADD_FRIEND_AUTH_INFO:
 		printf("auth info reply\n");
 		processAddFrendAuthInfoReply(packet);
 		break;
-	case QQ_CMD_ADD_FRIEND_AUTH_QUESTION:
+	case TQQ_CMD_ADD_FRIEND_AUTH_QUESTION:
 		printf("auth question reply\n");
 		processAddFriendAuthQuestionReply(packet);
 		break;
-	case QQ_CMD_VERIFY_ADDING_MSG:
+	case TQQ_CMD_VERIFY_ADDING_MSG:
 		printf("verify adding message reply\n");
 		processVerifyAddingMsgReply(packet);
 		break;
-	case QQ_CMD_WEATHER:
+	case TQQ_CMD_WEATHER:
 		printf("weather request reply\n");
 		processWeatherOpReply(packet);
 	}
@@ -282,9 +282,9 @@ void EvaPacketManager::doLogin()
 		doRequestLoginTokenEx();
 		return;
 	}
-	unsigned char mode = QQ_LOGIN_MODE_INVISIBLE;
+	unsigned char mode = TQQ_LOGIN_MODE_INVISIBLE;
 	if(user->getStatus() == EvaUser::Eva_Online)
-		mode = QQ_LOGIN_MODE_NORMAL;
+		mode = TQQ_LOGIN_MODE_NORMAL;
 	Packet::setPasswordKey((unsigned char *)(user->getMd5Password()));
 
 	LoginPacket *packet = new LoginPacket(mode);
@@ -305,7 +305,7 @@ void EvaPacketManager::processRequestLoginTokenReply(const InPacket *in)
 		emit serverBusy();
 		return;
 	}
-	//user->loginManager()->finishedCommand(QQ_CMD_REQUEST_LOGIN_TOKEN);
+	//user->loginManager()->finishedCommand(TQQ_CMD_REQUEST_LOGIN_TOKEN);
 	// here, we've got login token, therefore, try to log in
 	doLogin();
 }
@@ -315,7 +315,7 @@ void EvaPacketManager::processLoginReply(const InPacket *in)
 	// if client key is set, the user has logged in.
 	if(Packet::isClientKeySet()) 
 		return;
-	//if(user->loginManager()->isCommandFinished(QQ_CMD_LOGIN))
+	//if(user->loginManager()->isCommandFinished(TQQ_CMD_LOGIN))
 	//	return;
 
 	LoginReplyPacket *packet = new LoginReplyPacket();
@@ -328,11 +328,11 @@ void EvaPacketManager::processLoginReply(const InPacket *in)
 	}
 	switch(packet->getReplyCode())
 	{
-	case QQ_LOGIN_REPLY_OK:
+	case TQQ_LOGIN_REPLY_OK:
 		{
 		kdDebug() << "[EvaPacketManager] user \"" << user->getQQ()
 				<< "\" logged in from "
-				<< QHostAddress(packet->getMyIP()).toString()
+				<< TQHostAddress(packet->getMyIP()).toString()
 				<< ":" << packet->getMyPort()<< endl;
 // 		printf("EvaPacketManager::processLoginReply -- \n");
 // 		for(int i=0; i<packet->getLength(); i++){
@@ -348,10 +348,10 @@ void EvaPacketManager::processLoginReply(const InPacket *in)
 		user->setLoginLanIp(connecter->getSocketIp().toIPv4Address());
 		user->setLoginLanPort(connecter->getSocketPort());
 		
-		//user->loginManager()->finishedCommand(QQ_CMD_LOGIN);
+		//user->loginManager()->finishedCommand(TQQ_CMD_LOGIN);
 		///connecter->append(new ChangeStatusPacket(EvaUser::getStatusCode(user->getStatus())));
-		///connecter->append(new EvaRequestKeyPacket(QQ_REQUEST_FILE_AGENT_KEY));
-		//connecter->append(new EvaRequestKeyPacket(QQ_REQUEST_UNKNOWN_KEY));
+		///connecter->append(new EvaRequestKeyPacket(TQQ_REQUEST_FILE_AGENT_KEY));
+		//connecter->append(new EvaRequestKeyPacket(TQQ_REQUEST_UNKNOWN_KEY));
 		if(user->isBuddiesLoaded())
 			connecter->append(new GetOnlineFriendsPacket());
 		if(!timer->isActive()){
@@ -362,8 +362,8 @@ void EvaPacketManager::processLoginReply(const InPacket *in)
 		GetLoginManager()->loginOK();
 		}
 		break;
-	case QQ_LOGIN_REPLY_REDIRECT:
-	case QQ_LOGIN_REPLY_REDIRECT_EX:
+	case TQQ_LOGIN_REPLY_REDIRECT:
+	case TQQ_LOGIN_REPLY_REDIRECT_EX:
 		printf("EVA redirect to: %8x, %d\n", packet->getRedirectedIP(), packet->getRedirectedPort());
 		if(packet->getRedirectedIP() == 0) {
 			emit serverBusy();
@@ -379,16 +379,16 @@ void EvaPacketManager::processLoginReply(const InPacket *in)
 // 								   packet->getRedirectedPort());
 		}
 		break;
-	case QQ_LOGIN_REPLY_PWD_ERROR:
-	case QQ_LOGIN_REPLY_NEED_REACTIVATE:
+	case TQQ_LOGIN_REPLY_PWD_ERROR:
+	case TQQ_LOGIN_REPLY_NEED_REACTIVATE:
 		printf("something wrong:%s\n",codec->toUnicode(packet->getReplyMessage().c_str()).local8Bit().data());
 		GetLoginManager()->wrongPassword( codec->toUnicode(packet->getReplyMessage().c_str()));
 		//emit wrongPassword(codec->toUnicode(packet->getReplyMessage().c_str()));
 		break;
-	case QQ_LOGIN_REPLY_PWD_ERROR_EX:
+	case TQQ_LOGIN_REPLY_PWD_ERROR_EX:
 		GetLoginManager()->wrongPassword( codec->toUnicode(packet->getReplyMessage().c_str()));
 		break;
-	case QQ_LOGIN_REPLY_MISC_ERROR:
+	case TQQ_LOGIN_REPLY_MISC_ERROR:
 		printf("some unknown error:%s\nhaving another try ...\n",packet->getReplyMessage().c_str());
 		emit serverBusy();
 		break;
@@ -400,7 +400,7 @@ void EvaPacketManager::processLoginReply(const InPacket *in)
 
 void EvaPacketManager::doRequestFileAgentKey()
 {
-	connecter->append(new EvaRequestKeyPacket(QQ_REQUEST_FILE_AGENT_KEY));
+	connecter->append(new EvaRequestKeyPacket(TQQ_REQUEST_FILE_AGENT_KEY));
 }
 
 void EvaPacketManager::doLogout( )
@@ -448,7 +448,7 @@ void EvaPacketManager::processGetUserInfoReply( const InPacket * in )
 
 // 	if( id == user->getQQ()){
 // 		user->setDetails(info);
-// 		user->loginManager()->finishedCommand(QQ_CMD_GET_USER_INFO);
+// 		user->loginManager()->finishedCommand(TQQ_CMD_GET_USER_INFO);
 // 		emit myInfoReady();
 // 	}else{
 // 		user->getFriendList().addContactInfoTo(id, info);
@@ -474,7 +474,7 @@ void EvaPacketManager::processChangeStatusReply( const InPacket * in )
 		return;
 	}
 	if(packet->isAccepted()){  // if change status failed,  in most cases it's because of connection problem, 
-		//user->loginManager()->finishedCommand(QQ_CMD_CHANGE_STATUS);    // so we simply emit a offline signal
+		//user->loginManager()->finishedCommand(TQQ_CMD_CHANGE_STATUS);    // so we simply emit a offline signal
 		switch(user->getStatus()){
 		case EvaUser::Eva_Online:
 			emit onlineReady();
@@ -524,11 +524,11 @@ void EvaPacketManager::processGetFriendListReply( const InPacket * in )
 // 	friendItemList gotList = packet->getFriendList();
 // 	friendItemList::iterator iter;
 // 	for(iter = gotList.begin(); iter!= gotList.end(); ++iter){
-// 		QQFriend frd;
+// 		TQQFriend frd;
 // 		frd.setFriendItem(*iter);
 // 		user->getFriendList().addFriend(frd);
 // 	}
-// 	if(packet->getPosition()!=QQ_FRIEND_LIST_POSITION_END){
+// 	if(packet->getPosition()!=TQQ_FRIEND_LIST_POSITION_END){
 // 		connecter->append(new GetFriendListPacket(packet->getPosition()));
 // 	}else{
 // 		emit friendListReady(); // EvaMain class will set the loginManager
@@ -536,7 +536,7 @@ void EvaPacketManager::processGetFriendListReply( const InPacket * in )
 	delete packet;
 }
 
-void EvaPacketManager::doSendMessage( const unsigned int receiver, const bool isNormal, QString & message, const char fontSize, 
+void EvaPacketManager::doSendMessage( const unsigned int receiver, const bool isNormal, TQString & message, const char fontSize, 
 					const bool u, const bool i, const bool b, 
 					const char blue, const char green, const char red )
 {	
@@ -551,19 +551,19 @@ void EvaPacketManager::doSendMessage( const unsigned int receiver, const bool is
 		return;
 	}
 	
-	QQFriend * frd = user->getFriendList().getFriend(receiver);
+	TQQFriend * frd = user->getFriendList().getFriend(receiver);
 	if(!frd){
 		printf("Friend \"%d\" not in list, sending ignored\n", receiver);
 		emit sentMessageResult(receiver, false);
 		return;
 	}
-	QString rNick = codec->toUnicode( frd->getNick().c_str());
-	QString sNick = codec->toUnicode(user->getDetails().at(ContactInfo::Info_nick).c_str());
-	QDateTime time = QDateTime::currentDateTime(Qt::LocalTime);	
+	TQString rNick = codec->toUnicode( frd->getNick().c_str());
+	TQString sNick = codec->toUnicode(user->getDetails().at(ContactInfo::Info_nick).c_str());
+	TQDateTime time = TQDateTime::currentDateTime(TQt::LocalTime);	
 	user->getSetting()->saveMessage(receiver,  user->getQQ(), sNick, receiver, rNick,
 				isNormal, message, time, fontSize, u, i, b, blue, green, red);
 	
-	QCString str = codec->fromUnicode(message);
+	TQCString str = codec->fromUnicode(message);
 	unsigned short pcs = strlen(str.data()) / 700;
 	SendTextIMPacket *firstPacket = 0;
 	int lastSeq = -1;
@@ -593,7 +593,7 @@ void EvaPacketManager::doSendMessage( const unsigned int receiver, const bool is
 			if(pcsn == (pcs - 1))  // the last sent packet points to NULL
 				longMsgPacketQueue[lastSeq] = NULL;
 		}
-		//qApp->processEvents();
+		//tqApp->processEvents();
 	}
 	saveBuddyQQ(receiver, firstPacket->getSequence());
 	connecter->append(firstPacket);
@@ -670,7 +670,7 @@ void EvaPacketManager::processGetOnlineFriendReply( const InPacket * in )
 	for(iter = list.begin(); iter!=list.end(); ++iter){
 		user->getFriendList().addOnlineFriendEntryTo(iter->getQQ(), *iter);
 	}
-	if(packet->getPosition() != QQ_FRIEND_ONLINE_LIST_POSITION_END){
+	if(packet->getPosition() != TQQ_FRIEND_ONLINE_LIST_POSITION_END){
 		connecter->append(new GetOnlineFriendsPacket(packet->getPosition()));
 	} else
 		emit friendListReady();
@@ -689,7 +689,7 @@ void EvaPacketManager::processFriendChangeStatus( const InPacket * in )
 	//user->getFriendList().updateFriendIP(packet->getQQ(), packet->getIP());
 	//user->getFriendList().updateFriendPort(packet->getQQ(), packet->getPort());
 
-	const QQFriend *frd = (user->getFriendList()).getFriend(packet->getQQ());
+	const TQQFriend *frd = (user->getFriendList()).getFriend(packet->getQQ());
 	
 	if( frd && (frd->getStatus() != packet->getStatus()) ){
 		user->getFriendList().updateFriendStatus(packet->getQQ(), packet->getStatus());
@@ -734,23 +734,23 @@ void EvaPacketManager::processReceiveIM( const InPacket * in )
 		printf("\n");
 		}
 		break;
-	case QQ_RECV_IM_NEWS:{
-		ReceivedQQNews *news = new ReceivedQQNews(packet->getBodyData(), packet->getBodyLength());
-		emit receivedQQNews(codec->toUnicode(news->getTitle().c_str()),
+	case TQQ_RECV_IM_NEWS:{
+		ReceivedTQQNews *news = new ReceivedTQQNews(packet->getBodyData(), packet->getBodyLength());
+		emit receivedTQQNews(codec->toUnicode(news->getTitle().c_str()),
 					codec->toUnicode(news->getBrief().c_str()),
 					codec->toUnicode(news->getURL().c_str()));
 		}
 		break;
-	case QQ_RECV_IM_FROM_BUDDY_2006:
-	case QQ_RECV_IM_FROM_UNKNOWN_2006:
-	case QQ_RECV_IM_TO_BUDDY:
-	case QQ_RECV_IM_TO_UNKNOWN:{
+	case TQQ_RECV_IM_FROM_BUDDY_2006:
+	case TQQ_RECV_IM_FROM_UNKNOWN_2006:
+	case TQQ_RECV_IM_TO_BUDDY:
+	case TQQ_RECV_IM_TO_UNKNOWN:{
 		NormalIMBase *base = new NormalIMBase(packet->getBodyData(), packet->getBodyLength());	
 		base->parseData();
 		printf("sender version: 0x%4x\n", base->getSenderVersion());
 		switch(base->getNormalIMType())
 		{
-		case QQ_IM_NORMAL_TEXT:{
+		case TQQ_IM_NORMAL_TEXT:{
 			for(int i=0; i<packet->getLength(); i++){
 				if(!(i%8)) printf("\n%d: ",i);
 				char t = packet->getBody()[i];
@@ -760,9 +760,9 @@ void EvaPacketManager::processReceiveIM( const InPacket * in )
 			ReceivedNormalIM * received = new ReceivedNormalIM();
 			received->setNormalIMBase(base);
 			received->parseData();
-			const QQFriend *frd = user->getFriendList().getFriend(received->getSender());
+			const TQQFriend *frd = user->getFriendList().getFriend(received->getSender());
 			if(frd==NULL){
-				QQFriend f(received->getSender(),received->getSenderFace());
+				TQQFriend f(received->getSender(),received->getSenderFace());
 				f.setGroupIndex(EvaUser::getAnonymousIndex());
 				user->getFriendList().addFriend(f);
 				user->saveGroupedBuddyList();
@@ -786,7 +786,7 @@ void EvaPacketManager::processReceiveIM( const InPacket * in )
 				if (total == pcMsgCache[ropID].content.size())
 				{
 					//all fragments received
-					QString allText = "";
+					TQString allText = "";
 					for (int idx=0; idx<total; idx++) 
 						allText += pcMsgCache[ropID].content[idx];
 					pcMsgCache.erase(ropID);
@@ -803,8 +803,8 @@ void EvaPacketManager::processReceiveIM( const InPacket * in )
 			//user->getFriendList().updateFriendPort(packet->getSender(), packet->getSenderPort());
 			user->getFriendList().updateFriendFileSessionKey(packet->getSender(),received->getBuddyFileSessionKey());
 			user->getFriendList().getFriend(received->getSender())->setSequence(base->getSequence());
-			QString msg = codec->toUnicode(received->getMessage().c_str());
-			QDateTime time;
+			TQString msg = codec->toUnicode(received->getMessage().c_str());
+			TQDateTime time;
 			time.setTime_t(received->getSendTime());
 			
 			int sender = received->getSender();
@@ -816,9 +816,9 @@ void EvaPacketManager::processReceiveIM( const InPacket * in )
 			char blue = received->getBlue();
 			char green = received->getGreen();
 			char red = received->getRed();
-			if(received->getReplyType() == QQ_IM_IMAGE_REPLY) isNormal = true;
-			QString sNick = codec->toUnicode(user->getFriendList().getFriend(sender)->getNick().c_str());
-			QString rNick = codec->toUnicode(user->getDetails().at(ContactInfo::Info_nick).c_str());
+			if(received->getReplyType() == TQQ_IM_IMAGE_REPLY) isNormal = true;
+			TQString sNick = codec->toUnicode(user->getFriendList().getFriend(sender)->getNick().c_str());
+			TQString rNick = codec->toUnicode(user->getDetails().at(ContactInfo::Info_nick).c_str());
 			user->getSetting()->saveMessage(sender, sender, sNick, user->getQQ(), rNick, 
 						isNormal, msg, time, fontSize, u, i, b, blue, green, red);
 			printf("From Buddy -- %s (%d): <BEGIN>%s<END>\n", sNick.local8Bit().data(), sender, msg.local8Bit().data());
@@ -827,26 +827,26 @@ void EvaPacketManager::processReceiveIM( const InPacket * in )
 			delete received;
 			}
 			break;
-		case QQ_IM_UDP_REQUEST:
-			printf("EvaPacketManager::processReceiveIM -- QQ_IM_UDP_REQUEST <- old version used\n");
+		case TQQ_IM_UDP_REQUEST:
+			printf("EvaPacketManager::processReceiveIM -- TQQ_IM_UDP_REQUEST <- old version used\n");
 			for(int i=0; i<packet->getLength(); i++){
 				if(!(i%8)) printf("\n%d: ",i);
 				char t = packet->getBody()[i];
 				printf("%2x ", (uint8_t)t);
 			}
-			printf("\n----====== QQ_IM_UDP_REQUEST Finished ======----\n\n");
+			printf("\n----====== TQQ_IM_UDP_REQUEST Finished ======----\n\n");
 			break;
-		case QQ_IM_TCP_REQUEST:
-		case QQ_IM_ACCEPT_UDP_REQUEST:
-		case QQ_IM_NOTIFY_IP:
-		case QQ_IM_REQUEST_CANCELED:
+		case TQQ_IM_TCP_REQUEST:
+		case TQQ_IM_ACCEPT_UDP_REQUEST:
+		case TQQ_IM_NOTIFY_IP:
+		case TQQ_IM_REQUEST_CANCELED:
 			fprintf(stderr, "Received file command from \"%d\"(v:%d). Command not supported, Buddy might use a client earlier than QQ2005 beta1!\n",
 					packet->getSender(), 0xffff&packet->getVersion());
 			break;
-		case QQ_IM_NOTIFY_FILE_AGENT_INFO:
-		case QQ_IM_EX_UDP_REQUEST:
-		case QQ_IM_EX_REQUEST_CANCELLED:
-		case QQ_IM_EX_REQUEST_ACCEPTED:{
+		case TQQ_IM_NOTIFY_FILE_AGENT_INFO:
+		case TQQ_IM_EX_UDP_REQUEST:
+		case TQQ_IM_EX_REQUEST_CANCELLED:
+		case TQQ_IM_EX_REQUEST_ACCEPTED:{
 			printf("EvaPacketManager::processReceiveIM -- Here we got\n");
 			for(int i=0; i<packet->getLength(); i++){
 				if(!(i%8)) printf("\n%d: ",i);
@@ -858,8 +858,8 @@ void EvaPacketManager::processReceiveIM( const InPacket * in )
 			ReceivedFileIM * received = new ReceivedFileIM();
 			received->setNormalIMBase(base);
 			received->parseData();
-			if(received->getTransferType() != QQ_TRANSFER_FILE && 
-				received->getTransferType() != QQ_TRANSFER_IMAGE ){
+			if(received->getTransferType() != TQQ_TRANSFER_FILE && 
+				received->getTransferType() != TQQ_TRANSFER_IMAGE ){
 				fprintf(stderr, "EvaPacketManager::processReceiveIM -- unknown transfer type: %2x\n", 0xff & received->getTransferType());
 				delete received;
 				break;
@@ -893,21 +893,21 @@ void EvaPacketManager::processReceiveIM( const InPacket * in )
 			}
 			printf("\n----====== Lots Msg Finished ======----\n\n");
 			switch(base->getNormalIMType()){
-			case QQ_IM_EX_UDP_REQUEST:
+			case TQQ_IM_EX_UDP_REQUEST:
 				emit receivedFileRequest(packet->getSender(), received->getSessionId(), 
 						codec->toUnicode(received->getFileName().c_str()),
 						received->getFileSize(), received->getTransferType());
 				break;
-			case QQ_IM_EX_REQUEST_ACCEPTED:
+			case TQQ_IM_EX_REQUEST_ACCEPTED:
 				emit receivedFileAccepted(packet->getSender(), received->getSessionId(), 
 							received->getWanIp(), true, received->getTransferType());
 				break;
-			case QQ_IM_EX_REQUEST_CANCELLED:
+			case TQQ_IM_EX_REQUEST_CANCELLED:
 				printf("EvaPacketManager::processReceiveIM -- cmd canceled\n");
 				emit receivedFileAccepted(packet->getSender(), received->getSessionId(), 
 							received->getWanIp(), false, received->getTransferType());
 				break;
-			case QQ_IM_NOTIFY_FILE_AGENT_INFO:{
+			case TQQ_IM_NOTIFY_FILE_AGENT_INFO:{
 				emit receivedFileAgentInfo(packet->getSender(), received->getSequence(), received->getSessionId(), 
 							received->getWanIp(), received->getWanPort(), received->getAgentServerKey());
 				}
@@ -916,14 +916,14 @@ void EvaPacketManager::processReceiveIM( const InPacket * in )
 			delete received;
 			}
 			break;
-		case QQ_IM_EX_NOTIFY_IP:{
-			printf("EvaPacketManager::processReceiveIM -- QQ_IM_EX_NOTIFY_IP -- \n");
+		case TQQ_IM_EX_NOTIFY_IP:{
+			printf("EvaPacketManager::processReceiveIM -- TQQ_IM_EX_NOTIFY_IP -- \n");
 			for(int i=0; i<packet->getLength(); i++){
 				if(!(i%8)) printf("\n%d: ",i);
 				char t = packet->getBody()[i];
 				printf("%2x ", (uint8_t)t);
 			}
-			printf("\n----====== QQ_IM_EX_NOTIFY_IP Before parseData ======----\n\n");
+			printf("\n----====== TQQ_IM_EX_NOTIFY_IP Before parseData ======----\n\n");
 			ReceivedFileExIpIM * received = new ReceivedFileExIpIM();
 			received->setNormalIMBase(base);
 			received->parseData();
@@ -968,11 +968,11 @@ void EvaPacketManager::processReceiveIM( const InPacket * in )
 		delete base;
 		}
 		break;
-	case QQ_RECV_IM_SYS_MESSAGE:{
+	case TQQ_RECV_IM_SYS_MESSAGE:{
 		ReceivedSystemIM *sys = new ReceivedSystemIM(packet->getBodyData(), packet->getBodyLength());		
 		switch(sys->getSystemIMType())
 		{
-		case QQ_RECV_IM_KICK_OUT:
+		case TQQ_RECV_IM_KICK_OUT:
 			printf("this account has logged in somewhere, you are kicked out!\n");
 			if(timer->isActive())
 				timer->stop();
@@ -985,9 +985,9 @@ void EvaPacketManager::processReceiveIM( const InPacket * in )
 		delete sys;
 		}
 		break;
-	case QQ_RECV_IM_QUN_IM:
-	case QQ_RECV_IM_TEMP_QUN_IM:
-	case QQ_RECV_IM_UNKNOWN_QUN_IM:{
+	case TQQ_RECV_IM_QUN_IM:
+	case TQQ_RECV_IM_TEMP_QUN_IM:
+	case TQQ_RECV_IM_UNKNOWN_QUN_IM:{
 		ReceivedQunIM *im = new ReceivedQunIM(packet->getIMType(), packet->getBodyData(), packet->getBodyLength());
 		Qun *qun = user->getQunList()->getQun(packet->getSender());
 		if(!qun){
@@ -1026,7 +1026,7 @@ void EvaPacketManager::processReceiveIM( const InPacket * in )
 			if (total == pcMsgCache[ropID].content.size())
 			{
 				//all fragments received
-				QString allText = "";
+				TQString allText = "";
 				for (int idx=0; idx<total; idx++) 
 					allText += pcMsgCache[ropID].content[idx];
 				pcMsgCache.erase(ropID);
@@ -1039,8 +1039,8 @@ void EvaPacketManager::processReceiveIM( const InPacket * in )
 			}
 			
 		}
-		QString msg = codec->toUnicode(im->getMessage().c_str());
-		QDateTime time;
+		TQString msg = codec->toUnicode(im->getMessage().c_str());
+		TQDateTime time;
 		time.setTime_t(im->getSentTime());
 		// we cannot use  im->getQunID() to get qun id, because it's only for tempory qun's id
 		int qunId = packet->getSender();
@@ -1054,8 +1054,8 @@ void EvaPacketManager::processReceiveIM( const InPacket * in )
 		char red = im->getRed();
 		
 		qun = user->getQunList()->getQun(qunId);
-		QString qName = "";
-		QString sNick = QString::number(sender);
+		TQString qName = "";
+		TQString sNick = TQString::number(sender);
 		if(qun){
 			QunInfo info = qun->getDetails();
 			qName = codec->toUnicode(info.getName().c_str());
@@ -1066,10 +1066,10 @@ void EvaPacketManager::processReceiveIM( const InPacket * in )
 					sNick = codec->toUnicode(item->getNick().c_str());
 			}
 		}
-		QString rNick = codec->toUnicode(user->getDetails().at(ContactInfo::Info_nick).c_str());
+		TQString rNick = codec->toUnicode(user->getDetails().at(ContactInfo::Info_nick).c_str());
 		user->getSetting()->saveMessage(qunId,  sender, sNick, user->getQQ(), rNick,
 					true, msg, time, fontSize, u, i, b, blue, green, red, true);
-		QString qunName = qun ? (codec->toUnicode(qun->getDetails().getName().c_str())) : ("Not In List");
+		TQString qunName = qun ? (codec->toUnicode(qun->getDetails().getName().c_str())) : ("Not In List");
 		printf("Qun -- %s--%s(%d) : %s\n", qunName.local8Bit().data(), sNick.local8Bit().data(), sender, msg.local8Bit().data());
 		if(qun->getMessageType() != Qun::RecordOnly)
 			emit qunTxtMessage(qunId, sender, msg, time, fontSize, u, i, b, blue, green, red);
@@ -1077,18 +1077,18 @@ void EvaPacketManager::processReceiveIM( const InPacket * in )
 		delete im;
 		}
 		break;
-	case QQ_RECV_IM_CREATE_QUN:
-	case QQ_RECV_IM_ADDED_TO_QUN:
-	case QQ_RECV_IM_DELETED_FROM_QUN:// these three type of notifications has no messages
-	case QQ_RECV_IM_REQUEST_JOIN_QUN:
-	case QQ_RECV_IM_APPROVE_JOIN_QUN:
-	case QQ_RECV_IM_REJECT_JOIN_QUN:
-	case QQ_RECV_IM_SET_QUN_ADMIN:{
+	case TQQ_RECV_IM_CREATE_QUN:
+	case TQQ_RECV_IM_ADDED_TO_QUN:
+	case TQQ_RECV_IM_DELETED_FROM_QUN:// these three type of notifications has no messages
+	case TQQ_RECV_IM_REQUEST_JOIN_QUN:
+	case TQQ_RECV_IM_APPROVE_JOIN_QUN:
+	case TQQ_RECV_IM_REJECT_JOIN_QUN:
+	case TQQ_RECV_IM_SET_QUN_ADMIN:{
 		ReceivedQunIMJoinRequest *join = new ReceivedQunIMJoinRequest(packet->getIMType(),
 									packet->getBodyData(),
 									packet->getBodyLength());
-		QString  msg = codec->toUnicode(join->getMessage().c_str());
-		if(packet->getIMType() == QQ_RECV_IM_REQUEST_JOIN_QUN){
+		TQString  msg = codec->toUnicode(join->getMessage().c_str());
+		if(packet->getIMType() == TQQ_RECV_IM_REQUEST_JOIN_QUN){
 			if(user->getSetting()->isInQunRejectForever( packet->getSender(), join->getSender())){
 				delete join;
 				break;
@@ -1110,7 +1110,7 @@ void EvaPacketManager::processReceiveIM( const InPacket * in )
 		delete join;
 		break;
 		/////////////TODO: remove following later on =====================
-		if( packet->getIMType()== QQ_RECV_IM_APPROVE_JOIN_QUN || packet->getIMType()== QQ_RECV_IM_ADDED_TO_QUN){
+		if( packet->getIMType()== TQQ_RECV_IM_APPROVE_JOIN_QUN || packet->getIMType()== TQQ_RECV_IM_ADDED_TO_QUN){
 			if(join->getSender() == user->getQQ()){
 				user->getQunList()->add(Qun(packet->getSender()));
 				user->saveQunList();
@@ -1121,7 +1121,7 @@ void EvaPacketManager::processReceiveIM( const InPacket * in )
 				emit qunJoinEvent(packet->getSender(), packet->getIMType(), join->getSender(), join->getCommander());
 			}
 			doRequestQunInfo(packet->getSender());
-		} else if( packet->getIMType()== QQ_RECV_IM_DELETED_FROM_QUN){
+		} else if( packet->getIMType()== TQQ_RECV_IM_DELETED_FROM_QUN){
 				if( join->getSender() == user->getQQ()) {
 					user->getQunList()->remove(packet->getSender());
 					user->saveQunList();
@@ -1139,12 +1139,12 @@ void EvaPacketManager::processReceiveIM( const InPacket * in )
 		///////// ===============================
 		}
 		break;
-	case QQ_RECV_IM_SIGNATURE_CHANGED:{
+	case TQQ_RECV_IM_SIGNATURE_CHANGED:{
 		SignatureChangedPacket *sig = new SignatureChangedPacket(packet->getBodyData(), packet->getBodyLength());
 		user->getFriendList().setSignature(sig->getQQ(), sig->getSignature(), sig->getTime());
 		user->saveGroupedBuddyList();
-		QString sigMsg = codec->toUnicode(sig->getSignature().c_str());
-		QDateTime time;
+		TQString sigMsg = codec->toUnicode(sig->getSignature().c_str());
+		TQDateTime time;
 		time.setTime_t(sig->getTime());
 		emit friendSignatureChanged(sig->getQQ(), time, sigMsg);
 		break;
@@ -1152,7 +1152,7 @@ void EvaPacketManager::processReceiveIM( const InPacket * in )
 	default:{
 		printf("Unknow IM Type: 0x%2x\n", packet->getIMType());
 		printf("sender: %d, receiver: %d, sender IP: %s, sender port: %d\n", packet->getSender(), packet->getReceiver(),
-								QHostAddress(packet->getSenderIP()).toString().ascii(), packet->getSenderPort());
+								TQHostAddress(packet->getSenderIP()).toString().ascii(), packet->getSenderPort());
 		short version = packet->getVersion();
 		short command = packet->getCommand();
 		short sequence = packet->getSequence();
@@ -1173,12 +1173,12 @@ void EvaPacketManager::processReceiveIM( const InPacket * in )
 void EvaPacketManager::doGetGroups( )
 {
 	printf("EvaPacketManager::doGetGroups\n");
-	connecter->append(new GroupNameOpPacket(QQ_DOWNLOAD_GROUP_NAME));
+	connecter->append(new GroupNameOpPacket(TQQ_DOWNLOAD_GROUP_NAME));
 }
 
 void EvaPacketManager::doUploadGroups()
 {
-	GroupNameOpPacket *packet = new GroupNameOpPacket(QQ_UPLOAD_GROUP_NAME);
+	GroupNameOpPacket *packet = new GroupNameOpPacket(TQQ_UPLOAD_GROUP_NAME);
 	packet->setGroups(user->getGroupNames());
 	connecter->append(packet);
 }
@@ -1201,8 +1201,8 @@ void EvaPacketManager::processGroupNameOp( const InPacket * in )
 // 		}
 // 		doGetGroupedFriends();
 	}else{
-		std::map<unsigned int, QQFriend> srcList = user->getFriendList().getFriendList();
-		std::map<unsigned int, QQFriend>::iterator iter;
+		std::map<unsigned int, TQQFriend> srcList = user->getFriendList().getFriendList();
+		std::map<unsigned int, TQQFriend>::iterator iter;
 		std::map<unsigned int, unsigned int> destList;
 		for(iter = srcList.begin(); iter!= srcList.end(); ++iter){
 			if((iter->second).getGroupIndex() != user->getAnonymousIndex() &&
@@ -1327,18 +1327,18 @@ void EvaPacketManager::processAddFriendReply( const InPacket * in )
 		return;
 	}
 	switch(packet->getReplyCode()){
-	case QQ_AUTH_NO_AUTH:{
-		QQFriend frd(addingBuddyQQ, 0);
+	case TQQ_AUTH_NO_AUTH:{
+		TQQFriend frd(addingBuddyQQ, 0);
 		user->getFriendList().addFriend(frd);
 		addingBuddyQQ = 0;
 		emit addBuddyReady();
 		}
 		break;
-	case QQ_AUTH_NEED_AUTH:
+	case TQQ_AUTH_NEED_AUTH:
 		addingBuddyQQ = 0;
 		emit addBuddyNeedAuth();
 		break;
-	case QQ_AUTH_NO_ADD:
+	case TQQ_AUTH_NO_ADD:
 		addingBuddyQQ = 0;
 		emit addBuddyRejected();
 		break;
@@ -1346,24 +1346,24 @@ void EvaPacketManager::processAddFriendReply( const InPacket * in )
 	delete packet;	
 }
 
-void EvaPacketManager::doAddAuthBuddy( const unsigned int id, const QString &message)
+void EvaPacketManager::doAddAuthBuddy( const unsigned int id, const TQString &message)
 {
-	AddFriendAuthPacket *packet = new AddFriendAuthPacket(id, QQ_MY_AUTH_REQUEST);
-	QCString msg = codec->fromUnicode(message);
+	AddFriendAuthPacket *packet = new AddFriendAuthPacket(id, TQQ_MY_AUTH_REQUEST);
+	TQCString msg = codec->fromUnicode(message);
 	packet->setMessage(msg.data());
 	connecter->append(packet);
 }
 
 void EvaPacketManager::doApproveBuddy( const unsigned int id)
 {
-	AddFriendAuthPacket *packet = new AddFriendAuthPacket(id, QQ_MY_AUTH_APPROVE);
+	AddFriendAuthPacket *packet = new AddFriendAuthPacket(id, TQQ_MY_AUTH_APPROVE);
 	connecter->append(packet);
 }
 
-void EvaPacketManager::doRejectBuddy( const unsigned int id , const QString &message)
+void EvaPacketManager::doRejectBuddy( const unsigned int id , const TQString &message)
 {
-	AddFriendAuthPacket *packet = new AddFriendAuthPacket(id, QQ_MY_AUTH_REJECT);
-	QCString msg = codec->fromUnicode(message);
+	AddFriendAuthPacket *packet = new AddFriendAuthPacket(id, TQQ_MY_AUTH_REJECT);
+	TQCString msg = codec->fromUnicode(message);
 	packet->setMessage(msg.data());
 	connecter->append(packet);
 }
@@ -1388,14 +1388,14 @@ void EvaPacketManager::processSystemNotification( const InPacket * in )
 		delete packet;
 		return;
 	}
-	if(packet->getType() == QQ_MSG_SYS_ADD_FRIEND_REQUEST_EX){
+	if(packet->getType() == TQQ_MSG_SYS_ADD_FRIEND_REQUEST_EX){
 		if(user->getSetting()->isInRejectForever( packet->getFromQQ())){
 			delete packet;
 			return;
 		}
 	}
 
-	QString msg = codec->toUnicode(packet->getMessage().c_str());
+	TQString msg = codec->toUnicode(packet->getMessage().c_str());
 
 	emit receivedSysMessage(packet->getType(), packet->getMyQQ(), packet->getFromQQ(),
 				 msg, packet->allowReverse(), packet->getCode(), packet->getCodeLength());
@@ -1403,7 +1403,7 @@ void EvaPacketManager::processSystemNotification( const InPacket * in )
 	delete packet;
 }
 
-void EvaPacketManager::doModifyDetails(QStringList info, QString oldPwd, QString newPwd)
+void EvaPacketManager::doModifyDetails(TQStringList info, TQString oldPwd, TQString newPwd)
 {
 	std::vector<std::string> result;
 	for(uint i=0; i< info.count(); i++){
@@ -1412,7 +1412,7 @@ void EvaPacketManager::doModifyDetails(QStringList info, QString oldPwd, QString
 	}
 	changingDetails.setDetails(result);
 	ModifyInfoPacket *packet = new ModifyInfoPacket(changingDetails);
-	if(oldPwd != QString::null && newPwd != QString::null){
+	if(oldPwd != TQString::null && newPwd != TQString::null){
 		std::string o, n;
 		o = codec->fromUnicode(oldPwd).data();
 		n = codec->fromUnicode(newPwd).data();
@@ -1434,28 +1434,28 @@ void EvaPacketManager::processModifyInfoReply(const InPacket *in)
 		user->setDetails(changingDetails);
 		user->saveGroupedBuddyList();
 		//emit myInfoReady();
-		QApplication::postEvent(g_eva, new EvaNotifyEvent(E_MyInfo));
+		TQApplication::postEvent(g_eva, new EvaNotifyEvent(E_MyInfo));
 		emit modifyInfo(true);
 	}else
 		emit modifyInfo(false);
 	delete packet;
 }
 
-QStringList EvaPacketManager::convertDetails(const ContactInfo &info)
+TQStringList EvaPacketManager::convertDetails(const ContactInfo &info)
 {
-	QStringList result;
+	TQStringList result;
 	for(uint i=0; i< info.count(); i++){
 		result.append(codec->toUnicode(info.at(i).c_str()));
 	}
 	return result;
 }
 
-void EvaPacketManager::doSearchUsers( const bool isSearchAll, const QString page, const QString id, 
-				const QString nick, const QString email, const bool match )
+void EvaPacketManager::doSearchUsers( const bool isSearchAll, const TQString page, const TQString id, 
+				const TQString nick, const TQString email, const bool match )
 {
 	SearchUserPacket *packet = new SearchUserPacket();
 	if(!isSearchAll){
-		packet->setSearchType(nick.isEmpty()?QQ_SEARCH_QQ:QQ_SEARCH_NICK);
+		packet->setSearchType(nick.isEmpty()?TQQ_SEARCH_QQ:TQQ_SEARCH_NICK);
 		packet->setPage(codec->fromUnicode(page).data());
 		packet->setQQ(codec->fromUnicode(id).data());
 		packet->setNick(codec->fromUnicode(nick).data());
@@ -1506,8 +1506,8 @@ void EvaPacketManager::processQunReply( const InPacket * in )
 	}
 
 	switch(packet->getQunCommand()){
-	case QQ_QUN_CMD_SEND_IM:
-	case QQ_QUN_CMD_SEND_IM_EX:{
+	case TQQ_QUN_CMD_SEND_IM:
+	case TQQ_QUN_CMD_SEND_IM_EX:{
 		// check if there are more sub packets to send
 		std::map<int, QunSendIMExPacket*>::iterator iter = longMsgQunPacketQueue.find(packet->getSequence());
 		if(iter == longMsgQunPacketQueue.end()){
@@ -1541,9 +1541,9 @@ void EvaPacketManager::processQunReply( const InPacket * in )
 		}
 		}
 		break;
-	case QQ_QUN_CMD_SEND_TEMP_QUN_IM:
+	case TQQ_QUN_CMD_SEND_TEMP_QUN_IM:
 		break;
-	case QQ_QUN_CMD_CREATE_QUN:
+	case TQQ_QUN_CMD_CREATE_QUN:
 		if(packet->isReplyOK()){
 			Qun q(packet->getQunID());
 			user->getQunList()->add(q);
@@ -1554,22 +1554,22 @@ void EvaPacketManager::processQunReply( const InPacket * in )
 		}else
 			emit qunCreateFailed(codec->toUnicode(packet->getErrorMessage().c_str()));
 		break;
-	case QQ_QUN_CMD_CREATE_TEMP_QUN:
+	case TQQ_QUN_CMD_CREATE_TEMP_QUN:
 		break;
-	case QQ_QUN_CMD_ACTIVATE_QUN:
+	case TQQ_QUN_CMD_ACTIVATE_QUN:
 		if(!packet->isReplyOK())
 			emit qunActiveQunFailed(codec->toUnicode(packet->getErrorMessage().c_str()));
 		break;
-	case QQ_QUN_CMD_MODIFY_MEMBER:
+	case TQQ_QUN_CMD_MODIFY_MEMBER:
 		if(packet->isReplyOK())
 			doRequestQunInfo(packet->getQunID());
 		emit qunModifyQunMembersReply(packet->getQunID(), packet->isReplyOK(), codec->toUnicode(packet->getErrorMessage().c_str()));
 		break;
-	case QQ_QUN_CMD_GET_QUN_INFO:{
+	case TQQ_QUN_CMD_GET_QUN_INFO:{
 		if(!packet->isReplyOK()){
 			// note that if comes here, the packet->getQunID() won't get the right id, only error message is ok
 			emit qunInfomationReady(processQunID, packet->isReplyOK(), codec->toUnicode(packet->getErrorMessage().c_str()));
-			printf("QQ_QUN_CMD_GET_QUN_INFO --  reply code: %d\n",packet->getReplyCode());
+			printf("TQQ_QUN_CMD_GET_QUN_INFO --  reply code: %d\n",packet->getReplyCode());
 			switch(packet->getReplyCode()){
 			case 3: // qun has been dismissed
 				user->getQunList()->remove(processQunID);
@@ -1619,7 +1619,7 @@ void EvaPacketManager::processQunReply( const InPacket * in )
 // 		}
   		}
 		break;
-	case QQ_QUN_CMD_EXIT_QUN:
+	case TQQ_QUN_CMD_EXIT_QUN:
 		emit qunExitReply(packet->getQunID(), packet->isReplyOK(), codec->toUnicode(packet->getErrorMessage().c_str()));
 		if(packet->isReplyOK()){
 			user->getQunList()->remove(packet->getQunID());
@@ -1627,7 +1627,7 @@ void EvaPacketManager::processQunReply( const InPacket * in )
 			emit qunRequestUpdateDisplay();
 		}
 		break;
-	case QQ_QUN_CMD_GET_MEMBER_INFO:{
+	case TQQ_QUN_CMD_GET_MEMBER_INFO:{
 		GetContactManager()->processQunMemberReply(packet);
 /*		user->getQunList()->setMembers(packet->getQunID(), packet->getMemberInfoList());
 		if(!qunMemberInfoFinished) break;
@@ -1635,14 +1635,14 @@ void EvaPacketManager::processQunReply( const InPacket * in )
 		emit qunMemberInfoReady(packet->getQunID());
 		}
 		break;
-	case QQ_QUN_CMD_GET_ONLINE_MEMBER:{
+	case TQQ_QUN_CMD_GET_ONLINE_MEMBER:{
 		if(packet->isReplyOK()){
-			user->getQunList()->setOnlineMembers(packet->getQunID(), packet->getQQNumberList());
+			user->getQunList()->setOnlineMembers(packet->getQunID(), packet->getTQQNumberList());
 			emit qunOnlineListReady(packet->getQunID());
 		}else{
 			// most likely, you are not a member of this Qun any mare
-			QString msg = codec->toUnicode(packet->getErrorMessage().c_str());
-			printf("QQ_QUN_CMD_GET_ONLINE_MEMBER -- reply code: %d, error msg: %s\n", packet->getReplyCode(), msg.local8Bit().data());
+			TQString msg = codec->toUnicode(packet->getErrorMessage().c_str());
+			printf("TQQ_QUN_CMD_GET_ONLINE_MEMBER -- reply code: %d, error msg: %s\n", packet->getReplyCode(), msg.local8Bit().data());
 			user->getQunList()->remove(packet->getQunID());
 			user->saveQunList();
 			emit qunRequestUpdateDisplay();
@@ -1650,31 +1650,31 @@ void EvaPacketManager::processQunReply( const InPacket * in )
 		}
 		}
 		break;
-	case QQ_QUN_CMD_JOIN_QUN:
+	case TQQ_QUN_CMD_JOIN_QUN:
 		emit joinQunReply(packet->getQunID(), packet->getJoinReply(), codec->toUnicode( packet->getErrorMessage().c_str()));
 		break;
-	case QQ_QUN_CMD_JOIN_QUN_AUTH:
+	case TQQ_QUN_CMD_JOIN_QUN_AUTH:
 		emit joinQunAuthReply(packet->getQunID(), packet->getReplyCode());
 		break;
-	case QQ_QUN_CMD_MODIFY_QUN_INFO:
+	case TQQ_QUN_CMD_MODIFY_QUN_INFO:
 		if(packet->isReplyOK())
 			doRequestQunInfo(packet->getQunID());
 		emit qunModifyInfoReply(packet->getQunID(), packet->isReplyOK(), codec->toUnicode(packet->getErrorMessage().c_str()));
 		break;
-	case QQ_QUN_CMD_SEARCH_QUN:
+	case TQQ_QUN_CMD_SEARCH_QUN:
 		emit qunSearchReady(packet->getQunInfoList(), codec->toUnicode(packet->getErrorMessage().c_str()));
 		break;
-	case QQ_QUN_CMD_GET_TEMP_QUN_INFO:
+	case TQQ_QUN_CMD_GET_TEMP_QUN_INFO:
 		break;
-	case QQ_QUN_CMD_EXIT_TEMP_QUN:
+	case TQQ_QUN_CMD_EXIT_TEMP_QUN:
 		break;
-	case QQ_QUN_CMD_GET_TEMP_QUN_MEMBERS:
+	case TQQ_QUN_CMD_GET_TEMP_QUN_MEMBERS:
 		break;
-	case QQ_QUN_CMD_MODIFY_CARD:
+	case TQQ_QUN_CMD_MODIFY_CARD:
 		emit qunModifyQunCardReply(packet->getQunID(), packet->isReplyOK(), packet->getTargetQQ(),
 							 codec->toUnicode(packet->getErrorMessage().c_str()));
 		break;
-	case QQ_QUN_CMD_REQUEST_ALL_REALNAMES:
+	case TQQ_QUN_CMD_REQUEST_ALL_REALNAMES:
 		if(packet->isReplyOK()){
 			QunList *qunList = user->getQunList();
 			if(!qunList) break;
@@ -1713,7 +1713,7 @@ void EvaPacketManager::processQunReply( const InPacket * in )
 			}
 		}
 		break;
-	case QQ_QUN_CMD_REQUEST_CARD:
+	case TQQ_QUN_CMD_REQUEST_CARD:
 		if(packet->isReplyOK() && (packet->getTargetQQ() == user->getQQ()) )
 			user->getQunList()->setMyQunCardInfo(packet->getQunID(), packet->getRealName(), packet->getGender(),
 						packet->getPhone(), packet->getEmail(), packet->getMemo());
@@ -1722,13 +1722,13 @@ void EvaPacketManager::processQunReply( const InPacket * in )
 					codec->toUnicode(packet->getPhone().c_str()),codec->toUnicode(packet->getEmail().c_str()),
 					codec->toUnicode(packet->getMemo().c_str()),codec->toUnicode(packet->getErrorMessage().c_str()));
 		break;
-	case QQ_QUN_CMD_ADMIN:
+	case TQQ_QUN_CMD_ADMIN:
 		if(packet->isReplyOK())
 			doRequestQunInfo(packet->getQunID());
 		emit qunSetAdminReply(packet->getQunID(), packet->isReplyOK(), packet->getTargetQQ(),
-					(packet->getOpCode() == QQ_QUN_SET_ADMIN), codec->toUnicode(packet->getErrorMessage().c_str()));
+					(packet->getOpCode() == TQQ_QUN_SET_ADMIN), codec->toUnicode(packet->getErrorMessage().c_str()));
 		break;
-	case QQ_QUN_CMD_TRANSFER:
+	case TQQ_QUN_CMD_TRANSFER:
 		if(packet->isReplyOK())
 			doRequestQunInfo(packet->getQunID());
 		emit qunTransferReply(packet->getQunID(), packet->isReplyOK(), packet->getTargetQQ(),
@@ -1759,12 +1759,12 @@ void EvaPacketManager::doRequestQunOnlineMembers( const unsigned int id )
 	connecter->append(new QunGetOnlineMemberPacket(id));
 }
 
-void EvaPacketManager::doSendQunMessage( const unsigned int receiver, QString & message, const char fontSize, 
+void EvaPacketManager::doSendQunMessage( const unsigned int receiver, TQString & message, const char fontSize, 
 					const bool u, const bool i, const bool b, 
 					const char blue, const char green, const char red )
 {
-	QString rNick = QString::number(receiver);
-	QString sNick = codec->toUnicode(user->getDetails().at(ContactInfo::Info_nick).c_str());
+	TQString rNick = TQString::number(receiver);
+	TQString sNick = codec->toUnicode(user->getDetails().at(ContactInfo::Info_nick).c_str());
 	Qun *qun = user->getQunList()->getQun(receiver);
 	if(qun){
 		QunInfo info = qun->getDetails();
@@ -1775,12 +1775,12 @@ void EvaPacketManager::doSendQunMessage( const unsigned int receiver, QString & 
 			sNick  = codec->toUnicode(item->getQunRealName().c_str());
 	}
 
-	QDateTime time = QDateTime::currentDateTime(Qt::LocalTime);	
+	TQDateTime time = TQDateTime::currentDateTime(TQt::LocalTime);	
 	user->getSetting()->saveMessage(receiver,  user->getQQ(), sNick, receiver, rNick,
 				true, message, time, fontSize, u, i, b, blue, green, red, true);
 	
 
-	QCString str = codec->fromUnicode(message);
+	TQCString str = codec->fromUnicode(message);
 	unsigned short pcs = strlen(str.data()) / 700;
 	QunSendIMExPacket *firstPacket = 0;
 	int lastSeq = 0;
@@ -1799,7 +1799,7 @@ void EvaPacketManager::doSendQunMessage( const unsigned int receiver, QString & 
 		packet->setBlue(blue);
 		packet->setGreen(green);
 		packet->setRed(red);
-		//QCString str = codec->fromUnicode(message);
+		//TQCString str = codec->fromUnicode(message);
 		//packet->setMessage(str.data());
 		packet->setMessage(str.mid(pcsn * 700, 700).data());
 		if(!pcsn) {
@@ -1828,10 +1828,10 @@ void EvaPacketManager::doJoinQun( const unsigned int qunID )
 	connecter->append(packet);
 }
 
-void EvaPacketManager::doJoinQunAuth( const unsigned int qunID , const unsigned char *code, const unsigned short len, const QString &message)
+void EvaPacketManager::doJoinQunAuth( const unsigned int qunID , const unsigned char *code, const unsigned short len, const TQString &message)
 {
 	printf("code len: %d\n", len);
-	QunAuthPacket *packet = new QunAuthPacket(qunID, QQ_QUN_AUTH_REQUEST);
+	QunAuthPacket *packet = new QunAuthPacket(qunID, TQQ_QUN_AUTH_REQUEST);
 	std::string msg = (codec->fromUnicode(message)).data();
 	packet->setCode( code, len);
 	packet->setMessage(msg);
@@ -1841,16 +1841,16 @@ void EvaPacketManager::doJoinQunAuth( const unsigned int qunID , const unsigned 
 void EvaPacketManager::doApproveQun( const unsigned int id, const unsigned int qunID,
 					const unsigned char *token, const unsigned short len)
 {
-	QunAuthPacket *packet = new QunAuthPacket(qunID, QQ_QUN_AUTH_APPROVE);
+	QunAuthPacket *packet = new QunAuthPacket(qunID, TQQ_QUN_AUTH_APPROVE);
 	packet->setReceiver(id);
 	packet->setToken( token, len);
 	connecter->append(packet);
 }
 
-void EvaPacketManager::doRejectQun( const unsigned int id, const unsigned int qunID, const QString & message,
+void EvaPacketManager::doRejectQun( const unsigned int id, const unsigned int qunID, const TQString & message,
 				const unsigned char *token, const unsigned short len)
 {	
-	QunAuthPacket *packet = new QunAuthPacket(qunID, QQ_QUN_AUTH_REJECT);
+	QunAuthPacket *packet = new QunAuthPacket(qunID, TQQ_QUN_AUTH_REJECT);
 	packet->setReceiver(id);
 	packet->setToken(token, len);
 	std::string msg = (codec->fromUnicode(message)).data();
@@ -1863,8 +1863,8 @@ void EvaPacketManager::doGetAllLevels( )
 	std::list<unsigned int> list;
 	list.push_back(user->getQQ());
 	
-	std::list<QQFriend> friends = user->getFriendList().getAllFriends();
-	std::list<QQFriend>::iterator iter;
+	std::list<TQQFriend> friends = user->getFriendList().getAllFriends();
+	std::list<TQQFriend>::iterator iter;
 	
 	int i = 0;
 	for(iter = friends.begin(); iter!=friends.end(); ++iter){
@@ -1916,7 +1916,7 @@ void EvaPacketManager::processGetLevelReply( const InPacket * in )
 }
 
 void EvaPacketManager::doModifyQunInfo( const unsigned int id, unsigned char auth, unsigned short cate, 
-					QString name, QString notice, QString description )
+					TQString name, TQString notice, TQString description )
 {
 	user->getSetting()->removeFromQunRejectForever(id); // clear setting to allow join requests
 	user->getSetting()->saveSettings();
@@ -1935,8 +1935,8 @@ void EvaPacketManager::doModifyQunInfo( const unsigned int id, unsigned char aut
 	connecter->append(new QunModifyPacket(info));
 }
 
-void EvaPacketManager::doModifyQunCard(const unsigned int id,  const unsigned int qqID, QString name, unsigned char gender, 
-				QString phone, QString email, QString memo )
+void EvaPacketManager::doModifyQunCard(const unsigned int id,  const unsigned int qqID, TQString name, unsigned char gender, 
+				TQString phone, TQString email, TQString memo )
 {
 	printf("qun card modifying\n");
 	QunModifyCardPacket *packet = new QunModifyCardPacket(id, qqID);
@@ -1980,8 +1980,8 @@ void EvaPacketManager::processRequestKeyReply( const InPacket * in )
 	packet->setInPacket(in);
 	packet->parse();
 	delete packet;
-// 	if(packet->getKeyType() == QQ_REQUEST_FILE_AGENT_KEY){
-// 		user->loginManager()->finishedCommand(QQ_CMD_REQUEST_KEY);
+// 	if(packet->getKeyType() == TQQ_REQUEST_FILE_AGENT_KEY){
+// 		user->loginManager()->finishedCommand(TQQ_CMD_REQUEST_KEY);
 // 	}
 	//emit fileAgentInfoReady();
 	GetLoginManager()->fileAgentInfoReady();
@@ -1998,12 +1998,12 @@ void EvaPacketManager::doQunExit( const unsigned int id )
 	connecter->append(new QunExitPacket(id));
 }
 
-void EvaPacketManager::doQunCreate( const QString & name, const unsigned short category, const unsigned char auth, 
-				const QString & notice, const QString & description, const std::list< unsigned int > & members )
+void EvaPacketManager::doQunCreate( const TQString & name, const unsigned short category, const unsigned char auth, 
+				const TQString & notice, const TQString & description, const std::list< unsigned int > & members )
 {
-	QCString _name = codec->fromUnicode(name);
-	QCString _notice = codec->fromUnicode(notice);
-	QCString _description = codec->fromUnicode(description);
+	TQCString _name = codec->fromUnicode(name);
+	TQCString _notice = codec->fromUnicode(notice);
+	TQCString _description = codec->fromUnicode(description);
 	
 	QunCreatePacket *packet = new QunCreatePacket(_name.data(), category, auth);
 	packet->setNotice(_notice.data());
@@ -2037,7 +2037,7 @@ void EvaPacketManager::processRequestExtraInfoReply(const InPacket *in)
 		else
 			user->getFriendList().setExtraInfo(iter->first, iter->second);
 	}
-	if(packet->getOffset()!=QQ_FRIEND_LIST_POSITION_END){
+	if(packet->getOffset()!=TQQ_FRIEND_LIST_POSITION_END){
 		connecter->append(new RequestExtraInfoPacket(packet->getOffset()));
 	}else{
 		emit extraInfoReady();
@@ -2046,9 +2046,9 @@ void EvaPacketManager::processRequestExtraInfoReply(const InPacket *in)
 	delete packet;
 }
 
-void EvaPacketManager::doModifySignature( const QString signature )
+void EvaPacketManager::doModifySignature( const TQString signature )
 {
-	SignaturePacket *packet = new SignaturePacket(QQ_SIGNATURE_MODIFY);
+	SignaturePacket *packet = new SignaturePacket(TQQ_SIGNATURE_MODIFY);
 	std::string sig = codec->fromUnicode(signature).data();
 	packet->setSignature(sig);
 	connecter->append(packet);
@@ -2056,14 +2056,14 @@ void EvaPacketManager::doModifySignature( const QString signature )
 
 void EvaPacketManager::doDeleteSignature( )
 {
-	connecter->append(new SignaturePacket(QQ_SIGNATURE_DELETE));
+	connecter->append(new SignaturePacket(TQQ_SIGNATURE_DELETE));
 }
 
 bool EvaPacketManager::doRequestSignature( const unsigned int start, const bool isSingleContact)
 {
-	SignaturePacket *packet = new SignaturePacket(QQ_SIGNATURE_REQUEST);
+	SignaturePacket *packet = new SignaturePacket(TQQ_SIGNATURE_REQUEST);
 	if(isSingleContact){
-		QQFriend *frd = user->getFriends()->getFriend(start);
+		TQQFriend *frd = user->getFriends()->getFriend(start);
 		packet->setSignatureArgs( start, frd->getSignatureModifyTime());
 		connecter->append(packet);
 		return true;
@@ -2091,18 +2091,18 @@ void EvaPacketManager::processSignatureReply( const InPacket * in )
 	}
 	
 	switch(packet->getType()){
-	case QQ_SIGNATURE_MODIFY:
+	case TQQ_SIGNATURE_MODIFY:
 		if(packet->isChangeAccepted())
 			doRequestSignature(user->getQQ());
 		emit signatureModifyReply(packet->isChangeAccepted());
 		break;
-	case QQ_SIGNATURE_DELETE:
+	case TQQ_SIGNATURE_DELETE:
 		emit signatureDeleteReply(packet->isChangeAccepted());
 		if(packet->isChangeAccepted()){
 			user->setSignature("", 0);
 		}
 		break;
-	case QQ_SIGNATURE_REQUEST:{
+	case TQQ_SIGNATURE_REQUEST:{
 		GetContactManager()->processSignatureReply(packet);
 // 		std::map<unsigned int, SignatureElement> members = packet->getMembers();
 // 		std::map<unsigned int, SignatureElement>::iterator iter;
@@ -2129,19 +2129,19 @@ void EvaPacketManager::lastLoginStep()
 
 void EvaPacketManager::doUploadMemo( const unsigned int id, const MemoItem &memo )
 {
-	EvaMemoPacket *packet = new EvaMemoPacket(id,QQ_MEMO_UPLOAD);
+	EvaMemoPacket *packet = new EvaMemoPacket(id,TQQ_MEMO_UPLOAD);
 	packet->setMemo(memo);
 	connecter->append(packet);
 }
 
 void EvaPacketManager::doRemoveMemo( const unsigned int id )
 {
-	connecter->append(new EvaMemoPacket(id,QQ_MEMO_REMOVE));
+	connecter->append(new EvaMemoPacket(id,TQQ_MEMO_REMOVE));
 }
 
 void EvaPacketManager::doDownloadMemo( const unsigned int id )
 {
-	connecter->append(new EvaMemoPacket(id,QQ_MEMO_DOWNLOAD));
+	connecter->append(new EvaMemoPacket(id,TQQ_MEMO_DOWNLOAD));
 }
 
 void EvaPacketManager::processMemoReply( const InPacket * in )
@@ -2153,13 +2153,13 @@ void EvaPacketManager::processMemoReply( const InPacket * in )
 		return;
 	}
 	switch(packet->getType()){
-	case QQ_MEMO_UPLOAD:
+	case TQQ_MEMO_UPLOAD:
 		user->getFriendList().setMemo(packet->getQQ(), packet->getMemo());
 		user->saveGroupedBuddyList();
 		emit memoUploadReply(packet->isChangeAccepted());
 		break;
-	case QQ_MEMO_REMOVE:break;//not sure the function of memo_remove
-	case QQ_MEMO_DOWNLOAD:
+	case TQQ_MEMO_REMOVE:break;//not sure the function of memo_remove
+	case TQQ_MEMO_DOWNLOAD:
 		if( packet->getQQ() ){
 			user->getFriendList().setMemo(packet->getQQ(), packet->getMemo());
 			emit memoDownloadReply(packet->getMemo());
@@ -2173,15 +2173,15 @@ void EvaPacketManager::processMemoReply( const InPacket * in )
 	
 }
 
-void EvaPacketManager::doSendFileUdpRequest(const unsigned int id, const QString fileName,
+void EvaPacketManager::doSendFileUdpRequest(const unsigned int id, const TQString fileName,
 					const unsigned int fileSize, const short session,
 					const unsigned char transferType)
 {
 	if( id == user->getQQ()) return;
-	SendFileExRequestPacket *udpPacket = new SendFileExRequestPacket(QQ_IM_EX_UDP_REQUEST);
+	SendFileExRequestPacket *udpPacket = new SendFileExRequestPacket(TQQ_IM_EX_UDP_REQUEST);
 	udpPacket->setReceiver(id);
 	udpPacket->setTransferType(transferType);
-	QCString strName = codec->fromUnicode(fileName);
+	TQCString strName = codec->fromUnicode(fileName);
 	udpPacket->setFileName(strName.data());
 	udpPacket->setFileSize(fileSize);
 	udpPacket->setSessionId(session);
@@ -2194,7 +2194,7 @@ void EvaPacketManager::doAcceptFileRequest( const unsigned int id, const short s
 					const unsigned char transferType )
 {
 	if( id == user->getQQ()) return;
-	SendFileExRequestPacket *packet = new SendFileExRequestPacket(QQ_IM_EX_REQUEST_ACCEPTED);
+	SendFileExRequestPacket *packet = new SendFileExRequestPacket(TQQ_IM_EX_REQUEST_ACCEPTED);
 	packet->setReceiver(id);
 	packet->setTransferType(transferType);
 	packet->setWanIp(wanIp);
@@ -2206,7 +2206,7 @@ void EvaPacketManager::doAcceptFileRequest( const unsigned int id, const short s
 void EvaPacketManager::doCancelFileRequest( const unsigned int id, const short session, const unsigned char transferType)
 {
 	if( id == user->getQQ()) return;
-	SendFileExRequestPacket *packet = new SendFileExRequestPacket(QQ_IM_EX_REQUEST_CANCELLED);
+	SendFileExRequestPacket *packet = new SendFileExRequestPacket(TQQ_IM_EX_REQUEST_CANCELLED);
 	packet->setReceiver(id);
 	packet->setTransferType(transferType);
 	packet->setSessionId(session);
@@ -2280,35 +2280,35 @@ void EvaPacketManager::slotClientNotReady( )
 	return;
 // 	unsigned short cmd = user->loginManager()->nextStep();
 // 	switch(cmd){
-// 	case QQ_CMD_REQUEST_LOGIN_TOKEN:
-// 		printf("EvaPacketManager::slotClientNotReady ----- QQ_CMD_REQUEST_LOGIN_TOKEN\n");
+// 	case TQQ_CMD_REQUEST_LOGIN_TOKEN:
+// 		printf("EvaPacketManager::slotClientNotReady ----- TQQ_CMD_REQUEST_LOGIN_TOKEN\n");
 // 		//doRequestLoginToken();
 // 		doRequestLoginTokenEx();
 // 		break;
-// 	case QQ_CMD_LOGIN:
-// 		printf("EvaPacketManager::slotClientNotReady ----- QQ_CMD_LOGIN\n");
+// 	case TQQ_CMD_LOGIN:
+// 		printf("EvaPacketManager::slotClientNotReady ----- TQQ_CMD_LOGIN\n");
 // 		doLogin();
 // 		break;
-// 	case QQ_CMD_REQUEST_KEY:
-// 		printf("EvaPacketManager::slotClientNotReady ----- QQ_CMD_REQUEST_KEY\n");
-// 		connecter->append(new EvaRequestKeyPacket(QQ_REQUEST_FILE_AGENT_KEY));
+// 	case TQQ_CMD_REQUEST_KEY:
+// 		printf("EvaPacketManager::slotClientNotReady ----- TQQ_CMD_REQUEST_KEY\n");
+// 		connecter->append(new EvaRequestKeyPacket(TQQ_REQUEST_FILE_AGENT_KEY));
 // 		break;
-// 	case QQ_CMD_GET_USER_INFO:
-// 		printf("EvaPacketManager::slotClientNotReady ----- QQ_CMD_GET_USER_INFO\n");
+// 	case TQQ_CMD_GET_USER_INFO:
+// 		printf("EvaPacketManager::slotClientNotReady ----- TQQ_CMD_GET_USER_INFO\n");
 // 		doGetUserInfo(user->getQQ());
 // 		break;
-// 	case QQ_CMD_CHANGE_STATUS:
-// 		printf("EvaPacketManager::slotClientNotReady ----- QQ_CMD_CHANGE_STATUS\n");
+// 	case TQQ_CMD_CHANGE_STATUS:
+// 		printf("EvaPacketManager::slotClientNotReady ----- TQQ_CMD_CHANGE_STATUS\n");
 // 		doChangeStatus(user->getStatus());
 // 		break;
-// 	case QQ_CMD_GET_FRIEND_LIST:
-// 		printf("EvaPacketManager::slotClientNotReady ----- QQ_CMD_GET_FRIEND_LIST\n");
+// 	case TQQ_CMD_GET_FRIEND_LIST:
+// 		printf("EvaPacketManager::slotClientNotReady ----- TQQ_CMD_GET_FRIEND_LIST\n");
 // 		doGetAllFriends();
 // 		break;
 // 	}
 }
 
-void EvaPacketManager::doRequestLoginTokenEx(  const QString &code )
+void EvaPacketManager::doRequestLoginTokenEx(  const TQString &code )
 {
 	if(!user->loginNeedVerify()){
 		// as QQ does send it 3 times, so do we
@@ -2316,7 +2316,7 @@ void EvaPacketManager::doRequestLoginTokenEx(  const QString &code )
 		connecter->append(new RequestLoginTokenExPacket());
 		connecter->append(new RequestLoginTokenExPacket());
 	} else {
-		RequestLoginTokenExPacket *packet = new RequestLoginTokenExPacket(QQ_LOGIN_TOKEN_VERIFY);
+		RequestLoginTokenExPacket *packet = new RequestLoginTokenExPacket(TQQ_LOGIN_TOKEN_VERIFY);
 		GraphicVerifyCode gcode = user->getLoginVerifyInfo();
 		packet->setToken(gcode.m_SessionToken, gcode.m_SessionTokenLen);
 		packet->setCode(codec->fromUnicode(code).data());
@@ -2335,10 +2335,10 @@ void EvaPacketManager::processRequestLoginTokenExReply( const InPacket * in )
 		//emit serverBusy();
 		return;
 	} else {
-		// QQ_LOGIN_TOKEN_REQUEST or QQ_LOGIN_TOKEN_VERIFY
-		// as long as getReplyCode is QQ_LOGIN_TOKEN_NEED_VERI,
+		// TQQ_LOGIN_TOKEN_REQUEST or TQQ_LOGIN_TOKEN_VERIFY
+		// as long as getReplyCode is TQQ_LOGIN_TOKEN_NEED_VERI,
 		// the verification image should be in the packet
-		if(packet->getReplyCode() == QQ_LOGIN_TOKEN_NEED_VERI){
+		if(packet->getReplyCode() == TQQ_LOGIN_TOKEN_NEED_VERI){
 			GraphicVerifyCode code;
 			code.setSessionToken(packet->getToken(), packet->getTokenLength());
 			code.setData(packet->getData(), packet->getDataLength());
@@ -2357,7 +2357,7 @@ void EvaPacketManager::processRequestLoginTokenExReply( const InPacket * in )
 	GetLoginManager()->verifyPassed();
 	//emit loginVerifyPassed();
 
-	//user->loginManager()->finishedCommand(QQ_CMD_REQUEST_LOGIN_TOKEN);
+	//user->loginManager()->finishedCommand(TQQ_CMD_REQUEST_LOGIN_TOKEN);
 	// here, we've got login token, therefore, try to log in
 	//doLogin();
 }
@@ -2410,7 +2410,7 @@ void EvaPacketManager::processAddFriendExReply( const InPacket * in )
 	emit addBuddyExReply(packet->getAddQQ(), packet->getReplyCode(), packet->getAuthStatus());
 }
 
-void EvaPacketManager::doRequestAuthInfo( const unsigned int id , const unsigned char cmd, const QString &veri, const QString &session, const bool isQun)
+void EvaPacketManager::doRequestAuthInfo( const unsigned int id , const unsigned char cmd, const TQString &veri, const TQString &session, const bool isQun)
 {
 	EvaAddFriendGetAuthInfoPacket *packet = new EvaAddFriendGetAuthInfoPacket(id, cmd, isQun);
 	packet->setVerificationStr( std::string(codec->fromUnicode( veri ).data()) );
@@ -2429,7 +2429,7 @@ void EvaPacketManager::processAddFrendAuthInfoReply( const InPacket * in )
 	emit requestAuthInfoReply(packet->getSubCommand(), packet->getReplyCode(), packet->getCode(), packet->getCodeLength());
 }
 
-void EvaPacketManager::doRequestAuthQuestion( const unsigned int id, const bool isQuestion, const QString & answer )
+void EvaPacketManager::doRequestAuthQuestion( const unsigned int id, const bool isQuestion, const TQString & answer )
 {
 	EvaAddFriendAuthQuestionPacket *packet = new EvaAddFriendAuthQuestionPacket(id);//default is AUTH_TYPE_QUESTION_REQUEST
 	if(!isQuestion){
@@ -2447,7 +2447,7 @@ void EvaPacketManager::doRequestMyAuthQuestionSetting( )
 	printf("doRequestMyAuthQuestionSetting sent\n");
 }
 
-void EvaPacketManager::doSetMyAuthQuestion( const QString & quest, const QString & answer )
+void EvaPacketManager::doSetMyAuthQuestion( const TQString & quest, const TQString & answer )
 {
 	EvaAddFriendAuthQuestionPacket *packet = new EvaAddFriendAuthQuestionPacket(user->getQQ());//default is AUTH_TYPE_QUESTION_REQUEST
 	packet->setAuthStatus( AUTH_TYPE_QUESTION_SET );
@@ -2467,8 +2467,8 @@ void EvaPacketManager::processAddFriendAuthQuestionReply( const InPacket * in )
 	}
 	switch(packet->getAuthStatus()){
 		case AUHT_TYPE_QUESTION_GET:{
-			QString question = codec->toUnicode((const char*)(packet->getCode()));
-			QString answer = codec->toUnicode(packet->getAnswer().c_str());
+			TQString question = codec->toUnicode((const char*)(packet->getCode()));
+			TQString answer = codec->toUnicode(packet->getAnswer().c_str());
 			emit receivedMyAuthSettings(packet->getAuthStatus(),
 						question,
 						answer);
@@ -2490,7 +2490,7 @@ void EvaPacketManager::processAddFriendAuthQuestionReply( const InPacket * in )
 void EvaPacketManager::doAddBuddyAuthEx( const unsigned int id, const unsigned char authStatus, const unsigned int destGroup,
 			const unsigned char * code, const unsigned short len,
 			const unsigned char * qcode, const unsigned short qlen,
-			const QString &msg, const bool allowReverse)
+			const TQString &msg, const bool allowReverse)
 {
 	EvaAddFriendAuthExPacket *packet = new EvaAddFriendAuthExPacket(id, authStatus);
 	packet->setDestGroup( destGroup);
@@ -2533,7 +2533,7 @@ void EvaPacketManager::processVerifyAddingMsgReply( const InPacket * in )
 
 void EvaPacketManager::doGetWeatherForecast( const unsigned int ip )
 {
-	printf("weather IP: %s\n", QHostAddress(ip).toString().ascii());
+	printf("weather IP: %s\n", TQHostAddress(ip).toString().ascii());
 	connecter->append(new WeatherOpPacket(ip));
 }
 
@@ -2550,7 +2550,7 @@ void EvaPacketManager::processWeatherOpReply( const InPacket * in )
 
 	std::list<Weather> w = packet->getWeathers();
 	std::list<Weather>::iterator iter;
-	QDateTime date;
+	TQDateTime date;
 	for(iter = w.begin(); iter != w.end(); ++iter){
 		date.setTime_t( iter->getTime());
 		printf("\t[%s] %s, %s, %d-%dC, %s\n",date.toString( "yyyy-MM-dd hh:mm:ss").local8Bit().data(),
@@ -2564,7 +2564,7 @@ void EvaPacketManager::processWeatherOpReply( const InPacket * in )
 void EvaPacketManager::slotConnectReady( )
 {
 	EvaNotifyEvent *event = new EvaNotifyEvent(E_SvrConnected);
-	QApplication::postEvent(g_eva, event);
+	TQApplication::postEvent(g_eva, event);
 
 	kdDebug() << "[QQ: " << user->getQQ() << "] start logging in server \"" 
 				<< connecter->getHostAddress().toString()  << "\" ..." << endl;

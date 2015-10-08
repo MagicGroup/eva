@@ -19,7 +19,7 @@ YACCFLAGS= -d
 INCPATH  = -I/usr/share/qt3/mkspecs/default -I. -I. -I/usr/include/qt3
 LINK     = g++
 LFLAGS   = 
-LIBS     = $(SUBLIBS) -L/usr/share/qt3/lib -L/usr/X11R6/lib -lqt-mt -lXext -lX11 -lm -lpthread
+LIBS     = $(SUBLIBS) -L/usr/share/qt3/lib -L/usr/X11R6/lib -ltqt-mt -lXext -lX11 -lm -lpthread
 AR       = ar cqs
 RANLIB   = 
 MOC      = /usr/share/qt3/bin/moc
@@ -91,7 +91,7 @@ uicables: $(UICDECLS) $(UICIMPLS)
 $(MOC): 
 	( cd $(QTDIR)/src/moc && $(MAKE) )
 
-Makefile: test.pro  /usr/share/qt3/mkspecs/default/qmake.conf /usr/share/qt3/lib/libqt-mt.prl
+Makefile: test.pro  /usr/share/tqt3/mkspecs/default/qmake.conf /usr/share/tqt3/lib/libtqt-mt.prl
 	$(QMAKE) -o Makefile test.pro
 qmake: 
 	@$(QMAKE) -o Makefile test.pro

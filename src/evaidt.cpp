@@ -21,9 +21,9 @@
 
 #include "evaidt.h"
 
-#include <qdatetime.h>
-#include <qmessagebox.h>
-#include <qtimer.h>
+#include <ntqdatetime.h>
+#include <ntqmessagebox.h>
+#include <ntqtimer.h>
 
 #ifdef HAVE_LIBXSS
 #include <X11/Xlib.h>
@@ -38,14 +38,14 @@ IdleTimeDetector::IdleTimeDetector(int maxIdle)
 
 #ifdef HAVE_LIBXSS
   int event_base, error_base;
-  if(XScreenSaverQueryExtension(qt_xdisplay(), &event_base, &error_base)) {
+  if(XScreenSaverQueryExtension(tqt_xdisplay(), &event_base, &error_base)) {
     _idleDetectionPossible = true;
   }
   else {
     _idleDetectionPossible = false;
   }
 
-  _timer = new QTimer(this);
+  _timer = new TQTimer(this);
   connect(_timer, SIGNAL(timeout()), this, SLOT(check()));
 #else
   _idleDetectionPossible = false;
@@ -66,7 +66,7 @@ void IdleTimeDetector::check()
   if (_idleDetectionPossible)
   {
     _mit_info = XScreenSaverAllocInfo ();
-    XScreenSaverQueryInfo(qt_xdisplay(), qt_xrootwin(), _mit_info);
+    XScreenSaverQueryInfo(tqt_xdisplay(), tqt_xrootwin(), _mit_info);
     int idleMinutes = (_mit_info->idle/1000)/secsPerMinute;
     if (idleMinutes >= _maxIdle)
       informOverrun();

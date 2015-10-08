@@ -28,13 +28,13 @@
 
 #include <stdio.h>
 #include <unistd.h>
-#include <qevent.h>
-#include <qhostaddress.h>
-#include <qtextcodec.h>
-#include <qfile.h>
-#include <qdatastream.h>
-#include <qmutex.h>
-#include <qtimer.h>
+#include <ntqevent.h>
+#include <ntqhostaddress.h>
+#include <ntqtextcodec.h>
+#include <ntqfile.h>
+#include <ntqdatastream.h>
+#include <ntqmutex.h>
+#include <ntqtimer.h>
 
 #define QUEUE_INTERVAL 10000
 EvaPicManager::EvaPicManager(EvaUser *u, bool useProxy)
@@ -44,7 +44,7 @@ EvaPicManager::EvaPicManager(EvaUser *u, bool useProxy)
 	isBusy = false;
 	connecter = NULL;
 	currentIndex = 0;
-	codec = QTextCodec::codecForName("GB18030");
+	codec = TQTextCodec::codecForName("GB18030");
 	EvaPicPacket::setQQ(user->getQQ());
 	bufLength = 0;
 	currentFile.buf = NULL;
@@ -55,8 +55,8 @@ EvaPicManager::EvaPicManager(EvaUser *u, bool useProxy)
 	
 	outPool.setAutoDelete(true);
 	
-	timer = new QTimer(this, "sendOutQueue");
-	QObject::connect(timer, SIGNAL(timeout()), this, SLOT(packetMonitor()));
+	timer = new TQTimer(this, "sendOutQueue");
+	TQObject::connect(timer, SIGNAL(timeout()), this, SLOT(packetMonitor()));
 }
 
 EvaPicManager::~EvaPicManager()
@@ -67,14 +67,14 @@ EvaPicManager::~EvaPicManager()
 	clearManager();
 }
 
-void EvaPicManager::setProxyServer( const QString ip, const short port, QCString proxyParam )
+void EvaPicManager::setProxyServer( const TQString ip, const short port, TQCString proxyParam )
 {
 	proxyIP = ip;
 	proxyPort = port;
 	proxyAuthParam = proxyParam;
 }
 
-void EvaPicManager::customEvent( QCustomEvent * e )
+void EvaPicManager::customEvent( TQCustomEvent * e )
 {
 	if(e->type() == EvaRequestCustomizedPicEvent){
 		EvaAskForCustomizedPicEvent *se = (EvaAskForCustomizedPicEvent *)e;
@@ -128,10 +128,10 @@ void EvaPicManager::doProcessEvent()
 
 void EvaPicManager::initConnection(const int ip, const short port)
 {
-	//printf("EvaPicManager::initConnection ip:%s, port:%d\n", QHostAddress(ip).toString().ascii(), port);
-	QHostAddress host;
+	//printf("EvaPicManager::initConnection ip:%s, port:%d\n", TQHostAddress(ip).toString().ascii(), port);
+	TQHostAddress host;
 	if(ip==-1)
-		host.setAddress(QString(GROUP_FILE_AGENT));
+		host.setAddress(TQString(GROUP_FILE_AGENT));
 	else
 		host.setAddress(ip);
 	sendIP = host.toIPv4Address();
@@ -140,15 +140,15 @@ void EvaPicManager::initConnection(const int ip, const short port)
 		delete connecter;
 	}
 	if(usingProxy){
-		connecter = new EvaNetwork(QHostAddress(proxyIP), proxyPort, EvaNetwork::HTTP_Proxy);
+		connecter = new EvaNetwork(TQHostAddress(proxyIP), proxyPort, EvaNetwork::HTTP_Proxy);
 		connecter->setDestinationServer(host.toString(), port);
 		connecter->setAuthParameter(proxyAuthParam);
 	}else
 		connecter = new EvaNetwork(host, port, EvaNetwork::TCP);
 
-	QObject::connect(connecter, SIGNAL(isReady()), SLOT(slotReady()));
-	QObject::connect(connecter, SIGNAL(dataComming(int)), SLOT(slotDataComming(int)));
-	QObject::connect(connecter, SIGNAL(exceptionEvent(int)), SLOT(slotException(int)));
+	TQObject::connect(connecter, SIGNAL(isReady()), SLOT(slotReady()));
+	TQObject::connect(connecter, SIGNAL(dataComming(int)), SLOT(slotDataComming(int)));
+	TQObject::connect(connecter, SIGNAL(exceptionEvent(int)), SLOT(slotException(int)));
 	//printf("EvaPicManager::initConnection -- connecting....\n");
 	connecter->connect();
 }
@@ -168,7 +168,7 @@ void EvaPicManager::sendPacket(EvaPicOutPacket *packet)
 		printf("EvaPicManager::sendPacket -- connecter NULL\n");
 		return;
 	}
-	QMutex mutex;
+	TQMutex mutex;
 	mutex.lock();	
 	unsigned char *buf = new unsigned char[MAX_PACKET_SIZE];
 	int len;
@@ -194,7 +194,7 @@ void EvaPicManager::append(EvaPicOutPacket *packet)
 
 void EvaPicManager::slotDataComming(int len)
 {
-	QMutex mutex;
+	TQMutex mutex;
 	mutex.lock();
 	char * rawData = new char [len+1];
 	if(!connecter->read(rawData, len)){
@@ -234,16 +234,16 @@ void EvaPicManager::parseInData(const EvaPicInPacket *in)
 {
 	if(in->isValid()){
 		switch(in->getCommand()){
-		case QQ_05_CMD_REQUEST_AGENT:
+		case TQQ_05_CMD_REQUEST_AGENT:
 			processRequestAgentReply(in);
 			break;
-		case QQ_05_CMD_REQUEST_FACE:
+		case TQQ_05_CMD_REQUEST_FACE:
 			processRequestFaceReply(in);
 			break;
-		case QQ_05_CMD_TRANSFER:
+		case TQQ_05_CMD_TRANSFER:
 			processTransferReply(in);
 			break;
-		case QQ_05_CMD_REQUEST_START:
+		case TQQ_05_CMD_REQUEST_START:
 			processRequestStartReply(in);
 			break;
 		}
@@ -257,7 +257,7 @@ void EvaPicManager::doRequestPic(CustomizedPic pic)
 		doRequestNextPic();
 		return;
 	}
-	if(QFile::exists(user->getSetting()->getPictureCacheDir() + "/" + pic.fileName)){
+	if(TQFile::exists(user->getSetting()->getPictureCacheDir() + "/" + pic.fileName)){
 		emit pictureReady(qunID, user->getSetting()->getPictureCacheDir() + "/" + pic.fileName, currentPic.tmpFileName);
 		doRequestNextPic();
 		return;
@@ -299,7 +299,7 @@ void EvaPicManager::processRequestAgentReply(const EvaPicInPacket *in)
 		return;
 	}
 	switch(packet->getReplyCode()){
-	case QQ_REQUEST_AGENT_REPLY_OK:{
+	case TQQ_REQUEST_AGENT_REPLY_OK:{
 		sessionID = packet->getSessionID();
 		//printf("EvaPicManager::processRequestAgentReply -- \n\tmessage:%s\n", packet->getMessage().c_str());
 		if(currentIndex == -1)
@@ -308,11 +308,11 @@ void EvaPicManager::processRequestAgentReply(const EvaPicInPacket *in)
 			doSendFileInfo();
 		}
 		break;
-	case QQ_REQUEST_AGENT_REPLY_REDIRECT:
+	case TQQ_REQUEST_AGENT_REPLY_REDIRECT:
 		printf("EvaPicManager::processRequestAgentReply -- redirect\n");
 		initConnection(packet->getRedirectIP(), packet->getRedirectPort());
 		break;
-	case QQ_REQUEST_AGENT_REPLY_TOO_LONG:
+	case TQQ_REQUEST_AGENT_REPLY_TOO_LONG:
 	default:
 		clearManager();
 		std::string str = packet->getMessage();
@@ -419,14 +419,14 @@ void EvaPicManager::doRequestNextPic()
 
 void EvaPicManager::doSaveFile()
 {
-	QString fileName = user->getSetting()->getPictureCacheDir() + "/" + currentFile.filename;
-	QFile file(fileName);
+	TQString fileName = user->getSetting()->getPictureCacheDir() + "/" + currentFile.filename;
+	TQFile file(fileName);
 	if(!file.open(IO_WriteOnly | IO_Raw )){
 		printf("EvaPicManager::doSaveFile -- cannot open file \'%s\'!\n", fileName.ascii());
 		return;
 	}
 	
-	QDataStream stream(&file);
+	TQDataStream stream(&file);
 	stream.writeRawBytes((char *)currentFile.buf, currentFile.offset);
 	file.close();
 	if(currentFile.buf)
@@ -462,13 +462,13 @@ void EvaPicManager::doSendFileInfo( )
 	currentFile.length = currentOutPic.imageLength;
 	currentFile.offset = 0;
 	currentFile.buf = new unsigned char[currentFile.length];
-	QFile file(currentOutPic.fileName);
+	TQFile file(currentOutPic.fileName);
 	if(!file.open(IO_ReadOnly | IO_Raw )){
 		printf("EvaPicManager::doSendFileInfo -- cannot open file \'%s\' !\n", currentOutPic.fileName.ascii());
 		return;
 	}
 	
-	QDataStream stream(&file);
+	TQDataStream stream(&file);
 	stream.readRawBytes((char *)currentFile.buf, currentFile.length);
 	file.close();
 	
@@ -571,7 +571,7 @@ void EvaPicManager::clearManager()
 void EvaPicManager::removePacket( const int hashCode )
 {
 	isRemoving = true;
-	QMutex mutex;
+	TQMutex mutex;
 	mutex.lock();
 	EvaPicOutPacket *packet;
 	for(packet=outPool.first(); packet; packet = outPool.next()){

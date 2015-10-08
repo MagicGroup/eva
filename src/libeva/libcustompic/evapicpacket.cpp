@@ -138,7 +138,7 @@ void EvaPicPacket::clearKey()
 short EvaPicOutPacket::sequenceStart = 5;   // could be any random number
 
 EvaPicOutPacket::EvaPicOutPacket(const unsigned short command, const bool ack)
-	: EvaPicPacket(QQ_CLIENT_VERSION, command, ((sequenceStart++)%0xffff))
+	: EvaPicPacket(TQQ_CLIENT_VERSION, command, ((sequenceStart++)%0xffff))
 {
 	mNeedAck = ack;
 	resendCount = 5;

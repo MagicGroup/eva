@@ -23,26 +23,26 @@
 #include "evasearchwindow.h"
 #include "evaresource.h"
 #include <stdlib.h>
-#include <qlabel.h>
-#include <qwidgetstack.h>
-#include <qpushbutton.h>
-#include <qradiobutton.h>
-#include <qlineedit.h>
-#include <qtable.h>
-#include <qcheckbox.h>
-#include <qtoolbutton.h>
-#include <qgroupbox.h>
-#include <qbuttongroup.h>
-#include <qimage.h>
-#include <qtextcodec.h>
-#include <qtabwidget.h>
-#include <qcombobox.h>
-#include <qstringlist.h>
-#include <qrect.h>
-#include <kmessagebox.h>
+#include <ntqlabel.h>
+#include <ntqwidgetstack.h>
+#include <ntqpushbutton.h>
+#include <ntqradiobutton.h>
+#include <ntqlineedit.h>
+#include <ntqtable.h>
+#include <ntqcheckbox.h>
+#include <ntqtoolbutton.h>
+#include <ntqgroupbox.h>
+#include <ntqbuttongroup.h>
+#include <ntqimage.h>
+#include <ntqtextcodec.h>
+#include <ntqtabwidget.h>
+#include <ntqcombobox.h>
+#include <ntqstringlist.h>
+#include <ntqrect.h>
+#include <tdemessagebox.h>
 #include <krun.h>
-#include <klocale.h>
-#include <kglobal.h>
+#include <tdelocale.h>
+#include <tdeglobal.h>
 #include <kstandarddirs.h>
 #include <kapp.h>
 
@@ -72,16 +72,16 @@ std::list< CityListElement > CityList::getCityList( unsigned short province )
 const bool CityList::loadList( )
 {
 	list.clear();
-	QString filePath = KGlobal::dirs()->findResource("data", QString::fromLatin1("eva/citylist"));
-	QFile file(filePath);    
+	TQString filePath = TDEGlobal::dirs()->findResource("data", TQString::fromLatin1("eva/citylist"));
+	TQFile file(filePath);    
 	if(!file.open(IO_ReadOnly)){
 		return false;
 	}
 	
-	QTextStream stream(&file);
-	stream.setCodec(QTextCodec::codecForName("GB18030"));
-	QString line;
-	QStringList lineList;
+	TQTextStream stream(&file);
+	stream.setCodec(TQTextCodec::codecForName("GB18030"));
+	TQString line;
+	TQStringList lineList;
 	
 	std::list<CityListElement> tmpList;
 	unsigned int tmpProv;
@@ -89,7 +89,7 @@ const bool CityList::loadList( )
 	while(!stream.atEnd()){
 		line = stream.readLine().stripWhiteSpace();
 			
-		lineList = QStringList::split(",", line);
+		lineList = TQStringList::split(",", line);
 				
 		if(lineList.size() != 3)
 			continue;
@@ -114,7 +114,7 @@ const bool CityList::loadList( )
 	return true; 
 }
 /*----------------------------------------------------------*/
-EvaSearchWindow::EvaSearchWindow(EvaImageResource *res, const int onlineUsers, QWidget* parent, 
+EvaSearchWindow::EvaSearchWindow(EvaImageResource *res, const int onlineUsers, TQWidget* parent, 
 		const char* name, WFlags fl)
 	: EvaSearchUIBase(parent,name, fl),
 	m_BSearchType(B_CUSTOM),
@@ -126,7 +126,7 @@ EvaSearchWindow::EvaSearchWindow(EvaImageResource *res, const int onlineUsers, Q
 	m_QSearchType(Q_CATEGORY)
 {
 	if(onlineUsers>0)
-		lblOnlineNum->setText(QString::number(onlineUsers));
+		lblOnlineNum->setText(TQString::number(onlineUsers));
 	else
 		lblOnlineNum->setText(i18n("Unknown"));
 	
@@ -141,43 +141,43 @@ EvaSearchWindow::EvaSearchWindow(EvaImageResource *res, const int onlineUsers, Q
 	}
 	//initialise qun category list
 	loadCategoryList();
-	QObject::connect(rbSearchOnline, SIGNAL(clicked()), this, SLOT(slotRbSearchOnlineClicked()));
-	QObject::connect(rbCustomSearch, SIGNAL(clicked()), this, SLOT(slotRbCustomSearchClicked()));
-	QObject::connect(rbAccuratelySearch, SIGNAL(clicked()), this, SLOT(slotRbAccuratelySearchClicked()));
+	TQObject::connect(rbSearchOnline, SIGNAL(clicked()), this, SLOT(slotRbSearchOnlineClicked()));
+	TQObject::connect(rbCustomSearch, SIGNAL(clicked()), this, SLOT(slotRbCustomSearchClicked()));
+	TQObject::connect(rbAccuratelySearch, SIGNAL(clicked()), this, SLOT(slotRbAccuratelySearchClicked()));
 	
-	QObject::connect(rbSearchByCategory, SIGNAL(clicked()), this, SLOT(slotRbSearchByCategoryClicked()));
-	QObject::connect(rbSearchAlumni, SIGNAL(clicked()), this, SLOT(slotRbSearchAlumniClicked()));
-	QObject::connect(rbSearchFrdCenter, SIGNAL(clicked()), this, SLOT(slotRbSearchFrdCenterClicked()));
+	TQObject::connect(rbSearchByCategory, SIGNAL(clicked()), this, SLOT(slotRbSearchByCategoryClicked()));
+	TQObject::connect(rbSearchAlumni, SIGNAL(clicked()), this, SLOT(slotRbSearchAlumniClicked()));
+	TQObject::connect(rbSearchFrdCenter, SIGNAL(clicked()), this, SLOT(slotRbSearchFrdCenterClicked()));
 	
-	QObject::connect(pbSearch, SIGNAL(clicked()), this, SLOT(slotPbSearchClicked()));
-	QObject::connect(pbClose, SIGNAL(clicked()), this, SLOT(close()));
-	QObject::connect(pbLastStep, SIGNAL(clicked()), this, SLOT(slotPbLastStepClicked()));
-	QObject::connect(twSearchMain, SIGNAL(currentChanged(QWidget*)), this, SLOT( slotCurrentChanged(QWidget*)));
+	TQObject::connect(pbSearch, SIGNAL(clicked()), this, SLOT(slotPbSearchClicked()));
+	TQObject::connect(pbClose, SIGNAL(clicked()), this, SLOT(close()));
+	TQObject::connect(pbLastStep, SIGNAL(clicked()), this, SLOT(slotPbLastStepClicked()));
+	TQObject::connect(twSearchMain, SIGNAL(currentChanged(TQWidget*)), this, SLOT( slotCurrentChanged(TQWidget*)));
 	
-	QObject::connect(tbBSNext, SIGNAL( clicked() ), this, SLOT( slotTbBSNextClicked()));
-	QObject::connect(tbBSPrev, SIGNAL( clicked() ), this, SLOT( slotTbBSPrevClicked()));
-	QObject::connect(tbBSDetails, SIGNAL( clicked() ), this, SLOT( slotTbBSDetailsClicked()));
-	QObject::connect(tbBSAll, SIGNAL( clicked() ), this, SLOT( slotTbBSAllClicked()));
+	TQObject::connect(tbBSNext, SIGNAL( clicked() ), this, SLOT( slotTbBSNextClicked()));
+	TQObject::connect(tbBSPrev, SIGNAL( clicked() ), this, SLOT( slotTbBSPrevClicked()));
+	TQObject::connect(tbBSDetails, SIGNAL( clicked() ), this, SLOT( slotTbBSDetailsClicked()));
+	TQObject::connect(tbBSAll, SIGNAL( clicked() ), this, SLOT( slotTbBSAllClicked()));
 	
-	QObject::connect(tbBSResult, SIGNAL(clicked(int,int,int,const QPoint&)), this, SLOT(slotBasicUserSelected(int)));
-	QObject::connect(tbBSResult, SIGNAL(doubleClicked(int,int,int,const QPoint&)), this, SLOT(slotBasicResultTableDBClicked(int)));
+	TQObject::connect(tbBSResult, SIGNAL(clicked(int,int,int,const TQPoint&)), this, SLOT(slotBasicUserSelected(int)));
+	TQObject::connect(tbBSResult, SIGNAL(doubleClicked(int,int,int,const TQPoint&)), this, SLOT(slotBasicResultTableDBClicked(int)));
 	
-	QObject::connect(tbASResult, SIGNAL(clicked(int,int,int,const QPoint&)), this,SLOT(slotAdvancedUserSelected(int)));
-	QObject::connect(tbASResult, SIGNAL(doubleClicked(int,int,int,const QPoint&)), this, SLOT(slotAdvancedResultTableDBClicked(int)));
+	TQObject::connect(tbASResult, SIGNAL(clicked(int,int,int,const TQPoint&)), this,SLOT(slotAdvancedUserSelected(int)));
+	TQObject::connect(tbASResult, SIGNAL(doubleClicked(int,int,int,const TQPoint&)), this, SLOT(slotAdvancedResultTableDBClicked(int)));
 	
-	QObject::connect(cbASProvince, SIGNAL(activated(int)), this, SLOT(slotCbASProvinceActive(int)));
+	TQObject::connect(cbASProvince, SIGNAL(activated(int)), this, SLOT(slotCbASProvinceActive(int)));
 	
-	QObject::connect(tbASNext, SIGNAL( clicked() ), this, SLOT( slotTbASNextClicked()));
-	QObject::connect(tbASPrev, SIGNAL( clicked() ), this, SLOT( slotTbASPrevClicked()));
-	QObject::connect(tbASAll, SIGNAL( clicked() ), this, SLOT( slotTbASAllClicked()));
-	QObject::connect(tbASDetails, SIGNAL( clicked() ), this, SLOT( slotTbASDetailsClicked()));
+	TQObject::connect(tbASNext, SIGNAL( clicked() ), this, SLOT( slotTbASNextClicked()));
+	TQObject::connect(tbASPrev, SIGNAL( clicked() ), this, SLOT( slotTbASPrevClicked()));
+	TQObject::connect(tbASAll, SIGNAL( clicked() ), this, SLOT( slotTbASAllClicked()));
+	TQObject::connect(tbASDetails, SIGNAL( clicked() ), this, SLOT( slotTbASDetailsClicked()));
 	
-	QObject::connect(cbCategory1,SIGNAL(activated(int)), SLOT(slotTopListChanged(int)));
-	QObject::connect(cbCategory2,SIGNAL(activated(int)), SLOT(slotSecondListChanged(int)));
+	TQObject::connect(cbCategory1,SIGNAL(activated(int)), SLOT(slotTopListChanged(int)));
+	TQObject::connect(cbCategory2,SIGNAL(activated(int)), SLOT(slotSecondListChanged(int)));
 	
-	QObject::connect(tbQSResult, SIGNAL(clicked(int,int,int,const QPoint&)), this, SLOT(slotQunSelected(int)));
-	QObject::connect(tbQSResult, SIGNAL(doubleClicked(int,int,int,const QPoint&)), this, SLOT(slotQunResultTableDBClicked(int)));
-	QObject::connect(tbQSDetails, SIGNAL( clicked() ), this, SLOT( slotTbQSDetailsClicked()));
+	TQObject::connect(tbTQSResult, SIGNAL(clicked(int,int,int,const TQPoint&)), this, SLOT(slotQunSelected(int)));
+	TQObject::connect(tbTQSResult, SIGNAL(doubleClicked(int,int,int,const TQPoint&)), this, SLOT(slotQunResultTableDBClicked(int)));
+	TQObject::connect(tbTQSDetails, SIGNAL( clicked() ), this, SLOT( slotTbTQSDetailsClicked()));
 }
 
 EvaSearchWindow::~EvaSearchWindow()
@@ -208,7 +208,7 @@ void EvaSearchWindow::adjustInterface()
 	tbASResult->setColumnWidth(4,60);
 	tbASResult->setColumnWidth(5,50);
 	tbASResult->setColumnWidth(6,40);
-	tbQSResult->setLeftMargin(0);
+	tbTQSResult->setLeftMargin(0);
 	
 
 	cbASProvince->insertItem(i18n("any"));
@@ -292,11 +292,11 @@ void EvaSearchWindow::slotRbSearchOnlineClicked()
 	wsBasicCondtion->raiseWidget(0);
 	m_BSearchType = B_ONLINE;
 	
-	lblQQNum->setEnabled(false);
+	lblTQQNum->setEnabled(false);
 	lblNickName->setEnabled(false);
 	//lblEmail->setEnabled(false);
 	
-	leQQNum->setEnabled(false);
+	leTQQNum->setEnabled(false);
 	leNickName->setEnabled(false);
 	//leEmail->setEnabled(false);
 }
@@ -306,11 +306,11 @@ void EvaSearchWindow::slotRbCustomSearchClicked()
 	wsBasicCondtion->raiseWidget(0);
 	m_BSearchType = B_CUSTOM;
 	
-	lblQQNum->setEnabled(true);
+	lblTQQNum->setEnabled(true);
 	lblNickName->setEnabled(true);
 	//lblEmail->setEnabled(true);
 	
-	leQQNum->setEnabled(true);
+	leTQQNum->setEnabled(true);
 	leNickName->setEnabled(true);
 	//leEmail->setEnabled(true);
 }
@@ -342,7 +342,7 @@ void EvaSearchWindow::slotRbAccuratelySearchClicked()
 
 void EvaSearchWindow::slotPbSearchClicked()
 {
-	QTextCodec *codec = QTextCodec::codecForName("GB18030");
+	TQTextCodec *codec = TQTextCodec::codecForName("GB18030");
 	//Index of TabWidget: 0-basic search, 1-advanced search, 2-qun search
 	switch(twSearchMain->currentPageIndex()){
 	case 0:
@@ -354,14 +354,14 @@ void EvaSearchWindow::slotPbSearchClicked()
 				}
 				break;
 			case B_CUSTOM:{
-				m_Id = leQQNum->text().stripWhiteSpace();
+				m_Id = leTQQNum->text().stripWhiteSpace();
 				m_Nick = leNickName->text().stripWhiteSpace();
 				//m_Email = leEmail->text().stripWhiteSpace();
 				processBasicSearch(false, m_Id, m_Nick, m_Email);
 				}
 				break;
 			case B_FRDCENTER:{
-				QStringList args;
+				TQStringList args;
 				args<<"exec"<< "http://love.qq.com/";
 				kapp->tdeinitExec("kfmclient",args);
 				}
@@ -371,7 +371,7 @@ void EvaSearchWindow::slotPbSearchClicked()
 			//we are now on the search result page, click the button means send a auth request message
 			//to selected user. the auth dialog should called here
 			if(m_SelectedBasicUser.getQQ() == 0){
-				KMessageBox::messageBox((QWidget *) 0,KMessageBox::Information,
+				KMessageBox::messageBox((TQWidget *) 0,KMessageBox::Information,
 				i18n("Please select a user."),
 				i18n("Eva - Search/Add"));
 				return;
@@ -396,7 +396,7 @@ void EvaSearchWindow::slotPbSearchClicked()
 		}else{
 			//we are now on the advanced search result page, click the button means send a auth request//message to selected user. the auth dialog should called here
 			if(m_SelectedAdvancedUser.getQQ() == 0){
-				KMessageBox::messageBox((QWidget *) 0,KMessageBox::Information,
+				KMessageBox::messageBox((TQWidget *) 0,KMessageBox::Information,
 				i18n("Please select a user."),
 				i18n("Eva - Search/Add"));
 				return;
@@ -409,20 +409,20 @@ void EvaSearchWindow::slotPbSearchClicked()
 		}
 		break;
 	case 2:
-		if(!strcmp(wsQunSearch->visibleWidget()->name(),"wsQSPage")){
+		if(!strcmp(wsQunSearch->visibleWidget()->name(),"wsTQSPage")){
 			//the same to above
 			switch(m_QSearchType){
 				case Q_ALUMNI:{
-					QStringList args;
+					TQStringList args;
 					args<<"exec"<< "http://school.qq.com/";
 					kapp->tdeinitExec("kfmclient",args);
 					}
 					break;
 				case Q_CATEGORY:{
-					QStringList args;
+					TQStringList args;
 					args << "exec" << "http://jump.qq.com/clienturl_simp_18";
 					kapp->tdeinitExec("kfmclient",args);
-					//QString url = "http://group.qq.com/cgi-bin/group_classify?catalog="+QString::number(getCategoryCode()); 
+					//TQString url = "http://group.qq.com/cgi-bin/group_classify?catalog="+TQString::number(getCategoryCode()); 
 					//KRun::runCommand("konqueror \""+url+"\"");
 					}
 					break;
@@ -437,7 +437,7 @@ void EvaSearchWindow::slotPbSearchClicked()
 			//we are now on the search result page, click the button means send a auth request message
 			//to selected user. the auth dialog should called here
 			if(m_SelectedQun.getQunID() == 0){
-				KMessageBox::messageBox((QWidget *) 0,KMessageBox::Information,
+				KMessageBox::messageBox((TQWidget *) 0,KMessageBox::Information,
 				i18n("Please select a Qun."),
 				i18n("Eva - Search/Add"));
 				return;
@@ -451,7 +451,7 @@ void EvaSearchWindow::slotPbSearchClicked()
 	
 }
 
-void EvaSearchWindow::processBasicSearch(const bool isSearchAll, const QString id, const QString nick, const QString email)
+void EvaSearchWindow::processBasicSearch(const bool isSearchAll, const TQString id, const TQString nick, const TQString email)
 {
 	tbBSPrev->setEnabled(false);
 	tbBSNext->setEnabled(false);
@@ -480,20 +480,20 @@ void EvaSearchWindow::processBasicSearch(const bool isSearchAll, const QString i
 	}
 	else{
 		if(id.isEmpty() && nick.isEmpty() && email.isEmpty()){
-			KMessageBox::messageBox((QWidget *) 0,KMessageBox::Information,
+			KMessageBox::messageBox((TQWidget *) 0,KMessageBox::Information,
 				i18n("Search conditions can not be empty."),
 				i18n("Eva - Search/Add"));
-			leQQNum->setFocus();
+			leTQQNum->setFocus();
 			return;
 		}
 		
 		bool ok;
 		m_Id.toInt(&ok);
 		if(!ok && !m_Id.isEmpty()){
-			KMessageBox::messageBox((QWidget *) 0,KMessageBox::Information,
+			KMessageBox::messageBox((TQWidget *) 0,KMessageBox::Information,
 				i18n("QQ number is incorrect."),
 				i18n("Eva - Search/Add"));
-			leQQNum->setFocus();
+			leTQQNum->setFocus();
 			return;
 		}
 		
@@ -553,7 +553,7 @@ void EvaSearchWindow::slotPbLastStepClicked()
 	}
 }
 
-void EvaSearchWindow::slotCurrentChanged(QWidget* wCurrentPage)
+void EvaSearchWindow::slotCurrentChanged(TQWidget* wCurrentPage)
 {
 	if(!strcmp(wCurrentPage->name(), "tabBasicSearch")){
 		
@@ -579,7 +579,7 @@ void EvaSearchWindow::slotCurrentChanged(QWidget* wCurrentPage)
 		}
 	}
 	if(!strcmp(wCurrentPage->name(), "tabQunSearch")){
-		if(!strcmp(wsQunSearch->visibleWidget()->name(),"wsQSPage")){
+		if(!strcmp(wsQunSearch->visibleWidget()->name(),"wsTQSPage")){
 			pbSearch->setText(i18n("Search"));
 			pbLastStep->setHidden(true);
 		}
@@ -622,13 +622,13 @@ void EvaSearchWindow::displayBasicUsers()
 		end = start+1;
 	}
 	std::list<OnlineUser>::iterator iter;
-	QTextCodec *codec = QTextCodec::codecForName("GB18030");
+	TQTextCodec *codec = TQTextCodec::codecForName("GB18030");
 	for(int i=start; i<end; i++){
 		for(iter = m_BasicUserPages[i].begin(); iter!=m_BasicUserPages[i].end(); ++iter){
 			tbBSResult->setNumRows(tbBSResult->numRows()+1);
-			QImage img = images->getFace(images->getFaceFileIndex(iter->getFace()),true)->convertToImage();
-			tbBSResult->setPixmap(tbBSResult->numRows()-1, 0, QPixmap(img.smoothScale(16,16)));
-			tbBSResult->setText(tbBSResult->numRows()-1, 0, QString::number(iter->getQQ()));
+			TQImage img = images->getFace(images->getFaceFileIndex(iter->getFace()),true)->convertToImage();
+			tbBSResult->setPixmap(tbBSResult->numRows()-1, 0, TQPixmap(img.smoothScale(16,16)));
+			tbBSResult->setText(tbBSResult->numRows()-1, 0, TQString::number(iter->getQQ()));
 			tbBSResult->setText(tbBSResult->numRows()-1, 1,codec->toUnicode(iter->getNick().c_str()));
 			tbBSResult->setText(tbBSResult->numRows()-1, 2,codec->toUnicode(iter->getProvince().c_str()));
 		}
@@ -639,7 +639,7 @@ void EvaSearchWindow::displayBasicUsers()
 	tbBSDetails->setEnabled(true);
 	tbBSAll->setEnabled(true);
 	
-	lblBSResultPage->setText(QString(i18n("Current page %1 ")).arg(m_BCurrentPage+1));
+	lblBSResultPage->setText(TQString(i18n("Current page %1 ")).arg(m_BCurrentPage+1));
 	
 }
 
@@ -656,7 +656,7 @@ void EvaSearchWindow::slotTbBSNextClicked()
 		
 		lblBSResultTip->setText(i18n("Eva is searching users for you..."));
 	
-		QString pageNo = QString::number(m_BCurrentPage);
+		TQString pageNo = TQString::number(m_BCurrentPage);
 		if(m_BSearchType == B_ONLINE){
 			emit requestSearchUsers(true, pageNo, "", "", "", false);
 		}else{
@@ -707,7 +707,7 @@ void EvaSearchWindow::slotTbBSDetailsClicked()
 {
 	//if user click the "details" button without any selected item, then show the message box
 	if(tbBSResult->numRows()!=0 && m_SelectedBasicUser.getQQ() == 0){
-		KMessageBox::messageBox((QWidget *) 0,KMessageBox::Information,
+		KMessageBox::messageBox((TQWidget *) 0,KMessageBox::Information,
 				i18n("Please select a user."),
 				i18n("Eva - Search/Add"));
 		return;
@@ -793,16 +793,16 @@ void EvaSearchWindow::displayAdvancedUsers()
 	
 	std::list< CityListElement> city;
 	std::list< CityListElement >::iterator cityIter;
-	QTextCodec *codec = QTextCodec::codecForName("GB18030");
+	TQTextCodec *codec = TQTextCodec::codecForName("GB18030");
 	for(int i=start; i<end; i++){
 		for(iter = m_AdvancedUserPages[i].begin(); iter!=m_AdvancedUserPages[i].end(); ++iter){
 			tbASResult->setNumRows(tbASResult->numRows()+1);
-			QImage img = images->getFace(images->getFaceFileIndex(iter->getFace()), iter->isOnline())->convertToImage();
-			tbASResult->setPixmap(tbASResult->numRows()-1, 0, QPixmap(img.smoothScale(16,16)));
-			tbASResult->setText(tbASResult->numRows()-1, 0, QString::number(iter->getQQ()));
+			TQImage img = images->getFace(images->getFaceFileIndex(iter->getFace()), iter->isOnline())->convertToImage();
+			tbASResult->setPixmap(tbASResult->numRows()-1, 0, TQPixmap(img.smoothScale(16,16)));
+			tbASResult->setText(tbASResult->numRows()-1, 0, TQString::number(iter->getQQ()));
 			tbASResult->setText(tbASResult->numRows()-1, 1,codec->toUnicode(iter->getNick().c_str()));
 			tbASResult->setText(tbASResult->numRows()-1, 2,cbASSex->text(iter->getGenderIndex()));
-			tbASResult->setText(tbASResult->numRows()-1, 3,QString::number(iter->getAge()));
+			tbASResult->setText(tbASResult->numRows()-1, 3,TQString::number(iter->getAge()));
 			tbASResult->setText(tbASResult->numRows()-1, 4,cbASProvince->text(iter->getProvinceIndex()));
 			//if use selected unlimited item, then the city name can not selected in the combox, because
 			//the combox has no items yet, so I decided that all the city name is search in cityData
@@ -822,7 +822,7 @@ void EvaSearchWindow::displayAdvancedUsers()
 	tbASNext->setEnabled(m_ACurrentPage==10?false:true);//advanced search can only search 10 pages
 	tbASDetails->setEnabled(true);
 	tbASAll->setEnabled(true);
-	lblASResultPage->setText(QString(i18n("Current page %1 ")).arg(m_ACurrentPage));
+	lblASResultPage->setText(TQString(i18n("Current page %1 ")).arg(m_ACurrentPage));
 	
 }
 
@@ -852,7 +852,7 @@ void EvaSearchWindow::slotTbASDetailsClicked()
 {
 	//if user click the "details" button without any selected item, then show the message box
 	if(tbASResult->numRows()!=0 && m_SelectedAdvancedUser.getQQ() == 0){
-		KMessageBox::messageBox((QWidget *) 0,KMessageBox::Information,
+		KMessageBox::messageBox((TQWidget *) 0,KMessageBox::Information,
 				i18n("Please select a user."),
 				i18n("Eva - Search/Add"));
 		return;
@@ -908,11 +908,11 @@ void EvaSearchWindow::slotTbASAllClicked()
 	displayAdvancedUsers();
 }
 
-void EvaSearchWindow::processQunSearch(const QString &qunNum)
+void EvaSearchWindow::processQunSearch(const TQString &qunNum)
 {
 	printf("qun search clicked\n");
 	if(qunNum.isEmpty()){
-		KMessageBox::messageBox((QWidget *) 0,KMessageBox::Information,
+		KMessageBox::messageBox((TQWidget *) 0,KMessageBox::Information,
                               i18n("Qun Num can not be empty."),
                               i18n("Eva - Search/Add"));
 		leQunNum->setFocus();
@@ -922,7 +922,7 @@ void EvaSearchWindow::processQunSearch(const QString &qunNum)
 	bool ok;
 	int extQunNum = qunNum.toInt(&ok);
 	if(!ok){
-		KMessageBox::messageBox((QWidget *) 0,KMessageBox::Information,
+		KMessageBox::messageBox((TQWidget *) 0,KMessageBox::Information,
                               i18n("Qun Num is incorrect."),
                               i18n("Eva - Search/Add"));
 		leQunNum->setFocus();
@@ -934,44 +934,44 @@ void EvaSearchWindow::processQunSearch(const QString &qunNum)
 	pbSearch->setText(i18n("Join Qun"));
 	pbLastStep->setHidden(false);
 	wsQunSearch->raiseWidget(1);
-	tbQSPrev->setEnabled(false);
-	tbQSNext->setEnabled(false);
-	tbQSDetails->setEnabled(false);
-	tbQSAll->setEnabled(false);
+	tbTQSPrev->setEnabled(false);
+	tbTQSNext->setEnabled(false);
+	tbTQSDetails->setEnabled(false);
+	tbTQSAll->setEnabled(false);
 			
-	lblQSResultTip->setText(i18n("Eva is searching Qun for you..."));
+	lblTQSResultTip->setText(i18n("Eva is searching Qun for you..."));
 	emit requestQunSearch(extQunNum);
 }
 
-void EvaSearchWindow::slotQunSearchReady(const std::list<QunInfo> list, QString /*error*/)
+void EvaSearchWindow::slotQunSearchReady(const std::list<QunInfo> list, TQString /*error*/)
 {
 	//clear qun search result table
-	for(int row=0; row<tbQSResult->numRows(); row++){
-		for(int col=0; col<tbQSResult->numCols(); col++){
-			tbQSResult->clearCell(row, col);
+	for(int row=0; row<tbTQSResult->numRows(); row++){
+		for(int col=0; col<tbTQSResult->numCols(); col++){
+			tbTQSResult->clearCell(row, col);
 		}
 	}
-	tbQSResult->setNumRows(0);
+	tbTQSResult->setNumRows(0);
 	
 	std::list<QunInfo>::iterator iter;
-	QTextCodec *codec = QTextCodec::codecForName("GB18030");
+	TQTextCodec *codec = TQTextCodec::codecForName("GB18030");
 	
 	qunList = list;
 	if(list.size()){
 		for(iter = qunList.begin(); iter!=qunList.end(); ++iter){
-			tbQSResult->setNumRows(tbQSResult->numRows()+1);
-			QImage img = images->getIcon("QUN")->convertToImage();
-			tbQSResult->setPixmap(tbQSResult->numRows()-1, 0, QPixmap(img.smoothScale(16,16)));
-			tbQSResult->setText(tbQSResult->numRows()-1, 0, QString::number(iter->getExtID()));
-			tbQSResult->setText(tbQSResult->numRows()-1, 1,codec->toUnicode(iter->getName().c_str()));
-			tbQSResult->setText(tbQSResult->numRows()-1, 2,QString::number(iter->getCreator()));
+			tbTQSResult->setNumRows(tbTQSResult->numRows()+1);
+			TQImage img = images->getIcon("TQUN")->convertToImage();
+			tbTQSResult->setPixmap(tbTQSResult->numRows()-1, 0, TQPixmap(img.smoothScale(16,16)));
+			tbTQSResult->setText(tbTQSResult->numRows()-1, 0, TQString::number(iter->getExtID()));
+			tbTQSResult->setText(tbTQSResult->numRows()-1, 1,codec->toUnicode(iter->getName().c_str()));
+			tbTQSResult->setText(tbTQSResult->numRows()-1, 2,TQString::number(iter->getCreator()));
 		}
 	}
 		
-	tbQSDetails->setEnabled(true);
+	tbTQSDetails->setEnabled(true);
 	
-	lblQSResultPage->setText(QString(i18n("Current page 1 ")));
-	lblQSResultTip->setText(i18n("the following Qun are found for you by Eva."));
+	lblTQSResultPage->setText(TQString(i18n("Current page 1 ")));
+	lblTQSResultTip->setText(i18n("the following Qun are found for you by Eva."));
 }
 
 void EvaSearchWindow::slotTopListChanged(int index)
@@ -1042,14 +1042,14 @@ void EvaSearchWindow::slotQunSelected(int row)
 void EvaSearchWindow::slotQunResultTableDBClicked(int row)
 {
 	slotQunSelected(row);
-	slotTbQSDetailsClicked();
+	slotTbTQSDetailsClicked();
 }
 
-void EvaSearchWindow::slotTbQSDetailsClicked()
+void EvaSearchWindow::slotTbTQSDetailsClicked()
 {
 	//if user click the "details" button without any selected item, then show the message box
 	if(tbBSResult->numRows()!=0 && m_SelectedQun.getQunID() == 0){
-		KMessageBox::messageBox((QWidget *) 0,KMessageBox::Information,
+		KMessageBox::messageBox((TQWidget *) 0,KMessageBox::Information,
 				i18n("Please select a Qun."),
 				i18n("Eva - Search/Add"));
 		return;
@@ -1059,7 +1059,7 @@ void EvaSearchWindow::slotTbQSDetailsClicked()
 	QunDetailsWindow *win = new QunDetailsWindow(qun, false);
 	delete qun;
 
-	QRect scr = KApplication::desktop()->screenGeometry();
+	TQRect scr = TDEApplication::desktop()->screenGeometry();
 	win->move(scr.center() - win->rect().center());
 	win->show();
 }

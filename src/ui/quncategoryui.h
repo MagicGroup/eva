@@ -17,46 +17,46 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef QUNCATEGORYUI_H
-#define QUNCATEGORYUI_H
+#ifndef TQUNCATEGORYUI_H
+#define TQUNCATEGORYUI_H
 
-#include <qvariant.h>
-#include <qwidget.h>
+#include <ntqvariant.h>
+#include <ntqwidget.h>
 
-class QVBoxLayout;
-class QHBoxLayout;
-class QGridLayout;
-class QSpacerItem;
-class QFrame;
-class QComboBox;
-class QPushButton;
+class TQVBoxLayout;
+class TQHBoxLayout;
+class TQGridLayout;
+class TQSpacerItem;
+class TQFrame;
+class TQComboBox;
+class TQPushButton;
 
-class QunCategoryUI : public QWidget
+class QunCategoryUI : public TQWidget
 {
     Q_OBJECT
 
 public:
-    QunCategoryUI( QWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
+    QunCategoryUI( TQWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
     ~QunCategoryUI();
 
-    QFrame* frame3;
-    QComboBox* cbbTop;
-    QComboBox* cbbSecond;
-    QComboBox* cbbThird;
-    QPushButton* pbCancel;
-    QPushButton* pbOK;
+    TQFrame* frame3;
+    TQComboBox* cbbTop;
+    TQComboBox* cbbSecond;
+    TQComboBox* cbbThird;
+    TQPushButton* pbCancel;
+    TQPushButton* pbOK;
 
 protected:
-    QGridLayout* QunCategoryUILayout;
-    QVBoxLayout* layout5;
-    QGridLayout* frame3Layout;
-    QVBoxLayout* layout3;
-    QHBoxLayout* layout4;
-    QSpacerItem* spacer2;
+    TQGridLayout* QunCategoryUILayout;
+    TQVBoxLayout* layout5;
+    TQGridLayout* frame3Layout;
+    TQVBoxLayout* layout3;
+    TQHBoxLayout* layout4;
+    TQSpacerItem* spacer2;
 
 protected slots:
     virtual void languageChange();
 
 };
 
-#endif // QUNCATEGORYUI_H
+#endif // TQUNCATEGORYUI_H

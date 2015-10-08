@@ -31,7 +31,7 @@ class EvaFilePanel : public KTabWidget
 {
 	Q_OBJECT
 public:
-	EvaFilePanel(QWidget *parent = 0, const char *name=0, WFlags f=0);
+	EvaFilePanel(TQWidget *parent = 0, const char *name=0, WFlags f=0);
 
 	void updateStatus(const unsigned int session, const KURL &url, const unsigned int size, 
 			const unsigned int bytes, const unsigned int time);
@@ -42,7 +42,7 @@ private:
 	EvaFileStatusUIBase *  newTab(const unsigned int session, const unsigned int size,
 					const KURL &url);
 private slots:
-	void slotCloseTab(const unsigned int, QWidget *);
+	void slotCloseTab(const unsigned int, TQWidget *);
 };
 
 #endif

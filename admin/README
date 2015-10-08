@@ -1,0 +1,2 @@
+This code is shared among all Trinity modules
+New code should not use Autotools (and therefore this folder), instead it should use CMake

@@ -28,7 +28,7 @@
 #endif
 #include <cstring>
 EvaPicTransferPacket::EvaPicTransferPacket() 
-	: EvaPicOutPacket(QQ_05_CMD_TRANSFER, false), fragment(NULL)
+	: EvaPicOutPacket(TQQ_05_CMD_TRANSFER, false), fragment(NULL)
 {
 	cryptPosition = NO_CRYPTOGRAPH;
         requestSend = false;
@@ -36,7 +36,7 @@ EvaPicTransferPacket::EvaPicTransferPacket()
 }
 
 EvaPicTransferPacket::EvaPicTransferPacket(const bool isDataPacket, const bool isLastPacket)
-	: EvaPicOutPacket(QQ_05_CMD_TRANSFER, isDataPacket?(isLastPacket?true:false):true)
+	: EvaPicOutPacket(TQQ_05_CMD_TRANSFER, isDataPacket?(isLastPacket?true:false):true)
 	, fragment(NULL)
 {
 	cryptPosition = NO_CRYPTOGRAPH;
@@ -236,7 +236,7 @@ void EvaPicTransferReplyPacket::parseBody()
 	memcpy(&tmp2, decryptedBuf+pos, 2); pos+=2;
 	unsigned short len = ntohs(tmp2);
 	
-	if(source != QQ_CLIENT_VERSION && !sequence){
+	if(source != TQQ_CLIENT_VERSION && !sequence){
 		pos+=2;
 		memcpy(md5, decryptedBuf+pos, 16); pos+=16;
 		

@@ -23,21 +23,21 @@
 
 #include "evachatuibase.h"
 #include "../api/filetrans/evafiledownloader.h"
-#include <qdatetime.h>
-#include <qcolor.h>
+#include <ntqdatetime.h>
+#include <ntqcolor.h>
 #include <kurl.h>
-#include <qvaluelist.h>
-#include <qmap.h>
+#include <ntqvaluelist.h>
+#include <ntqmap.h>
 #include <list>
 
 class EvaImageResource;
-class QQFriend;
+class TQQFriend;
 class CustomFaceSelector;
-class QTextCodec;
-class QKeyEvent;
-class QCloseEvent;
+class TQTextCodec;
+class TQKeyEvent;
+class TQCloseEvent;
 class EvaFontSelecter;
-class QPopupMenu;
+class TQPopupMenu;
 class RegionGrabber;
 class EvaHistoryViewer;
 
@@ -45,63 +45,63 @@ class EvaChatWindow : public EvaChatUIBase
 {
 	Q_OBJECT
 public:
-	EvaChatWindow(QQFriend * frd, QWidget* parent = 0, const char* name = 0, WFlags fl = 0);
+	EvaChatWindow(TQQFriend * frd, TQWidget* parent = 0, const char* name = 0, WFlags fl = 0);
 	~EvaChatWindow();
 	static void setupImages(EvaImageResource *res);
-	static void setQuickReplyMessages(const std::list<QString> &list);
+	static void setQuickReplyMessages(const std::list<TQString> &list);
 	void setQuickReplyMenu();
 	const unsigned int getBuddyQQ();
 	void showMessages();
 
 	static int myQQ;
-	static QString myName;
+	static TQString myName;
 	static bool isSentByEnter;
 
 	void openSendFileDialog();
-	void appendText(const QString &txt);
+	void appendText(const TQString &txt);
 	
-	void addToolButton(QString &scriptName, QString buttonName, QString &pixmap, QString &tip);
-  void removeToolButton(QString &scriptName, QString buttonName);
+	void addToolButton(TQString &scriptName, TQString buttonName, TQString &pixmap, TQString &tip);
+  void removeToolButton(TQString &scriptName, TQString buttonName);
 public slots:
 	void graphicChanged();
-	void slotReceivedMessage(unsigned int sender, bool isNormal, QString message, QDateTime time, const char size=9, 
+	void slotReceivedMessage(unsigned int sender, bool isNormal, TQString message, TQDateTime time, const char size=9, 
 			const bool u=false, const bool i=false, const bool b=false, 
 			const char blue=0, const char green=0, const char red=0);
-	void slotAddMessage(unsigned int sender, QString sNick, unsigned int receiver, QString rNick, bool isNormal, QString message, 
-			QDateTime time, const char size=9, 
+	void slotAddMessage(unsigned int sender, TQString sNick, unsigned int receiver, TQString rNick, bool isNormal, TQString message, 
+			TQDateTime time, const char size=9, 
 			const bool u=false, const bool i=false, const bool b=false, 
 			const char blue=0, const char green=0, const char red=0);
 	void slotSendResult(bool ok);
-	void slotBuddyQQShowReady(const unsigned int id);
-	void slotMyQQShowReady();
+	void slotBuddyTQQShowReady(const unsigned int id);
+	void slotMyTQQShowReady();
 
 	void slotFileClick();
-	void slotReceivedFileRequest(const unsigned int session, const QString &file, const int size,
+	void slotReceivedFileRequest(const unsigned int session, const TQString &file, const int size,
 					const unsigned char transferType);
 	void slotReceivedFileAccepted(const unsigned int session, const bool isAccepted,
 					const unsigned char transferType);
 	void slotSessionChangedTo(const unsigned int oldSession, const unsigned int newSession);
 	void slotFileNotifyNormalInfo(const unsigned int, EvaFileStatus,
-					const QString, const QString, const unsigned int,
+					const TQString, const TQString, const unsigned int,
 					const unsigned char);
 	void slotFileStatusNotification(const unsigned int session, const KURL &url, const unsigned int size,
 				const unsigned int bytes, const unsigned int time);
 
-	void slotAddImageToInputEdit( const QString & destFile);
+	void slotAddImageToInputEdit( const TQString & destFile);
 signals:
 	void requestDetails(const unsigned int );
-	void sendMessage(const unsigned int , const bool, QString &, const char , 
+	void sendMessage(const unsigned int , const bool, TQString &, const char , 
 			const bool, const bool , const bool , 
 			const char , const char , const char );
 	void requestHistory(const unsigned int );
-	void requestBuddyQQShow(const unsigned int);
-	void requestMyQQShow();
+	void requestBuddyTQQShow(const unsigned int);
+	void requestMyTQQShow();
 
-	void fileTransferSend(const unsigned int, const unsigned int, const QValueList<QString>,
-				const QValueList<unsigned int>,
+	void fileTransferSend(const unsigned int, const unsigned int, const TQValueList<TQString>,
+				const TQValueList<unsigned int>,
 				const unsigned char transferType);
 	// last string is the dest path to save the file
-	void fileTransferAccept(const unsigned int, const unsigned int, const QString,
+	void fileTransferAccept(const unsigned int, const unsigned int, const TQString,
 				const unsigned char transferType);
 	void fileTransferCancel(const unsigned int, const unsigned int);
 	void fileTransferResume(const unsigned int, const unsigned int, const bool);
@@ -116,32 +116,32 @@ private:
 	CustomFaceSelector *smileyPopup;
 	static EvaImageResource *images;
 	
-	static std::list<QString> quickList;
-	QPopupMenu *quickMenu;
+	static std::list<TQString> tquickList;
+	TQPopupMenu *tquickMenu;
 	
 	EvaFontSelecter *fontSelecter;
-	QPopupMenu *sendKey;
+	TQPopupMenu *sendKey;
 	
-	QQFriend *buddy;
-	QTextCodec *codec;
+	TQQFriend *buddy;
+	TQTextCodec *codec;
 
-	QDateTime sendtime;
+	TQDateTime sendtime;
 
 	int m_NumImages;
 	RegionGrabber *grabber;
 	EvaHistoryViewer *viewer;
 
-	QMap<QString, QToolButton*> m_btnMap; // button name, button widget
-	QMap<QString, QString> m_scriptMap;   // button name, script name
+	TQMap<TQString, TQToolButton*> m_btnMap; // button name, button widget
+	TQMap<TQString, TQString> m_scriptMap;   // button name, script name
 	
-	QMap<unsigned int, QString> m_FileList;
-	QMap<unsigned int, unsigned int> m_FileNoList;
-	const bool addToFileList(const unsigned int session, const QString filename);
-	QString getFileName(const unsigned int session);
+	TQMap<unsigned int, TQString> m_FileList;
+	TQMap<unsigned int, unsigned int> m_FileNoList;
+	const bool addToFileList(const unsigned int session, const TQString filename);
+	TQString getFileName(const unsigned int session);
 	const unsigned int getSession(const unsigned int showSession);
 	void removeFromFileList(const unsigned int session);
 
-	void closeEvent(QCloseEvent *e);	
+	void closeEvent(TQCloseEvent *e);	
 private slots:
 	void slotSmileySelected(int);
 	
@@ -161,9 +161,9 @@ private slots:
 	void slotTbShowBuddyClick();
 	void slotTbShowMeClick();
 	
-	void slotInputKeyPress(QKeyEvent *e);
+	void slotInputKeyPress(TQKeyEvent *e);
 
-	void slotFontChanged(QColor color, int size)	;
+	void slotFontChanged(TQColor color, int size)	;
 
 	void setEnterSend();
 	void setCtrlEnterSend();
@@ -179,7 +179,7 @@ private slots:
 	void slotAddImageClick();
 
 	void slotScreenShotClick();
-	void slotRegionGrabbed( const QPixmap & );
+	void slotRegionGrabbed( const TQPixmap & );
 	
 	void slotCustomBtnClick();
 };

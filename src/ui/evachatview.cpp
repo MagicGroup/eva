@@ -22,15 +22,15 @@
 #include "evahtmlparser.h"
 #include "evaresource.h"
 #include "evamain.h"
-#include <qstringlist.h>
-#include <qtimer.h>
-#include <qclipboard.h>
-#include <qfileinfo.h>
-#include <qdragobject.h>
-#include <qapplication.h>
+#include <ntqstringlist.h>
+#include <ntqtimer.h>
+#include <ntqclipboard.h>
+#include <ntqfileinfo.h>
+#include <ntqdragobject.h>
+#include <ntqapplication.h>
 
-#include <kaction.h>
-#include <kconfig.h>
+#include <tdeaction.h>
+#include <tdeconfig.h>
 #include <kservice.h>
 #include <kurifilter.h>
 #include <kmimetype.h>
@@ -38,15 +38,15 @@
 #include <kiconloader.h>   // function "SmallIcon"
 #include <kdesktopfile.h>
 #include <kurldrag.h>
-#include <kmultipledrag.h>
-#include <kmessagebox.h>
-#include <kfiledialog.h>
-#include <kio/job.h>
-#include <kpopupmenu.h>
-#include <kapplication.h>
-#include <klocale.h>
+#include <tdemultipledrag.h>
+#include <tdemessagebox.h>
+#include <tdefiledialog.h>
+#include <tdeio/job.h>
+#include <tdepopupmenu.h>
+#include <tdeapplication.h>
+#include <tdelocale.h>
 
-/// defines come from khtml/misc/htmltags.h
+/// defines come from tdehtml/misc/htmltags.h
 //#define ATTR_HREF 54
 //#define ATTR_TARGET 133
 #define ID_IMG    48
@@ -62,37 +62,37 @@ class MenuPrivateData
 public:
   KURL m_url;
   KURL m_imageURL;
-  QPixmap m_pixmap;
-  QString m_suggestedFilename;
+  TQPixmap m_pixmap;
+  TQString m_suggestedFilename;
 };
 
-const QString EvaChatView::protocolAccept = "cmd://accept";
-const QString EvaChatView::protocolSaveAs = "cmd://saveas";
-const QString EvaChatView::protocolCancel = "cmd://cancel";
-const QString EvaChatView::protocolResume = "cmd://resume";
-const QString EvaChatView::protocolNewOne = "cmd://newone";
+const TQString EvaChatView::protocolAccept = "cmd://accept";
+const TQString EvaChatView::protocolSaveAs = "cmd://saveas";
+const TQString EvaChatView::protocolCancel = "cmd://cancel";
+const TQString EvaChatView::protocolResume = "cmd://resume";
+const TQString EvaChatView::protocolNewOne = "cmd://newone";
 
-EvaChatView::EvaChatView( QWidget * parent, const char * name )
-	: KHTMLPart(parent, name), menu(NULL), d(0), buffer(""), m_isScrollAtBottom(true)
+EvaChatView::EvaChatView( TQWidget * parent, const char * name )
+	: TDEHTMLPart(parent, name), menu(NULL), d(0), buffer(""), m_isScrollAtBottom(true)
 {
 	//setOnlyLocalReferences(true);
-	menu = new KPopupMenu(0, "popup");
+	menu = new TDEPopupMenu(0, "popup");
 	copyAction = KStdAction::copy( this, SLOT(copy()), actionCollection());
 	copyAction->setText(i18n("&Copy Text"));
-	copyAction->setShortcut( KShortcut("Ctrl+C"));
+	copyAction->setShortcut( TDEShortcut("Ctrl+C"));
 
 	setDNDEnabled(true);
 	setAutoloadImages(true);
-	view()->setHScrollBarMode(QScrollView::AlwaysOff);
+	view()->setHScrollBarMode(TQScrollView::AlwaysOff);
 	
 	//setStandardFont("Helvetica");
 	//buffer += "<body style=\"font-size:9pt;font-family:Helvetica\">";
 	
-	QObject::connect(view(), SIGNAL(finishedLayout()), SLOT(slotScrollToBottom()));
-	QObject::connect(this, SIGNAL(selectionChanged()), SLOT(slotSelectionChanged()));
-	QObject::connect(this, SIGNAL(popupMenu(const QString &, const QPoint &)), 
-			SLOT(slotPopupMenu(const QString &, const QPoint &)));
-	QObject::connect(browserExtension(), SIGNAL(openURLRequest(const KURL &, const KParts::URLArgs &)), 
+	TQObject::connect(view(), SIGNAL(finishedLayout()), SLOT(slotScrollToBottom()));
+	TQObject::connect(this, SIGNAL(selectionChanged()), SLOT(slotSelectionChanged()));
+	TQObject::connect(this, SIGNAL(popupMenu(const TQString &, const TQPoint &)), 
+			SLOT(slotPopupMenu(const TQString &, const TQPoint &)));
+	TQObject::connect(browserExtension(), SIGNAL(openURLRequest(const KURL &, const KParts::URLArgs &)), 
 			SLOT(slotLinkClicked( const KURL &, const KParts::URLArgs &)));
 }
 
@@ -102,16 +102,16 @@ EvaChatView::~EvaChatView()
 	if(d) delete d;
 }
 
-QString EvaChatView::wrapFontAttributes(QColor color, Q_UINT8 size,
+TQString EvaChatView::wrapFontAttributes(TQColor color, TQ_UINT8 size,
                                             bool underline, bool italic, bool bold,
-                                            QString contents)
+                                            TQString contents)
 {
-	QString fontHead = "<span style=\"";
-	QString fontSize = "font-size: "+QString::number((size<=MIN_FONT_SIZE)?MIN_FONT_SIZE:((size>MAX_FONT_SIZE)?MAX_FONT_SIZE:size))+"pt; ";
+	TQString fontHead = "<span style=\"";
+	TQString fontSize = "font-size: "+TQString::number((size<=MIN_FONT_SIZE)?MIN_FONT_SIZE:((size>MAX_FONT_SIZE)?MAX_FONT_SIZE:size))+"pt; ";
 
-	QString fontColor = QString("color: ") + color.name() + QString("\" >");
+	TQString fontColor = TQString("color: ") + color.name() + TQString("\" >");
 	
-	QString fontStye = "", fontStyeEnd="";
+	TQString fontStye = "", fontStyeEnd="";
 	if(bold){
 		fontStye+="<b>";
 		fontStyeEnd+="</b>";
@@ -124,39 +124,39 @@ QString EvaChatView::wrapFontAttributes(QColor color, Q_UINT8 size,
 		fontStye+="<u>";
 		fontStyeEnd="</u>" + fontStyeEnd;
 	}
-	QString fontEnd = "</span>";
-	QString ret = fontHead + fontSize + fontColor + fontStye + contents + fontStyeEnd + fontEnd;
+	TQString fontEnd = "</span>";
+	TQString ret = fontHead + fontSize + fontColor + fontStye + contents + fontStyeEnd + fontEnd;
 	return ret;
 }
 
-QString EvaChatView::wrapNickName(QString &nick, QDateTime time, QColor color, bool isNormal)
+TQString EvaChatView::wrapNickName(TQString &nick, TQDateTime time, TQColor color, bool isNormal)
 {	
-	QString htmlName = nick;
+	TQString htmlName = nick;
 	EvaHtmlParser parser;
 	parser.setAbsImagePath(EvaMain::images->getSmileyPath());
 	parser.convertToHtml(htmlName, false, true);
-	QString msg = "<span style=\"font-size: 9pt; color: " + color.name() +"\">" + htmlName + " ";
+	TQString msg = "<span style=\"font-size: 9pt; color: " + color.name() +"\">" + htmlName + " ";
 	if(!isNormal)
 		msg+=i18n("(Auto-Reply)");
 
-	QDateTime current = QDateTime::currentDateTime();
-	QString dateFormat = "hh:mm:ss";
+	TQDateTime current = TQDateTime::currentDateTime();
+	TQString dateFormat = "hh:mm:ss";
 	if(current.date() != time.date())
 		dateFormat = "yyyy-MM-dd hh:mm:ss";
 	msg+="  "+time.toString(dateFormat) + "</span><br>";
 	return msg;
 }
 
-void EvaChatView::append( QString & nick, QDateTime time, QColor nameColor, bool isNormal, 
-				QColor msgColor, Q_UINT8 size, 
-				bool underline, bool italic, bool bold, QString contents )
+void EvaChatView::append( TQString & nick, TQDateTime time, TQColor nameColor, bool isNormal, 
+				TQColor msgColor, TQ_UINT8 size, 
+				bool underline, bool italic, bool bold, TQString contents )
 {
-	QString msg = wrapNickName(nick, time, nameColor, isNormal) + 
+	TQString msg = wrapNickName(nick, time, nameColor, isNormal) + 
 			wrapFontAttributes(msgColor, size, underline, italic, bold, contents);
 	updateContents(msg);
 }
 
-void EvaChatView::updatePicture( const QString filename , const QString tmpFileName)
+void EvaChatView::updatePicture( const TQString filename , const TQString tmpFileName)
 {
 	m_isScrollAtBottom =  ( view()->contentsHeight() == (view()->contentsY() +view()->visibleHeight()) );
 	buffer.replace(tmpFileName, filename);
@@ -175,8 +175,8 @@ void EvaChatView::slotScrollToBottom()
 
 void EvaChatView::slotLinkClicked( const KURL & url, const KParts::URLArgs &/*args*/)
 {
-	QString cmd = url.url();
-	QString strSession = cmd.mid(13,cmd.length() - 13);
+	TQString cmd = url.url();
+	TQString strSession = cmd.mid(13,cmd.length() - 13);
 	bool ok;
 	unsigned int session = strSession.toUInt(&ok);
 	if(ok){
@@ -202,9 +202,9 @@ void EvaChatView::slotLinkClicked( const KURL & url, const KParts::URLArgs &/*ar
 		}
 	}
 
-	QStringList args;
+	TQStringList args;
 	if(url.isLocalFile()){
-		args<<"exec"<< QString::fromLocal8Bit(url.path().ascii());
+		args<<"exec"<< TQString::fromLocal8Bit(url.path().ascii());
 	}else{
 		args<<"exec" <<cmd;
 	}
@@ -215,16 +215,16 @@ void EvaChatView::slotLinkClicked( const KURL & url, const KParts::URLArgs &/*ar
    we just simplify the process. if we use KParts::BrowserExtension, we have to do
    lots extra work, adding so much classes. so just hack like following.
 
-   grab useful code from KHTMLPopupGUIClient(khtml_ext.cpp),
+   grab useful code from TDEHTMLPopupGUIClient(tdehtml_ext.cpp),
    and change a little bit to fit our needs
 
 */
-void EvaChatView::slotPopupMenu( const QString & _url, const QPoint & point )
+void EvaChatView::slotPopupMenu( const TQString & _url, const TQPoint & point )
 {
 	menu->clear();
 
 	bool isImage = false;
-	bool hasSelection = KHTMLPart::hasSelection();
+	bool hasSelection = TDEHTMLPart::hasSelection();
 	KURL url = KURL(_url);
 
 	if(d) delete d;
@@ -235,17 +235,17 @@ void EvaChatView::slotPopupMenu( const QString & _url, const QPoint & point )
 	DOM::Element e = nodeUnderMouse();
 	if ( !e.isNull() && (e.elementId() == ID_IMG) ){
 		DOM::HTMLImageElement ie = static_cast<DOM::HTMLImageElement>(e);
-		QString src = ie.src().string();
+		TQString src = ie.src().string();
 		d->m_imageURL = KURL(src);
 		d->m_suggestedFilename = src.right(src.length() - src.findRev("/") -1);
 		isImage=true;
 	}
 
 	
-	KAction *action = 0L;
+	TDEAction *action = 0L;
 
 	if(hasSelection){
-		//action =  new KAction( i18n( "&Copy Text" ), KShortcut("Ctrl+C"), this, SLOT( copy() ),
+		//action =  new TDEAction( i18n( "&Copy Text" ), TDEShortcut("Ctrl+C"), this, SLOT( copy() ),
 		//			actionCollection(), "copy" );
 		//action = KStdAction::copy( browserExtension(), SLOT(copy()), actionCollection(), "copy");
 		//action->setText(i18n("&Copy Text"));
@@ -253,37 +253,37 @@ void EvaChatView::slotPopupMenu( const QString & _url, const QPoint & point )
 		copyAction->plug(menu);
 		
 		// search text
-		QString selectedText = KHTMLPart::selectedText();
+		TQString selectedText = TDEHTMLPart::selectedText();
 		if ( selectedText.length()>18 ) {
 			selectedText.truncate(15);
 			selectedText+="...";
 		}
-#ifdef HAS_KONQUEROR
+#ifdef HAS_KONTQUEROR
 		// Fill search provider entries
-		KConfig config("kuriikwsfilterrc");
+		TDEConfig config("kuriikwsfilterrc");
 		config.setGroup("General");
-		const QString defaultEngine = config.readEntry("DefaultSearchEngine", "google");
+		const TQString defaultEngine = config.readEntry("DefaultSearchEngine", "google");
 		const char keywordDelimiter = config.readNumEntry("KeywordDelimiter", ':');
 		
 
 		// default search provider
-		KService::Ptr service = KService::serviceByDesktopPath(QString("searchproviders/%1.desktop").arg(defaultEngine));
+		KService::Ptr service = KService::serviceByDesktopPath(TQString("searchproviders/%1.desktop").arg(defaultEngine));
 		
 		// search provider icon
-		QPixmap icon;
+		TQPixmap icon;
 		KURIFilterData data;
-		QStringList list;
-		const QString defaultSearchProviderPrefix = *(service->property("Keys").toStringList().begin()) + keywordDelimiter;
-		data.setData( defaultSearchProviderPrefix + QString("some keyword") );
+		TQStringList list;
+		const TQString defaultSearchProviderPrefix = *(service->property("Keys").toStringList().begin()) + keywordDelimiter;
+		data.setData( defaultSearchProviderPrefix + TQString("some keyword") );
 		list << "kurisearchfilter" << "kuriikwsfilter";
 		
-		QString name;
+		TQString name;
 		if ( KURIFilter::self()->filterURI(data, list) ){
-			QString iconPath = locate("cache", KMimeType::favIconForURL(data.uri()) + ".png");
+			TQString iconPath = locate("cache", KMimeType::favIconForURL(data.uri()) + ".png");
 			if ( iconPath.isEmpty() )
-				icon = SmallIcon("find");
+				icon = SmallIcon("edit-find");
 			else
-				icon = QPixmap( iconPath );
+				icon = TQPixmap( iconPath );
 	
 			name = service->name();
 		} else {
@@ -291,58 +291,58 @@ void EvaChatView::slotPopupMenu( const QString & _url, const QPoint & point )
 			name = "Google";
 		}
 		
-		action = new KAction( i18n( "Search '%1' at %2" ).arg( selectedText ).arg( name ), icon, 0, this,
+		action = new TDEAction( i18n( "Search '%1' at %2" ).arg( selectedText ).arg( name ), icon, 0, this,
 				SLOT( searchProvider() ), actionCollection(), "searchProvider" );
 		action->plug(menu);
 
 		// favorite search providers
-		QStringList favoriteEngines;
+		TQStringList favoriteEngines;
 		favoriteEngines = config.readListEntry("FavoriteSearchEngines"); // for KDE 3.2 API compatibility
 		if(favoriteEngines.isEmpty())
 			favoriteEngines << "google" << "google_groups" << "google_news" << "webster" << "dmoz" << "wikipedia";
 		
 		if ( !favoriteEngines.isEmpty()) {
-			KActionMenu* providerList = new KActionMenu( i18n( "Search '%1' At" ).arg( selectedText ), actionCollection(), "searchProviderList" );
+			TDEActionMenu* providerList = new TDEActionMenu( i18n( "Search '%1' At" ).arg( selectedText ), actionCollection(), "searchProviderList" );
 			bool hasSubMenus = false;
-			QStringList::ConstIterator it = favoriteEngines.begin();
+			TQStringList::ConstIterator it = favoriteEngines.begin();
 			for ( ; it != favoriteEngines.end(); ++it ) {
 				if (*it==defaultEngine)
 					continue;
-				service = KService::serviceByDesktopPath(QString("searchproviders/%1.desktop").arg(*it));
+				service = KService::serviceByDesktopPath(TQString("searchproviders/%1.desktop").arg(*it));
 				if (!service)
 					continue;
-				const QString searchProviderPrefix = *(service->property("Keys").toStringList().begin()) + keywordDelimiter;
+				const TQString searchProviderPrefix = *(service->property("Keys").toStringList().begin()) + keywordDelimiter;
 				data.setData( searchProviderPrefix + "some keyword" );
 			
 				if ( KURIFilter::self()->filterURI(data, list) ) {
-					QString iconPath = locate("cache", KMimeType::favIconForURL(data.uri()) + ".png");
+					TQString iconPath = locate("cache", KMimeType::favIconForURL(data.uri()) + ".png");
 					if ( iconPath.isEmpty() )
-						icon = SmallIcon("find");
+						icon = SmallIcon("edit-find");
 					else
-						icon = QPixmap( iconPath );
+						icon = TQPixmap( iconPath );
 					name = service->name();
 			
-					providerList->insert( new KAction( name, icon, 0, this,
-							SLOT( searchProvider() ), actionCollection(), QString( "searchProvider" + searchProviderPrefix ).latin1() ) );
+					providerList->insert( new TDEAction( name, icon, 0, this,
+							SLOT( searchProvider() ), actionCollection(), TQString( "searchProvider" + searchProviderPrefix ).latin1() ) );
 					hasSubMenus = true;
 				}
 			}
 			if(hasSubMenus) providerList->plug(menu);
 		}
-#endif // HAS_KONQUEROR
+#endif // HAS_KONTQUEROR
 		if ( selectedText.contains("://") && KURL(selectedText).isValid() ) {
-			action = new KAction( i18n( "Open '%1'" ).arg( selectedText ), "window_new", 0,
+			action = new TDEAction( i18n( "Open '%1'" ).arg( selectedText ), "window_new", 0,
 							this, SLOT( openSelection() ), actionCollection(), "openSelection" );
 			action->plug(menu);
 		}
 	}
 	if ( !url.isEmpty() ) {
 		if (url.protocol() == "mailto")	{
-			action = new KAction( i18n( "Copy Email Address" ), 0, this, SLOT( slotCopyLinkLocation() ),
+			action = new TDEAction( i18n( "Copy Email Address" ), 0, this, SLOT( slotCopyLinkLocation() ),
 					actionCollection(), "copylinklocation" );
 			action->plug(menu);
 		} else {
-			action = new KAction( i18n( "Copy &Link Address" ), 0, this, SLOT( slotCopyLinkLocation() ),
+			action = new TDEAction( i18n( "Copy &Link Address" ), 0, this, SLOT( slotCopyLinkLocation() ),
 					actionCollection(), "copylinklocation" );
 			action->plug(menu);
 		}
@@ -350,15 +350,15 @@ void EvaChatView::slotPopupMenu( const QString & _url, const QPoint & point )
 
 	if (isImage)	{
 #ifndef QT_NO_MIMECLIPBOARD
-		action = (new KAction( i18n( "Copy Image" ), 0, this, SLOT( slotCopyImage() ),
+		action = (new TDEAction( i18n( "Copy Image" ), 0, this, SLOT( slotCopyImage() ),
 				actionCollection(), "copyimage" ));
 		action->plug(menu);
 #endif
-		action = new KAction( i18n( "Save Image As..." ), 0, this, SLOT( slotSaveImageAs() ),
+		action = new TDEAction( i18n( "Save Image As..." ), 0, this, SLOT( slotSaveImageAs() ),
 				actionCollection(), "saveimageas" );
 		action->plug(menu);
 
-		action = new KAction( i18n( "Save As Custom Smiley"), 0, this, SLOT( slotSaveAsCustomSmiley() ),
+		action = new TDEAction( i18n( "Save As Custom Smiley"), 0, this, SLOT( slotSaveAsCustomSmiley() ),
 				actionCollection(), "saveascustomsmiley" );
 		action->plug(menu);
 	}
@@ -369,20 +369,20 @@ void EvaChatView::slotPopupMenu( const QString & _url, const QPoint & point )
 void EvaChatView::copy( )
 {
 	if(hasSelection()){
-		QString text = selectedText();
-		text.replace(QChar(0xa0), ' ');
-		QApplication::clipboard()->setText( text, QClipboard::Clipboard );
-		QApplication::clipboard()->setText( text, QClipboard::Selection );
+		TQString text = selectedText();
+		text.replace(TQChar(0xa0), ' ');
+		TQApplication::clipboard()->setText( text, TQClipboard::Clipboard );
+		TQApplication::clipboard()->setText( text, TQClipboard::Selection );
 	}
 }
 
 void EvaChatView::searchProvider()
 {
 	// action name is of form "previewProvider[<searchproviderprefix>:]"
-	const QString searchProviderPrefix = QString( sender()->name() ).mid( 14 );
+	const TQString searchProviderPrefix = TQString( sender()->name() ).mid( 14 );
 	
 	KURIFilterData data;
-	QStringList list;
+	TQStringList list;
 	data.setData( searchProviderPrefix + this->selectedText() );
 	list << "kurisearchfilter" << "kuriikwsfilter";
 	
@@ -409,15 +409,15 @@ void EvaChatView::openSelection()
 void EvaChatView::slotCopyLinkLocation()
 {
 	KURL safeURL(d->m_url);
-	safeURL.setPass(QString::null);
+	safeURL.setPass(TQString::null);
 #ifndef QT_NO_MIMECLIPBOARD
 	// Set it in both the mouse selection and in the clipboard
 	KURL::List lst;
 	lst.append( safeURL );
-	QApplication::clipboard()->setData( new KURLDrag( lst ), QClipboard::Clipboard );
-	QApplication::clipboard()->setData( new KURLDrag( lst ), QClipboard::Selection );
+	TQApplication::clipboard()->setData( new KURLDrag( lst ), TQClipboard::Clipboard );
+	TQApplication::clipboard()->setData( new KURLDrag( lst ), TQClipboard::Selection );
 #else
-	QApplication::clipboard()->setText( safeURL.url() ); 
+	TQApplication::clipboard()->setText( safeURL.url() ); 
 #endif
 }
 
@@ -425,18 +425,18 @@ void EvaChatView::slotCopyImage()
 {
 #ifndef QT_NO_MIMECLIPBOARD
 	KURL safeURL(d->m_imageURL);
-	safeURL.setPass(QString::null);
+	safeURL.setPass(TQString::null);
 	
 	KURL::List lst;
 	lst.append( safeURL );
 	KMultipleDrag *drag = new KMultipleDrag(view(), "Image");
 
-	drag->addDragObject( new QImageDrag(d->m_imageURL.path()) );
+	drag->addDragObject( new TQImageDrag(d->m_imageURL.path()) );
 	drag->addDragObject( new KURLDrag(lst, view(), "Image URL") );
 	
 	// Set it in both the mouse selection and in the clipboard
-	QApplication::clipboard()->setData( drag, QClipboard::Clipboard );
-	QApplication::clipboard()->setData( new KURLDrag(lst), QClipboard::Selection );
+	TQApplication::clipboard()->setData( drag, TQClipboard::Clipboard );
+	TQApplication::clipboard()->setData( new KURLDrag(lst), TQClipboard::Selection );
 #else
 	// do nothing
 #endif
@@ -444,7 +444,7 @@ void EvaChatView::slotCopyImage()
 
 void EvaChatView::slotSaveImageAs()
 {
-	QString name = QString::fromLatin1("index.html");;
+	TQString name = TQString::fromLatin1("index.html");;
 	if ( !d->m_suggestedFilename.isEmpty() )
 		name = d->m_suggestedFilename;
 	else if ( !d->m_imageURL.fileName().isEmpty() )
@@ -454,18 +454,18 @@ void EvaChatView::slotSaveImageAs()
 	int query;
 	do {
 		query = KMessageBox::Yes;
-		destURL = KFileDialog::getSaveURL( QDir::homeDirPath() + "/" + name, QString::null, 0, i18n( "Save Image As" ) );
+		destURL = KFileDialog::getSaveURL( TQDir::homeDirPath() + "/" + name, TQString::null, 0, i18n( "Save Image As" ) );
 		if( destURL.isLocalFile() ) {
-			QFileInfo info( destURL.path() );
+			TQFileInfo info( destURL.path() );
 			if( info.exists() ) {
-				// TODO: use KIO::RenameDlg (shows more information)
+				// TODO: use TDEIO::RenameDlg (shows more information)
 				query = KMessageBox::warningContinueCancel( 0, i18n( "A file named \"%1\" already exists. " "Are you sure you want to overwrite it?" ).arg( info.fileName() ), i18n( "Overwrite File?" ), i18n( "Overwrite" ) );
 			}
 		}
 	} while ( query == KMessageBox::Cancel );
 	
 	if ( destURL.isValid() )
-		KIO::file_copy(d->m_imageURL, destURL, -1, true /*overwrite*/);
+		TDEIO::file_copy(d->m_imageURL, destURL, -1, true /*overwrite*/);
 }
 
 void EvaChatView::slotSaveAsCustomSmiley()
@@ -476,7 +476,7 @@ void EvaChatView::slotSaveAsCustomSmiley()
 // it seems this method doesn't do the job
 void EvaChatView::startDrag( )
 {
-	QDragObject *d = new QTextDrag(selectedText(), view());
+	TQDragObject *d = new TQTextDrag(selectedText(), view());
 	d->dragCopy();
 }
 
@@ -485,29 +485,29 @@ void EvaChatView::slotSelectionChanged( )
 	copyAction->setEnabled( hasSelection() );
 }
 
-void EvaChatView::showInfomation( const QString & info )
+void EvaChatView::showInfomation( const TQString & info )
 {
-	QString picPath = "<img src = \"" + EvaMain::images->getIconFullPath("MSG_INFO") + "\">";
-	QString msg = wrapFontAttributes(Qt::gray, 9, false, false, false, info);
+	TQString picPath = "<img src = \"" + EvaMain::images->getIconFullPath("MSG_INFO") + "\">";
+	TQString msg = wrapFontAttributes(TQt::gray, 9, false, false, false, info);
 	updateContents("&nbsp;" + picPath + "&nbsp;" + msg );
 	showContents();
 }
 
-void EvaChatView::showFileNotification( const QString & who, const QString & filename, 
+void EvaChatView::showFileNotification( const TQString & who, const TQString & filename, 
 			const int size, const unsigned int session, const bool isSend )
 {
-	QString strSession = QString::number(session);
-	QString picPath = "<img src = \"" + EvaMain::images->getIconFullPath("MSG_INFO") + "\">";
-	QString acceptLink = "<a href=\""+ protocolAccept + "_" + strSession + "\">" + i18n("Accept") + "</a>";
-	QString saveAsLink = "<a href=\""+ protocolSaveAs + "_" + strSession + "\">" + i18n("Save As") + "</a>";
-        QString rejectLink = "<a href=\""+ protocolCancel + "_" + strSession + "\">" + i18n("Reject") + "</a>";
-	QString cancelLink = "<a href=\""+ protocolCancel + "_" + strSession + "\">" + i18n("Cancel") + "</a>";
-	QString fileSize = (size<0x400)?(QString::number(size) + "B"):
-			((size<0x100000)?(QString::number(size/0x400) + "KB") :
-			((size<0x40000000)?(QString::number(size/0x100000) + "MB"):
-			(QString::number(size/0x40000000) + "GB") ) );
-	QString fileInfo = filename + "(" + fileSize + ")";
-        QString txt;
+	TQString strSession = TQString::number(session);
+	TQString picPath = "<img src = \"" + EvaMain::images->getIconFullPath("MSG_INFO") + "\">";
+	TQString acceptLink = "<a href=\""+ protocolAccept + "_" + strSession + "\">" + i18n("Accept") + "</a>";
+	TQString saveAsLink = "<a href=\""+ protocolSaveAs + "_" + strSession + "\">" + i18n("Save As") + "</a>";
+        TQString rejectLink = "<a href=\""+ protocolCancel + "_" + strSession + "\">" + i18n("Reject") + "</a>";
+	TQString cancelLink = "<a href=\""+ protocolCancel + "_" + strSession + "\">" + i18n("Cancel") + "</a>";
+	TQString fileSize = (size<0x400)?(TQString::number(size) + "B"):
+			((size<0x100000)?(TQString::number(size/0x400) + "KB") :
+			((size<0x40000000)?(TQString::number(size/0x100000) + "MB"):
+			(TQString::number(size/0x40000000) + "GB") ) );
+	TQString fileInfo = filename + "(" + fileSize + ")";
+        TQString txt;
 	if(isSend){
 		txt = i18n("Waiting for %1 accepting file \"%2\". Please wait or %3.")
 				.arg(who).arg(fileInfo).arg(cancelLink);
@@ -515,14 +515,14 @@ void EvaChatView::showFileNotification( const QString & who, const QString & fil
 		txt = i18n("%1 wants to send you a file \"%2\", you can %3, %4 or %5.")
 				.arg(who).arg(fileInfo).arg(acceptLink).arg(saveAsLink).arg(rejectLink);
 	}
-	QString msg = wrapFontAttributes(Qt::gray, 9, false, false, false, txt);
+	TQString msg = wrapFontAttributes(TQt::gray, 9, false, false, false, txt);
 	updateContents("&nbsp;" + picPath + "&nbsp;" + msg );
 	showContents();
 }
 
-void EvaChatView::updateContents( const QString & contents )
+void EvaChatView::updateContents( const TQString & contents )
 {
-	//QString newMsg = contents;
+	//TQString newMsg = contents;
 	//Wonder why the following line was added, it does nothing other than extra mess spaces.
 	//newMsg.replace("&nbsp;", "&nbsp; ");
 	buffer += (contents + "<br>");
@@ -538,17 +538,17 @@ void EvaChatView::showContents()
 	end();
 }
 
-void EvaChatView::askResumeMode( const QString filename, const unsigned int session )
+void EvaChatView::askResumeMode( const TQString filename, const unsigned int session )
 {
-	QString strSession = QString::number(session);
-	QString picPath = "<img src = \"" + EvaMain::images->getIconFullPath("MSG_INFO") + "\">";
-	QString resumeLink = "<a href=\""+ protocolResume + "_" + strSession + "\">" + 
+	TQString strSession = TQString::number(session);
+	TQString picPath = "<img src = \"" + EvaMain::images->getIconFullPath("MSG_INFO") + "\">";
+	TQString resumeLink = "<a href=\""+ protocolResume + "_" + strSession + "\">" + 
 			i18n("resume") + "</a>";
-	QString restartLink = "<a href=\""+ protocolNewOne + "_" + strSession + "\">" + 
+	TQString restartLink = "<a href=\""+ protocolNewOne + "_" + strSession + "\">" + 
 			i18n("start") + "</a>";
-	QString txt = i18n("Cached information of \"%1\" has been found, you can %2 the last download or ignore the last cached download information and %3 a new download.").arg(filename).arg(resumeLink).arg(restartLink);
+	TQString txt = i18n("Cached information of \"%1\" has been found, you can %2 the last download or ignore the last cached download information and %3 a new download.").arg(filename).arg(resumeLink).arg(restartLink);
 
-	QString msg = wrapFontAttributes(Qt::gray, 9, false, false, false, txt);
+	TQString msg = wrapFontAttributes(TQt::gray, 9, false, false, false, txt);
 	updateContents("&nbsp;" + picPath + "&nbsp;" + msg );
 	showContents();
 }

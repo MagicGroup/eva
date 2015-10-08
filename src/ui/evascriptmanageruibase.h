@@ -21,38 +21,38 @@
 #ifndef EVASCRIPTMANAGERUIBASE_H
 #define EVASCRIPTMANAGERUIBASE_H
 
-#include <qvariant.h>
-#include <qwidget.h>
+#include <ntqvariant.h>
+#include <ntqwidget.h>
 
-class QVBoxLayout;
-class QHBoxLayout;
-class QGridLayout;
-class QSpacerItem;
-class QPushButton;
-class QFrame;
-class KListView;
-class QListViewItem;
+class TQVBoxLayout;
+class TQHBoxLayout;
+class TQGridLayout;
+class TQSpacerItem;
+class TQPushButton;
+class TQFrame;
+class TDEListView;
+class TQListViewItem;
 
-class EvaScriptManagerUIBase : public QWidget
+class EvaScriptManagerUIBase : public TQWidget
 {
     Q_OBJECT
 
 public:
-    EvaScriptManagerUIBase( QWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
+    EvaScriptManagerUIBase( TQWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
     ~EvaScriptManagerUIBase();
 
-    QPushButton* btnInstall;
-    QPushButton* btnUninstall;
-    QFrame* line1;
-    QPushButton* btnRun;
-    QPushButton* btnStop;
-    QPushButton* btnConfig;
-    QPushButton* btnAbout;
-    KListView* listView;
+    TQPushButton* btnInstall;
+    TQPushButton* btnUninstall;
+    TQFrame* line1;
+    TQPushButton* btnRun;
+    TQPushButton* btnStop;
+    TQPushButton* btnConfig;
+    TQPushButton* btnAbout;
+    TDEListView* listView;
 
 protected:
-    QGridLayout* EvaScriptManagerUIBaseLayout;
-    QSpacerItem* spacer1;
+    TQGridLayout* EvaScriptManagerUIBaseLayout;
+    TQSpacerItem* spacer1;
 
 protected slots:
     virtual void languageChange();

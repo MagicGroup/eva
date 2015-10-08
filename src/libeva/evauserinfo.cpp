@@ -26,7 +26,7 @@
 
 ContactInfo::ContactInfo() 
 { 
-	infos.reserve(QQ_CONTACT_FIELDS); 
+	infos.reserve(TQQ_CONTACT_FIELDS); 
 	infos.push_back("-");   // qq number 
 	infos.push_back("EVA");   // nick
 };
@@ -54,7 +54,7 @@ void ContactInfo::parseData(const unsigned char *buf, const int len)
 		start = i+1;
 		free(tmp);
 	}
-	if(infos.size()< (uint)QQ_CONTACT_FIELDS){
+	if(infos.size()< (uint)TQQ_CONTACT_FIELDS){
 		char *tmp = (char *)malloc( (len-start+1) *sizeof(char));
 		memcpy(tmp, buf+start, len-start);
 		tmp[len-start]=0x00;
@@ -79,13 +79,13 @@ ContactInfo &ContactInfo::operator= ( const ContactInfo &rhs )
 /*  ======================================================= */
 
 GetUserInfoPacket::GetUserInfoPacket()
-	: OutPacket(QQ_CMD_GET_USER_INFO, true),
+	: OutPacket(TQQ_CMD_GET_USER_INFO, true),
 	  qqNum(-1)
 {
 }
 
 GetUserInfoPacket::GetUserInfoPacket(const int id)
-	: OutPacket(QQ_CMD_GET_USER_INFO, true),
+	: OutPacket(TQQ_CMD_GET_USER_INFO, true),
 	  qqNum(id)
 {
 }
@@ -133,21 +133,21 @@ void GetUserInfoReplyPacket::parseBody()
 {
 	mContactInfo.parseData(decryptedBuf, bodyLength);
 	int j = mContactInfo.details().size();
-	if(j < QQ_CONTACT_FIELDS)
+	if(j < TQQ_CONTACT_FIELDS)
 		fprintf(stderr, "GetUserInfoReply->parseBody: number of fields wrong\n");
-	else if(j > QQ_CONTACT_FIELDS)
+	else if(j > TQQ_CONTACT_FIELDS)
 		fprintf(stderr, "GetUserInfoReply->parseBody: number of fields might be wrong!\n");
 }
 
 /*  ======================================================= */
 
 ModifyInfoPacket::ModifyInfoPacket( ) 
-	: OutPacket(QQ_CMD_MODIFY_INFO, true)
+	: OutPacket(TQQ_CMD_MODIFY_INFO, true)
 {
 }
 
 ModifyInfoPacket::ModifyInfoPacket( const ContactInfo & info )
-	: OutPacket(QQ_CMD_MODIFY_INFO, true),
+	: OutPacket(TQQ_CMD_MODIFY_INFO, true),
 	newInfo(info), currentPwd(""), newPwd("")
 {
 }
@@ -183,7 +183,7 @@ int ModifyInfoPacket::putBody( unsigned char * buf )
 	
 	buf[pos++] = DELIMIT;
 	
-	for(int i=1; i<QQ_CONTACT_FIELDS; i++){
+	for(int i=1; i<TQQ_CONTACT_FIELDS; i++){
 		memcpy(buf+pos, newInfo.at(i).c_str(),newInfo.at(i).length());
 		pos+=newInfo.at(i).length();
 		buf[pos++] = DELIMIT;

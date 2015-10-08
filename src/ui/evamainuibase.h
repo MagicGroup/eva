@@ -20,46 +20,46 @@
 #ifndef EVAMAINBASEUI_H
 #define EVAMAINBASEUI_H
 
-#include <qwidget.h>
+#include <ntqwidget.h>
 
-class QVBoxLayout;
-class QHBoxLayout;
-class QGridLayout;
-class QSpacerItem;
-class QToolButton;
-class QLabel;
+class TQVBoxLayout;
+class TQHBoxLayout;
+class TQGridLayout;
+class TQSpacerItem;
+class TQToolButton;
+class TQLabel;
 class EvaTabWidget;
-class QPushButton;
+class TQPushButton;
 class EvaDisplayWidget;
 class EvaStatusBar;
 
-class EvaMainUIBase : public QWidget
+class EvaMainUIBase : public TQWidget
 {
     Q_OBJECT
 
 public:
-    EvaMainUIBase( QWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
+    EvaMainUIBase( TQWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
     ~EvaMainUIBase();
 
-    QToolButton* tbMyFace;
-    QLabel* tlNick;
-    QLabel* tlQQ;
+    TQToolButton* tbMyFace;
+    TQLabel* tlNick;
+    TQLabel* tlQQ;
     //EvaListView* listView;
     //EvaTabWidget *tab;
     EvaDisplayWidget *mainDisplay;
     EvaStatusBar *statusBar;
-    //QPushButton* pbSearch;
-    //QPushButton* pbMessages;
-    //QPushButton* pbSystem;
-    //QPushButton* pbStatus;
+    //TQPushButton* pbSearch;
+    //TQPushButton* pbMessages;
+    //TQPushButton* pbSystem;
+    //TQPushButton* pbStatus;
 
 protected:
-    QGridLayout* EvaMainUIBaseLayout;
-    QVBoxLayout* layout1;
-    QHBoxLayout* layout2;
-    QSpacerItem* spacer1;
-    //QVBoxLayout* layout3;
-    //QHBoxLayout* layout4;
+    TQGridLayout* EvaMainUIBaseLayout;
+    TQVBoxLayout* layout1;
+    TQHBoxLayout* layout2;
+    TQSpacerItem* spacer1;
+    //TQVBoxLayout* layout3;
+    //TQHBoxLayout* layout4;
 
 protected slots:
     virtual void languageChange();

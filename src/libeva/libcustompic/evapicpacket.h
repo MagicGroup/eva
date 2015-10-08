@@ -26,17 +26,17 @@ const unsigned char FAMILY_05_TAG   =  0x05;
 const unsigned char FAMILY_05_TAIL  =  0x03;
 const int NO_CRYPTOGRAPH = -1;
 
-static const unsigned short QQ_05_CMD_REQUEST_AGENT = 0x0021;
-static const unsigned short QQ_05_CMD_REQUEST_FACE  = 0x0022;
-static const unsigned short QQ_05_CMD_TRANSFER      = 0x0023;
-static const unsigned short QQ_05_CMD_REQUEST_START = 0x0026;
+static const unsigned short TQQ_05_CMD_REQUEST_AGENT = 0x0021;
+static const unsigned short TQQ_05_CMD_REQUEST_FACE  = 0x0022;
+static const unsigned short TQQ_05_CMD_TRANSFER      = 0x0023;
+static const unsigned short TQQ_05_CMD_REQUEST_START = 0x0026;
 
 /** apply transfer server success */
-static const unsigned short QQ_REQUEST_AGENT_REPLY_OK       = 0x0000;
+static const unsigned short TQQ_REQUEST_AGENT_REPLY_OK       = 0x0000;
 /** apply for transfer server */
-static const unsigned short QQ_REQUEST_AGENT_REPLY_REDIRECT = 0x0001;
+static const unsigned short TQQ_REQUEST_AGENT_REPLY_REDIRECT = 0x0001;
 /** sending picture is too big */
-static const unsigned short QQ_REQUEST_AGENT_REPLY_TOO_LONG = 0x0003;
+static const unsigned short TQQ_REQUEST_AGENT_REPLY_TOO_LONG = 0x0003;
 
 static const char GROUP_FILE_AGENT[] = "219.133.40.128"; // GroupFile.tencent.com
 

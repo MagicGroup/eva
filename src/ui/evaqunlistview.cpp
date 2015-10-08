@@ -23,29 +23,29 @@
 #include "evaqtutil.h"
 //#include "evalistview.h"
 #include "evahtmlparser.h"
-#include <qpixmap.h>
-#include <qpopupmenu.h>
-#include <qsize.h>
-#include <klocale.h>
+#include <ntqpixmap.h>
+#include <ntqpopupmenu.h>
+#include <ntqsize.h>
+#include <tdelocale.h>
 
 
 
-EvaQunListView::EvaQunListView( QWidget * parent, const char * name, WFlags f )
-	: QListView(parent, name, f)
+EvaQunListView::EvaQunListView( TQWidget * parent, const char * name, WFlags f )
+	: TQListView(parent, name, f)
 {
 	//mToolTip = new EvaToolTip(this);
 	
-	popupMenu = new QPopupMenu(0, "QunPopup");
-	popupMenu->insertItem(QIconSet(*(EvaMain::images->getIcon("QUN_CARD"))), i18n( "Qun Card" ), this, SLOT( slotQunCard()));
-	popupMenu->insertItem(QIconSet(*(EvaMain::images->getIcon("DETAILS"))), i18n( "Details"), this, SLOT(slotDetails()), -1, 1);
+	popupMenu = new TQPopupMenu(0, "QunPopup");
+	popupMenu->insertItem(TQIconSet(*(EvaMain::images->getIcon("TQUN_CARD"))), i18n( "Qun Card" ), this, SLOT( slotQunCard()));
+	popupMenu->insertItem(TQIconSet(*(EvaMain::images->getIcon("DETAILS"))), i18n( "Details"), this, SLOT(slotDetails()), -1, 1);
 	popupMenu->insertSeparator(-1);
-	popupMenu->insertItem(QIconSet(*(EvaMain::images->getIcon("REFRESH_BUDDIES"))), i18n("Refresh Qun Members"), this,SLOT(slotDoRefreshMembers()));
+	popupMenu->insertItem(TQIconSet(*(EvaMain::images->getIcon("REFRESH_BUDDIES"))), i18n("Refresh Qun Members"), this,SLOT(slotDoRefreshMembers()));
 	
-	QObject::connect(this, SIGNAL(contextMenuRequested(QListViewItem *, const QPoint & , int)), this, 
-		SLOT(slotContextMenu(QListViewItem *, const QPoint & , int)));
+	TQObject::connect(this, SIGNAL(contextMenuRequested(TQListViewItem *, const TQPoint & , int)), this, 
+		SLOT(slotContextMenu(TQListViewItem *, const TQPoint & , int)));
 		
-	QObject::connect(this, SIGNAL(doubleClicked(QListViewItem *, const QPoint & , int)),
-									 SLOT(slotBuddyDoubleClick(QListViewItem *, const QPoint & , int)));
+	TQObject::connect(this, SIGNAL(doubleClicked(TQListViewItem *, const TQPoint & , int)),
+									 SLOT(slotBuddyDoubleClick(TQListViewItem *, const TQPoint & , int)));
 }
 
 EvaQunListView::~EvaQunListView()
@@ -53,7 +53,7 @@ EvaQunListView::~EvaQunListView()
 	delete popupMenu;
 }
 
-EvaQunBuddyItem * EvaQunListView::addQunBuddy(const QString &nick, const unsigned int id, const QPixmap *pic, const QPixmap *offpic)
+EvaQunBuddyItem * EvaQunListView::addQunBuddy(const TQString &nick, const unsigned int id, const TQPixmap *pic, const TQPixmap *offpic)
 {
 	return new EvaQunBuddyItem(this, nick, id, pic, offpic);
 }
@@ -81,7 +81,7 @@ void EvaQunListView::updateOnlineMembers(const std::list<unsigned int> &onlines)
 	sort();
 }
 
-void EvaQunListView::slotContextMenu(QListViewItem *item, const QPoint &p , int col)
+void EvaQunListView::slotContextMenu(TQListViewItem *item, const TQPoint &p , int col)
 {
 	if(col!=1) return;
 	EvaQunBuddyItem *q = dynamic_cast<EvaQunBuddyItem *>(item);
@@ -113,7 +113,7 @@ void EvaQunListView::slotQunCard( )
 	emit requestQunCard(item->getQQ());
 }
 
-void EvaQunListView::slotBuddyDoubleClick( QListViewItem * item, const QPoint &, int )
+void EvaQunListView::slotBuddyDoubleClick( TQListViewItem * item, const TQPoint &, int )
 {
 	EvaQunBuddyItem *b = dynamic_cast<EvaQunBuddyItem *>(item);
 	if(b){
@@ -124,12 +124,12 @@ void EvaQunListView::slotBuddyDoubleClick( QListViewItem * item, const QPoint &,
 /************************************************************************************************************************************************/
 
 
-EvaQunBuddyItem::EvaQunBuddyItem( QListView *parent, const QString &name, const unsigned int id, const QPixmap *pic, const QPixmap *offPic)
-	: QListViewItem(parent,"", name)
+EvaQunBuddyItem::EvaQunBuddyItem( TQListView *parent, const TQString &name, const unsigned int id, const TQPixmap *pic, const TQPixmap *offPic)
+	: TQListViewItem(parent,"", name)
 {	
 	qqNum = id;
 	nick = name;
-	QString display = nick + "(" + QString::number(qqNum) + ")";
+	TQString display = nick + "(" + TQString::number(qqNum) + ")";
 	setText(1, display);
 	
 	facePic = pic;
@@ -138,16 +138,16 @@ EvaQunBuddyItem::EvaQunBuddyItem( QListView *parent, const QString &name, const 
 	mIsCreator = false;
 	mIsAdmin = false;
 	EvaMain::helper->setCategory(EvaHelper::ScaleImage,this);
-	EvaMain::helper->setScaleArgs(*faceOffPic, QSize(16, 16));
+	EvaMain::helper->setScaleArgs(*faceOffPic, TQSize(16, 16));
 	EvaMain::helper->run();
 }
 
-void EvaQunBuddyItem::update(const unsigned int id, const QString &name, const QPixmap *pic, const QPixmap *offPic, const bool isCreator)
+void EvaQunBuddyItem::update(const unsigned int id, const TQString &name, const TQPixmap *pic, const TQPixmap *offPic, const bool isCreator)
 {
 	nick = name;	
 	facePic = pic;
 	faceOffPic = offPic;
-	QString display = name + "(" + QString::number(id) + ")";
+	TQString display = name + "(" + TQString::number(id) + ")";
 	setText( 1, display);
 	if(isCreator) setCreator(true);
 	if(!pic) return;
@@ -158,9 +158,9 @@ void EvaQunBuddyItem::setOnline(const bool online)
 	mIsOnline = online;
 	EvaMain::helper->setCategory(EvaHelper::ScaleImage,this);
 	if(mIsOnline){
-		EvaMain::helper->setScaleArgs(*facePic, QSize(16, 16));
+		EvaMain::helper->setScaleArgs(*facePic, TQSize(16, 16));
 	}else
-		EvaMain::helper->setScaleArgs(*faceOffPic, QSize(16, 16));
+		EvaMain::helper->setScaleArgs(*faceOffPic, TQSize(16, 16));
 	EvaMain::helper->run();
 		
 }
@@ -169,7 +169,7 @@ void EvaQunBuddyItem::setCreator(bool isCreator)
 {
 	mIsCreator = isCreator;
 	if(mIsCreator){
-		QPixmap *p = EvaMain::images->getIcon("QUN_CREATOR");
+		TQPixmap *p = EvaMain::images->getIcon("TQUN_CREATOR");
 		if(p)
 			setPixmap(0, *p);
 	}
@@ -179,7 +179,7 @@ void EvaQunBuddyItem::setAdmin(bool isAdmin)
 {
 	mIsAdmin = isAdmin;
 	if(mIsAdmin){
-		QPixmap *p = EvaMain::images->getIcon("QUN_ADMIN");
+		TQPixmap *p = EvaMain::images->getIcon("TQUN_ADMIN");
 		if(p)
 			setPixmap(0, *p);
 	}	
@@ -187,14 +187,14 @@ void EvaQunBuddyItem::setAdmin(bool isAdmin)
 
 void EvaQunBuddyItem::setShareHolder()
 {
-	QPixmap *p = EvaMain::images->getIcon("QUN_SHAREHOLDER");
+	TQPixmap *p = EvaMain::images->getIcon("TQUN_SHAREHOLDER");
 	if(p)
 		setPixmap(0, *p);
 }
 
-QString EvaQunBuddyItem::key( int, bool) const
+TQString EvaQunBuddyItem::key( int, bool) const
 {
-	QString prefix;
+	TQString prefix;
 	if(mIsOnline)
 		prefix ="0";
 	else if( mIsCreator)
@@ -207,23 +207,23 @@ QString EvaQunBuddyItem::key( int, bool) const
 	return prefix + nick;
 }
 
-QString EvaQunBuddyItem::tip()
+TQString EvaQunBuddyItem::tip()
 {
-	QString htmlName = nick;
+	TQString htmlName = nick;
 	EvaHtmlParser parser;
 	parser.setAbsImagePath(EvaMain::images->getSmileyPath());
 	parser.convertToHtml(htmlName, false, true);
-	QString tip = "<table width = 150><tr><td><b><font color = blue>" + 
+	TQString tip = "<table width = 150><tr><td><b><font color = blue>" + 
 			i18n("Nickname:") +" </font></b>"+ htmlName +"<br><b><font color = blue>"+
-			i18n("QQ") +": </font></b>"+ QString::number(qqNum) + "</td></tr></table>";
+			i18n("QQ") +": </font></b>"+ TQString::number(qqNum) + "</td></tr></table>";
 	return tip;
 }
 
-void EvaQunBuddyItem::customEvent( QCustomEvent *e)
+void EvaQunBuddyItem::customEvent( TQCustomEvent *e)
 {
 	if(e->type() == EvaScaleImageEvent){
 		EvaScaleEvent *se = (EvaScaleEvent *)e;
-		QPixmap p = se->pixmap();
+		TQPixmap p = se->pixmap();
 		setPixmap(1, p);
 	}
 }

@@ -19,35 +19,35 @@
  ***************************************************************************/
 #include "evadisplaywidget.h"
 
-#include <qlabel.h>
-#include <qlayout.h>
-#include <qwidgetstack.h>
+#include <ntqlabel.h>
+#include <ntqlayout.h>
+#include <ntqwidgetstack.h>
 #include <kprogress.h>
-#include <klocale.h>
+#include <tdelocale.h>
 
 #include "evaapi.h"
 #include "evatabwidget.h"
 
-EvaLoginPageFrame::EvaLoginPageFrame(QWidget* parent, 
+EvaLoginPageFrame::EvaLoginPageFrame(TQWidget* parent, 
 					const char* name, 
 					WFlags fl)
-	: QFrame(parent, name, fl)
+	: TQFrame(parent, name, fl)
 {
-	layout1 = new QVBoxLayout( this, 20, 6, "layout1"); 
-	spacer1 = new QSpacerItem( 20, 50, QSizePolicy::Minimum, QSizePolicy::Expanding );
+	layout1 = new TQVBoxLayout( this, 20, 6, "layout1"); 
+	spacer1 = new TQSpacerItem( 20, 50, TQSizePolicy::Minimum, TQSizePolicy::Expanding );
 	layout1->addItem( spacer1 );
 
-	lblDesc = new QLabel( this, "lblDesc" );
-	lblDesc->setAlignment( int( QLabel::WordBreak | QLabel::AlignCenter ) );
+	lblDesc = new TQLabel( this, "lblDesc" );
+	lblDesc->setAlignment( int( TQLabel::WordBreak | TQLabel::AlignCenter ) );
 	layout1->addWidget( lblDesc );
 
 	kpgProgress = new KProgress( this, "kpgProgress" );
 	kpgProgress->setTotalSteps(E_LoginProcessDone + 1);
 	layout1->addWidget( kpgProgress );
-	spacer2 = new QSpacerItem( 20, 50, QSizePolicy::Minimum, QSizePolicy::Expanding );
+	spacer2 = new TQSpacerItem( 20, 50, TQSizePolicy::Minimum, TQSizePolicy::Expanding );
 	layout1->addItem( spacer2 );
 
-	//resize( QSize(693, 670).expandedTo(minimumSizeHint()) );
+	//resize( TQSize(693, 670).expandedTo(minimumSizeHint()) );
 	//clearWState( WState_Polished );
 }
 
@@ -60,7 +60,7 @@ void EvaLoginPageFrame::setTotalSteps(int max)
 	kpgProgress->setTotalSteps(max);
 }
 
-void EvaLoginPageFrame::update(int value, const QString &msg)
+void EvaLoginPageFrame::update(int value, const TQString &msg)
 {
 	lblDesc->setText(msg);
 	kpgProgress->setProgress(value);
@@ -69,20 +69,20 @@ void EvaLoginPageFrame::update(int value, const QString &msg)
 
 ///******************************************************///
 
-EvaDisplayWidget::EvaDisplayWidget(QWidget* parent, const char* name, WFlags fl)
-	: QWidgetStack(parent, name, fl)
+EvaDisplayWidget::EvaDisplayWidget(TQWidget* parent, const char* name, WFlags fl)
+	: TQWidgetStack(parent, name, fl)
 {
-	wLogin = new QWidget(this);	
-	layoutLogin = new QGridLayout( wLogin, 1, 1, 30, 6, "wspageLoginLayout");
+	wLogin = new TQWidget(this);	
+	layoutLogin = new TQGridLayout( wLogin, 1, 1, 30, 6, "wspageLoginLayout");
 	
 	loginPage = new EvaLoginPageFrame(wLogin, "loginPageFrame");
 	layoutLogin->addWidget(loginPage, 0, 0);
 	addWidget(wLogin, 0);
 	
-	//wspageLoginLayout = new QGridLayout( loginPage, 1, 1, 30, 6, "wspageLoginLayout");
+	//wspageLoginLayout = new TQGridLayout( loginPage, 1, 1, 30, 6, "wspageLoginLayout");
 	//addWidget(wLogin, 0);
-	wTab = new QWidget(this);
-	layoutTab = new QGridLayout( wTab, 1, 1, 3, 3, "wspageLoginLayout");
+	wTab = new TQWidget(this);
+	layoutTab = new TQGridLayout( wTab, 1, 1, 3, 3, "wspageLoginLayout");
 	
 	tab = new EvaTabWidget(wTab, "tabWidget");
 	layoutTab->addWidget(tab, 0, 0);

@@ -22,10 +22,10 @@
 #define EVAADDINGNOTICEWINDOW_H
 
 #include "evaaddingnoticeuibase.h"
-#include <qmemarray.h>
+#include <ntqmemarray.h>
 
 class EvaPacketManager;
-class QCloseEvent;
+class TQCloseEvent;
 
 class EvaAddingNoticeWindow : public EvaAddingNoticeUIBase
 {
@@ -34,27 +34,27 @@ public:
 	EvaAddingNoticeWindow(EvaPacketManager *connecter);
 
 	void setMessage(const unsigned char type, const unsigned int fromID,
-			const QString &msg, const bool allowReverse);
+			const TQString &msg, const bool allowReverse);
 
 	//void startVerifying(const unsigned char *code, const unsigned int codeLen);
 signals:
 	void requestDetails(const unsigned int id);
-	void requestAddBuddy(const unsigned int id, const QString nick, const unsigned short face);
+	void requestAddBuddy(const unsigned int id, const TQString nick, const unsigned short face);
 private:
 	EvaPacketManager *m_PacketManager;
 	unsigned int m_ID;
-	QString m_Nick;
+	TQString m_Nick;
 	unsigned short m_Face;
 	unsigned char m_Type;
-	QString m_Message;
+	TQString m_Message;
 	bool m_AllowReverse;
-	QByteArray m_Code;
+	TQByteArray m_Code;
 	bool m_HasVerified;
 
 	void init();
 	void processSettings();
 
-	virtual void closeEvent( QCloseEvent *e);
+	virtual void closeEvent( TQCloseEvent *e);
 
 private slots:
 	void slotFaceClicked();

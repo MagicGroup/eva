@@ -23,9 +23,9 @@
 
 #include "customfaceuibase.h"
 #include "customface.h"
-#include <qframe.h>
-#include <qmap.h>
-#include <qptrlist.h>
+#include <ntqframe.h>
+#include <ntqmap.h>
+#include <ntqptrlist.h>
 #include "evautil.h"
 
 #ifndef NUM_W
@@ -34,34 +34,34 @@
 #define NUM_GRIDS     (NUM_W * NUM_H)
 #endif
 
-class CustomFacePanel : public QFrame
+class CustomFacePanel : public TQFrame
 {
 	Q_OBJECT
 
 public:
-	CustomFacePanel(int groupIndex, QString &group, FaceList &members, QWidget* parent = 0);
+	CustomFacePanel(int groupIndex, TQString &group, FaceList &members, TQWidget* parent = 0);
 	virtual ~CustomFacePanel();
 	int numPages() { return m_Surfaces.count();}
 	int page() { return m_CurrPage; }
 	void setPage(int index);
 signals:
 	void selectSysFace(int);
-	void selectCustomFace(QString, QString); // group name, file name
+	void selectCustomFace(TQString, TQString); // group name, file name
 private:
-	QString m_groupName;
+	TQString m_groupName;
 	int m_groupIndex;
-	QPixmap *m_CurrSurface;
+	TQPixmap *m_CurrSurface;
 	int m_CurrPage;
-	QPtrList<QPixmap> m_Surfaces;
-	QMap<int, QString> files; // index, original file name
-	int m_sysIndex[QQ_SMILEY_AMOUNT];
+	TQPtrList<TQPixmap> m_Surfaces;
+	TQMap<int, TQString> files; // index, original file name
+	int m_sysIndex[TQQ_SMILEY_AMOUNT];
 
 	void initSysPanel();
 	/// return the last added smiley index
 	int AddSysPanel(int iStartIndex = 0);
 	void initCustomPanel(FaceList &members);
-	virtual void paintEvent( QPaintEvent *e);
-	virtual void mouseReleaseEvent( QMouseEvent * e);
+	virtual void paintEvent( TQPaintEvent *e);
+	virtual void mouseReleaseEvent( TQMouseEvent * e);
 };
 
 class CustomFaceSelector : public CustomFaceUIBase
@@ -69,33 +69,33 @@ class CustomFaceSelector : public CustomFaceUIBase
 	Q_OBJECT
 
 public:
-    CustomFaceSelector( bool useSysFaceOnly = true, QWidget* parent = 0,
+    CustomFaceSelector( bool useSysFaceOnly = true, TQWidget* parent = 0,
 					const char* name = 0,
-					WFlags fl = Qt::WStyle_Customize 
-							| Qt::WStyle_NoBorder 
-							| Qt::WType_Popup);
+					WFlags fl = TQt::WStyle_Customize 
+							| TQt::WStyle_NoBorder 
+							| TQt::WType_Popup);
 	~CustomFaceSelector();
 
 signals:
 	void selectSysFace(int);
-	void selectCustomFace(const QString &); // file name without path. already in the PictureCache dir
+	void selectCustomFace(const TQString &); // file name without path. already in the PictureCache dir
 
 	void addSmileyClicked();
 
 private slots:
 	void slotSelectSysFace(int id);
-	void slotSelectCustomFace(QString, QString);
+	void slotSelectCustomFace(TQString, TQString);
 
 	void slotAddSmileyClicked();
 	void slotUseShortcutClicked();
 	void slotPrevClicked();
 	void slotNextClicked();
-	void slotPanelChanged(QWidget *);
+	void slotPanelChanged(TQWidget *);
 private:
 	bool m_UseSysFaceOnly;
 
-	virtual void paintEvent( QPaintEvent *e);
-	virtual void mouseReleaseEvent( QMouseEvent * e);
+	virtual void paintEvent( TQPaintEvent *e);
+	virtual void mouseReleaseEvent( TQMouseEvent * e);
 };
 
 #endif // CUSTOMFACESELECTOR_H

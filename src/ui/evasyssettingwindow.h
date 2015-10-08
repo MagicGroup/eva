@@ -34,32 +34,32 @@
 
 class EvaImageResource;
 class EvaUserSetting;
-class QIconViewItem;
-class QCloseEvent;
+class TQIconViewItem;
+class TQCloseEvent;
 
 class EvaSysSettingWindow : public EvaSysSettingUIBase
 {
 	Q_OBJECT
 public:
-	EvaSysSettingWindow(QStringList &user, EvaImageResource *res, EvaUserSetting *seting, QWidget *parent = 0);
+	EvaSysSettingWindow(TQStringList &user, EvaImageResource *res, EvaUserSetting *seting, TQWidget *parent = 0);
 	~EvaSysSettingWindow();
 signals:
 	void settingChanged();
 	void faceSizeChanged();
 	void requestUpdate(const unsigned int);
-	void requestQQShow(const unsigned int);
-	void requestUpdateSignature(const QString contents);
+	void requestTQQShow(const unsigned int);
+	void requestUpdateSignature(const TQString contents);
 	void requestDeleteSignature();
-	void requestModify(QStringList, QString, QString); // qq id, all details, old password, new password
+	void requestModify(TQStringList, TQString, TQString); // qq id, all details, old password, new password
 
 	void requestMyAuthQuestionSetting();
-	void requestMyUpdateQuestion( const QString &quest, const QString &answer);
+	void requestMyUpdateQuestion( const TQString &quest, const TQString &answer);
 public slots:
-	void slotDetailsUpdated(QStringList);
+	void slotDetailsUpdated(TQStringList);
 	void slotSignatureReply(const bool);
 	void slotUpdateResult(bool, bool isSignature = false);
-	void slotBuddyQQShowReady(const unsigned int id);
-	void slotReceivedMyAuthSettings(const unsigned char auth, const QString& question, const QString &answer);
+	void slotBuddyTQQShowReady(const unsigned int id);
+	void slotReceivedMyAuthSettings(const unsigned char auth, const TQString& question, const TQString &answer);
 	void slotUpdateAuthSettingResult(const unsigned char auth, const unsigned char reply);
 private:
 	void saveSetting();
@@ -67,14 +67,14 @@ private:
 	
 	void setupFaces();
 	bool UpdateData(bool);
-	const QString getClientKeyString();
+	const TQString getClientKeyString();
 	
 	EvaUserSetting *userSetting;
-	std::list<QString> autoList;
-	std::list<QString> quickList;
+	std::list<TQString> autoList;
+	std::list<TQString> tquickList;
 	
 	static EvaImageResource *faces;
-	QStringList details;
+	TQStringList details;
 	int selectedFaceIndex;
 	bool isSignatureChanged;
 	bool isFaceSizeChanged;
@@ -88,7 +88,7 @@ private slots:
 	void slotPbApplyClicked();
 	void slotPbOKClicked();
 	void slotFaceSizeChanged(int value);
-	void slotCapturedShortcut(const KShortcut &key);
+	void slotCapturedShortcut(const TDEShortcut &key);
 	
 	void slotPbThemeClicked();
 	void slotPbSoundClicked();
@@ -103,19 +103,19 @@ private slots:
 	void slotPbQuickDeleteClicked();
 	void slotTeQuickTextChanged();
 	
-	void slotSettingListItemClicked(QListViewItem* item);
+	void slotSettingListItemClicked(TQListViewItem* item);
 	
 	void slotPbFaceClicked();
-	void FaceChoose( QIconViewItem * item );
+	void FaceChoose( TQIconViewItem * item );
 	void slotFirstUpdate();
 	void slotSignatureChanged();
 	
 	void slotShopClicked();
 	void slotAlbumClicked();
 	void slotHomeClicked();
-	void slotUpdateQQShow();
+	void slotUpdateTQQShow();
 	
-	void slotLinkClicked( const QString & url);
+	void slotLinkClicked( const TQString & url);
 	
 	void  slotChangePwdClicked();
 	
@@ -123,7 +123,7 @@ private slots:
 	void slotUserInfoChanged();
 	void slotSysSettingChanged(); 
 
-	void closeEvent(QCloseEvent *e);
+	void closeEvent(TQCloseEvent *e);
 
 	void slotAuthChanged();
 

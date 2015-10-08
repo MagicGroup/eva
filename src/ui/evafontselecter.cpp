@@ -20,46 +20,46 @@
   
 #include "evafontselecter.h"
 
-#include <qvariant.h>
-#include <qlabel.h>
+#include <ntqvariant.h>
+#include <ntqlabel.h>
 #include <kcolorcombo.h>
 #include <knuminput.h>
-#include <qpushbutton.h>
-#include <qlayout.h>
-#include <qtooltip.h>
-#include <qwhatsthis.h>
-#include <qimage.h>
-#include <qpixmap.h>
-#include <qframe.h>
-#include <klocale.h>
+#include <ntqpushbutton.h>
+#include <ntqlayout.h>
+#include <ntqtooltip.h>
+#include <ntqwhatsthis.h>
+#include <ntqimage.h>
+#include <ntqpixmap.h>
+#include <ntqframe.h>
+#include <tdelocale.h>
 
 #include <stdio.h>
 
-EvaFontSelecter::EvaFontSelecter( QWidget* parent, const char* name, WFlags fl )
-    : QWidget( parent, name, fl )
+EvaFontSelecter::EvaFontSelecter( TQWidget* parent, const char* name, WFlags fl )
+    : TQWidget( parent, name, fl )
 {
 	if ( !name )
 		setName( "EvaFontSelecter" );
-	EvaFontWindowLayout = new QGridLayout( this, 1, 1, 0, 0, "EvaFontWindowLayout");
+	EvaFontWindowLayout = new TQGridLayout( this, 1, 1, 0, 0, "EvaFontWindowLayout");
 	
-	frame = new QFrame( this, "frame" );
-	frame->setFrameShape( QFrame::StyledPanel );
-	frame->setFrameShadow( QFrame::Raised );
+	frame = new TQFrame( this, "frame" );
+	frame->setFrameShape( TQFrame::StyledPanel );
+	frame->setFrameShadow( TQFrame::Raised );
 	frame->setLineWidth( 1 );
 	
-	EvaFontSelecterLayout = new QGridLayout( frame, 1, 1, 11, 6, "EvaFontSelecterLayout"); 
+	EvaFontSelecterLayout = new TQGridLayout( frame, 1, 1, 11, 6, "EvaFontSelecterLayout"); 
 	
-	layout3 = new QHBoxLayout( 0, 3, 6, "layout3"); 
+	layout3 = new TQHBoxLayout( 0, 3, 6, "layout3"); 
 	
-	lblColor = new QLabel( frame, "lblColor" );
+	lblColor = new TQLabel( frame, "lblColor" );
 	layout3->addWidget( lblColor );
 	
 	color = new KColorCombo( frame, "kColorButton" );
-	color->setMaximumSize( QSize( 80, 32767 ) );
+	color->setMaximumSize( TQSize( 80, 32767 ) );
 	layout3->addWidget( color );
-	QObject::connect(color, SIGNAL(activated( const QColor & )), this, SLOT(slotClicked()));
+	TQObject::connect(color, SIGNAL(activated( const TQColor & )), this, SLOT(slotClicked()));
 	
-	lblSize = new QLabel( frame, "lblSize" );
+	lblSize = new TQLabel( frame, "lblSize" );
 	layout3->addWidget( lblSize );
 	
 	kIntSpinBox = new KIntSpinBox( frame, "kIntSpinBox" );
@@ -70,17 +70,17 @@ EvaFontSelecter::EvaFontSelecter( QWidget* parent, const char* name, WFlags fl )
 	kIntSpinBox->setBase( 10 );
 	layout3->addWidget( kIntSpinBox );
 	
-	pbOK = new QPushButton( frame, "pbOK" );
-	pbOK->setMaximumSize( QSize( 32767, 50 ) );
+	pbOK = new TQPushButton( frame, "pbOK" );
+	pbOK->setMaximumSize( TQSize( 32767, 50 ) );
 	layout3->addWidget( pbOK );
 	
 	EvaFontSelecterLayout->addLayout( layout3, 0, 0 );
 	EvaFontWindowLayout->addWidget( frame, 0, 0 );
 
 	languageChange();
-	resize( QSize(258, 52).expandedTo(minimumSizeHint()) );
+	resize( TQSize(258, 52).expandedTo(minimumSizeHint()) );
 	clearWState( WState_Polished );
-	QObject::connect(pbOK, SIGNAL(clicked()), this, SLOT(slotClicked()));
+	TQObject::connect(pbOK, SIGNAL(clicked()), this, SLOT(slotClicked()));
 }
 
 /*
@@ -88,7 +88,7 @@ EvaFontSelecter::EvaFontSelecter( QWidget* parent, const char* name, WFlags fl )
  */
 EvaFontSelecter::~EvaFontSelecter()
 {
-    // no need to delete child widgets, Qt does it all for us
+    // no need to delete child widgets, TQt does it all for us
 }
 
 /*
@@ -99,11 +99,11 @@ void EvaFontSelecter::languageChange()
 {
 	setCaption( i18n( "Font Selecter" ) );
 	lblColor->setText( i18n( "Color:" ) );
-	QToolTip::add( color, i18n( "select font color" ) );
+	TQToolTip::add( color, i18n( "select font color" ) );
 	lblSize->setText( i18n( "Size:" ) );
-	QToolTip::add( kIntSpinBox, i18n( "select font size" ) );
+	TQToolTip::add( kIntSpinBox, i18n( "select font size" ) );
 	pbOK->setText( i18n( "&OK" ) );
-	pbOK->setAccel( QKeySequence( tr( "Alt+O" ) ) );
+	pbOK->setAccel( TQKeySequence( tr( "Alt+O" ) ) );
 }
 
 void EvaFontSelecter::slotClicked()
@@ -114,7 +114,7 @@ void EvaFontSelecter::slotClicked()
 	//hide();
 }
 
-void EvaFontSelecter::setColor( const QColor & col )
+void EvaFontSelecter::setColor( const TQColor & col )
 {
 	color->setColor(col);
 }

@@ -1052,7 +1052,7 @@ msgid "Add a screenshot"
 msgstr ""
 
 #: ui/evachatuibase.cpp:335
-msgid "Select an quick-reply message"
+msgid "Select an tquick-reply message"
 msgstr ""
 
 #: ui/evachatuibase.cpp:337 ui/evaqunchatuibase.cpp:312
@@ -1902,7 +1902,7 @@ msgid "Add a screenshot (smaller than 700 x 600)"
 msgstr ""
 
 #: ui/evaqunchatuibase.cpp:311
-msgid "Select a quick-reply message"
+msgid "Select a tquick-reply message"
 msgstr ""
 
 #: ui/evaqunchatuibase.cpp:315

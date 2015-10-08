@@ -21,42 +21,42 @@
 #ifndef EVASYSBROADCASTUIBASE_H
 #define EVASYSBROADCASTUIBASE_H
 
-#include <qvariant.h>
-#include <qwidget.h>
+#include <ntqvariant.h>
+#include <ntqwidget.h>
 
-class QVBoxLayout;
-class QHBoxLayout;
-class QGridLayout;
-class QSpacerItem;
-class QFrame;
-class QLabel;
+class TQVBoxLayout;
+class TQHBoxLayout;
+class TQGridLayout;
+class TQSpacerItem;
+class TQFrame;
+class TQLabel;
 class KURLLabel;
-class QPushButton;
+class TQPushButton;
 
-class EvaSysBroadcastUIBase : public QWidget
+class EvaSysBroadcastUIBase : public TQWidget
 {
     Q_OBJECT
 
 public:
-    EvaSysBroadcastUIBase( QWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
+    EvaSysBroadcastUIBase( TQWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
     ~EvaSysBroadcastUIBase();
 
-    QFrame* fraContents;
-    QLabel* lblTitle;
-    QLabel* lblContents;
+    TQFrame* fraContents;
+    TQLabel* lblTitle;
+    TQLabel* lblContents;
     KURLLabel* kurllblUrl;
-    QPushButton* btnDetails;
-    QPushButton* btnClose;
+    TQPushButton* btnDetails;
+    TQPushButton* btnClose;
 
 protected:
-    QGridLayout* EvaSysBroadcastUIBaseLayout;
-    QVBoxLayout* layout7;
-    QGridLayout* fraContentsLayout;
-    QVBoxLayout* layout6;
-    QHBoxLayout* layout5;
-    QSpacerItem* spacer2;
-    QHBoxLayout* layout3;
-    QSpacerItem* spacer1;
+    TQGridLayout* EvaSysBroadcastUIBaseLayout;
+    TQVBoxLayout* layout7;
+    TQGridLayout* fraContentsLayout;
+    TQVBoxLayout* layout6;
+    TQHBoxLayout* layout5;
+    TQSpacerItem* spacer2;
+    TQHBoxLayout* layout3;
+    TQSpacerItem* spacer1;
 
 protected slots:
     virtual void languageChange();

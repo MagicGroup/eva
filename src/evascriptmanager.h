@@ -49,7 +49,7 @@
  * @see http://www.myswear.net/myswear/eva/Script-Writing_HowTo
  */
 
-#include <qmap.h>
+#include <ntqmap.h>
 
 #include <kdialogbase.h>      //baseclass
 #include <kurl.h>
@@ -60,9 +60,9 @@
 class EvaMainWindow;
 class EvaScriptManagerUIBase;
 class ScriptManagerBase;
-class QListViewItem;
+class TQListViewItem;
 class KArchiveDirectory;
-class KProcess;
+class TDEProcess;
 class KProcIO;
 class EvaScriptWidget;
 
@@ -77,7 +77,7 @@ class EvaScriptManager : public KDialogBase, virtual public EvaDCOPToolsInterfac
 	Q_OBJECT
 
 	public:
-		EvaScriptManager( QWidget *parent = 0, const char *name = 0 );
+		EvaScriptManager( TQWidget *parent = 0, const char *name = 0 );
 		virtual ~EvaScriptManager();
 
 // 		static EvaScriptManager* instance() 
@@ -85,13 +85,13 @@ class EvaScriptManager : public KDialogBase, virtual public EvaDCOPToolsInterfac
 
 
 		/** Returns a list of all currently running scripts. Used by the DCOP handler. */
-		QStringList listRunningScripts();
+		TQStringList listRunningScripts();
 
 		/** Custom Menu Click */
-		void customMenuClicked(const bool isQun, const unsigned int id, QString scriptName, QString name);
+		void customMenuClicked(const bool isQun, const unsigned int id, TQString scriptName, TQString name);
 
 		/** Returns the path of the spec file of the given script */
-		QString specForScript( const QString& name );
+		TQString specForScript( const TQString& name );
 
 		/** Send a notification to all scripts with the contact's ID number*/
 		void notifyStatusChange(const unsigned int id);
@@ -102,7 +102,7 @@ class EvaScriptManager : public KDialogBase, virtual public EvaDCOPToolsInterfac
 		 * @param id Qun external id or contact QQ number depending on \c isQun
 		 * @param message the message
 		 */
-		void notifyMessage(const bool isQun, const unsigned int id, const QDateTime &time, const QString &message);
+		void notifyMessage(const bool isQun, const unsigned int id, const TQDateTime &time, const TQString &message);
 		
 		///DCOP methods
 
@@ -111,15 +111,15 @@ class EvaScriptManager : public KDialogBase, virtual public EvaDCOPToolsInterfac
 		 * @param name The name of the script.
 		 * @return True if successful.
 		 */
-		bool runScript( const QString& name, bool silent = false );
+		bool runScript( const TQString& name, bool silent = false );
 
     /**
 		 * Stops the script with the given name. Used by the DCOP handler.
 		 * @param name The name of the script.
 		 * @return True if successful.
 		 */
-		bool stopScript( const QString& name );
-		QString scriptDir( bool isSystem );
+		bool stopScript( const TQString& name );
+		TQString scriptDir( bool isSystem );
 		int numScripts();
 		int numRunningScripts();
 		void releaseScripts();
@@ -129,20 +129,20 @@ class EvaScriptManager : public KDialogBase, virtual public EvaDCOPToolsInterfac
 	private slots:
 
 		/** Enables/disables the buttons */
-		void slotCurrentChanged( QListViewItem* );
+		void slotCurrentChanged( TQListViewItem* );
 
-		bool slotInstallScript( const QString& path = QString::null );
+		bool slotInstallScript( const TQString& path = TQString::null );
 		//void slotRetrieveScript();
 		void slotUninstallScript();
 		bool slotRunScript( bool silent = false );
 		void slotStopScript();
 		void slotConfigureScript();
 		void slotAboutScript();
-		void slotShowContextMenu( QListViewItem*, const QPoint& );
+		void slotShowContextMenu( TQListViewItem*, const TQPoint& );
 
-		void slotReceivedStdout( KProcess*, char*, int );
-		void slotReceivedStderr( KProcess*, char*, int );
-		void scriptFinished( KProcess* process );
+		void slotReceivedStdout( TDEProcess*, char*, int );
+		void slotReceivedStderr( TDEProcess*, char*, int );
+		void scriptFinished( TDEProcess* process );
 
 	private:
 		
@@ -150,27 +150,27 @@ class EvaScriptManager : public KDialogBase, virtual public EvaDCOPToolsInterfac
 		void terminateProcess( KProcIO** proc );
 
 		/** Sends a string message to all running scripts */
-		void notifyScripts( const QString& message, const unsigned char type );
+		void notifyScripts( const TQString& message, const unsigned char type );
 		/** Sends a string message to a given named script */
-		void notifyScript( const QString& name, const QString message );
+		void notifyScript( const TQString& name, const TQString message );
 
 		/** Adds a script to the listview */
-		void loadScript( const QString& path );
+		void loadScript( const TQString& path );
 
 		/** Copies the file permissions from the tarball and loads the script */
-		void recurseInstall( const KArchiveDirectory* archiveDir, const QString& destination );
+		void recurseInstall( const KArchiveDirectory* archiveDir, const TQString& destination );
 		
 		/** remove any script-added buttons/tabs **/
-		void releaseScriptResource(const QString &scriptName);
+		void releaseScriptResource(const TQString &scriptName);
 
-		static QString        s_evaDcopName; //!< used as a parameter passed to script.
+		static TQString        s_evaDcopName; //!< used as a parameter passed to script.
 //		static EvaScriptManager* s_instance;
 		EvaScriptManagerUIBase*    m_gui;
 
-// 		QListViewItem*        m_generalCategory;
-// 		QListViewItem*        m_lyricsCategory;
-// 		QListViewItem*        m_scoreCategory;
-// 		QListViewItem*        m_transcodeCategory;
+// 		TQListViewItem*        m_generalCategory;
+// 		TQListViewItem*        m_lyricsCategory;
+// 		TQListViewItem*        m_scoreCategory;
+// 		TQListViewItem*        m_transcodeCategory;
 
 		bool                  m_installSuccess;
 
@@ -178,12 +178,12 @@ class EvaScriptManager : public KDialogBase, virtual public EvaDCOPToolsInterfac
 			KURL           url;
 			unsigned char  type;
 			KProcIO*       process;
-			QListViewItem* li;
-			QString        log;
+			TQListViewItem* li;
+			TQString        log;
 			ScriptItem() : process( 0 ), li( 0 ) {}
 		};
 
-		typedef QMap<QString, ScriptItem> ScriptMap;
+		typedef TQMap<TQString, ScriptItem> ScriptMap;
 
 		ScriptMap m_scripts;
 		

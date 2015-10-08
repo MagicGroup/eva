@@ -21,43 +21,43 @@
 #ifndef EVAFONTSELECTER_H
 #define EVAFONTSELECTER_H
 
-#include <qvariant.h>
-#include <qwidget.h>
+#include <ntqvariant.h>
+#include <ntqwidget.h>
 
-class QVBoxLayout;
-class QHBoxLayout;
-class QGridLayout;
-class QSpacerItem;
-class QLabel;
+class TQVBoxLayout;
+class TQHBoxLayout;
+class TQGridLayout;
+class TQSpacerItem;
+class TQLabel;
 class KColorCombo;
 class KIntSpinBox;
-class QPushButton;
-class QFrame;
+class TQPushButton;
+class TQFrame;
 
-class EvaFontSelecter : public QWidget
+class EvaFontSelecter : public TQWidget
 {
 	Q_OBJECT
 public:
-	EvaFontSelecter( QWidget* parent = 0, const char* name = 0, WFlags fl = Qt::WStyle_Customize 
-			| Qt::WStyle_NoBorder | Qt::WStyle_StaysOnTop | Qt::WType_TopLevel | WType_Popup);
+	EvaFontSelecter( TQWidget* parent = 0, const char* name = 0, WFlags fl = TQt::WStyle_Customize 
+			| TQt::WStyle_NoBorder | TQt::WStyle_StaysOnTop | TQt::WType_TopLevel | WType_Popup);
 	~EvaFontSelecter();
-	void setColor(const QColor &col);
+	void setColor(const TQColor &col);
 	void setSize( const int size);
 signals:
-	void fontChanged(QColor, int);
+	void fontChanged(TQColor, int);
 protected slots:
 	virtual void languageChange();    
 private:
-	QLabel* lblColor;
+	TQLabel* lblColor;
 	KColorCombo* color;
-	QLabel* lblSize;
+	TQLabel* lblSize;
 	KIntSpinBox* kIntSpinBox;
-	QPushButton* pbOK;
-	QFrame* frame;
+	TQPushButton* pbOK;
+	TQFrame* frame;
 	
-	QGridLayout* EvaFontSelecterLayout;
-	QGridLayout* EvaFontWindowLayout;
-	QHBoxLayout* layout3;
+	TQGridLayout* EvaFontSelecterLayout;
+	TQGridLayout* EvaFontWindowLayout;
+	TQHBoxLayout* layout3;
 	
 private slots:
 	void slotClicked();

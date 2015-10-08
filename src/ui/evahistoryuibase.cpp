@@ -19,59 +19,59 @@
  ***************************************************************************/ 
 #include "evahistoryuibase.h"
 
-#include <qvariant.h>
-#include <qpushbutton.h>
-#include <qcheckbox.h>
-#include <qlabel.h>
-#include <qdatetimeedit.h>
-#include <qtable.h>
-#include <qlayout.h>
-#include <qimage.h>
-#include <qpixmap.h>
-#include <klocale.h>
+#include <ntqvariant.h>
+#include <ntqpushbutton.h>
+#include <ntqcheckbox.h>
+#include <ntqlabel.h>
+#include <ntqdatetimeedit.h>
+#include <ntqtable.h>
+#include <ntqlayout.h>
+#include <ntqimage.h>
+#include <ntqpixmap.h>
+#include <tdelocale.h>
 
-EvaHistoryUIBase::EvaHistoryUIBase( QWidget* parent, const char* name, WFlags fl )
-    : QWidget( parent, name, fl )
+EvaHistoryUIBase::EvaHistoryUIBase( TQWidget* parent, const char* name, WFlags fl )
+    : TQWidget( parent, name, fl )
 {
 	if ( !name )
 		setName( "EvaHistoryUIBase" );
-	EvaHistoryUIBaseLayout = new QGridLayout( this, 1, 1, 0, 0, "EvaHistoryUIBaseLayout"); 
+	EvaHistoryUIBaseLayout = new TQGridLayout( this, 1, 1, 0, 0, "EvaHistoryUIBaseLayout"); 
 	
-	layout1 = new QVBoxLayout( 0, 0, 6, "layout1"); 
+	layout1 = new TQVBoxLayout( 0, 0, 6, "layout1"); 
 	
-	layout2 = new QHBoxLayout( 0, 0, 6, "layout2"); 
+	layout2 = new TQHBoxLayout( 0, 0, 6, "layout2"); 
 	
-	chbSelect = new QCheckBox( this, "chbSelect" );
+	chbSelect = new TQCheckBox( this, "chbSelect" );
 	layout2->addWidget( chbSelect );
 	
-	lblFrom = new QLabel( this, "lblFrom" );
-	lblFrom->setMaximumSize( QSize( 30, 32767 ) );
+	lblFrom = new TQLabel( this, "lblFrom" );
+	lblFrom->setMaximumSize( TQSize( 30, 32767 ) );
 	layout2->addWidget( lblFrom );
 	
-	deFrom = new QDateEdit( this, "deFrom" );
-	deFrom->setOrder(QDateEdit::YMD);
-	deFrom->setDate(QDate::currentDate());
-	//deFrom->setMaximumSize( QSize( 90, 32767 ) );
+	deFrom = new TQDateEdit( this, "deFrom" );
+	deFrom->setOrder(TQDateEdit::YMD);
+	deFrom->setDate(TQDate::currentDate());
+	//deFrom->setMaximumSize( TQSize( 90, 32767 ) );
 	layout2->addWidget( deFrom );
 	
-	lblTo = new QLabel( this, "lblTo" );
-	lblTo->setMaximumSize( QSize( 20, 32767 ) );
+	lblTo = new TQLabel( this, "lblTo" );
+	lblTo->setMaximumSize( TQSize( 20, 32767 ) );
 	layout2->addWidget( lblTo );
 	
-	deTo = new QDateEdit( this, "deTo" );
-	deTo->setOrder(QDateEdit::YMD);
-	deTo->setDate(QDate::currentDate());
-	//deTo->setMaximumSize( QSize( 90, 32767 ) );
+	deTo = new TQDateEdit( this, "deTo" );
+	deTo->setOrder(TQDateEdit::YMD);
+	deTo->setDate(TQDate::currentDate());
+	//deTo->setMaximumSize( TQSize( 90, 32767 ) );
 	layout2->addWidget( deTo );
-	spacer1 = new QSpacerItem( 21, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
+	spacer1 = new TQSpacerItem( 21, 20, TQSizePolicy::Expanding, TQSizePolicy::Minimum );
 	layout2->addItem( spacer1 );
 	
-	pbShow = new QPushButton( this, "pbShow" );
+	pbShow = new TQPushButton( this, "pbShow" );
 	layout2->addWidget( pbShow );
 	layout1->addLayout( layout2 );
 	
-	tblDisplay = new QTable( this, "tblDisplay" );
-	QHeader *vheader = tblDisplay->verticalHeader();
+	tblDisplay = new TQTable( this, "tblDisplay" );
+	TQHeader *vheader = tblDisplay->verticalHeader();
 	vheader->hide();
 	tblDisplay->setLeftMargin(0);
 	tblDisplay->setNumRows( 0 );
@@ -79,25 +79,25 @@ EvaHistoryUIBase::EvaHistoryUIBase( QWidget* parent, const char* name, WFlags fl
 	//tblDisplay->setColumnWidth(0, 10);
 	//tblDisplay->setColumnWidth(1, 5);
 	//tblDisplay->setColumnWidth(2, 5);
-	tblDisplay->setSelectionMode( QTable::SingleRow );
-	tblDisplay->setFocusStyle( QTable::FollowStyle );
+	tblDisplay->setSelectionMode( TQTable::SingleRow );
+	tblDisplay->setFocusStyle( TQTable::FollowStyle );
 	tblDisplay->setReadOnly( true );
 	layout1->addWidget( tblDisplay );
 	
-	layout3 = new QHBoxLayout( 0, 0, 6, "layout3"); 
-	spacer2 = new QSpacerItem( 121, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
+	layout3 = new TQHBoxLayout( 0, 0, 6, "layout3"); 
+	spacer2 = new TQSpacerItem( 121, 20, TQSizePolicy::Expanding, TQSizePolicy::Minimum );
 	layout3->addItem( spacer2 );
 	
-	pbPrev = new QPushButton( this, "pbPrev" );
+	pbPrev = new TQPushButton( this, "pbPrev" );
 	layout3->addWidget( pbPrev );
 	
-	pbNext = new QPushButton( this, "pbNext" );
+	pbNext = new TQPushButton( this, "pbNext" );
 	layout3->addWidget( pbNext );
 	layout1->addLayout( layout3 );
 	
 	EvaHistoryUIBaseLayout->addLayout( layout1, 0, 0 );
 	languageChange();
-	resize( QSize(472, 219).expandedTo(minimumSizeHint()) );
+	resize( TQSize(472, 219).expandedTo(minimumSizeHint()) );
 	clearWState( WState_Polished );
 }
 
@@ -115,10 +115,10 @@ void EvaHistoryUIBase::languageChange()
 	lblFrom->setText( i18n( "from" ) );
 	lblTo->setText( i18n( "to" ) );
 	pbShow->setText( i18n( "&Show" ) );
-	pbShow->setAccel( QKeySequence( tr( "Alt+S" ) ) );
+	pbShow->setAccel( TQKeySequence( tr( "Alt+S" ) ) );
 	pbPrev->setText( i18n( "&Prev" ) );
-	pbPrev->setAccel( QKeySequence( tr( "Alt+P" ) ) );
+	pbPrev->setAccel( TQKeySequence( tr( "Alt+P" ) ) );
 	pbNext->setText( i18n( "&Next" ) );
-	pbNext->setAccel( QKeySequence( tr( "Alt+N" ) ) );
+	pbNext->setAccel( TQKeySequence( tr( "Alt+N" ) ) );
 }
 

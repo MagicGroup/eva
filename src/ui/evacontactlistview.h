@@ -23,18 +23,18 @@
 
 #include "evalistview.h"
 #include "evafriendlist.h"
-#include <qdatetime.h>
+#include <ntqdatetime.h>
 
-class QQFriend;
-class QPopupMenu;
+class TQQFriend;
+class TQPopupMenu;
 
 class EvaBuddyItem : public EvaListViewItem
 {
 public:
-    EvaBuddyItem( const QQFriend& buddy, QListViewItem *parent);
+    EvaBuddyItem( const TQQFriend& buddy, TQListViewItem *parent);
 
     const unsigned int QQ();
-    const QQFriend &getFriend() const { return m_buddy; }
+    const TQQFriend &getFriend() const { return m_buddy; }
 
     void setNumOfMessages(const int n) { m_numOfMessages = n; }
     const int numOfMessages() const { return m_numOfMessages; }
@@ -46,29 +46,29 @@ public:
     void faceChanged();
     void newMessage();
     void takeMessage();
-    void updateIcon(QPixmap *p);
+    void updateIcon(TQPixmap *p);
 
     void update( );
-    QString tip();
-    virtual QString key( int col, bool ascending) const;
+    TQString tip();
+    virtual TQString key( int col, bool ascending) const;
 private:
-    QQFriend m_buddy;
+    TQQFriend m_buddy;
     int m_numOfMessages;
 };
 
 class EvaGroupItem : public EvaListViewItem
 {
 public:
-	EvaGroupItem( int groupIndex, QListView *parent);
+	EvaGroupItem( int groupIndex, TQListView *parent);
 	
 	const int groupIndex() const { return m_groupIndex; }
 	void update();
-	QString tip();
+	TQString tip();
 	bool hasMessage();
-	QString groupName();
-	void setGroupName(const QString name);
+	TQString groupName();
+	void setGroupName(const TQString name);
 	void setOpen(bool o);
-	virtual QString key( int col, bool ascending) const;
+	virtual TQString key( int col, bool ascending) const;
 protected:
 	virtual void okRename(int col);
 	virtual void cancelRename(int col);
@@ -82,7 +82,7 @@ class EvaContactListView : public EvaListView
 {
     Q_OBJECT
 public:
-	EvaContactListView(QWidget *parent = 0, const char *name = 0, WFlags f = 0);
+	EvaContactListView(TQWidget *parent = 0, const char *name = 0, WFlags f = 0);
 
 	void loadContacts();
 	void updateContacts();
@@ -93,8 +93,8 @@ public:
 	const int numOfGroups() const { return m_groups.size(); }
 signals:
 	void groupDeleted(const int);  // paremeter is the group index
-	//void groupAdded(QString, int); // group name & index
-	void groupRenamed(QString, int); // group name & index
+	//void groupAdded(TQString, int); // group name & index
+	void groupRenamed(TQString, int); // group name & index
 	void groupChanged(const unsigned int, int); // qq number, group index;
 	void deleteMeFrom(const unsigned int);  // ask server to delete me in someone's friend list
 
@@ -107,17 +107,17 @@ signals:
 	void requestDelete(const unsigned int);  // the deleting qq number 
 
 protected:
-	virtual void keyPressEvent( QKeyEvent *e );
+	virtual void keyPressEvent( TQKeyEvent *e );
 	virtual void startDrag();
-	virtual void dragEnterEvent(QDragEnterEvent *event);
-	virtual void dropEvent(QDropEvent *event);
+	virtual void dragEnterEvent(TQDragEnterEvent *event);
+	virtual void dropEvent(TQDropEvent *event);
 
 private:
 	std::map<int, EvaGroupItem *> m_groups;
 	std::map<unsigned int, EvaBuddyItem *> m_contacts;
 
-	QPopupMenu *m_groupMenu; 
-	QPopupMenu *m_buddyMenu;
+	TQPopupMenu *m_groupMenu; 
+	TQPopupMenu *m_buddyMenu;
 
 	void initPopup();
 
@@ -140,11 +140,11 @@ private slots:
 	void slotDelBuddy();
 	void slotModifyMemo();
 
-	void slotItemRenamed(QListViewItem *, int);
-	void slotContextMenu(QListViewItem *, const QPoint & , int);
+	void slotItemRenamed(TQListViewItem *, int);
+	void slotContextMenu(TQListViewItem *, const TQPoint & , int);
 
-	void slotBuddyDoubleClick(QListViewItem *, const QPoint & , int);
-	void slotListViewClicked(QListViewItem *);
+	void slotBuddyDoubleClick(TQListViewItem *, const TQPoint & , int);
+	void slotListViewClicked(TQListViewItem *);
 
 public slots:
 	void friendStatusChanged(const int id);
@@ -159,15 +159,15 @@ class Qun;
 class EvaQunListViewItem : public EvaListViewItem
 {
 public:
-	EvaQunListViewItem( Qun * q, QListView *parent);
-	const QString name();
+	EvaQunListViewItem( Qun * q, TQListView *parent);
+	const TQString name();
 	const unsigned int getQunID() const;
 	void newMessage();
 	void getMessage();
 	const int numOfMessages() { return m_numOfMessages; }
 
 	void update();
-	QString tip();
+	TQString tip();
 private:
 	Qun *m_qun;
 	int m_numOfMessages;
@@ -177,7 +177,7 @@ class EvaQunsListView : public EvaListView
 {
 	Q_OBJECT
 public:
-	EvaQunsListView(QWidget *parent = 0, const char *name = 0, WFlags f = 0);
+	EvaQunsListView(TQWidget *parent = 0, const char *name = 0, WFlags f = 0);
 
 	void addQun(const unsigned int id);
 	void loadAllQuns();
@@ -192,14 +192,14 @@ signals:
 	void requestQunHistory(const unsigned int);
 
 private:
-	QPopupMenu *m_popup;
+	TQPopupMenu *m_popup;
 
 	void initPopup();
 private slots:
 
-	void slotContextMenu(QListViewItem *, const QPoint & , int);
+	void slotContextMenu(TQListViewItem *, const TQPoint & , int);
 
-	void slotQunDoubleClick(QListViewItem *, const QPoint & , int);
+	void slotQunDoubleClick(TQListViewItem *, const TQPoint & , int);
 
 	void slotIMQunChat();
 	void slotQunDetails();
@@ -217,45 +217,45 @@ public slots:
 class EvaRecentContactLVItem : public EvaListViewItem
 {
 public:
-	EvaRecentContactLVItem( const bool isQun, QQFriend *f, Qun * q, QListView *parent);
+	EvaRecentContactLVItem( const bool isQun, TQQFriend *f, Qun * q, TQListView *parent);
 	const bool isQun() const { return m_type == E_LVIQun; }
 
 	// Buddy methods
 	const unsigned int QQ();
-	QQFriend * getFriend() { return m_buddy; }
+	TQQFriend * getFriend() { return m_buddy; }
 
 	void newMessage(const unsigned int t, bool isMyWord = false);
 	void getMessage();
 	const int numOfMessages() { return m_numOfMessages; }
 
 	// Qun methods
-	const QString QunName();
+	const TQString QunName();
 	const unsigned int getQunID() const;
 
-	void updateIcon(QPixmap *p);
+	void updateIcon(TQPixmap *p);
 	void update();
-	QString tip();
-	virtual QString key( int col, bool ascending) const;
+	TQString tip();
+	virtual TQString key( int col, bool ascending) const;
 
 	void setTime( const unsigned int t) { m_time = t; }
 	unsigned int getTime() const { return m_time; }
 private:
 	Qun *m_qun;
-	QQFriend *m_buddy;
+	TQQFriend *m_buddy;
 	int m_numOfMessages;
 	unsigned int m_time;
 
 	void buddyUpdate();
-	QString buddyTip();
+	TQString buddyTip();
 	void qunUpdate();
-	QString qunTip();
+	TQString qunTip();
 };
 
 class EvaRecentContactsListView : public EvaListView
 {
 	Q_OBJECT
 public:
-	EvaRecentContactsListView(QWidget *parent = 0, const char *name = 0, WFlags f = 0);
+	EvaRecentContactsListView(TQWidget *parent = 0, const char *name = 0, WFlags f = 0);
 
 	void loadRecentContacts();
 
@@ -277,8 +277,8 @@ signals:
 
 private:
 //	std::list<RecentContact>
-	QPopupMenu *m_buddyMenu;
-	QPopupMenu *m_qunMenu;
+	TQPopupMenu *m_buddyMenu;
+	TQPopupMenu *m_qunMenu;
 
 	void initBuddyPopup();
 	void initQunPopup();
@@ -286,8 +286,8 @@ private:
 	void updateConfig();
 
 private slots:
-	void slotContextMenu(QListViewItem *, const QPoint & , int);
-	void slotContactDoubleClick(QListViewItem *, const QPoint & , int);
+	void slotContextMenu(TQListViewItem *, const TQPoint & , int);
+	void slotContactDoubleClick(TQListViewItem *, const TQPoint & , int);
 
 	void slotIMChat();
 	void slotSendFile();
@@ -303,10 +303,10 @@ private slots:
 	void slotQunExit();
 
 public slots:
-	EvaRecentContactLVItem * addBuddy(const unsigned int id, const unsigned int time = QDateTime::currentDateTime( Qt::LocalTime).toTime_t());
-	EvaRecentContactLVItem * addQun(const unsigned int id, const unsigned int time = QDateTime::currentDateTime( Qt::LocalTime).toTime_t());
-	void newMessage(const unsigned int id, bool isMyWord = false, const unsigned int time = QDateTime::currentDateTime( Qt::LocalTime).toTime_t());
-	void newQunMessage(const unsigned int id, bool isMyWord = false, const unsigned int time = QDateTime::currentDateTime( Qt::LocalTime).toTime_t());
+	EvaRecentContactLVItem * addBuddy(const unsigned int id, const unsigned int time = TQDateTime::currentDateTime( TQt::LocalTime).toTime_t());
+	EvaRecentContactLVItem * addQun(const unsigned int id, const unsigned int time = TQDateTime::currentDateTime( TQt::LocalTime).toTime_t());
+	void newMessage(const unsigned int id, bool isMyWord = false, const unsigned int time = TQDateTime::currentDateTime( TQt::LocalTime).toTime_t());
+	void newQunMessage(const unsigned int id, bool isMyWord = false, const unsigned int time = TQDateTime::currentDateTime( TQt::LocalTime).toTime_t());
 	void getMessage(const unsigned int id);
 	void getQunMessage(const unsigned int id);
 };

@@ -59,8 +59,8 @@ public:
 	
 	void setQunGroupIndex(const unsigned char index) { qunGroupIndex = index;}
 	void setQunAdminValue(const unsigned char value) { qunAdminValue = value;}
-	const bool isAdmin() const { return qunAdminValue & QUN_TYPE_ADMIN; }
-	const bool isShareHolder() const { return qunAdminValue & QUN_TYEP_SHAREHOLDER; }
+	const bool isAdmin() const { return qunAdminValue & TQUN_TYPE_ADMIN; }
+	const bool isShareHolder() const { return qunAdminValue & TQUN_TYEP_SHAREHOLDER; }
 
 	// the following 2 methods implemented by henry first, I change the names a bit :)
 	void setQunRealName(const std::string &name) {
@@ -71,7 +71,7 @@ public:
 	const int getQunRealNameVersion() const { return m_QunRealNameVersion; }
 
 	bool isMember() { return (commonFlag & 0x2) != 0; }
-	bool isBoy() { return gender == QQ_FRIEND_GENDER_GG;}
+	bool isBoy() { return gender == TQQ_FRIEND_GENDER_GG;}
 	
 	FriendItem *copy() { return new FriendItem(*this);}
 	FriendItem &operator=(const FriendItem &rhs);

@@ -26,7 +26,7 @@
 class LoginPacket : public OutPacket {    
 public:
 	LoginPacket();
-	LoginPacket(unsigned char loginMode = QQ_LOGIN_MODE_NORMAL);
+	LoginPacket(unsigned char loginMode = TQQ_LOGIN_MODE_NORMAL);
 	LoginPacket(const LoginPacket &rhs);
 	virtual ~LoginPacket();
 	

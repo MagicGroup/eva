@@ -26,7 +26,7 @@ class EvaNotifyWindow : public EvaNotifyUIBase
 {
 	Q_OBJECT
 public:
-	EvaNotifyWindow(QWidget* parent = 0, const char* name = 0, WFlags fl = 0);
+	EvaNotifyWindow(TQWidget* parent = 0, const char* name = 0, WFlags fl = 0);
 	~EvaNotifyWindow();
 public slots:
 	void slotAddBuddyReady();
@@ -35,11 +35,11 @@ public slots:
 	void slotAddBuddySentToServer(bool ok);
 	
 	void slotMeBeenAdded(int);
-	void slotAddMeRequest(int, QString);
+	void slotAddMeRequest(int, TQString);
 	void slotAddRequestApproved(int);
-	void slotAddRequestRejected(int, QString);
+	void slotAddRequestRejected(int, TQString);
 	
-	void slotOtherNotification(int, QString);
+	void slotOtherNotification(int, TQString);
 	
 	void slotAddBuddy(int);
 	
@@ -49,20 +49,20 @@ public slots:
 	void slotQunCreated(const int from, const int extQunID, const int internalQunID);
 	void slotQunAdded(const int from, const int extQunID, const int internalQunID);
 	void slotQunRemoved(const int  from, const int extQunID, const int internalQunID);
-	void slotQunJoinRequest(const int from, const int extQunID, QString message, const int internalQunID);
-	void slotQunRequestApproved(const int from, const int extQunID, QString  message, const int internalQunID);
-	void slotQunRequestRejected(const int from, const int extQunID, QString  message, const int internalQunID);
+	void slotQunJoinRequest(const int from, const int extQunID, TQString message, const int internalQunID);
+	void slotQunRequestApproved(const int from, const int extQunID, TQString  message, const int internalQunID);
+	void slotQunRequestRejected(const int from, const int extQunID, TQString  message, const int internalQunID);
 signals:
 	void requestUserInfo(const int);
-	void requestAddAuthBuddy(const int, const QString &);
+	void requestAddAuthBuddy(const int, const TQString &);
 	void requestAddBuddy(const int);
 	
 	void requestApproveBuddy(const int);
-	void requestRejectBuddy(const int, const QString &);
+	void requestRejectBuddy(const int, const TQString &);
 	
 	void requestQunInfo(const int);
 	void requestApproveQun(const int, const int);
-	void requestRejectQun(const int, const int, const QString &);
+	void requestRejectQun(const int, const int, const TQString &);
 private:
 	bool needAuth;
 	bool isQun;

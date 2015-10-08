@@ -22,22 +22,22 @@
 
 #include <stdlib.h>
 
-#include <qpushbutton.h>
-#include <qtoolbutton.h>
-#include <qlineedit.h>
-#include <qlabel.h>
-#include <qradiobutton.h>
-#include <qcheckbox.h>
-#include <qbuttongroup.h>
-#include <qframe.h>
-#include <qpixmap.h>
-#include <qiconset.h>
-#include <qdatetime.h>
-#include <qtextcodec.h>
-#include <qevent.h>
+#include <ntqpushbutton.h>
+#include <ntqtoolbutton.h>
+#include <ntqlineedit.h>
+#include <ntqlabel.h>
+#include <ntqradiobutton.h>
+#include <ntqcheckbox.h>
+#include <ntqbuttongroup.h>
+#include <ntqframe.h>
+#include <ntqpixmap.h>
+#include <ntqiconset.h>
+#include <ntqdatetime.h>
+#include <ntqtextcodec.h>
+#include <ntqevent.h>
 
-#include <kmessagebox.h>
-#include <klocale.h>
+#include <tdemessagebox.h>
+#include <tdelocale.h>
 #include <kdebug.h>
 
 #include "../evamain.h"
@@ -65,10 +65,10 @@ void EvaAddingNoticeWindow::init()
 	m_AllowReverse = true;
 	m_HasVerified = false;
 
-	QPixmap *facePic = EvaMain::images->getFaceByID( 0 );
+	TQPixmap *facePic = EvaMain::images->getFaceByID( 0 );
 	if(facePic){
-		QIconSet faceIcon;
-		faceIcon.setPixmap(*facePic,QIconSet::Large);
+		TQIconSet faceIcon;
+		faceIcon.setPixmap(*facePic,TQIconSet::Large);
 		tbFace->setIconSet(faceIcon);
 	}
 
@@ -79,10 +79,10 @@ void EvaAddingNoticeWindow::init()
 	tbtnAuthSettings->setHidden(true);
 	adjustSize();
 
-	QObject::connect(EvaMain::g_AddingManager, SIGNAL(addAuthActionReply(const unsigned int, const unsigned char, const bool)),
+	TQObject::connect(EvaMain::g_AddingManager, SIGNAL(addAuthActionReply(const unsigned int, const unsigned char, const bool)),
 						SLOT(slotAddAuthActionReply(const unsigned int, const unsigned char, const bool)));
 	
-	QObject::connect(m_PacketManager, SIGNAL(receivedVerifyAddingMessageReply(const unsigned int,
+	TQObject::connect(m_PacketManager, SIGNAL(receivedVerifyAddingMessageReply(const unsigned int,
 										const unsigned char,
 										const unsigned char,
 										const unsigned char)),
@@ -94,17 +94,17 @@ void EvaAddingNoticeWindow::init()
 	//NOTE: VerifyAddingMessageReply is useless. It just means your verify message has been received by host
 	//      Verify message is sent whenever you got a adding request like a kind of reply message
 	
-	QObject::connect(tbFace, SIGNAL(clicked()), SLOT(slotFaceClicked()));
-	QObject::connect(btnOk, SIGNAL(clicked()), SLOT(slotOkClicked()));
-	QObject::connect(btnCancel, SIGNAL(clicked()), SLOT(close()));
-	QObject::connect(rbtnAcceptAdd, SIGNAL(clicked()), SLOT(slotRejectClicked( )));
-	QObject::connect(rbtnAccept, SIGNAL(clicked()), SLOT(slotRejectClicked( )));
-	QObject::connect(rbtnReject, SIGNAL(clicked()), SLOT(slotRejectClicked( )));
+	TQObject::connect(tbFace, SIGNAL(clicked()), SLOT(slotFaceClicked()));
+	TQObject::connect(btnOk, SIGNAL(clicked()), SLOT(slotOkClicked()));
+	TQObject::connect(btnCancel, SIGNAL(clicked()), SLOT(close()));
+	TQObject::connect(rbtnAcceptAdd, SIGNAL(clicked()), SLOT(slotRejectClicked( )));
+	TQObject::connect(rbtnAccept, SIGNAL(clicked()), SLOT(slotRejectClicked( )));
+	TQObject::connect(rbtnReject, SIGNAL(clicked()), SLOT(slotRejectClicked( )));
 	
 }
 
 void EvaAddingNoticeWindow::setMessage( const unsigned char type, const unsigned int fromID,
-					const QString & msg, const bool allowReverse)
+					const TQString & msg, const bool allowReverse)
 {
 	m_Type = type;
 	m_ID =  fromID;
@@ -116,7 +116,7 @@ void EvaAddingNoticeWindow::setMessage( const unsigned char type, const unsigned
 
 // void EvaAddingNoticeWindow::startVerifying( const unsigned char * code, const unsigned int codeLen )
 // {
-// 	QByteArray array(codeLen);
+// 	TQByteArray array(codeLen);
 // 	array.setRawData( (const char *)(code), codeLen);
 // 	m_Code.duplicate( array);
 // 
@@ -126,30 +126,30 @@ void EvaAddingNoticeWindow::setMessage( const unsigned char type, const unsigned
 void EvaAddingNoticeWindow::processSettings()
 {
 	printf("m_Type: %d\n", m_Type);
-	QString title;
+	TQString title;
 	BuddyInfoCacheItem buddy = EvaMain::user->getSetting()->removeToBeAddedBuddy(m_ID);
 	printf("cached: id: %d, nick: %s, face: %d, group:%d\n", buddy.id, buddy.nick.local8Bit().data(), buddy.face, buddy.group);
 	m_Nick = buddy.nick;
 	m_Face = buddy.face;
-	QPixmap *facePic = EvaMain::images->getFaceByID( m_Face );
+	TQPixmap *facePic = EvaMain::images->getFaceByID( m_Face );
 	if(facePic){
-		QIconSet faceIcon;
-		faceIcon.setPixmap(*facePic,QIconSet::Large);
+		TQIconSet faceIcon;
+		faceIcon.setPixmap(*facePic,TQIconSet::Large);
 		tbFace->setIconSet(faceIcon);
 	}
 
-	QString nick = buddy.nick.isEmpty()?(QString::number(m_ID)):(QString("%1(%2)").arg(m_Nick).arg(m_ID));
+	TQString nick = buddy.nick.isEmpty()?(TQString::number(m_ID)):(TQString("%1(%2)").arg(m_Nick).arg(m_ID));
 	switch(m_Type){
-		case QQ_MSG_SYS_ADD_FRIEND_APPROVED:{
-			title = QString(i18n("%1 has approved your request")).arg(nick);
+		case TQQ_MSG_SYS_ADD_FRIEND_APPROVED:{
+			title = TQString(i18n("%1 has approved your request")).arg(nick);
 			}
 			break;
-		case QQ_MSG_SYS_ADD_FRIEND_REJECTED:{
-			title = QString(i18n("%1 has rejected your request")).arg(nick);
+		case TQQ_MSG_SYS_ADD_FRIEND_REJECTED:{
+			title = TQString(i18n("%1 has rejected your request")).arg(nick);
 			}
 			break;
-		case QQ_MSG_SYS_ADD_FRIEND_REQUEST_EX:{
-			title = QString(i18n("%1 wants to add you onto her/his contact list")).arg(nick);
+		case TQQ_MSG_SYS_ADD_FRIEND_REQUEST_EX:{
+			title = TQString(i18n("%1 wants to add you onto her/his contact list")).arg(nick);
 			btngrpActions->setHidden(false);
 			if(!m_AllowReverse || EvaMain::user->getFriendList().hasFriend(m_ID)){
 				rbtnAcceptAdd->setEnabled( false );
@@ -159,18 +159,18 @@ void EvaAddingNoticeWindow::processSettings()
 			tbtnAuthSettings->setHidden(false);
 			}
 			break;
-		case QQ_MSG_SYS_ADD_FRIEND_APPROVED_AND_ADD:{
-			title = QString(i18n("%1 has approved your request and added you onto her/his contact list")).arg(nick);
+		case TQQ_MSG_SYS_ADD_FRIEND_APPROVED_AND_ADD:{
+			title = TQString(i18n("%1 has approved your request and added you onto her/his contact list")).arg(nick);
 			}
 			break;
-		case QQ_MSG_SYS_ADDED_BY_CORRECT_ANSWER:
-		case QQ_MSG_SYS_BEING_ADDED_EX:{
-			title = QString(i18n("%1 has added you onto her/his contact list")).arg(nick);
+		case TQQ_MSG_SYS_ADDED_BY_CORRECT_ANSWER:
+		case TQQ_MSG_SYS_BEING_ADDED_EX:{
+			title = TQString(i18n("%1 has added you onto her/his contact list")).arg(nick);
 			if(!EvaMain::user->getFriendList().hasFriend(m_ID))
 				btnOk->setText( i18n("&Add to my list") );
 			}
 			break;
-		case QQ_MSG_SYS_BROADCAST:{
+		case TQQ_MSG_SYS_BROADCAST:{
 			// impossible, cuz this should use differnt dialog
 			}
 			break;
@@ -183,8 +183,8 @@ void EvaAddingNoticeWindow::processSettings()
 	lblTitle->setText(title);
 
 	if(!m_Message.isEmpty()){
-		QDateTime date = QDateTime::currentDateTime(Qt::LocalTime);
-		lblMessageTag->setText( QString(i18n("Additional message(%1):")).arg(date.toString( "yyyy-MM-dd hh:mm:ss" ) ) );
+		TQDateTime date = TQDateTime::currentDateTime(TQt::LocalTime);
+		lblMessageTag->setText( TQString(i18n("Additional message(%1):")).arg(date.toString( "yyyy-MM-dd hh:mm:ss" ) ) );
 		lblMessage->setText(m_Message);
 		lblMessageTag->setHidden(false);
 		lblMessage->setHidden(false);
@@ -198,7 +198,7 @@ void EvaAddingNoticeWindow::slotFaceClicked( )
 		emit requestDetails(m_ID);
 }
 
-void EvaAddingNoticeWindow::closeEvent( QCloseEvent * /*e*/ )
+void EvaAddingNoticeWindow::closeEvent( TQCloseEvent * /*e*/ )
 {
 	deleteLater();
 }
@@ -206,21 +206,21 @@ void EvaAddingNoticeWindow::closeEvent( QCloseEvent * /*e*/ )
 void EvaAddingNoticeWindow::slotOkClicked( )
 {
 	switch(m_Type){
-		case QQ_MSG_SYS_ADD_FRIEND_REQUEST_EX:{
+		case TQQ_MSG_SYS_ADD_FRIEND_REQUEST_EX:{
 			/// user has selected one of followings
 			/// 1. accept
 			/// 2. reject
 			processAddingRequest();
 			}
 			break;
-		case QQ_MSG_SYS_BEING_ADDED_EX:
+		case TQQ_MSG_SYS_BEING_ADDED_EX:
 			/// should emit adding signal
 			if(!EvaMain::user->getFriendList().hasFriend(m_ID))
 				emit requestAddBuddy(m_ID, m_Nick, m_Face);
-		case QQ_MSG_SYS_ADD_FRIEND_APPROVED:
-		case QQ_MSG_SYS_ADD_FRIEND_REJECTED:
-		case QQ_MSG_SYS_ADD_FRIEND_APPROVED_AND_ADD:
-		case QQ_MSG_SYS_BROADCAST:
+		case TQQ_MSG_SYS_ADD_FRIEND_APPROVED:
+		case TQQ_MSG_SYS_ADD_FRIEND_REJECTED:
+		case TQQ_MSG_SYS_ADD_FRIEND_APPROVED_AND_ADD:
+		case TQQ_MSG_SYS_BROADCAST:
 			// impossible, cuz this should use differnt dialog
 		default:
 			close();
@@ -264,7 +264,7 @@ void EvaAddingNoticeWindow::slotAddAuthActionReply( const unsigned int id, const
 		}
 		close();
 	}else{
-		QString action;
+		TQString action;
 		switch(auth){
 			case ADDING_AUTH_TYPE_ACCEPT_ADD:
 				action = i18n("accept and add");
@@ -279,7 +279,7 @@ void EvaAddingNoticeWindow::slotAddAuthActionReply( const unsigned int id, const
 				action = i18n("unknown");
 				break;
 		}
-		KMessageBox::information(0, QString(i18n("Operation %1 failed.")).arg(action), i18n("Eva Search/Add Friend"));
+		KMessageBox::information(0, TQString(i18n("Operation %1 failed.")).arg(action), i18n("Eva Search/Add Friend"));
 	}
 }
 

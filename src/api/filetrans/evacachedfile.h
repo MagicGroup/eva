@@ -20,8 +20,8 @@
  
 #ifndef EVACACHEDFILE_H
 #define EVACACHEDFILE_H
-#include <qstring.h>
-#include <qmap.h>
+#include <ntqstring.h>
+#include <ntqmap.h>
 
 #define MaxMd5CheckLength        10002432
 #define MaxBlockLength           2048
@@ -29,15 +29,15 @@
 class EvaCachedFile{
 public:
 	// for saving, involving info file, cached file and the dest file
-	EvaCachedFile(const QString &srcDir, const QString &srcFilename, const unsigned int size);
+	EvaCachedFile(const TQString &srcDir, const TQString &srcFilename, const unsigned int size);
 	// for loading, this only source file involved
-	EvaCachedFile(const QString &srcDir, const QString &srcFilename);
+	EvaCachedFile(const TQString &srcDir, const TQString &srcFilename);
 
 	~EvaCachedFile();
 
-	void setDestFileDir(const QString &dir);
+	void setDestFileDir(const TQString &dir);
 	void setCheckValues(const unsigned char *fileNameMd5, const unsigned char *fileMd5);
-	const bool setFileInfo(const QString &fileName, const unsigned int size);
+	const bool setFileInfo(const TQString &fileName, const unsigned int size);
 
 	const bool saveFragment(const unsigned int offset, const unsigned int len, unsigned char *buf);
 	const unsigned int getFragment(const unsigned int offset, const unsigned int len, unsigned char *buf);
@@ -63,26 +63,26 @@ public:
 	// this method used in recovery the last downloading, return the next start offset
 	const unsigned int getNextOffset();
 
-	inline const QString &getDir() const { return m_DirPath; }
-	inline const QString &getFileName() const { return m_FileName; }
+	inline const TQString &getDir() const { return m_DirPath; }
+	inline const TQString &getFileName() const { return m_FileName; }
 private:
 	bool m_IsLoading;
-	QString m_DirPath;
-	QString m_FileName;
-	QString m_InfoFileName;
-	QString m_CachedFileName;
+	TQString m_DirPath;
+	TQString m_FileName;
+	TQString m_InfoFileName;
+	TQString m_CachedFileName;
 	char m_FileNameMd5[16]; // we received one
 	char m_FileMd5[16]; // we received
 	unsigned int m_FileSize;
 	ErrorState m_State;
-	QMap<unsigned int, unsigned int> m_FragInfo;
+	TQMap<unsigned int, unsigned int> m_FragInfo;
 
 	const bool isNewFragment(const unsigned int offset, const unsigned int len);
 	const bool updateInfoFile(const unsigned int offset, const unsigned int len);
 	const bool isFileCorrect();
 	const bool isInfoFinished();
 
-	static const bool calculateFileMd5(const QString& fullpath, char *md5Buf);
+	static const bool calculateFileMd5(const TQString& fullpath, char *md5Buf);
 
 	const bool changeFileInfo();
 };

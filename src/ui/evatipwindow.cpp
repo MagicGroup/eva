@@ -22,14 +22,14 @@
 #include "evatipwindow.h"
 #include "evaresource.h"
 #include "evahtmlparser.h"
-#include <qlabel.h>
-#include <klocale.h>
-#include <kapplication.h>
-#include <qtimer.h>
-#include <qpixmap.h>
-#include <qimage.h>
+#include <ntqlabel.h>
+#include <tdelocale.h>
+#include <tdeapplication.h>
+#include <ntqtimer.h>
+#include <ntqpixmap.h>
+#include <ntqimage.h>
 
-EvaTipWindow::EvaTipWindow(EvaImageResource *res, const QString nick, const unsigned int id, const short face, const QString &message)
+EvaTipWindow::EvaTipWindow(EvaImageResource *res, const TQString nick, const unsigned int id, const short face, const TQString &message)
     : EvaTipUIBase(0, 0, WType_TopLevel | WStyle_Customize | WStyle_NoBorder | WStyle_StaysOnTop | WX11BypassWM | WNoAutoErase | WDestructiveClose)
 {
 	//m_BgPixmap = 0;
@@ -42,11 +42,11 @@ EvaTipWindow::EvaTipWindow(EvaImageResource *res, const QString nick, const unsi
 	EvaHtmlParser parser;
 	parser.setAbsImagePath(images->getSmileyPath());
 
-	QString htmlNick = nick;
+	TQString htmlNick = nick;
 	parser.convertToHtml( htmlNick, false, true);
 	lblNick->setText("<qt>" +htmlNick + "</qt>");
 	
-	QString msg = message;
+	TQString msg = message;
 
 	if(msg.stripWhiteSpace().length() > 30 ){
 		msg = message.left(27) + i18n("...");
@@ -55,7 +55,7 @@ EvaTipWindow::EvaTipWindow(EvaImageResource *res, const QString nick, const unsi
 	parser.convertToHtml(msg, false, true);
 	lblMessage->setText("<qt>" +msg+"</qt>");
 	
-	QPixmap *pic = images->getQQShow(qqNum);
+	TQPixmap *pic = images->getTQQShow(qqNum);
 	lblPixmap->setScaledContents(true);
 	if(!pic){
 		pic = images->getUserHeadPixmap(qqNum);
@@ -65,12 +65,12 @@ EvaTipWindow::EvaTipWindow(EvaImageResource *res, const QString nick, const unsi
 	}
 	
 	lblPixmap->setPixmap(*pic);
-	scr = KApplication::desktop()->screenGeometry();
+	scr = TDEApplication::desktop()->screenGeometry();
 	setGeometry(scr.right()- width(), scr.bottom(), width(), height());
 		
 	timelast=0;
-	timer = new QTimer(this);
-	QObject::connect(timer, SIGNAL(timeout()), this,SLOT(slotTimeout()));
+	timer = new TQTimer(this);
+	TQObject::connect(timer, SIGNAL(timeout()), this,SLOT(slotTimeout()));
 	timer->start(70, false);
 	//show();
 }
@@ -80,7 +80,7 @@ EvaTipWindow::~EvaTipWindow()
 	//if(m_BgPixmap) delete m_BgPixmap;
 }
 
-void EvaTipWindow::mousePressEvent(QMouseEvent *e)
+void EvaTipWindow::mousePressEvent(TQMouseEvent *e)
 {
 	if(timer->isActive())
 		timer->stop();
@@ -102,33 +102,33 @@ void EvaTipWindow::slotTimeout()
 	};
 }
 /*
-void EvaTipWindow::showEvent( QShowEvent * )
+void EvaTipWindow::showEvent( TQShowEvent * )
 {
 	// set background transparency
 	if(m_BgPixmap) delete m_BgPixmap;
-	m_BgPixmap = new QPixmap(width(), height());
-	QColor bColor(Qt::white);
-	QRgb col = bColor.rgb( );
+	m_BgPixmap = new TQPixmap(width(), height());
+	TQColor bColor(TQt::white);
+	TQRgb col = bColor.rgb( );
 
-	Q_UINT8 salpha = 192;
-	Q_UINT8 dalpha = 255 - salpha;
+	TQ_UINT8 salpha = 192;
+	TQ_UINT8 dalpha = 255 - salpha;
 
 	int a, r, g, b;
 	a = 0;
-	r = QMIN( (qRed   (col) * salpha) / 255 + (qRed   (col) * dalpha) / 255, 255 );
-	g = QMIN( (qGreen (col) * salpha) / 255 + (qGreen (col) * dalpha) / 255, 255 );
-	b = QMIN( (qBlue  (col) * salpha) / 255 + (qBlue  (col) * dalpha) / 255, 255 );
+	r = TQMIN( (tqRed   (col) * salpha) / 255 + (tqRed   (col) * dalpha) / 255, 255 );
+	g = TQMIN( (tqGreen (col) * salpha) / 255 + (tqGreen (col) * dalpha) / 255, 255 );
+	b = TQMIN( (tqBlue  (col) * salpha) / 255 + (tqBlue  (col) * dalpha) / 255, 255 );
 
 	col = a << 24 | r << 16 | g << 8 | b;
 	int pixel = a << 24 | (r * a / 255) << 16 | (g * a / 255) << 8 | (b * a / 255);
 
-	m_BgPixmap->fill(QColor(col, pixel));
+	m_BgPixmap->fill(TQColor(col, pixel));
 
 	//this->setBackgroundPixmap( *bg);
 	//this->setPaletteBackgroundPixmap( *bg);
 }
 
-void EvaTipWindow::paintEvent( QPaintEvent * )
+void EvaTipWindow::paintEvent( TQPaintEvent * )
 {
 	//bitBlt(this, 0, 0, m_BgPixmap);
 	setPaletteBackgroundPixmap(*m_BgPixmap);

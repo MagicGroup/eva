@@ -32,7 +32,7 @@
 #endif
 
 RequestLoginTokenPacket::RequestLoginTokenPacket()
-	: OutPacket(QQ_CMD_REQUEST_LOGIN_TOKEN, true)
+	: OutPacket(TQQ_CMD_REQUEST_LOGIN_TOKEN, true)
 {
 }
 
@@ -115,13 +115,13 @@ RequestLoginTokenReplyPacket & RequestLoginTokenReplyPacket::operator =( const R
 
 const bool RequestLoginTokenReplyPacket::isReplyOk( )  const
 {
-	return replyCode == QQ_REQUEST_LOGIN_TOKEN_REPLY_OK;
+	return replyCode == TQQ_REQUEST_LOGIN_TOKEN_REPLY_OK;
 }
 
 void RequestLoginTokenReplyPacket::parseBody( )
 {
 	replyCode = decryptedBuf[0];
-	if(replyCode == QQ_REQUEST_LOGIN_TOKEN_REPLY_OK){
+	if(replyCode == TQQ_REQUEST_LOGIN_TOKEN_REPLY_OK){
 		length = decryptedBuf[1];
 		if(token)
 			free(token);
@@ -141,7 +141,7 @@ void RequestLoginTokenReplyPacket::parseBody( )
 
 
 RequestLoginTokenExPacket::RequestLoginTokenExPacket(const unsigned char type)
-	: OutPacket(QQ_CMD_REQUEST_LOGIN_TOKEN_EX, true),
+	: OutPacket(TQQ_CMD_REQUEST_LOGIN_TOKEN_EX, true),
 	m_Type( type),
 	m_Code( ""),
 	m_Token( NULL ),
@@ -192,7 +192,7 @@ int RequestLoginTokenExPacket::putBody( unsigned char * buf )
 
 	memset(buf+pos, 0, 4); pos+=4;
 	
-	if(m_Type == QQ_LOGIN_TOKEN_VERIFY) {
+	if(m_Type == TQQ_LOGIN_TOKEN_VERIFY) {
 		if(!m_Token) {
 			fprintf(stderr, "RequestLoginTokenExPacket: No token available, error!\n");
 			return 0;
@@ -215,8 +215,8 @@ int RequestLoginTokenExPacket::putBody( unsigned char * buf )
 
 RequestLoginTokenExReplyPacket::RequestLoginTokenExReplyPacket()
 	: InPacket(),
-	m_Type(QQ_LOGIN_TOKEN_VERIFY),
-	m_ReplyCode(QQ_LOGIN_TOKEN_NEED_VERI),
+	m_Type(TQQ_LOGIN_TOKEN_VERIFY),
+	m_ReplyCode(TQQ_LOGIN_TOKEN_NEED_VERI),
 	m_Token(NULL),
 	m_Data(NULL),
 	m_TokenLen(0L),
@@ -226,8 +226,8 @@ RequestLoginTokenExReplyPacket::RequestLoginTokenExReplyPacket()
 
 RequestLoginTokenExReplyPacket::RequestLoginTokenExReplyPacket( unsigned char * buf, int len )
 	: InPacket(buf, len),
-	m_Type(QQ_LOGIN_TOKEN_VERIFY),
-	m_ReplyCode(QQ_LOGIN_TOKEN_NEED_VERI),
+	m_Type(TQQ_LOGIN_TOKEN_VERIFY),
+	m_ReplyCode(TQQ_LOGIN_TOKEN_NEED_VERI),
 	m_Token(NULL),
 	m_Data(NULL),
 	m_TokenLen(0L),
@@ -237,8 +237,8 @@ RequestLoginTokenExReplyPacket::RequestLoginTokenExReplyPacket( unsigned char * 
 
 RequestLoginTokenExReplyPacket::RequestLoginTokenExReplyPacket( const RequestLoginTokenExReplyPacket & rhs )
 	: InPacket(rhs),
-	m_Type(QQ_LOGIN_TOKEN_VERIFY),
-	m_ReplyCode(QQ_LOGIN_TOKEN_NEED_VERI),
+	m_Type(TQQ_LOGIN_TOKEN_VERIFY),
+	m_ReplyCode(TQQ_LOGIN_TOKEN_NEED_VERI),
 	m_Token(NULL),
 	m_Data(NULL),
 	m_TokenLen(0L),
@@ -282,14 +282,14 @@ void RequestLoginTokenExReplyPacket::parseBody( )
 	offset+=2; // these 2 bytes should be 00 05
 
 	m_ReplyCode = decryptedBuf[offset++];
-	if(m_ReplyCode == QQ_LOGIN_TOKEN_OK){
+	if(m_ReplyCode == TQQ_LOGIN_TOKEN_OK){
 		m_TokenLen = ntohs(*(unsigned short *)(decryptedBuf + offset));
 		offset+=2;
 		setLoginToken(decryptedBuf+offset, m_TokenLen); // we set the loginToken now
 		return;
 	}
 
-	if(m_ReplyCode == QQ_LOGIN_TOKEN_NEED_VERI){
+	if(m_ReplyCode == TQQ_LOGIN_TOKEN_NEED_VERI){
 		m_TokenLen = ntohs(*(unsigned short *)(decryptedBuf + offset));
 		offset+=2;
 		if(m_Token) delete [] m_Token;
@@ -313,7 +313,7 @@ unsigned char ServerDetectorPacket::m_Step = 0x00;
 unsigned int ServerDetectorPacket::m_FromIP = 0x00;
 
 ServerDetectorPacket::ServerDetectorPacket( )
-	: OutPacket(QQ_CMD_SERVER_DETECT, true)
+	: OutPacket(TQQ_CMD_SERVER_DETECT, true)
 {
 }
 
@@ -339,8 +339,8 @@ ServerDetectorPacket & ServerDetectorPacket::operator =( const ServerDetectorPac
 int ServerDetectorPacket::putBody( unsigned char * buf )
 {
 	// this should be a random key and used for decrypting the reply packets
-	// but, we simply use QQ_Client_Key anyway
-	memcpy(buf, QQ_Client_Key, 16);
+	// but, we simply use TQQ_Client_Key anyway
+	memcpy(buf, TQQ_Client_Key, 16);
 
 	unsigned char tmp[15];
 	int offset = 0;
@@ -361,7 +361,7 @@ int ServerDetectorPacket::putBody( unsigned char * buf )
 	printf("\n");
 
 	int pos =256;
-	EvaCrypt::encrypt(tmp, offset, (unsigned char *)QQ_Client_Key, buf + 16, &pos);
+	EvaCrypt::encrypt(tmp, offset, (unsigned char *)TQQ_Client_Key, buf + 16, &pos);
 	return 16 + pos;
 }
 
@@ -405,7 +405,7 @@ void ServerDetectorReplyPacket::parseBody( )
 
 	int offset = 0;
 	m_ReplyCode = ntohs( *((unsigned short *)(decryptedBuf)) ); offset+=2;
-	if(m_ReplyCode == QQ_CMD_SERVER_DETECT_REPLY_OK) 
+	if(m_ReplyCode == TQQ_CMD_SERVER_DETECT_REPLY_OK) 
 		return;
 
 	// we need redirect to some server here

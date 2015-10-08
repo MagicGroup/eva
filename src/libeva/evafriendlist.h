@@ -39,13 +39,13 @@ static const unsigned int SignatureChanged= (1 << 2);
 static const unsigned int StatusChanged   = (1 << 3);
 static const unsigned int MemoChanged     = (1 << 4);
 
-// class QQFriend try to encapculate all information about your buddies,
+// class TQQFriend try to encapculate all information about your buddies,
 // and provides enough methods to update them from time to time
-class QQFriend{
+class TQQFriend{
 public:
-	QQFriend();
-	QQFriend(const unsigned int qqid, const unsigned short qqFace);
-	QQFriend(const QQFriend &rhs);
+	TQQFriend();
+	TQQFriend(const unsigned int qqid, const unsigned short qqFace);
+	TQQFriend(const TQQFriend &rhs);
 	
 	const unsigned int getQQ() const { return qqNum; }
 	const unsigned short getFace() const { return face; }
@@ -65,7 +65,7 @@ public:
 	void setCommonFlag(const char flag) {commonFlag = flag; }
 	
 	const bool isMember() const { return (commonFlag & 0x2) != 0; }
-	const bool isBoy() const { return gender == QQ_FRIEND_GENDER_GG;}           // aboves from FriendItem
+	const bool isBoy() const { return gender == TQQ_FRIEND_GENDER_GG;}           // aboves from FriendItem
 
 	const unsigned int getIP() const { return IP; }
 	const unsigned short getPort() const { return port;}
@@ -114,11 +114,11 @@ public:
 	
 	void setExtraInfo(const unsigned int info) { mExtraInfo = info; }
 	const unsigned long long getExtraInfo() const { return mExtraInfo; }
-	const bool hasSignature() const { return mExtraInfo & QQ_EXTAR_INFO_SIGNATURE; }
-	const bool hasQQTang() const { return mExtraInfo & QQ_EXTAR_INFO_TANG; }
-	const bool hasQQAlbum() const { return mExtraInfo & QQ_EXTAR_INFO_ALBUM; }
-	const bool hasPalEntry() const { return mExtraInfo & QQ_EXTAR_INFO_PAL; }
-	const bool hasUserHead() const { return mExtraInfo & QQ_EXTAR_INFO_USER_HEAD; }
+	const bool hasSignature() const { return mExtraInfo & TQQ_EXTAR_INFO_SIGNATURE; }
+	const bool hasTQQTang() const { return mExtraInfo & TQQ_EXTAR_INFO_TANG; }
+	const bool hasTQQAlbum() const { return mExtraInfo & TQQ_EXTAR_INFO_ALBUM; }
+	const bool hasPalEntry() const { return mExtraInfo & TQQ_EXTAR_INFO_PAL; }
+	const bool hasUserHead() const { return mExtraInfo & TQQ_EXTAR_INFO_USER_HEAD; }
 	
 	void setSignature(const std::string sig, const unsigned int time) 
 			{ mSignature = sig;  mSignatureModifyTime = time; m_evaUpdateFlag |= SignatureChanged; }
@@ -131,9 +131,9 @@ public:
 	enum sortItem { Sort_QQ, Sort_Nick, Sort_Status};
 	static sortItem getSortField() { return field2Sort; }
 	static void setSortField(const sortItem field) { field2Sort = field; }
-	QQFriend &operator=(const QQFriend &rhs);
-	int operator==(const QQFriend &rhs) const ; // note: we only test qqNum
-	int operator<(const QQFriend &rhs) const ;
+	TQQFriend &operator=(const TQQFriend &rhs);
+	int operator==(const TQQFriend &rhs) const ; // note: we only test qqNum
+	int operator<(const TQQFriend &rhs) const ;
 
 	void setSequence(const unsigned short seq) { m_Sequence = seq; }
 	const unsigned short getSequence() const { return m_Sequence; }
@@ -176,7 +176,7 @@ private:
 	char unknown11;
 	char status;
 	short unknown13_14;
-	unsigned char unknownKey[QQ_KEY_LENGTH];
+	unsigned char unknownKey[TQQ_KEY_LENGTH];
 	short unknown31_32;
 	char onlineExtFlag;
 	char onlineCommonFlag;
@@ -192,7 +192,7 @@ private:
 	std::string mSignature;
 	unsigned int mSignatureModifyTime;
 	
-	unsigned char fileSessionKey[QQ_KEY_LENGTH];
+	unsigned char fileSessionKey[TQQ_KEY_LENGTH];
 	
 	ContactInfo userInfo;
 	
@@ -211,22 +211,22 @@ private:
 	void initalizeBuddy(const unsigned int qqid = 0, const unsigned short qqFace = 0);
 };
 
-inline void QQFriend::inactiveEvaUpdateFlag( const unsigned int bit) { m_evaUpdateFlag &= (~bit); }
-inline int QQFriend::isNickChanged()      { return m_evaUpdateFlag & NickChanged; }
-inline int QQFriend::isFaceChanged()      { return m_evaUpdateFlag & FaceChanged; }
-inline int QQFriend::isSignatureChanged() { return m_evaUpdateFlag & SignatureChanged; }
-inline int QQFriend::isStatusChanged()    { return m_evaUpdateFlag & StatusChanged; }
-inline int QQFriend::isMemoChanged()      { return m_evaUpdateFlag & MemoChanged; }
+inline void TQQFriend::inactiveEvaUpdateFlag( const unsigned int bit) { m_evaUpdateFlag &= (~bit); }
+inline int TQQFriend::isNickChanged()      { return m_evaUpdateFlag & NickChanged; }
+inline int TQQFriend::isFaceChanged()      { return m_evaUpdateFlag & FaceChanged; }
+inline int TQQFriend::isSignatureChanged() { return m_evaUpdateFlag & SignatureChanged; }
+inline int TQQFriend::isStatusChanged()    { return m_evaUpdateFlag & StatusChanged; }
+inline int TQQFriend::isMemoChanged()      { return m_evaUpdateFlag & MemoChanged; }
 
 class FriendList{
 public:
     FriendList() {}
     ~FriendList() { privateList.clear(); }	
     const bool hasFriend(const unsigned int id);
-    QQFriend *getFriend(const unsigned int id);
+    TQQFriend *getFriend(const unsigned int id);
     bool deleteFriend(const unsigned int id);
-    void addFriend(const QQFriend &frd);
-    void updateFriend( const QQFriend &frd);  // if frd dosen't exists, add a new one
+    void addFriend(const TQQFriend &frd);
+    void updateFriend( const TQQFriend &frd);  // if frd dosen't exists, add a new one
     void clearFriendList() { privateList.clear(); }
     
     bool updateFriendIP(const unsigned int id, const unsigned int ip);
@@ -244,11 +244,11 @@ public:
     
     const int numberOfFriends() const { return privateList.size(); }
     const int numberOfOnlines() ;
-    std::list<QQFriend> getFriendsInGroupIndexOf( const int index);
-    std::list<QQFriend> getAllFriends( const unsigned int myId = 0);
-    std::map<unsigned int, QQFriend> &getAllFriendsMap() { return privateList; }
+    std::list<TQQFriend> getFriendsInGroupIndexOf( const int index);
+    std::list<TQQFriend> getAllFriends( const unsigned int myId = 0);
+    std::map<unsigned int, TQQFriend> &getAllFriendsMap() { return privateList; }
     
-    const std::map<unsigned int, QQFriend> &getFriendList() const { return privateList; }
+    const std::map<unsigned int, TQQFriend> &getFriendList() const { return privateList; }
     
     bool setExtraInfo(const unsigned int id, const short info);
     bool setSignature(const unsigned int id, const std::string sig, const unsigned int time);
@@ -256,13 +256,13 @@ public:
     const std::list<unsigned int> getUserHeadList(const unsigned int myId, const bool hasUserHead);
     bool setMemo(const unsigned int id, const MemoItem &memo);
 
-    QQFriend *firstFriend();
-    QQFriend *nextFriend();
+    TQQFriend *firstFriend();
+    TQQFriend *nextFriend();
     FriendList &operator=(const FriendList &rhs) { privateList = rhs.getFriendList(); return *this;}
 private:
-    std::map<unsigned int, QQFriend> privateList;
-    std::map<unsigned int, QQFriend>::iterator m_iter; // used only for trieverse outside of this class
-    std::map<unsigned int, QQFriend>::iterator getFriendPosition(const unsigned int id);
+    std::map<unsigned int, TQQFriend> privateList;
+    std::map<unsigned int, TQQFriend>::iterator m_iter; // used only for trieverse outside of this class
+    std::map<unsigned int, TQQFriend>::iterator getFriendPosition(const unsigned int id);
 };
 
 #endif

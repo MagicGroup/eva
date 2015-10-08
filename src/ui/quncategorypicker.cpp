@@ -19,13 +19,13 @@
  ***************************************************************************/
 
 #include "quncategorypicker.h"
-#include <qfile.h>
-#include <qtextstream.h>
-#include <qstringlist.h>
-#include <qcombobox.h>
-#include <qpushbutton.h>
-#include <qtextcodec.h>
-#include <kglobal.h>
+#include <ntqfile.h>
+#include <ntqtextstream.h>
+#include <ntqstringlist.h>
+#include <ntqcombobox.h>
+#include <ntqpushbutton.h>
+#include <ntqtextcodec.h>
+#include <tdeglobal.h>
 #include <kstandarddirs.h>
 
 QunCategory::QunCategory( )
@@ -49,10 +49,10 @@ std::list< QunCategoryElement > QunCategory::getSubList( unsigned short code )
 	return results;
 }
 
-const QString QunCategory::getDescription(const unsigned short code)
+const TQString QunCategory::getDescription(const unsigned short code)
 {
 	if(!code || code>list.size()) return "";
-	QString ret;
+	TQString ret;
 	ret = list[code].name;
 	unsigned short parentCode = list[code].parent;
 	if(!parentCode) return ret;
@@ -66,22 +66,22 @@ const QString QunCategory::getDescription(const unsigned short code)
 const bool QunCategory::loadList( )
 {
 	list.clear();
-	QString filePath = KGlobal::dirs()->findResource("data", QString::fromLatin1("eva/qun-category"));
+	TQString filePath = TDEGlobal::dirs()->findResource("data", TQString::fromLatin1("eva/qun-category"));
 	
-	QFile file(filePath);    
+	TQFile file(filePath);    
 	if(!file.open(IO_ReadOnly)){
 		return false;
 	}
 	
-	QTextStream stream(&file);
-	stream.setCodec(QTextCodec::codecForName("GB18030"));
-	QString line;
-	QStringList lineList;
+	TQTextStream stream(&file);
+	stream.setCodec(TQTextCodec::codecForName("GB18030"));
+	TQString line;
+	TQStringList lineList;
 	
 	while(!stream.atEnd()){
 		line = stream.readLine().stripWhiteSpace();
 			
-		lineList = QStringList::split(",", line);
+		lineList = TQStringList::split(",", line);
 		
 		if(lineList.size() != 3)
 			continue;
@@ -101,15 +101,15 @@ const bool QunCategory::loadList( )
 	return true; 
 }
 
-QunCategoryPicker::QunCategoryPicker(QWidget* parent, const char* name, WFlags fl)
+QunCategoryPicker::QunCategoryPicker(TQWidget* parent, const char* name, WFlags fl)
 	: QunCategoryUI(parent, name, fl), categoryData(NULL)
 {
 	loadCategoryList();
-	QObject::connect(cbbTop,SIGNAL(activated(int)), SLOT(slotTopListChanged(int)));
-	QObject::connect(cbbSecond,SIGNAL(activated(int)), SLOT(slotSecondListChanged(int)));
-	QObject::connect(cbbThird,SIGNAL(activated(int)), SLOT(slotThirdListChanged(int)));
-	QObject::connect(pbCancel,SIGNAL(clicked()), SLOT(slotCancelClicked()));
-	QObject::connect(pbOK,SIGNAL(clicked()), SLOT(slotOKClicked()));
+	TQObject::connect(cbbTop,SIGNAL(activated(int)), SLOT(slotTopListChanged(int)));
+	TQObject::connect(cbbSecond,SIGNAL(activated(int)), SLOT(slotSecondListChanged(int)));
+	TQObject::connect(cbbThird,SIGNAL(activated(int)), SLOT(slotThirdListChanged(int)));
+	TQObject::connect(pbCancel,SIGNAL(clicked()), SLOT(slotCancelClicked()));
+	TQObject::connect(pbOK,SIGNAL(clicked()), SLOT(slotOKClicked()));
 }
 
 QunCategoryPicker::~QunCategoryPicker()

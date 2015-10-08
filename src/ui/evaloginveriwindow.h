@@ -27,11 +27,11 @@ class EvaLoginVeriWindow : public EvaLoginVeriUIBase
 {
 	Q_OBJECT
 public:
-	EvaLoginVeriWindow(QWidget *p = 0);
+	EvaLoginVeriWindow(TQWidget *p = 0);
 	
 signals:
 	void changeImage();
-	void sendVerifyCode( const QString &code );
+	void sendVerifyCode( const TQString &code );
 public slots:
 	void slotImageReady();
 	void slotVerifyPassed();

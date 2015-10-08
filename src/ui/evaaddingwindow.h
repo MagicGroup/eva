@@ -22,9 +22,9 @@
 #define EVAADDINGWINDOW_H
 
 #include "evaadduibase.h"
-#include <qpixmap.h>
+#include <ntqpixmap.h>
 
-class QCloseEvent;
+class TQCloseEvent;
 
 class EvaAddingWindow : public EvaAddUIBase
 {
@@ -32,12 +32,12 @@ class EvaAddingWindow : public EvaAddUIBase
 public:
 	EvaAddingWindow( );
 
-	void setBuddy(const unsigned int id, const QString &nick, const unsigned short face, const bool selectGroup = false);
+	void setBuddy(const unsigned int id, const TQString &nick, const unsigned short face, const bool selectGroup = false);
 
 	void AddingRejected();
 	void AddingNeedAuth();
-	void updateGraphic(QPixmap &p);
-	void setQuestion(const QString &q);
+	void updateGraphic(TQPixmap &p);
+	void setQuestion(const TQString &q);
 	void AddingNoAuthReady();
 
 signals:
@@ -49,7 +49,7 @@ signals:
 	void groupSelected(const int index);
 private:
 	unsigned int m_ID;
-	QString m_Nick;
+	TQString m_Nick;
 	unsigned short m_Face;
 	bool m_IsSelectGroupOnly;
 
@@ -59,7 +59,7 @@ private slots:
 	void slotFaceClicked();
 	void slotOkClicked();
 
-	virtual void closeEvent(QCloseEvent *e);
+	virtual void closeEvent(TQCloseEvent *e);
 };
 
 #endif

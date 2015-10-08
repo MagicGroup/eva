@@ -23,27 +23,27 @@
 #include "../evamain.h"
 #include "evaqtutil.h"
 
-#include <qlabel.h>
-#include <qpushbutton.h>
-#include <qcombobox.h>
-#include <qlineedit.h>
-#include <qdir.h>
-#include <qlistview.h>
-#include <qtoolbutton.h>
-#include <qlayout.h>
-#include <qradiobutton.h>
-#include <qtable.h>
-#include <qpopupmenu.h>
-#include <qimage.h>
-#include <qpixmap.h>
-#include <qmovie.h>
+#include <ntqlabel.h>
+#include <ntqpushbutton.h>
+#include <ntqcombobox.h>
+#include <ntqlineedit.h>
+#include <ntqdir.h>
+#include <ntqlistview.h>
+#include <ntqtoolbutton.h>
+#include <ntqlayout.h>
+#include <ntqradiobutton.h>
+#include <ntqtable.h>
+#include <ntqpopupmenu.h>
+#include <ntqimage.h>
+#include <ntqpixmap.h>
+#include <ntqmovie.h>
 
-#include <kfiledialog.h>
-#include <kmessagebox.h>
-#include <klocale.h>
+#include <tdefiledialog.h>
+#include <tdemessagebox.h>
+#include <tdelocale.h>
 
 
-CreateSmileyWindow::CreateSmileyWindow( const QString & url, const int groupIndex )
+CreateSmileyWindow::CreateSmileyWindow( const TQString & url, const int groupIndex )
 	: m_FileName(url),
 	m_MultiFiles(false),
 	m_Config(0),
@@ -60,7 +60,7 @@ CreateSmileyWindow::~ CreateSmileyWindow( )
 void CreateSmileyWindow::init( )
 {
 	if(!m_FileName.isEmpty()){
-		QString file = m_FileName.right( m_FileName.length() - m_FileName.findRev("/") - 1);
+		TQString file = m_FileName.right( m_FileName.length() - m_FileName.findRev("/") - 1);
 		lblSelect->setText(file);
 		btnSelect->setEnabled(false);
 
@@ -69,11 +69,11 @@ void CreateSmileyWindow::init( )
 		leTip->setText(file.left( file.findRev(".") ) );
 	}
 
-	QString dir = EvaMain::user->getSetting()->getCustomSmileyDir() + "/";
+	TQString dir = EvaMain::user->getSetting()->getCustomSmileyDir() + "/";
 	m_Config = new CustomFaceConfig(dir);
 
 	if(m_Config->loadXML()){
-		QStringList groups = m_Config->groupNames();
+		TQStringList groups = m_Config->groupNames();
 		cbbGroup->insertStringList(m_Config->groupNames());
 	}
 	cbbGroup->setCurrentItem(m_DefaultGroup);
@@ -84,7 +84,7 @@ void CreateSmileyWindow::init( )
 	connect(btnSelect, SIGNAL(clicked()), this, SLOT(slotSelectImagesClicked() ));
 }
 
-void CreateSmileyWindow::closeEvent( QCloseEvent * e )
+void CreateSmileyWindow::closeEvent( TQCloseEvent * e )
 {
 	e->accept();
 	deleteLater();
@@ -92,13 +92,13 @@ void CreateSmileyWindow::closeEvent( QCloseEvent * e )
 
 void CreateSmileyWindow::slotSelectImagesClicked( )
 {
-	QString startDir =  QDir::homeDirPath();
-	QStringList fileNames = KFileDialog::getOpenFileNames(startDir,
+	TQString startDir =  TQDir::homeDirPath();
+	TQStringList fileNames = KFileDialog::getOpenFileNames(startDir,
 			"*.png *.bmp *.jpg *.jpeg *.gif |" + i18n(" all images (*.png *.bmp *.jpg *.jpeg *.gif)"), this, 
 			i18n("select image file(s)"));
 	if(fileNames.count() == 1){
 		m_FileName = fileNames[0];
-		QString file = m_FileName.right( m_FileName.length() - m_FileName.findRev("/") - 1);
+		TQString file = m_FileName.right( m_FileName.length() - m_FileName.findRev("/") - 1);
 
 		lblSelect->setText(file);
 
@@ -121,23 +121,23 @@ void CreateSmileyWindow::slotSelectImagesClicked( )
 void CreateSmileyWindow::slotOKClicked( )
 {
 	bool ok = false;
-	QString destDir = EvaMain::user->getSetting()->getCustomSmileyDir();
+	TQString destDir = EvaMain::user->getSetting()->getCustomSmileyDir();
 	if(cbbGroup->currentItem()>0)
 		destDir += ( "/" + cbbGroup->currentText() );
 	if(!m_FileName.isEmpty()){
 
- 		QString destFile = EvaHelper::generateCustomSmiley(m_FileName, destDir, true);
+ 		TQString destFile = EvaHelper::generateCustomSmiley(m_FileName, destDir, true);
  		if(!destFile.isEmpty()) {
-			QString name = destFile.right( destFile.length() - destFile.findRev("/") - 1);
+			TQString name = destFile.right( destFile.length() - destFile.findRev("/") - 1);
 			CustomFace face(name, leShortcut->text(), leTip->text(), 0, cbbGroup->currentItem());
 			ok = m_Config->addFace(face);
 		}
 	} else {
 		///TODO: add multiple files
-		for(QStringList::Iterator it = m_FileNames.begin(); it != m_FileNames.end(); ++it){
-			QString destFile = EvaHelper::generateCustomSmiley((*it), destDir, true);
+		for(TQStringList::Iterator it = m_FileNames.begin(); it != m_FileNames.end(); ++it){
+			TQString destFile = EvaHelper::generateCustomSmiley((*it), destDir, true);
 			if(!destFile.isEmpty()) {
-				QString name = destFile.right( destFile.length() - destFile.findRev("/") - 1);
+				TQString name = destFile.right( destFile.length() - destFile.findRev("/") - 1);
 				CustomFace face( name, name.left(6), name.left(name.findRev(".")), 0, cbbGroup->currentItem());
 				ok = m_Config->addFace(face);
 			}
@@ -154,50 +154,50 @@ void CreateSmileyWindow::slotOKClicked( )
 /**======================================================*/
 
 
-RmSmileyGroupDialog::RmSmileyGroupDialog(  int indexOfRm, CustomFaceConfig *config, QWidget* parent, const char* name, bool modal, WFlags fl )
-    : QDialog( parent, name, modal, fl ), m_IndexOfRm(indexOfRm), m_Config(config)
+RmSmileyGroupDialog::RmSmileyGroupDialog(  int indexOfRm, CustomFaceConfig *config, TQWidget* parent, const char* name, bool modal, WFlags fl )
+    : TQDialog( parent, name, modal, fl ), m_IndexOfRm(indexOfRm), m_Config(config)
 {
 	if ( !name )
 		setName( "RmSmileyGroupUI" );
-	RmSmileyGroupUILayout = new QGridLayout( this, 1, 1, 16, 7, "RmSmileyGroupUILayout"); 
+	RmSmileyGroupUILayout = new TQGridLayout( this, 1, 1, 16, 7, "RmSmileyGroupUILayout"); 
 	
-	layout3 = new QHBoxLayout( 0, 0, 6, "layout3"); 
-	spacer3 = new QSpacerItem( 81, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
+	layout3 = new TQHBoxLayout( 0, 0, 6, "layout3"); 
+	spacer3 = new TQSpacerItem( 81, 20, TQSizePolicy::Expanding, TQSizePolicy::Minimum );
 	layout3->addItem( spacer3 );
 	
-	btnOK = new QPushButton( this, "btnOK" );
+	btnOK = new TQPushButton( this, "btnOK" );
 	layout3->addWidget( btnOK );
 	
-	btnCancel = new QPushButton( this, "btnCancel" );
+	btnCancel = new TQPushButton( this, "btnCancel" );
 	layout3->addWidget( btnCancel );
 	
 	RmSmileyGroupUILayout->addLayout( layout3, 1, 0 );
 	
-	layout7 = new QVBoxLayout( 0, 6, 15, "layout7"); 
+	layout7 = new TQVBoxLayout( 0, 6, 15, "layout7"); 
 	
-	rbtnRmAll = new QRadioButton( this, "rbtnRmAll" );
+	rbtnRmAll = new TQRadioButton( this, "rbtnRmAll" );
 	layout7->addWidget( rbtnRmAll );
 	
-	layout6 = new QVBoxLayout( 0, 0, 6, "layout6"); 
+	layout6 = new TQVBoxLayout( 0, 0, 6, "layout6"); 
 	
-	rbtnRmMv = new QRadioButton( this, "rbtnRmMv" );
+	rbtnRmMv = new TQRadioButton( this, "rbtnRmMv" );
 	layout6->addWidget( rbtnRmMv );
 	
-	layout4 = new QHBoxLayout( 0, 0, 6, "layout4"); 
-	spacer4 = new QSpacerItem( 20, 20, QSizePolicy::Fixed, QSizePolicy::Minimum );
+	layout4 = new TQHBoxLayout( 0, 0, 6, "layout4"); 
+	spacer4 = new TQSpacerItem( 20, 20, TQSizePolicy::Fixed, TQSizePolicy::Minimum );
 	layout4->addItem( spacer4 );
 	
-	lblGroupTip = new QLabel( this, "lblGroupTip" );
+	lblGroupTip = new TQLabel( this, "lblGroupTip" );
 	layout4->addWidget( lblGroupTip );
 	
-	cbbGroups = new QComboBox( FALSE, this, "cbbGroups" );
+	cbbGroups = new TQComboBox( FALSE, this, "cbbGroups" );
 	layout4->addWidget( cbbGroups );
 	layout6->addLayout( layout4 );
 	layout7->addLayout( layout6 );
 	
 	RmSmileyGroupUILayout->addLayout( layout7, 0, 0 );
 	languageChange();
-	resize( QSize(309, 171).expandedTo(minimumSizeHint()) );
+	resize( TQSize(309, 171).expandedTo(minimumSizeHint()) );
 	clearWState( WState_Polished );
 
 	// make remove all smileys in this group as the default
@@ -205,11 +205,11 @@ RmSmileyGroupDialog::RmSmileyGroupDialog(  int indexOfRm, CustomFaceConfig *conf
 	rbtnRmMv->setChecked( false );
 
 	// setup combo box
-	QString dir = EvaMain::user->getSetting()->getCustomSmileyDir() + "/";
+	TQString dir = EvaMain::user->getSetting()->getCustomSmileyDir() + "/";
 	m_Config = new CustomFaceConfig(dir);
 
 	if(m_Config->loadXML()){
-		QStringList groups = m_Config->groupNames();
+		TQStringList groups = m_Config->groupNames();
 		for( int i=0; i < (int)(groups.count()); i++){
 			if(i != m_IndexOfRm )  // ignore the group we are operating on
 				cbbGroups->insertItem(groups[i]);
@@ -233,9 +233,9 @@ void RmSmileyGroupDialog::languageChange()
 {
 	setCaption( i18n( "Remove Smiley Group" ) );
 	btnOK->setText( i18n( "&OK" ) );
-	btnOK->setAccel( QKeySequence( "Alt+O" ) );
+	btnOK->setAccel( TQKeySequence( "Alt+O" ) );
 	btnCancel->setText( i18n( "&Cancel" ) );
-	btnCancel->setAccel( QKeySequence( "Alt+C" ) );
+	btnCancel->setAccel( TQKeySequence( "Alt+C" ) );
 	rbtnRmAll->setText( i18n( "Remove all smileys in this group" ) );
 	rbtnRmMv->setText( i18n( "Before removing this group," ) );
 	lblGroupTip->setText( i18n( "move all its smileys to:" ) );
@@ -271,7 +271,7 @@ void RmSmileyGroupDialog::slotCancelClicked()
 	m_Result = -2;
 }
 
-int RmSmileyGroupDialog::QueryDialog(int indexOfRm, CustomFaceConfig *config, QWidget* parent)
+int RmSmileyGroupDialog::QueryDialog(int indexOfRm, CustomFaceConfig *config, TQWidget* parent)
 {
 	RmSmileyGroupDialog *dialog = new RmSmileyGroupDialog( indexOfRm, config, parent);
 	dialog->exec();
@@ -282,19 +282,19 @@ int RmSmileyGroupDialog::QueryDialog(int indexOfRm, CustomFaceConfig *config, QW
 
 /**======================================================*/
 
-class CustomItem : public QTableItem
+class CustomItem : public TQTableItem
 {
 public:
-	CustomItem(QTable *table, const QString &text)
-		: QTableItem(table, QTableItem::OnTyping, text )
+	CustomItem(TQTable *table, const TQString &text)
+		: TQTableItem(table, TQTableItem::OnTyping, text )
 	{
 	}	
-	CustomItem(QTable *table, const QString &text, const QPixmap &p )
-		: QTableItem(table, QTableItem::OnTyping, text, p)
+	CustomItem(TQTable *table, const TQString &text, const TQPixmap &p )
+		: TQTableItem(table, TQTableItem::OnTyping, text, p)
 	{
 	}
 	
-	virtual int alignment() const { return Qt::AlignLeft | Qt::AlignVCenter; }
+	virtual int alignment() const { return TQt::AlignLeft | TQt::AlignVCenter; }
 };
 
 class GroupActionPrivate
@@ -303,8 +303,8 @@ public:
 	enum GroupAction {GNone, GSelect, GAdd, GEdit, GRemove};
 	
 	GroupAction m_Action;
-	QListViewItem *m_Item;
-	QString m_OldName;
+	TQListViewItem *m_Item;
+	TQString m_OldName;
 	friend class CustomSmileyManager;
 };
 
@@ -331,7 +331,7 @@ void CustomSmileyManager::init( )
 	// cancel does same job as ok, so hide it for now
 	btnCancel->hide();
 
-	lblPreview->setAlignment( Qt::AlignHCenter | Qt::AlignVCenter );
+	lblPreview->setAlignment( TQt::AlignHCenter | TQt::AlignVCenter );
 
 	d = new GroupActionPrivate;
 	d->m_Action = GroupActionPrivate::GNone;
@@ -339,7 +339,7 @@ void CustomSmileyManager::init( )
 	d->m_OldName = "";
 
 	if(m_Config) delete m_Config;
-	QString dir = EvaMain::user->getSetting()->getCustomSmileyDir() + "/";
+	TQString dir = EvaMain::user->getSetting()->getCustomSmileyDir() + "/";
 	m_Config = new CustomFaceConfig(dir);
 	m_Config->loadXML();
 	// group list first
@@ -359,20 +359,20 @@ void CustomSmileyManager::loadGroups( )
 	lvGroups->setColumnWidth(0, lvGroups->width());
 	lvGroups->setItemMargin( 2 );
 
-	QStringList groups = m_Config->groupNames();
-	// as  QLIstView alway insert the current item on the top,
+	TQStringList groups = m_Config->groupNames();
+	// as  TQLIstView alway insert the current item on the top,
 	// so, just add items reversely
 	for( int i = (int)(groups.count() -1); i >= 0; i--){
-		(void) new QListViewItem(lvGroups, groups[i]);
+		(void) new TQListViewItem(lvGroups, groups[i]);
 	}
 	connect(tbtnAddGroup, SIGNAL(clicked()), this, SLOT(slotAddGroupClicked()));
 	connect(tbtnEditGroup, SIGNAL(clicked()), this, SLOT(slotEditGroupClicked()));
 	connect(tbtnRemoveGroup, SIGNAL(clicked()), this, SLOT(slotRemoveGroupClicked()));
 
-	connect(lvGroups, SIGNAL(itemRenamed(QListViewItem*, int, const QString &)),
-			this, SLOT(slotGroupRenamed(QListViewItem*, int, const QString &)));
-	connect(lvGroups, SIGNAL(selectionChanged( QListViewItem *) ),
-			this, SLOT(slotGroupSelectionChanged( QListViewItem *) ) );
+	connect(lvGroups, SIGNAL(itemRenamed(TQListViewItem*, int, const TQString &)),
+			this, SLOT(slotGroupRenamed(TQListViewItem*, int, const TQString &)));
+	connect(lvGroups, SIGNAL(selectionChanged( TQListViewItem *) ),
+			this, SLOT(slotGroupSelectionChanged( TQListViewItem *) ) );
 }
 
 void CustomSmileyManager::initFaces( )
@@ -403,7 +403,7 @@ void CustomSmileyManager::loadSmileys( int groupIndex )
 			tblFaceList->removeRow(row);
 	}
 	tblFaceList->setNumRows(0);
-	QString dir = EvaMain::user->getSetting()->getCustomSmileyDir() + "/";
+	TQString dir = EvaMain::user->getSetting()->getCustomSmileyDir() + "/";
 
 	if(groupIndex>0)
 		dir += (m_Config->groupName( groupIndex) + "/");
@@ -416,12 +416,12 @@ void CustomSmileyManager::loadSmileys( int groupIndex )
 		tblFaceList->horizontalHeader()->setLabel( 1, i18n("Smiley" ) );
 		tblFaceList->horizontalHeader()->setLabel( 2, i18n("Shortcut" ) );
 		for( FaceList::Iterator it = list.begin(); it != list.end(); ++it){
-			//tblFaceList->setText(row, 0, QString::number( row + 1));
+			//tblFaceList->setText(row, 0, TQString::number( row + 1));
 			tblFaceList->setItem(row, 0, 
-						new QTableItem(tblFaceList, QTableItem::Never,
-									QString::number(row + 1)));
+						new TQTableItem(tblFaceList, TQTableItem::Never,
+									TQString::number(row + 1)));
 
-			QPixmap *pixmap = new QPixmap(dir + (*it).fixed());
+			TQPixmap *pixmap = new TQPixmap(dir + (*it).fixed());
 			CustomItem *item = new CustomItem(tblFaceList, (*it).tip(), *pixmap);
 			tblFaceList->setItem(row, 1, item);
 
@@ -437,7 +437,7 @@ void CustomSmileyManager::loadSmileys( int groupIndex )
 	}
 }
 
-void CustomSmileyManager::closeEvent( QCloseEvent * e )
+void CustomSmileyManager::closeEvent( TQCloseEvent * e )
 {
 	e->accept();
 	if(m_IsChanged){
@@ -459,10 +459,10 @@ void CustomSmileyManager::slotOKClicked( )
 // add a group
 void CustomSmileyManager::slotAddGroupClicked( )
 {
-	QString name = QString(i18n("Group%1")).arg(m_Config->numGroups());
+	TQString name = TQString(i18n("Group%1")).arg(m_Config->numGroups());
 
-	QString path = EvaMain::user->getSetting()->getCustomSmileyDir() + "/";
-	QDir dir(path + name);
+	TQString path = EvaMain::user->getSetting()->getCustomSmileyDir() + "/";
+	TQDir dir(path + name);
 	if(!dir.exists()){ // if the dest dir doesn't exist,
 		if(dir.mkdir( path + name )) // create the dir
 			m_IsChanged = true;
@@ -474,7 +474,7 @@ void CustomSmileyManager::slotAddGroupClicked( )
 		KMessageBox::error( this, i18n( "A directory named \"%1\" already exists. " ).arg( dir.path() ), i18n( "Directory Exists!" ) );
 		return;
 	}
-	QListViewItem *item = new QListViewItem(lvGroups, lvGroups->lastItem(), name);
+	TQListViewItem *item = new TQListViewItem(lvGroups, lvGroups->lastItem(), name);
 	m_Config->addGroup( name );
 	m_IsChanged = true;
 	m_Config->saveXML();
@@ -491,7 +491,7 @@ void CustomSmileyManager::slotAddGroupClicked( )
 // rename the group
 void CustomSmileyManager::slotEditGroupClicked( )
 {
-	QListViewItem *item = lvGroups->selectedItem();
+	TQListViewItem *item = lvGroups->selectedItem();
 	if(item){
 		if(item == lvGroups->firstChild()) return;
 
@@ -514,15 +514,15 @@ void CustomSmileyManager::slotRemoveGroupClicked( )
 {
 	if(!m_Config) return;
 
-	QListViewItem *item = lvGroups->selectedItem();
+	TQListViewItem *item = lvGroups->selectedItem();
 	if(item){
 		if(item == lvGroups->firstChild()) return; // never remove default group
 
 		int index = m_Config->groupIndex( item->text( 0 ) );
 		if(index <= -1) return;
 
-		QString path = EvaMain::user->getSetting()->getCustomSmileyDir() + "/";
-		QDir dir( path + item->text(0) );
+		TQString path = EvaMain::user->getSetting()->getCustomSmileyDir() + "/";
+		TQDir dir( path + item->text(0) );
 		FaceList list = m_Config->groupMembers( index);
 		int result = -2;
 		if(list.size() > 0 ){
@@ -536,11 +536,11 @@ void CustomSmileyManager::slotRemoveGroupClicked( )
 				default: // otherwise, move to result
 				{
 					if(dir.exists()){
-						dir.setFilter( QDir::Files | QDir::Hidden | QDir::NoSymLinks );
-						const QFileInfoList *list = dir.entryInfoList();
-						QFileInfoListIterator it( *list);
-						QFileInfo *fi;
-						QString destDir = path;
+						dir.setFilter( TQDir::Files | TQDir::Hidden | TQDir::NoSymLinks );
+						const TQFileInfoList *list = dir.entryInfoList();
+						TQFileInfoListIterator it( *list);
+						TQFileInfo *fi;
+						TQString destDir = path;
 						if(result>0)
 							destDir += ( m_Config->groupName( result ) + "/") ;
 						while( (fi = it.current() ) != 0 ){
@@ -562,10 +562,10 @@ void CustomSmileyManager::slotRemoveGroupClicked( )
 				m_IsChanged = true;
 			} else return;
 
-			dir.setFilter( QDir::Files | QDir::Hidden | QDir::NoSymLinks );
-			const QFileInfoList *list = dir.entryInfoList();
-			QFileInfoListIterator it( *list);
-			QFileInfo *fi;
+			dir.setFilter( TQDir::Files | TQDir::Hidden | TQDir::NoSymLinks );
+			const TQFileInfoList *list = dir.entryInfoList();
+			TQFileInfoListIterator it( *list);
+			TQFileInfo *fi;
 			while( (fi = it.current() ) != 0 ){
 				dir.remove( fi->absFilePath() );
 				++it;
@@ -580,7 +580,7 @@ void CustomSmileyManager::slotRemoveGroupClicked( )
 	}
 }
 
-void CustomSmileyManager::slotGroupRenamed( QListViewItem *item, int /*col*/, const QString & text)
+void CustomSmileyManager::slotGroupRenamed( TQListViewItem *item, int /*col*/, const TQString & text)
 {
 	item->setRenameEnabled( 0, false ); // make it un-editable
 	if(!m_Config) return;
@@ -593,8 +593,8 @@ void CustomSmileyManager::slotGroupRenamed( QListViewItem *item, int /*col*/, co
 									.arg( d->m_OldName).arg( text),
 								i18n( "Rename Group" ) );
 	} else{
-		QString path = EvaMain::user->getSetting()->getCustomSmileyDir() + "/";
-		QDir dir(path + d->m_OldName);
+		TQString path = EvaMain::user->getSetting()->getCustomSmileyDir() + "/";
+		TQDir dir(path + d->m_OldName);
 		if(dir.exists()){
 			if(!dir.rename(path + d->m_OldName, path + text, true)){
 				KMessageBox::error( this, i18n( "Can not change the directory name: %1. " )
@@ -612,7 +612,7 @@ void CustomSmileyManager::slotGroupRenamed( QListViewItem *item, int /*col*/, co
 	}
 }
 
-void CustomSmileyManager::slotGroupSelectionChanged( QListViewItem * group)
+void CustomSmileyManager::slotGroupSelectionChanged( TQListViewItem * group)
 {
 	if(!group) return;
 	group->setSelected( true );
@@ -621,7 +621,7 @@ void CustomSmileyManager::slotGroupSelectionChanged( QListViewItem * group)
 
 void CustomSmileyManager::slotFaceSelectionChanged( )
 {
-	// QTable::numSelections() doesn't return the correct value
+	// TQTable::numSelections() doesn't return the correct value
 	// if use select some rows by pressing shift key
 
 	int numSelections = 0;
@@ -637,22 +637,22 @@ void CustomSmileyManager::slotFaceSelectionChanged( )
 	btnUp->setEnabled(isSingle);
 	btnDown->setEnabled(isSingle);
 	if(numSelections){
-		QListViewItem *item = lvGroups->selectedItem();
+		TQListViewItem *item = lvGroups->selectedItem();
 		if(item){
 			int gId = m_Config->groupIndex( item->text( 0 ) );
 			if(gId < 0) return;
 			CustomFace face = m_Config->getFace( gId, first);
-			QString path = EvaMain::user->getSetting()->getCustomSmileyDir() + "/";
+			TQString path = EvaMain::user->getSetting()->getCustomSmileyDir() + "/";
 			if(gId > 0 )
 				path += (item->text(0) + "/");
-			QString ext = face.org().right(3);
+			TQString ext = face.org().right(3);
 			lblPreview->clear();
 			if(ext.lower() == "gif"){
-				lblPreview->setMovie( QMovie(path + face.org()));
+				lblPreview->setMovie( TQMovie(path + face.org()));
 			} else {
-				QImage img(path + face.org() );
+				TQImage img(path + face.org() );
 				
-				lblPreview->setPixmap( QPixmap(img.smoothScale( lblPreview->size(), QImage::ScaleMin)));
+				lblPreview->setPixmap( TQPixmap(img.smoothScale( lblPreview->size(), TQImage::ScaleMin)));
 			}
 		}
 	}
@@ -662,11 +662,11 @@ void CustomSmileyManager::slotFaceValueChanged( int row, int col )
 {
 	if(!m_Config) return;
 
-	QListViewItem *item = lvGroups->selectedItem();
+	TQListViewItem *item = lvGroups->selectedItem();
 	if(item){
 		int gId = m_Config->groupIndex( item->text( 0 ) );
 		if(gId < 0) return;
-		QString text = tblFaceList->text(row, col);
+		TQString text = tblFaceList->text(row, col);
 		switch(col){
 		case 1:  // tip
 			m_Config->updateFaceTip(gId, row, tblFaceList->text(row, col));
@@ -688,13 +688,13 @@ void CustomSmileyManager::slotAddSmiley( )
 {
 	if(!m_Config) return;
 
-	QListViewItem *item = lvGroups->selectedItem();
+	TQListViewItem *item = lvGroups->selectedItem();
 	if(! item) return;
 
 	int gId = m_Config->groupIndex( item->text( 0 ) );
 	if(gId < 0) return;
 	
-	CreateSmileyWindow *win = new CreateSmileyWindow(QString::null, gId);
+	CreateSmileyWindow *win = new CreateSmileyWindow(TQString::null, gId);
 	connect(win, SIGNAL(addCustomSmileyReady( bool )), this, SLOT(slotAddCustomSmileyReady( bool )));
 	win->show();
 }
@@ -704,7 +704,7 @@ void CustomSmileyManager::slotAddCustomSmileyReady( bool ok)
 	if(!ok) return;
 	if(!m_Config) return;
 
-	QListViewItem *item = lvGroups->selectedItem();
+	TQListViewItem *item = lvGroups->selectedItem();
 	if(! item) return;
 
 	int gId = m_Config->groupIndex( item->text( 0 ) );
@@ -718,11 +718,11 @@ void CustomSmileyManager::slotAddCustomSmileyReady( bool ok)
 
 bool CustomSmileyManager::removeSmileyFile( const CustomFace & face )
 {
-	QString path = EvaMain::user->getSetting()->getCustomSmileyDir() + "/";
+	TQString path = EvaMain::user->getSetting()->getCustomSmileyDir() + "/";
 	if(face.group() > 0){
 		path += ( m_Config->groupName( face.group()) + "/");
 	}
-	QDir dir( path);
+	TQDir dir( path);
 	if(dir.exists()){
 		if(dir.remove( path + face.fixed())) // remove thumbnail
 			return dir.remove(path + face.org()); // remove smiley
@@ -734,7 +734,7 @@ void CustomSmileyManager::slotRemoveSmiley( )
 {
 	if(!m_Config) return;
 
-	QListViewItem *item = lvGroups->selectedItem();
+	TQListViewItem *item = lvGroups->selectedItem();
 	if(item){
 		int gId = m_Config->groupIndex( item->text( 0 ) );
 		if(gId < 0) return;
@@ -783,7 +783,7 @@ void CustomSmileyManager::slotUpSmiley( )
 {
 	if(!m_Config) return;
 
-	QListViewItem *item = lvGroups->selectedItem();
+	TQListViewItem *item = lvGroups->selectedItem();
 	if(item){
 		int gId = m_Config->groupIndex( item->text( 0 ) );
 		if(gId < 0) return;
@@ -806,7 +806,7 @@ void CustomSmileyManager::slotDownSmiley( )
 {
 	if(!m_Config) return;
 
-	QListViewItem *item = lvGroups->selectedItem();
+	TQListViewItem *item = lvGroups->selectedItem();
 	if(item){
 		int gId = m_Config->groupIndex( item->text( 0 ) );
 		if(gId < 0) return;
@@ -829,22 +829,22 @@ void CustomSmileyManager::slotMoveToSmiley( )
 {
 	if(!m_Config) return;
 
-	QListViewItem *item = lvGroups->selectedItem();
+	TQListViewItem *item = lvGroups->selectedItem();
 	if(item){
 		if(m_MoveToMenu){
 			disconnect(m_MoveToMenu, 0, 0, 0);
 			delete m_MoveToMenu;
 		}
-		m_MoveToMenu = new QPopupMenu(0,"moveto");
+		m_MoveToMenu = new TQPopupMenu(0,"moveto");
 
 		int currIndex = m_Config->groupIndex( item->text( 0 ) );
-		QStringList groups = m_Config->groupNames();
+		TQStringList groups = m_Config->groupNames();
 		for( int i=0; i < (int)(groups.count()); i++){
 			if(i != currIndex )  // ignore the group we are operating on
 				m_MoveToMenu->insertItem(groups[i], i);
 		}
 		connect(m_MoveToMenu, SIGNAL(activated(int)), this, SLOT(slotMoveSmileyTo(int)));
-		QPoint p = btnMoveTo->mapToGlobal(QPoint(btnMoveTo->width()+1,0));
+		TQPoint p = btnMoveTo->mapToGlobal(TQPoint(btnMoveTo->width()+1,0));
 		m_MoveToMenu->popup( p );
 	}
 }
@@ -853,15 +853,15 @@ void CustomSmileyManager::slotMoveSmileyTo( int Id )
 {
 	if(!m_Config) return;
 
-	QListViewItem *item = lvGroups->selectedItem();
+	TQListViewItem *item = lvGroups->selectedItem();
 	if(item){
-		QString srcGName = item->text(0); // selected group name
+		TQString srcGName = item->text(0); // selected group name
 		int gId = m_Config->groupIndex( srcGName );  // selected group index
-		QString destGName = m_Config->groupName( Id); // dest group name
+		TQString destGName = m_Config->groupName( Id); // dest group name
 		if( (gId < 0) || (Id < 0) || (gId == Id) ) return;
 
-		QString dir = EvaMain::user->getSetting()->getCustomSmileyDir() + "/";
-		QString src = dir, dest = dir;
+		TQString dir = EvaMain::user->getSetting()->getCustomSmileyDir() + "/";
+		TQString src = dir, dest = dir;
 		if(gId != 0) src += (srcGName + "/");
 		if(Id != 0 ) dest += (destGName + "/");
 
@@ -886,7 +886,7 @@ void CustomSmileyManager::slotMoveSmileyTo( int Id )
 					EvaHelper::copyFile( src + face.fixed(), dest + face.fixed());
 					EvaHelper::copyFile( src + face.org(), dest + face.org());
 			
-					QDir smileyDir(src);
+					TQDir smileyDir(src);
 					smileyDir.remove( src + face.fixed());
 					smileyDir.remove( src +  + face.org());
 

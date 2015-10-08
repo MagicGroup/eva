@@ -20,11 +20,11 @@
 
 #include "evafilemanager.h"
 #include "evafiledownloader.h"
-#include <qevent.h>
+#include <ntqevent.h>
 #include <cstring>
 
-EvaFileManager::EvaFileManager(const int myId, QObject *parent)
-	: QObject(parent), m_MyId(myId), m_FileAgentToken(NULL), m_IsProxySet(false)
+EvaFileManager::EvaFileManager(const int myId, TQObject *parent)
+	: TQObject(parent), m_MyId(myId), m_FileAgentToken(NULL), m_IsProxySet(false)
 {
 	m_ThreadList.setAutoDelete(true);
 }
@@ -47,7 +47,7 @@ void EvaFileManager::setMyBasicInfo(const unsigned char *key, const unsigned cha
 	memcpy(m_FileAgentKey, key, 16);
 }
 
-void EvaFileManager::setMyProxyInfo(const QHostAddress addr, const short port, const QCString &param)
+void EvaFileManager::setMyProxyInfo(const TQHostAddress addr, const short port, const TQCString &param)
 {
 	m_ProxyServer = addr;
 	m_ProxyPort = port;
@@ -56,9 +56,9 @@ void EvaFileManager::setMyProxyInfo(const QHostAddress addr, const short port, c
 }
 
 const bool EvaFileManager::newSession(const unsigned int id, const unsigned int session, 
-				const QValueList<QString> &dirList, 
-				const QValueList<QString> &filenameList,
-				const QValueList<unsigned int> &sizeList,
+				const TQValueList<TQString> &dirList, 
+				const TQValueList<TQString> &filenameList,
+				const TQValueList<unsigned int> &sizeList,
 				const bool isDownload, const unsigned char transferType)
 {
 	if(getThread(id, session)) return false;
@@ -127,8 +127,8 @@ const bool EvaFileManager::changeToAgent(const unsigned int id, const unsigned i
 	return true;
 }
 /*
-const bool EvaFileManager::newSession(const int id, const QString &dir, 
-				const QString &file, const unsigned int session, const unsigned int size,
+const bool EvaFileManager::newSession(const int id, const TQString &dir, 
+				const TQString &file, const unsigned int session, const unsigned int size,
 				const bool isDirectConnection, const bool usingProxy, const bool isDownload)
 {
 	if(getThread(id, session)) return false;
@@ -198,11 +198,11 @@ const bool EvaFileManager::startSession(const unsigned int id, const unsigned in
 	return true;
 }
 
-const QString EvaFileManager::getFileName(const unsigned int id, const unsigned int session, const bool isAbs)
+const TQString EvaFileManager::getFileName(const unsigned int id, const unsigned int session, const bool isAbs)
 {
 	EvaFileThread *thread = getThread(id, session);
 	if(!thread) return "";
-	QString file = "";
+	TQString file = "";
 	if(isAbs) file = thread->getDir() + "/";
 	file += thread->getFileName();
 	return file;
@@ -246,7 +246,7 @@ void EvaFileManager::stopAll()
 	m_ThreadList.clear();
 }
 
-void EvaFileManager::customEvent(QCustomEvent *e)
+void EvaFileManager::customEvent(TQCustomEvent *e)
 {
 	printf("EvaFileManager::customEvent \n");
 	switch(e->type()){
@@ -311,7 +311,7 @@ void EvaFileManager::setBuddyAgentKey(const unsigned int id, const unsigned int 
 	if(thread) thread->setFileAgentKey(key);
 }
 
-void EvaFileManager::saveFileTo(const unsigned int id, const unsigned int session, const QString dir)
+void EvaFileManager::saveFileTo(const unsigned int id, const unsigned int session, const TQString dir)
 {
 	EvaFileThread *thread = getThread(id, session);
 	if(!thread) return;

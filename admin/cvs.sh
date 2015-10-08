@@ -11,13 +11,6 @@ unset MAKEFLAGS
 call_and_fix_autoconf()
 {
   $AUTOCONF || exit 1
-  if test -r configure.in.in ; then
-    perl -pi -e "print \"if test \\\"x\\\$with_fast_perl\\\" = \\\"xyes\\\"; then\
-    \\n  perl -i.bak \\\$ac_aux_dir/conf.change.pl \\\$CONFIG_STATUS\
-    \\\\\\n    || mv \\\$CONFIG_STATUS.bak \\\$CONFIG_STATUS\
-    \\n  rm -f \\\$CONFIG_STATUS.bak\\nfi\
-    \\n\" if /^\\s*chmod\\s+.*\\+x\\s+.*CONFIG_STATUS/; s,^#line.*LINENO.*\$,/* \$& */, ;" configure
-  fi
 }
 
 strip_makefile()
@@ -35,12 +28,12 @@ case $AUTOCONF_VERSION in
   Autoconf*2.5* | autoconf*2.5* | autoconf*2.6* ) : ;;
   "" )
     echo "*** AUTOCONF NOT FOUND!."
-    echo "*** KDE requires autoconf $required_autoconf_version"
+    echo "*** TDE requires autoconf $required_autoconf_version"
     exit 1
     ;;
   * )
     echo "*** YOU'RE USING $AUTOCONF_VERSION."
-    echo "*** KDE requires autoconf $required_autoconf_version"
+    echo "*** TDE requires autoconf $required_autoconf_version"
     exit 1
     ;;
 esac
@@ -50,12 +43,12 @@ case $AUTOHEADER_VERSION in
   Autoconf*2.5* | autoheader*2.5* | autoheader*2.6* ) : ;;
   "" )
     echo "*** AUTOHEADER NOT FOUND!."
-    echo "*** KDE requires autoheader $required_autoconf_version"
+    echo "*** TDE requires autoheader $required_autoconf_version"
     exit 1
     ;;
   * )
     echo "*** YOU'RE USING $AUTOHEADER_VERSION."
-    echo "*** KDE requires autoheader $required_autoconf_version"
+    echo "*** TDE requires autoheader $required_autoconf_version"
     exit 1
     ;;
 esac
@@ -63,18 +56,13 @@ esac
 AUTOMAKE_STRING=`$AUTOMAKE --version | head -n 1`
 required_automake_version="1.6.1 or newer"
 case $AUTOMAKE_STRING in
-  automake*1.5d* | automake*1.5* | automake*1.5-* )
-    echo "*** YOU'RE USING $AUTOMAKE_STRING."
-    echo "*** KDE requires automake $required_automake_version"
-    exit 1
-    ;;
-  automake*1.6.* | automake*1.7* | automake*1.8* | automake*1.9* | automake*1.10* | automake*1.11* | automake*1.12*)
+  automake*1.6.* | automake*1.7* | automake*1.8* | automake*1.9* | automake*1.10* | automake*1.11* | automake*1.12* | automake*1.13* | automake*1.14* | automake*1.15* )
     echo "*** $AUTOMAKE_STRING found."
     UNSERMAKE=no
     ;;
   "" )
     echo "*** AUTOMAKE NOT FOUND!."
-    echo "*** KDE requires automake $required_automake_version"
+    echo "*** TDE requires automake $required_automake_version"
     exit 1
     ;;
   *unsermake* ) :
@@ -84,7 +72,7 @@ case $AUTOMAKE_STRING in
     ;;
   * )
     echo "*** YOU'RE USING $AUTOMAKE_STRING."
-    echo "*** KDE requires automake $required_automake_version"
+    echo "*** TDE requires automake $required_automake_version"
     exit 1
     ;;
 esac
@@ -128,14 +116,14 @@ $ACLOCAL $ACLOCALFLAGS || exit 1
 echo "*** Creating configure"
 call_and_fix_autoconf
 
-if egrep "^AM_CONFIG_HEADER" configure.in >/dev/null 2>&1; then
+if egrep "^A[MC]_CONFIG_HEADER" configure.in >/dev/null 2>&1; then
   echo "*** Creating config.h template"
   $AUTOHEADER || exit 1
   touch config.h.in
 fi
 
 echo "*** Creating Makefile templates"
-$AUTOMAKE || exit 1
+$AUTOMAKE --add-missing || exit 1
 
 if test "$UNSERMAKE" = no; then
   echo "*** Postprocessing Makefile templates"
@@ -184,12 +172,12 @@ if test -r configure.in.in; then
   fi
 fi
 $ACLOCAL $ACLOCALFLAGS
-if egrep "^AM_CONFIG_HEADER" configure.in >/dev/null 2>&1; then
+if egrep "^A[MC]_CONFIG_HEADER" configure.in >/dev/null 2>&1; then
   echo "*** Creating config.h template"
   $AUTOHEADER || exit 1
   touch config.h.in
 fi
-$AUTOMAKE --foreign || exit 1
+$AUTOMAKE --add-missing --foreign || exit 1
 if test "$UNSERMAKE" = no; then
   echo "*** Postprocessing Makefile templates"
   perl -w admin/am_edit || exit 1
@@ -359,7 +347,7 @@ if test -f inst-apps; then
 		sed -e "s,/configure,/aaaconfigure," | sort | sed -e "s,/aaaconfigure,/configure,"`"
    done
 else
-   list=`find . -follow -name "configure.in.in" -o -name "configure.in.bot" -o -name "configure.in.mid" | \
+   list=`find . -path "./.pc" -prune -o -follow -name "configure.in.in" -o -name "configure.in.bot" -o -name "configure.in.mid" | \
 		sed -e "s,/configure,/aaaconfigure," | sort | sed -e "s,/aaaconfigure,/configure,"`
 fi
 for i in $list; do if test -f $i && test `dirname $i` != "." ; then
@@ -549,15 +537,15 @@ for subdir in $dirs; do
 	    echo "$subdir has *.rc, *.ui or *.kcfg files, but not correct messages line"
 	fi
    fi
-   if find . -name \*.c\* -o -name \*.h\* | fgrep -v ".svn" | xargs fgrep -s -q KAboutData ; then
+   if find . -name \*.c\* -o -name \*.h\* | fgrep -v ".svn" | xargs fgrep -s -q TDEAboutData ; then
 	echo -e 'i18n("_: NAME OF TRANSLATORS\\n"\n"Your names")\ni18n("_: EMAIL OF TRANSLATORS\\n"\n"Your emails")' > _translatorinfo.cpp
    else echo " " > _translatorinfo.cpp
    fi
    perl -e '$mes=0; while (<STDIN>) { next if (/^(if\s|else\s|endif)/); if (/^messages:/) { $mes=1; print $_; next; } if ($mes) { if (/$\\(XGETTEXT\)/ && / -o/) { s/ -o \$\(podir\)/ _translatorinfo.cpp -o \$\(podir\)/ } print $_; } else { print $_; } }' < Makefile.am | egrep -v '^include ' > _transMakefile
 
-   kdepotpath=${includedir:-`kde-config --expandvars --install include`}/kde.pot
+   kdepotpath=${includedir:-`tde-config --expandvars --install include`}/tde.pot
    if ! test -f $kdepotpath; then
-	kdepotpath=`kde-config --expandvars --prefix`/include/kde.pot
+	kdepotpath=`tde-config --expandvars --prefix`/include/tde.pot
    fi
 
    $MAKE -s -f _transMakefile podir=$podir EXTRACTRC="$EXTRACTRC" PREPARETIPS="$PREPARETIPS" srcdir=. \

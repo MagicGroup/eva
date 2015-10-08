@@ -24,9 +24,9 @@
 #include "evaimsend.h"
 #include "evaqun.h"
 #include "evalogintoken.h"
-#include <qapplication.h>
-#include <qtimer.h> 
-#include <qmutex.h>
+#include <ntqapplication.h>
+#include <ntqtimer.h> 
+#include <ntqmutex.h>
 #include <arpa/inet.h>
 #include <stdlib.h>
 #include <cstring>
@@ -43,15 +43,15 @@ EvaConnecter::EvaConnecter(EvaNetwork *network)
 	connecter = network;
 	connectionReady = false;
 	isClientSetup = false;
-	QObject::connect(connecter, SIGNAL(isReady()), this, SLOT(isReadySlot()));
-	QObject::connect(connecter, SIGNAL(dataComming(int)), this, SLOT(dataCommingSlot(int)));
-	QObject::connect(connecter, SIGNAL(exceptionEvent(int)), this, SLOT(slotNetworkException(int)));
+	TQObject::connect(connecter, SIGNAL(isReady()), this, SLOT(isReadySlot()));
+	TQObject::connect(connecter, SIGNAL(dataComming(int)), this, SLOT(dataCommingSlot(int)));
+	TQObject::connect(connecter, SIGNAL(exceptionEvent(int)), this, SLOT(slotNetworkException(int)));
 	
         outPool.setAutoDelete(true);
         inPool.setAutoDelete(false);
 	
-	timer = new QTimer(this);
-	QObject::connect(timer, SIGNAL(timeout()), this, SLOT(packetMonitor()));
+	timer = new TQTimer(this);
+	TQObject::connect(timer, SIGNAL(timeout()), this, SLOT(packetMonitor()));
 }
 
 EvaConnecter::~EvaConnecter()
@@ -89,13 +89,13 @@ void EvaConnecter::redirectTo(const int ip, const short port)
 	outPool.clear();
 	if(connecter->connectionType()!= EvaNetwork::HTTP_Proxy){
 		connectionReady = false;
-		connecter->setServer(QHostAddress(ip), port==-1?connecter->getHostPort():port);
+		connecter->setServer(TQHostAddress(ip), port==-1?connecter->getHostPort():port);
 	}else{
 		connecter->setServer(connecter->getHostAddress(), connecter->getHostPort());
-		connecter->setDestinationServer(QHostAddress(ip).toString(), 443); // always 443 for http proxy
+		connecter->setDestinationServer(TQHostAddress(ip).toString(), 443); // always 443 for http proxy
 	      }
 
-	kdDebug() << "[EvaConnecter->redirectTo] "<< QHostAddress(ip).toString() << " : " << (port==-1?connecter->getHostPort():port) <<endl;
+	kdDebug() << "[EvaConnecter->redirectTo] "<< TQHostAddress(ip).toString() << " : " << (port==-1?connecter->getHostPort():port) <<endl;
 	connect();
 }
 
@@ -111,7 +111,7 @@ void EvaConnecter::stop()
 {
 	if(timer->isActive())
 		timer->stop();
-	//QTimer::singleShot(200, this, SLOT(clearAllPools()));
+	//TQTimer::singleShot(200, this, SLOT(clearAllPools()));
 	clearAllPools();
 	memset(buffer, 0, 65535);
 	packetLength = 0;
@@ -145,7 +145,7 @@ void EvaConnecter::sendOut( OutPacket *out)
 
 void EvaConnecter::removePacket(const int hashCode)
 {
-	QMutex mutex;
+	TQMutex mutex;
 	mutex.lock();
 	for( uint i = 0; i < outPool.count(); i++){
 		if(outPool.at(i)->hashCode() == hashCode){
@@ -255,7 +255,7 @@ void EvaConnecter::processPacket( char * data, int len )
 		return;
 	}
 
-	if(packet->getCommand() == QQ_CMD_SERVER_DETECT){
+	if(packet->getCommand() == TQQ_CMD_SERVER_DETECT){
 		processDetectReply(packet);
 		delete packet;
 		return;
@@ -265,19 +265,19 @@ void EvaConnecter::processPacket( char * data, int len )
 	
 	// for the case of keep alive, once we got one, we could ignore all keep alive
 	// packets in the outPool
-	if(packet->getCommand() == QQ_CMD_KEEP_ALIVE)
-		removeOutRequests(QQ_CMD_KEEP_ALIVE);
+	if(packet->getCommand() == TQQ_CMD_KEEP_ALIVE)
+		removeOutRequests(TQQ_CMD_KEEP_ALIVE);
 
 	// same reason as above
-	if(packet->getCommand() == QQ_CMD_GET_FRIEND_ONLINE)
-		removeOutRequests(QQ_CMD_GET_FRIEND_ONLINE);
+	if(packet->getCommand() == TQQ_CMD_GET_FRIEND_ONLINE)
+		removeOutRequests(TQQ_CMD_GET_FRIEND_ONLINE);
 
         inPool.append(packet);
 
 	//NOTE: the if condition needs more consideration
-	if(isClientSetup || (!isClientSetup && packet->getCommand()!= QQ_CMD_RECV_IM && 
-				packet->getCommand() != QQ_CMD_RECV_MSG_SYS          &&
-				packet->getCommand() != QQ_CMD_RECV_MSG_FRIEND_CHANGE_STATUS))
+	if(isClientSetup || (!isClientSetup && packet->getCommand()!= TQQ_CMD_RECV_IM && 
+				packet->getCommand() != TQQ_CMD_RECV_MSG_SYS          &&
+				packet->getCommand() != TQQ_CMD_RECV_MSG_FRIEND_CHANGE_STATUS))
 		emit newPacket();
 	else if(!isClientSetup)
 		emit clientNotReady();
@@ -291,18 +291,18 @@ void EvaConnecter::packetMonitor()
 			sendOut(outPool.at(i));
 		}else{
 			short cmd = outPool.at(i)->getCommand();
-			if(cmd == QQ_CMD_SEND_IM){
+			if(cmd == TQQ_CMD_SEND_IM){
 				SendIM *im = dynamic_cast<SendIM *>(outPool.at(i));
 				if(im)
 					emit sendMessage(im->getReceiver(), false);
 				else
 					emit packetException( cmd);
-			} else if( cmd == QQ_CMD_QUN_CMD ){
+			} else if( cmd == TQQ_CMD_QUN_CMD ){
 					QunPacket *qun = dynamic_cast<QunPacket *>(outPool.at(i));
 					if(qun){
 						char qunCmd = qun->getQunCommand();
-						if(qunCmd == QQ_QUN_CMD_SEND_IM || qunCmd == QQ_QUN_CMD_SEND_IM_EX)
-							emit sendQunMessage(qun->getQunID(), false, QString::null);
+						if(qunCmd == TQQ_QUN_CMD_SEND_IM || qunCmd == TQQ_QUN_CMD_SEND_IM_EX)
+							emit sendQunMessage(qun->getQunID(), false, TQString::null);
 						else
 							emit packetException(cmd);
 					} else
@@ -326,14 +326,14 @@ void EvaConnecter::slotClientReady( )
 	isClientSetup = true;
 	while(inPool.count()){
 		emit newPacket();
-		qApp->processEvents();
+		tqApp->processEvents();
 	}
 }
 
-const QHostAddress EvaConnecter::getSocketIp( )
+const TQHostAddress EvaConnecter::getSocketIp( )
 {
 	if(connecter) return connecter->getSocketIp();
-	return QHostAddress();
+	return TQHostAddress();
 }
 
 const unsigned int EvaConnecter::getSocketPort( )

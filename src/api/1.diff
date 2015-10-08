@@ -9,10 +9,10 @@ Index: evausersetting.cpp
 +#include "qmdcodec.h"
  #include <vector>
  #include <stdlib.h>
- #include <qdatastream.h>
+ #include <ntqdatastream.h>
 @@ -31,6 +32,7 @@
- #include <kconfig.h>
- #include <klocale.h>
+ #include <tdeconfig.h>
+ #include <tdelocale.h>
  #include <kdebug.h>
 +#include <sqlite3.h>
  
@@ -35,12 +35,12 @@ Index: evausersetting.cpp
  	}
  }
  
-+void EvaUserSetting::loadMsgToSql(const QString fullName,const bool isQunMsg)
++void EvaUserSetting::loadMsgToSql(const TQString fullName,const bool isQunMsg)
 +{
-+	QFile file(fullName);
++	TQFile file(fullName);
 +	if(!file.open(IO_ReadOnly))
 +		return ;
-+	QString fullNameSql = getEvaUserDir() + "/"+SqlFileName;
++	TQString fullNameSql = getEvaUserDir() + "/"+SqlFileName;
 +	int result;
 +	char * errmsg = NULL;
 +	char **dbResult;
@@ -48,24 +48,24 @@ Index: evausersetting.cpp
 +	sqlite3 *db=NULL;
 +	result=sqlite3_open(fullNameSql.data(),&db);
 +	if( result != SQLITE_OK ) return;
-+	QString sql;
++	TQString sql;
 +	sqlite3_exec( db,"begin transaction;",0,0,&errmsg);
 +
-+	Q_UINT32 r_buddy;
-+	Q_UINT32 sender;
-+	QString  sNick;
-+	Q_UINT32 receiver;
-+	QString  rNick;
-+	Q_UINT8  type; // 0 auto reply,  1 normal
-+	QString  message;
-+	Q_UINT32  intTime;
-+	QDateTime time;
-+	Q_UINT8   fontSize;
-+	Q_UINT8   flag; // start from right.  bit 0: u, bit 1: i, bit 2: b
-+	Q_UINT8   blue;
-+	Q_UINT8   green;
-+	Q_UINT8   red;
-+	QDataStream stream(&file);
++	TQ_UINT32 r_buddy;
++	TQ_UINT32 sender;
++	TQString  sNick;
++	TQ_UINT32 receiver;
++	TQString  rNick;
++	TQ_UINT8  type; // 0 auto reply,  1 normal
++	TQString  message;
++	TQ_UINT32  intTime;
++	TQDateTime time;
++	TQ_UINT8   fontSize;
++	TQ_UINT8   flag; // start from right.  bit 0: u, bit 1: i, bit 2: b
++	TQ_UINT8   blue;
++	TQ_UINT8   green;
++	TQ_UINT8   red;
++	TQDataStream stream(&file);
 +	std::list<chatMessage>srclist;
 +	while(!stream.atEnd()){
 +		stream>>r_buddy;
@@ -96,7 +96,7 @@ Index: evausersetting.cpp
 +	printf("load %s %i条\n",fullName.data(),i);
 +	sqlite3_exec( db,"commit transaction;",0,0,&errmsg);
 +	file.close();
-+	QString newfile;
++	TQString newfile;
 +	newfile=fullName+".old";
 +	unlink(newfile.local8Bit().data());
 +	rename(fullName.local8Bit().data(),newfile.local8Bit().data());
@@ -104,29 +104,29 @@ Index: evausersetting.cpp
 +}
 +
 +
- const bool EvaUserSetting::saveBuddyList(QObject *receiver, std::list<std::string> groups, ContactInfo &myInfo, FriendList &list,
+ const bool EvaUserSetting::saveBuddyList(TQObject *receiver, std::list<std::string> groups, ContactInfo &myInfo, FriendList &list,
  				unsigned short extraInfo, std::string sig, unsigned int sigTime)
  {
 @@ -87,11 +158,56 @@
  
- const bool EvaUserSetting::loadBuddyList( /*QObject * receiver*/)
+ const bool EvaUserSetting::loadBuddyList( /*TQObject * receiver*/)
  {
 -	if(!isDirExisted(getEvaUserDir()))
 -		return false;
 -	
--	QString fullName = getEvaUserDir() + "/" + buddyListFileName;
+-	TQString fullName = getEvaUserDir() + "/" + buddyListFileName;
 +	if(!isDirExisted(getEvaUserDir())){
-+		QDir d;
++		TQDir d;
 +		if(!d.mkdir(getEvaUserDir()))
 +			return false;
 +}
 +	//建立chat的新的库文件
 +	sqlite3 *db=NULL;
 +	int rc;
-+	QString sql=NULL;
++	TQString sql=NULL;
 +	char *errmsg = 0;
-+	QString fullNameSql = getEvaUserDir() + "/"+SqlFileName;
-+	QFile file1(fullNameSql);
++	TQString fullNameSql = getEvaUserDir() + "/"+SqlFileName;
++	TQFile file1(fullNameSql);
 +	if(!file1.exists()){ 
 +		file1.close();
 +		printf("建立chat库文件\n");
@@ -149,8 +149,8 @@ Index: evausersetting.cpp
 +		printf("create index sysmsg :%s\n",errmsg);
 +	}
 +
-+	QString fullName = getEvaUserDir() + "/" + chatMsgFileName; //导入 chat.msg 到 sqlite3
- 	QFile file(fullName);
++	TQString fullName = getEvaUserDir() + "/" + chatMsgFileName; //导入 chat.msg 到 sqlite3
+ 	TQFile file(fullName);
 +	if(file.open(IO_ReadOnly)){ //chat.msg 可读
 +		file.close();
 +		loadMsgToSql(fullName,0);
@@ -173,17 +173,17 @@ Index: evausersetting.cpp
  }
  
 +//保存信息
- const bool EvaUserSetting::saveMessage(const int buddy, const int sender, QString sNick, 
--			const int receiver, QString rNick,
+ const bool EvaUserSetting::saveMessage(const int buddy, const int sender, TQString sNick, 
+-			const int receiver, TQString rNick,
 -			const bool isNormal, 
--			const QString message, 
--			const QDateTime time, const char fontSize, 
+-			const TQString message, 
+-			const TQDateTime time, const char fontSize, 
 -			const bool u, const bool i, const bool b, 
 -			const char blue, const char green, const char red, const bool isQunMsg)
-+		const int receiver, QString rNick,
++		const int receiver, TQString rNick,
 +		const bool isNormal, 
-+		const QString message, 
-+		const QDateTime time, const char fontSize, 
++		const TQString message, 
++		const TQDateTime time, const char fontSize, 
 +		const bool u, const bool i, const bool b, 
 +		const char blue, const char green, const char red, const bool isQunMsg)
  {
@@ -191,33 +191,33 @@ Index: evausersetting.cpp
 +	int rc;
 +	char *errmsg = 0;
  	if(!isDirExisted(getEvaUserDir())){
- 		QDir d;
+ 		TQDir d;
  		if(!d.mkdir(getEvaUserDir()))
  			return false;
 -	}
 -	
--	QString fullName = getEvaUserDir() + "/" + (isQunMsg?qunMsgFileName:chatMsgFileName);
--	QFile file(fullName);
+-	TQString fullName = getEvaUserDir() + "/" + (isQunMsg?qunMsgFileName:chatMsgFileName);
+-	TQFile file(fullName);
 -	if(!file.open(IO_WriteOnly | IO_Append)){
 -		return false;
 -	}
 -
 -	
--	QDataStream stream(&file);
+-	TQDataStream stream(&file);
 -	
--	Q_UINT32 s_buddy = buddy;
--	Q_UINT32 s_sender = sender;
--	Q_UINT32 s_receiver = receiver;
--	Q_UINT8  s_isNormal = isNormal?1:0;
--	Q_UINT32 s_time = time.toTime_t();
--	Q_UINT8  s_fontSize = fontSize;
+-	TQ_UINT32 s_buddy = buddy;
+-	TQ_UINT32 s_sender = sender;
+-	TQ_UINT32 s_receiver = receiver;
+-	TQ_UINT8  s_isNormal = isNormal?1:0;
+-	TQ_UINT32 s_time = time.toTime_t();
+-	TQ_UINT8  s_fontSize = fontSize;
 +	}	
-+	QString fullNameSql = getEvaUserDir() + "/"+SqlFileName;
++	TQString fullNameSql = getEvaUserDir() + "/"+SqlFileName;
 +	rc=sqlite3_open(fullNameSql.data(),&db);
- 	Q_UINT8  s_flag = (u?1:0)|( (i?1:0)<<1 ) | ( (b?1:0)<<2 );
--	Q_UINT8  s_blue = blue;
--	Q_UINT8  s_green = green;
--	Q_UINT8  s_red = red;
+ 	TQ_UINT8  s_flag = (u?1:0)|( (i?1:0)<<1 ) | ( (b?1:0)<<2 );
+-	TQ_UINT8  s_blue = blue;
+-	TQ_UINT8  s_green = green;
+-	TQ_UINT8  s_red = red;
 -	
 -	stream<<s_buddy;
 -	stream<<s_sender;
@@ -236,7 +236,7 @@ Index: evausersetting.cpp
 -	file.close();
 -	return true;
 -}
-+	QString sql;
++	TQString sql;
 +	sql.sprintf("insert into chat values (%d,%d,'%s', %d,'%s',%d, '%s', %d,%d, %d, %d,%d,%d,%d)",buddy,sender,sNick.utf8().data(),receiver,rNick.utf8().data(),isNormal,message.utf8().data(),time.toTime_t(),fontSize,s_flag,blue,green,red,isQunMsg);
  
 -std::list<EvaUserSetting::chatMessage> EvaUserSetting::getMessages( const int buddy, const int page, const bool isQunMsg)
@@ -246,27 +246,27 @@ Index: evausersetting.cpp
 -		return list;
 -	}
 -	
--	QString fullName = getEvaUserDir() + "/" + (isQunMsg?qunMsgFileName:chatMsgFileName);
--	QFile file(fullName);
+-	TQString fullName = getEvaUserDir() + "/" + (isQunMsg?qunMsgFileName:chatMsgFileName);
+-	TQFile file(fullName);
 -	if(!file.open(IO_ReadOnly)){
 -		return list;
 -	}
--	Q_UINT32 r_buddy;
--	Q_UINT32 sender;
--	QString  sNick;
--	Q_UINT32 receiver;
--	QString  rNick; 
--	Q_UINT8  type; // 0 auto reply,  1 normal
--	QString  message;
--	Q_UINT32  intTime;
--	QDateTime time;
--	Q_UINT8   fontSize;
--	Q_UINT8   flag; // start from right.  bit 0: u, bit 1: i, bit 2: b
--	Q_UINT8   blue;
--	Q_UINT8   green;
--	Q_UINT8   red;
+-	TQ_UINT32 r_buddy;
+-	TQ_UINT32 sender;
+-	TQString  sNick;
+-	TQ_UINT32 receiver;
+-	TQString  rNick; 
+-	TQ_UINT8  type; // 0 auto reply,  1 normal
+-	TQString  message;
+-	TQ_UINT32  intTime;
+-	TQDateTime time;
+-	TQ_UINT8   fontSize;
+-	TQ_UINT8   flag; // start from right.  bit 0: u, bit 1: i, bit 2: b
+-	TQ_UINT8   blue;
+-	TQ_UINT8   green;
+-	TQ_UINT8   red;
 -	
--	QDataStream stream(&file);
+-	TQDataStream stream(&file);
 -	std::list<chatMessage>srclist;	
 -	while(!stream.atEnd()){
 -		stream>>r_buddy;
@@ -321,49 +321,49 @@ Index: evausersetting.cpp
  }
  
 -std::list<EvaUserSetting::chatMessage> EvaUserSetting::getMessages(const int buddy, const int page, 
--							const QDateTime starttime, const QDateTime endtime, const bool isQunMsg)
+-							const TQDateTime starttime, const TQDateTime endtime, const bool isQunMsg)
 +//获得历史信息
 +std::list<EvaUserSetting::chatMessage> EvaUserSetting::getMessages( const int buddy, const int page,
-+		const QDateTime starttime, const QDateTime endtime, const bool isQunMsg)
++		const TQDateTime starttime, const TQDateTime endtime, const bool isQunMsg)
  {
  	std::list<chatMessage>list;
 -	if(!isDirExisted(getEvaUserDir())){
 -		return list;
 -	}
 -	
--	QString fullName = getEvaUserDir() + "/" + (isQunMsg?qunMsgFileName:chatMsgFileName);
--	QFile file(fullName);
+-	TQString fullName = getEvaUserDir() + "/" + (isQunMsg?qunMsgFileName:chatMsgFileName);
+-	TQFile file(fullName);
 -	if(!file.open(IO_ReadOnly)){
 -		return list;
 -	}
--	Q_UINT32 r_buddy;
--	Q_UINT32 sender;
--	QString  sNick;
--	Q_UINT32 receiver;
--	QString  rNick; 
--	Q_UINT8  type; // 0 auto reply,  1 normal
--	QString  message;
--	Q_UINT32  intTime;
+-	TQ_UINT32 r_buddy;
+-	TQ_UINT32 sender;
+-	TQString  sNick;
+-	TQ_UINT32 receiver;
+-	TQString  rNick; 
+-	TQ_UINT8  type; // 0 auto reply,  1 normal
+-	TQString  message;
+-	TQ_UINT32  intTime;
 +	if(!isDirExisted(getEvaUserDir())) return list;
-+	QString fullNameSql = getEvaUserDir() + "/"+SqlFileName;
++	TQString fullNameSql = getEvaUserDir() + "/"+SqlFileName;
 +	int result;
 +	char * errmsg = NULL;
 +	char **dbResult;
 +	int nRow, nColumn,i;
 +	chatMessage m;
 +	sqlite3 *db=NULL;
- 	QDateTime time;
--	Q_UINT8   fontSize;
--	Q_UINT8   flag; // start from right.  bit 0: u, bit 1: i, bit 2: b
--	Q_UINT8   blue;
--	Q_UINT8   green;
--	Q_UINT8   red;
+ 	TQDateTime time;
+-	TQ_UINT8   fontSize;
+-	TQ_UINT8   flag; // start from right.  bit 0: u, bit 1: i, bit 2: b
+-	TQ_UINT8   blue;
+-	TQ_UINT8   green;
+-	TQ_UINT8   red;
 -
 -	int start = starttime.toTime_t();
 -	int end = endtime.toTime_t();
 -	
 -	std::list<chatMessage>srclist;
--	QDataStream stream(&file);	
+-	TQDataStream stream(&file);	
 -	while(!stream.atEnd()){
 -		stream>>r_buddy;
 -		stream>>sender;
@@ -392,7 +392,7 @@ Index: evausersetting.cpp
 +	if( result == SQLITE_OK )
 +	{
 +		int j;
-+		QString sql;
++		TQString sql;
 +		if(starttime.toTime_t()==0) //starttime=0 获取全部记录
 +			sql.sprintf("select * from chat where buddy=%d and isQunMsg=%d order by time desc limit %d offset %d",buddy,isQunMsg, pageSize,pageSize*page);   
 +		else
@@ -404,11 +404,11 @@ Index: evausersetting.cpp
 +			{
 +				j=i*nColumn;
 +				m.sender=atol(dbResult[j+1]);
-+				m.sNick = QString::fromLocal8Bit(dbResult[j+2]);
++				m.sNick = TQString::fromLocal8Bit(dbResult[j+2]);
 +				m.receiver=atol(dbResult[j+3]);
-+				m.rNick = QString::fromLocal8Bit(dbResult[j+4]);
++				m.rNick = TQString::fromLocal8Bit(dbResult[j+4]);
 +				m.type=atoi(dbResult[j+5]); //isNormal 
-+				m.message =QString::fromLocal8Bit(dbResult[j+6]);
++				m.message =TQString::fromLocal8Bit(dbResult[j+6]);
 +				time.setTime_t(atol(dbResult[j+7]));
  				m.time = time;
 -				m.fontSize = fontSize; 
@@ -446,29 +446,29 @@ Index: evausersetting.cpp
  }
  
  const bool EvaUserSetting::saveSysMessage(const short msgType, const unsigned char type, const int fromQQ, const int toQQ, 
--					const QString message, const int internalQunID, const unsigned int commander,
+-					const TQString message, const int internalQunID, const unsigned int commander,
 -					const unsigned char *code, const unsigned short codeLen,
 -					const unsigned char *token, const unsigned short tokenLen)
-+		const QString message, const int internalQunID, const unsigned int commander,
++		const TQString message, const int internalQunID, const unsigned int commander,
 +		const unsigned char *code, const unsigned short codeLen,
 +		const unsigned char *token, const unsigned short tokenLen)
  {
  	if(!isDirExisted(getEvaUserDir())){
- 		QDir d;
+ 		TQDir d;
  		if(!d.mkdir(getEvaUserDir()))
  			return false;
  	}
 -
--	QString fullName = getEvaUserDir() + "/" + sysMsgFileName;
--	QFile file(fullName);
+-	TQString fullName = getEvaUserDir() + "/" + sysMsgFileName;
+-	TQFile file(fullName);
 -
 -	bool needHeader = false;
 -	if(file.open(IO_ReadOnly)){
--		QDataStream chkStream(&file);
+-		TQDataStream chkStream(&file);
 -		// check version first, if not matched, delete it
 -		char *flag = new char[3];
 -		chkStream.readRawBytes(flag, 3);
--		Q_UINT32 version = 0;
+-		TQ_UINT32 version = 0;
 -		chkStream>>version;
 -		if(!(flag[0]=='E' && flag[1]=='V' && flag[2]=='A' && version == profileVersion)){
 -			file.close();
@@ -483,7 +483,7 @@ Index: evausersetting.cpp
 -	if(!file.open(IO_WriteOnly | IO_Append)){
 -		return false;
 -	}
--	QDataStream stream(&file);
+-	TQDataStream stream(&file);
 -
 -	if(needHeader){
 -		// save Eva flag and Version
@@ -501,7 +501,7 @@ Index: evausersetting.cpp
 -	m.setCode( code, codeLen);
 -	m.setToken( token, tokenLen);
 -	
--	Q_UINT16 len = (Q_UINT16)(strlen((m.message.utf8().data())));
+-	TQ_UINT16 len = (TQ_UINT16)(strlen((m.message.utf8().data())));
 -	//printf("saving type: %d, from: %d, to: %d, cmder: %d, msg: %s\n", type, fromQQ, toQQ, commander, message.local8Bit().data());
 -	stream<<m.messageType;
 -	stream<<m.type;
@@ -519,10 +519,10 @@ Index: evausersetting.cpp
 -	
 -	sysStack.push(m);
 -	return true;
-+	QString sql,codea,tokena;
-+	QString fullNameSql = getEvaUserDir() + "/"+SqlFileName;
-+	codea=QString::fromUtf8((char *)(code),codeLen);
-+	tokena=QString::fromUtf8((char *)(token),tokenLen);
++	TQString sql,codea,tokena;
++	TQString fullNameSql = getEvaUserDir() + "/"+SqlFileName;
++	codea=TQString::fromUtf8((char *)(code),codeLen);
++	tokena=TQString::fromUtf8((char *)(token),tokenLen);
 +	sql.sprintf("insert into sysmsg values(%d,%d,%d,%d,%d,'%s',%d,%d,'%s','%s')",time(0),msgType,type,fromQQ,toQQ,message.utf8().data(),internalQunID,commander,codea.utf8().data(),QCodecs::base64Encode(tokena.local8Bit()).data());
 +	int result;
 +	char * errmsg = NULL;
@@ -540,18 +540,18 @@ Index: evausersetting.cpp
 -		return list;
 -	}
 -	
--	QString fullName = getEvaUserDir() + "/" + sysMsgFileName;
--	QFile file(fullName);
+-	TQString fullName = getEvaUserDir() + "/" + sysMsgFileName;
+-	TQFile file(fullName);
 -	if(!file.open(IO_ReadOnly)){
 -		return list;
 -	}
 -
--	QDataStream stream(&file);
+-	TQDataStream stream(&file);
 -
 -	// check version first
 -	char *flag = new char[3];
 -	stream.readRawBytes(flag, 3);
--	Q_UINT32 version = 0;
+-	TQ_UINT32 version = 0;
 -	stream>>version;
 -	if(!(flag[0]=='E' && flag[1]=='V' && flag[2]=='A' && version == profileVersion)){
 -		file.close();
@@ -561,14 +561,14 @@ Index: evausersetting.cpp
 -	}
 -	delete []flag;
 -
--	Q_UINT16 msgType;
--	Q_UINT8 type;
--	Q_UINT32 from;
--	Q_UINT32 to;
--	Q_UINT32 commander;
--	Q_UINT32 internalQunID;
--	QString  message;
--	Q_UINT16 len;
+-	TQ_UINT16 msgType;
+-	TQ_UINT8 type;
+-	TQ_UINT32 from;
+-	TQ_UINT32 to;
+-	TQ_UINT32 commander;
+-	TQ_UINT32 internalQunID;
+-	TQString  message;
+-	TQ_UINT16 len;
 -	unsigned char *tmp;
 -
 -	
@@ -588,7 +588,7 @@ Index: evausersetting.cpp
 -			tmp = new unsigned char[len+1];
 -			stream.readRawBytes( (char *)(tmp), len);
 -			tmp[len] = 0x00;
--			message = QString::fromUtf8((char *)(tmp), len);
+-			message = TQString::fromUtf8((char *)(tmp), len);
 -			delete [] tmp;
 -			m.message = message;
 +	if(!isDirExisted(getEvaUserDir())) return list;
@@ -597,15 +597,15 @@ Index: evausersetting.cpp
 +	int nRow, nColumn,i;
 +	sysMessage m;
 +	sqlite3 *db=NULL;
-+	QDateTime time;
-+	QString fullNameSql = getEvaUserDir() + "/"+SqlFileName;
++	TQDateTime time;
++	TQString fullNameSql = getEvaUserDir() + "/"+SqlFileName;
 +	result=sqlite3_open(fullNameSql.data(),&db);
 +	if( result == SQLITE_OK )
 +	{
 +		char **dbResult;
 +		const	char *tmp;
 +		int j;
-+		QString sql;
++		TQString sql;
 +		sql.sprintf("select * from sysmsg order by time desc limit %d offset %d", pageSize,pageSize*page);
 +		result = sqlite3_get_table(db,sql.utf8().data(), &dbResult,&nRow, &nColumn, &errmsg);
 +		if( SQLITE_OK == result )
@@ -617,8 +617,8 @@ Index: evausersetting.cpp
 +				m.type = atoi(dbResult[j+2]);//type
 +				m.from =atol(dbResult[j+3]);//fromQQ
 +				m.to = atoi(dbResult[j+4]);//toQQ
-+				m.message =QString::fromLocal8Bit(dbResult[j+9]); //message
-+				QCString tmp1;
++				m.message =TQString::fromLocal8Bit(dbResult[j+9]); //message
++				TQCString tmp1;
 +				tmp1=QCodecs::base64Decode(m.message.local8Bit());
 +				m.internalQunID = atoi(dbResult[j+6]);
 +				m.commander=atoi(dbResult[j+7]); //message;
@@ -630,7 +630,7 @@ Index: evausersetting.cpp
 +				if(m.token) delete []m.token;
 +				m.token = new unsigned char[m.tokenLen];
 +				memcpy(m.token,tmp1,m.tokenLen);
-+				m.message =QString::fromLocal8Bit(dbResult[j+5]); //message
++				m.message =TQString::fromLocal8Bit(dbResult[j+5]); //message
 +				list.push_back(m);
 +			}
  		}

@@ -22,7 +22,7 @@
 #include <cstring>
  
 AdvancedUser::AdvancedUser()
-	:m_QQNum(0),
+	:m_QTQNum(0),
 	m_GenderIndex(0),
 	m_Age(0),
 	m_Online(0),
@@ -36,7 +36,7 @@ AdvancedUser::AdvancedUser()
 
 AdvancedUser& AdvancedUser::operator=( const AdvancedUser& rhs )
 {
-	m_QQNum = rhs.getQQ();
+	m_QTQNum = rhs.getQQ();
 	m_GenderIndex = rhs.getGenderIndex();
 	m_Age = rhs.getAge();
 	m_Online = rhs.isOnline() ? 0x01:0x00;
@@ -52,7 +52,7 @@ int AdvancedUser::readData( unsigned char *buf )
 {
 	int pos = 0;
 	int len = 0;
-	m_QQNum = EvaUtil::read32(buf);//4字节的QQ号码
+	m_QTQNum = EvaUtil::read32(buf);//4字节的QQ号码
 	pos += 4;
 	m_GenderIndex = buf[pos++] & 0xff; //1字节性别的下拉索引
 	m_Age = EvaUtil::read16(buf + pos);//2字节的年龄
@@ -77,7 +77,7 @@ int AdvancedUser::readData( unsigned char *buf )
 
 /*--------------------------------------------------*/
 EvaAdvancedSearchPacket::EvaAdvancedSearchPacket()
-	:OutPacket(QQ_CMD_ADVANCED_SEARCH, true),
+	:OutPacket(TQQ_CMD_ADVANCED_SEARCH, true),
 	m_SearchOnline(true),
 	m_HasCam(false),
 	m_Page(0),

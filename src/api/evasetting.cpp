@@ -20,36 +20,36 @@
 #include "evasetting.h"
 #include <stdlib.h>
 #include <cstring>
-#include <qapplication.h>
-#include <qfile.h>
-#include <qdir.h>
-#include <qdatastream.h>
-#include <qtextcodec.h>
-#include <qtextstream.h>
+#include <ntqapplication.h>
+#include <ntqfile.h>
+#include <ntqdir.h>
+#include <ntqdatastream.h>
+#include <ntqtextcodec.h>
+#include <ntqtextstream.h>
 
 #define DEFAULT_DOWNLOAD_DIR         "Downloads"
 
-QString EvaSetting::filename = "eva.sys";
+TQString EvaSetting::filename = "eva.sys";
 
 // helper function for reading xdg user dirs: it is required in order to take 
 // care of locale stuff
-void readXdgUserDirs(QString *downloads)
+void readXdgUserDirs(TQString *downloads)
 {
-	QFile f( QDir::homeDirPath() + "/.config/user-dirs.dirs" );
+	TQFile f( TQDir::homeDirPath() + "/.config/user-dirs.dirs" );
 
 	if (!f.open(IO_ReadOnly))
 		return;
 
 	// set the codec for the current locale
-	QTextStream s(&f);
-	s.setCodec( QTextCodec::codecForLocale() );
+	TQTextStream s(&f);
+	s.setCodec( TQTextCodec::codecForLocale() );
 
-	QString line = s.readLine();
+	TQString line = s.readLine();
 	while (!line.isNull())
 	{
 		if (line.startsWith("XDG_DOWNLOAD_DIR="))
 		{
-			*downloads = line.remove("XDG_DOWNLOAD_DIR=").remove("\"").replace("$HOME", QDir::homeDirPath());
+			*downloads = line.remove("XDG_DOWNLOAD_DIR=").remove("\"").replace("$HOME", TQDir::homeDirPath());
 			break;
 		}
 
@@ -61,14 +61,14 @@ void readXdgUserDirs(QString *downloads)
 EvaSetting::EvaSetting()
 {
 	userList.setAutoDelete(true);
-	QString home = QDir::homeDirPath();
-	QDir d;
+	TQString home = TQDir::homeDirPath();
+	TQDir d;
 	if (!d.exists(home + "/.eva")){
 		if(!d.cd(home)){
 			printf("EvaSetting::constructor -- can't enter user's home directory");
 			return;
 		}
-		if(!d.mkdir(QString(".eva"),false)){
+		if(!d.mkdir(TQString(".eva"),false)){
 			printf("EvaSetting::constructor -- can't create Eva directory");
 			return;
 		}		
@@ -80,7 +80,7 @@ EvaSetting::EvaSetting()
 			printf("EvaSetting::constructor -- can't enter user's home directory");
 			return;
 		}
-		if(!d.mkdir(QString(DEFAULT_DOWNLOAD_DIR),false)){
+		if(!d.mkdir(TQString(DEFAULT_DOWNLOAD_DIR),false)){
 			printf("EvaSetting::constructor -- can't create default download directory");
 			return;
 		}		
@@ -92,27 +92,27 @@ EvaSetting::~EvaSetting()
 {}
 
 bool EvaSetting::saveSetting(const int id, const char * md5Pwd, const bool recorded, const bool hidden , 
-			const int type, const Q_UINT32 server, const Q_UINT16 port, const QString username, const QCString base64Param)
+			const int type, const TQ_UINT32 server, const TQ_UINT16 port, const TQString username, const TQCString base64Param)
 {
-	QString home = QDir::homeDirPath();
+	TQString home = TQDir::homeDirPath();
 	
-	QDir d;
-	QString fullPath = home + "/.eva";
+	TQDir d;
+	TQString fullPath = home + "/.eva";
 	if (!d.exists(fullPath)){
 		if(!d.cd(home)){
-			emit exceptionEvent(QString("can't enter user's home directory"));
+			emit exceptionEvent(TQString("can't enter user's home directory"));
 			return false;		
 		}
-		if(!d.mkdir(QString(".eva"),false)){
-			emit exceptionEvent(QString("can't create Eva directory"));
+		if(!d.mkdir(TQString(".eva"),false)){
+			emit exceptionEvent(TQString("can't create Eva directory"));
 			return false;		
 		}		
 	}
-	QString fullName = fullPath + "/" + filename;
+	TQString fullName = fullPath + "/" + filename;
 	loadSetting();
 	//if id exists, update information, otherwise add a new record
 	int userIndex = findUser(id);
-	Q_UINT8 flag = 0x00;
+	TQ_UINT8 flag = 0x00;
 	if(recorded) flag|=0x01;
 	if(hidden) flag |= 0x02;
 	switch(type){
@@ -127,8 +127,8 @@ bool EvaSetting::saveSetting(const int id, const char * md5Pwd, const bool recor
 		break;
 	}	
 	
-	QString s_username = " ";
-	QCString s_param = " ";
+	TQString s_username = " ";
+	TQCString s_param = " ";
 	if( !username.isEmpty() && username.stripWhiteSpace() != "") s_username = username;
 	if( !base64Param.isEmpty() && base64Param.stripWhiteSpace() != "") s_param = base64Param;
 	if( userIndex == -1){
@@ -140,7 +140,7 @@ bool EvaSetting::saveSetting(const int id, const char * md5Pwd, const bool recor
 		char *pwd = (char *)malloc(16 * sizeof(char));
 		memcpy(pwd, md5Pwd, 16);
 		//FIXME memory leak here!!!!
-		record->md5Pwd = (Q_UINT8 *)pwd;
+		record->md5Pwd = (TQ_UINT8 *)pwd;
 		
 		record->flag = flag;
 		record->proxy = server;
@@ -160,16 +160,16 @@ bool EvaSetting::saveSetting(const int id, const char * md5Pwd, const bool recor
 		userList.at(userIndex)->proxyUserName = s_username;
 		userList.at(userIndex)->base64param = s_param;
 	}
-	QFile file(fullName);
+	TQFile file(fullName);
 	if(!file.open(IO_WriteOnly)){
-		//QString msg = qApp->translate("QFile",file.errorString());
+		//TQString msg = tqApp->translate("TQFile",file.errorString());
 		emit exceptionEvent(fullName);
 		return false;
 	}
   
-	QDataStream stream(&file);
+	TQDataStream stream(&file);
 	// save the lastest user's id
-	stream<<(Q_UINT32)(userIndex);
+	stream<<(TQ_UINT32)(userIndex);
 	// saving now
 	for(uint i=0; i<userList.count(); i++){
 		LoginRecord *r= userList.at(i);
@@ -178,7 +178,7 @@ bool EvaSetting::saveSetting(const int id, const char * md5Pwd, const bool recor
 		stream<<r->flag;
 		stream<<r->proxy;
 		stream<<r->port;
-		Q_UINT8 len = strlen(r->proxyUserName.ascii());
+		TQ_UINT8 len = strlen(r->proxyUserName.ascii());
 		stream<<len;
 		//stream<<r->proxyUserName;
 		stream.writeRawBytes(r->proxyUserName.ascii(), len);
@@ -194,24 +194,24 @@ bool EvaSetting::saveSetting(const int id, const char * md5Pwd, const bool recor
 bool EvaSetting::loadSetting( )
 {
 	userList.clear();
-	QString fullPath = QDir::homeDirPath() + QString("/.eva/") + filename;
+	TQString fullPath = TQDir::homeDirPath() + TQString("/.eva/") + filename;
 	
-	QFile file(fullPath);
+	TQFile file(fullPath);
 	if(!file.open(IO_ReadOnly)){
 		return false;
 	}
-	Q_UINT32 qq;
+	TQ_UINT32 qq;
 	char *pwd;
-	Q_UINT8 flag;
-	Q_UINT32 server;
-	Q_UINT16 port;
-	QString proxyUserName;
+	TQ_UINT8 flag;
+	TQ_UINT32 server;
+	TQ_UINT16 port;
+	TQString proxyUserName;
 	
-	Q_UINT8 len;
+	TQ_UINT8 len;
 	char *strTmp;
     
-	QDataStream stream(&file);
-	stream>>(Q_UINT32&)lastIndex;
+	TQDataStream stream(&file);
+	stream>>(TQ_UINT32&)lastIndex;
 	while(!stream.atEnd()){
 		stream>>qq;
 		pwd = (char *)malloc(16 * sizeof(char));
@@ -234,7 +234,7 @@ bool EvaSetting::loadSetting( )
 		
 		LoginRecord *record = new LoginRecord();
 		record->id = qq;
-		record->md5Pwd = (Q_UINT8 *)pwd;
+		record->md5Pwd = (TQ_UINT8 *)pwd;
 		record->flag = flag;	
 		record->proxy = server;
 		record->port = port;
@@ -281,7 +281,7 @@ const bool EvaSetting::isHiddenChecked(const int id)
 	return false;
 }
 
-const QString EvaSetting::getProxyUsername(const int id)
+const TQString EvaSetting::getProxyUsername(const int id)
 {
 	int index = findUser(id);
 	if(index!=-1){
@@ -304,7 +304,7 @@ const int EvaSetting::getConnectType(const int id) // 0: udp, 1: tcp,  2: http p
 	int index = findUser(id);
 	int type = 0;
 	if(index!=-1){
-		Q_UINT8 flag = userList.at(index)->flag;
+		TQ_UINT8 flag = userList.at(index)->flag;
 		if(flag & 0x10)
 			type = 0;
 		else if(flag & 0x08)
@@ -333,7 +333,7 @@ const short EvaSetting::getPort(const int id)
 	return 0;
 }
 
-const QCString EvaSetting::getProxyParam(const int id)
+const TQCString EvaSetting::getProxyParam(const int id)
 {
 	int index = findUser(id);
 	if(index!=-1){

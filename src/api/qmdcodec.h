@@ -34,11 +34,11 @@
 #ifndef _QMDCODEC_H
 #define _QMDCODEC_H
 
-#define QBase64 QCodecs
+#define TQBase64 TQCodecs
 
-#include <qglobal.h>
-#include <qstring.h>
-#include <qiodevice.h>
+#include <ntqglobal.h>
+#include <ntqstring.h>
+#include <ntqiodevice.h>
 
 /**
  * A wrapper class for the most commonly used encoding and
@@ -49,26 +49,26 @@
  * @sect Usage:
  *
  * <PRE>
- * QCString input = "Aladdin:open sesame";
- * QCString result = QCodecs::base64Encode(input);
+ * TQCString input = "Aladdin:open sesame";
+ * TQCString result = TQCodecs::base64Encode(input);
  * cout << "Result: " << result.data() << endl;
  *
  * Output should be
- * Result: QWxhZGRpbjpvcGVuIHNlc2FtZQ==
+ * Result: TQWxhZGRpbjpvcGVuIHNlc2FtZQ==
  * </PRE>
  *
  * The above example makes use of the convenience functions
  * (ones that accept/return null-terminated strings) to encode/decode
  * a string.  If what you need is to encode or decode binary data, then
  * it is highly recommended that you use the functions that take an input
- * and output QByteArray as arguments.  These functions are specifically
+ * and output TQByteArray as arguments.  These functions are specifically
  * tailored for encoding and decoding binary data.
  *
  * @short A collection of commonly used encoding and decoding algorithms.
  * @author Dawit Alemayehu <adawit@kde.org>
  * @author Rik Hemsley <rik@kde.org>
  */
-class QCodecs
+class TQCodecs
 {
 public:
 
@@ -81,7 +81,7 @@ public:
    *                breaks, too.
    * @return        quoted-printable encoded data.
    */
-  static QCString quotedPrintableEncode(const QByteArray & in,
+  static TQCString quotedPrintableEncode(const TQByteArray & in,
                                         bool useCRLF = true);
 
   /**
@@ -96,7 +96,7 @@ public:
    *                breaks, too.
    * @return        quoted-printable encoded data.
    */
-  static QCString quotedPrintableEncode(const QCString & str,
+  static TQCString quotedPrintableEncode(const TQCString & str,
                                         bool useCRLF = true);
 
   /**
@@ -118,7 +118,7 @@ public:
    *                breaks, too.
    * @return        quoted-printable encoded data.
    */
-  static void quotedPrintableEncode(const QByteArray & in, QByteArray& out,
+  static void quotedPrintableEncode(const TQByteArray & in, TQByteArray& out,
                                     bool useCRLF);
 
   /**
@@ -129,7 +129,7 @@ public:
    * @param in  the data to be decoded.
    * @return    decoded data.
    */
-  static QCString quotedPrintableDecode(const QByteArray & in);
+  static TQCString quotedPrintableDecode(const TQByteArray & in);
 
   /**
    * @overload
@@ -140,7 +140,7 @@ public:
    * @param str  the data to be decoded.
    * @return     decoded data.
    */
-  static QCString quotedPrintableDecode(const QCString & str);
+  static TQCString quotedPrintableDecode(const TQCString & str);
 
   /**
    * Decodes a quoted-printable encoded data.
@@ -161,7 +161,7 @@ public:
    *
    * @return     quoted-printable encoded data.
    */
-  static void quotedPrintableDecode(const QByteArray & in, QByteArray& out);
+  static void quotedPrintableDecode(const TQByteArray & in, TQByteArray& out);
 
 
   /**
@@ -175,7 +175,7 @@ public:
    * @param in   the data to be uuencoded
    * @return     a uuencoded data.
    */
-  static QCString uuencode( const QByteArray& in );
+  static TQCString uuencode( const TQByteArray& in );
 
   /**
    * @overload
@@ -186,7 +186,7 @@ public:
    * @param str   the string to be uuencoded.
    * @return      the encoded string.
    */
-  static QCString uuencode( const QCString& str );
+  static TQCString uuencode( const TQCString& str );
 
   /**
    * Encodes the given data using the uuencode algorithm.
@@ -203,7 +203,7 @@ public:
    * @param in   the data to be uuencoded.
    * @param out  the container for the uudecoded data.
    */
-  static void uuencode( const QByteArray& in, QByteArray& out );
+  static void uuencode( const TQByteArray& in, TQByteArray& out );
 
   /**
    * Decodes the given data using the uuencode algorithm.
@@ -215,7 +215,7 @@ public:
    * @param in   the data uuencoded data to be decoded.
    * @return     a decoded string.
    */
-  static QCString uudecode( const QByteArray& in );
+  static TQCString uudecode( const TQByteArray& in );
 
   /**
    * @overload
@@ -226,7 +226,7 @@ public:
    * @param str   the string to be decoded.
    * @return      a uudecoded string.
    */
-  static QCString uudecode( const QCString& str );
+  static TQCString uudecode( const TQCString& str );
 
   /**
    * Decodes the given data using the uudecode algorithm.
@@ -247,7 +247,7 @@ public:
    * @param in   the uuencoded-data to be decoded.
    * @param out  the container for the uudecoded data.
    */
-  static void uudecode( const QByteArray& in, QByteArray& out );
+  static void uudecode( const TQByteArray& in, TQByteArray& out );
 
 
   /**
@@ -263,7 +263,7 @@ public:
    *
    * @return           a base64 encoded string.
    */
-  static QCString base64Encode( const QByteArray& in, bool insertLFs = false);
+  static TQCString base64Encode( const TQByteArray& in, bool insertLFs = false);
 
   /**
    * @overload
@@ -275,7 +275,7 @@ public:
    * @param insertLFs limit the number of characters per line.
    * @return          the decoded string.
    */
-  static QCString base64Encode( const QCString& str, bool insertLFs = false );
+  static TQCString base64Encode( const TQCString& str, bool insertLFs = false );
 
   /**
    * Encodes the given data using the base64 algorithm.
@@ -298,7 +298,7 @@ public:
    * @param out       the container for the encoded data.
    * @param insertLFs limit the number of characters per line.
    */
-  static void base64Encode( const QByteArray& in, QByteArray& out,
+  static void base64Encode( const TQByteArray& in, TQByteArray& out,
                             bool insertLFs = false );
 
   /**
@@ -308,7 +308,7 @@ public:
    * @param in   the base64-encoded data to be decoded.
    * @return     the decoded data.
    */
-  static QCString base64Decode( const QByteArray& in );
+  static TQCString base64Decode( const TQByteArray& in );
 
   /**
    * @overload
@@ -319,7 +319,7 @@ public:
    * @param str  the base64-encoded string.
    * @return     the decoded string.
    */
-  static QCString base64Decode( const QCString& str );
+  static TQCString base64Decode( const TQCString& str );
 
   /**
    * Decodes the given data that was encoded with the base64
@@ -338,11 +338,11 @@ public:
    * @param in   the encoded data to be decoded.
    * @param out  the container for the decoded data.
    */
-  static void base64Decode( const QByteArray& in, QByteArray& out );
+  static void base64Decode( const TQByteArray& in, TQByteArray& out );
 
 
 private:
-  QCodecs();
+  TQCodecs();
 
 private:
   static const char UUEncMap[64];
@@ -350,10 +350,10 @@ private:
   static const char Base64EncMap[64];
   static const char Base64DecMap[128];
   static const char hexChars[16];
-  static const unsigned int maxQPLineLength;
+  static const unsigned int maxTQPLineLength;
 };
 
-class QMD5Private;
+class TQMD5Private;
 /**
  * Provides an easy to use C++ implementation of RSA's
  * MD5 algorithm.
@@ -364,12 +364,12 @@ class QMD5Private;
  * process of obtaining a digest by calculating the result in a
  * single step.
  *
- * QMD5 is state-based, that means you can add new contents with
+ * TQMD5 is state-based, that means you can add new contents with
  * update() as long as you didn't request the digest value yet.
  * After the digest value was requested, the object is "finalized"
  * and you have to call reset() to be able to do another calculation
  * with it.  The reason for this behaviour is that upon requesting
- * the message digest QMD5 has to pad the received contents up to a
+ * the message digest TQMD5 has to pad the received contents up to a
  * 64 byte boundary to calculate its value. After this operation it
  * is not possible to resume consuming data.
  *
@@ -379,14 +379,14 @@ class QMD5Private;
  *
  * <PRE>
  *  const char* test1;
- *  QMD5::Digest rawResult;
+ *  TQMD5::Digest rawResult;
  *
  *  test1 = "This is a simple test.";
- *  QMD5 context (test1);
+ *  TQMD5 context (test1);
  *  cout << "Hex Digest output: " << context.hexDigest().data() << endl;
  * </PRE>
  *
- * To cut down on the unnecessary overhead of creating multiple QMD5
+ * To cut down on the unnecessary overhead of creating multiple TQMD5
  * objects, you can simply invoke @ref reset() to reuse the same object
  * in making another calculation:
  *
@@ -401,13 +401,13 @@ class QMD5Private;
  * @author Dirk Mueller <mueller@kde.org>, Dawit Alemayehu <adawit@kde.org>
  */
 
-class QMD5
+class TQMD5
 {
 public:
 
   typedef unsigned char Digest[16];
 
-  QMD5();
+  TQMD5();
 
   /**
    * Constructor that updates the digest for the given string.
@@ -417,21 +417,21 @@ public:
    *             strlen on the first parameter, otherwise
    *             it trusts the given length (does not stop on NUL byte).
    */
-  QMD5(const char* in, int len = -1);
+  TQMD5(const char* in, int len = -1);
 
   /**
    * @overload
    *
-   * Same as above except it accepts a QByteArray as its argument.
+   * Same as above except it accepts a TQByteArray as its argument.
    */
-  QMD5(const QByteArray& a );
+  TQMD5(const TQByteArray& a );
 
   /**
    * @overload
    *
-   * Same as above except it accepts a QByteArray as its argument.
+   * Same as above except it accepts a TQByteArray as its argument.
    */
-  QMD5(const QCString& a );
+  TQMD5(const TQCString& a );
 
   /**
    * Updates the message to be digested. Be sure to add all data
@@ -451,21 +451,21 @@ public:
   /**
    * @overload
    *
-   * @param in     message to be added to the digest (QByteArray).
+   * @param in     message to be added to the digest (TQByteArray).
    */
-  void update(const QByteArray& in );
+  void update(const TQByteArray& in );
 
   /**
    * @overload
    *
-   * @param in     message to be added to the digest (QByteArray).
+   * @param in     message to be added to the digest (TQByteArray).
    */
-  void update(const QCString& in );
+  void update(const TQCString& in );
 
   /**
    * @overload
    *
-   * reads the data from an I/O device, i.e. from a file (QFile).
+   * reads the data from an I/O device, i.e. from a file (TQFile).
    *
    * NOTE that the file must be open for reading.
    *
@@ -473,12 +473,12 @@ public:
    *
    * @returns false if an error occured during reading.
    */
-  bool update(QIODevice& file);
+  bool update(TQIODevice& file);
 
   /**
    * Calling this function will reset the calculated message digest.
    * Use this method to perform another message digest calculation
-   * without recreating the QMD5 object.
+   * without recreating the TQMD5 object.
    */
   void reset();
 
@@ -496,35 +496,35 @@ public:
    *
    * @param bin an array of 16 characters ( char[16] )
    */
-  void rawDigest( QMD5::Digest& bin );
+  void rawDigest( TQMD5::Digest& bin );
 
   /**
    * Returns the value of the calculated message digest in
    * a hexadecimal representation.
    */
-  QCString hexDigest ();
+  TQCString hexDigest ();
 
   /**
    * @overload
    */
-  void hexDigest(QCString&);
+  void hexDigest(TQCString&);
 
   /**
    * Returns the value of the calculated message digest in
    * a base64-encoded representation.
    */
-  QCString base64Digest ();
+  TQCString base64Digest ();
 
   /**
    * returns true if the calculated digest for the given
    * message matches the given one.
    */
-  bool verify( const QMD5::Digest& digest);
+  bool verify( const TQMD5::Digest& digest);
 
   /**
    * @overload
    */
-  bool verify(const QCString&);
+  bool verify(const TQCString&);
 
 protected:
   /**
@@ -539,34 +539,34 @@ protected:
   void finalize();
 
 private:
-  QMD5(const QMD5& u);
-  QMD5& operator=(const QMD5& md);
+  TQMD5(const TQMD5& u);
+  TQMD5& operator=(const TQMD5& md);
 
   void init();
-  void encode( unsigned char* output, Q_UINT32 *in, Q_UINT32 len );
-  void decode( Q_UINT32 *output, const unsigned char* in, Q_UINT32 len );
+  void encode( unsigned char* output, TQ_UINT32 *in, TQ_UINT32 len );
+  void decode( TQ_UINT32 *output, const unsigned char* in, TQ_UINT32 len );
 
-  Q_UINT32 rotate_left( Q_UINT32 x, Q_UINT32 n );
-  Q_UINT32 F( Q_UINT32 x, Q_UINT32 y, Q_UINT32 z );
-  Q_UINT32 G( Q_UINT32 x, Q_UINT32 y, Q_UINT32 z );
-  Q_UINT32 H( Q_UINT32 x, Q_UINT32 y, Q_UINT32 z );
-  Q_UINT32 I( Q_UINT32 x, Q_UINT32 y, Q_UINT32 z );
-  void FF( Q_UINT32& a, Q_UINT32 b, Q_UINT32 c, Q_UINT32 d, Q_UINT32 x,
-               Q_UINT32  s, Q_UINT32 ac );
-  void GG( Q_UINT32& a, Q_UINT32 b, Q_UINT32 c, Q_UINT32 d, Q_UINT32 x,
-                Q_UINT32 s, Q_UINT32 ac );
-  void HH( Q_UINT32& a, Q_UINT32 b, Q_UINT32 c, Q_UINT32 d, Q_UINT32 x,
-                Q_UINT32 s, Q_UINT32 ac );
-  void II( Q_UINT32& a, Q_UINT32 b, Q_UINT32 c, Q_UINT32 d, Q_UINT32 x,
-             Q_UINT32 s, Q_UINT32 ac );
+  TQ_UINT32 rotate_left( TQ_UINT32 x, TQ_UINT32 n );
+  TQ_UINT32 F( TQ_UINT32 x, TQ_UINT32 y, TQ_UINT32 z );
+  TQ_UINT32 G( TQ_UINT32 x, TQ_UINT32 y, TQ_UINT32 z );
+  TQ_UINT32 H( TQ_UINT32 x, TQ_UINT32 y, TQ_UINT32 z );
+  TQ_UINT32 I( TQ_UINT32 x, TQ_UINT32 y, TQ_UINT32 z );
+  void FF( TQ_UINT32& a, TQ_UINT32 b, TQ_UINT32 c, TQ_UINT32 d, TQ_UINT32 x,
+               TQ_UINT32  s, TQ_UINT32 ac );
+  void GG( TQ_UINT32& a, TQ_UINT32 b, TQ_UINT32 c, TQ_UINT32 d, TQ_UINT32 x,
+                TQ_UINT32 s, TQ_UINT32 ac );
+  void HH( TQ_UINT32& a, TQ_UINT32 b, TQ_UINT32 c, TQ_UINT32 d, TQ_UINT32 x,
+                TQ_UINT32 s, TQ_UINT32 ac );
+  void II( TQ_UINT32& a, TQ_UINT32 b, TQ_UINT32 c, TQ_UINT32 d, TQ_UINT32 x,
+             TQ_UINT32 s, TQ_UINT32 ac );
 
 private:
-  Q_UINT32 m_state[4];
-  Q_UINT32 m_count[2];
-  Q_UINT8 m_buffer[64];
+  TQ_UINT32 m_state[4];
+  TQ_UINT32 m_count[2];
+  TQ_UINT8 m_buffer[64];
   Digest m_digest;
   bool m_finalized;
 
-  QMD5Private* d;
+  TQMD5Private* d;
 };
 #endif

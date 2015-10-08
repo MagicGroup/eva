@@ -20,89 +20,89 @@
 
 #include "evaloginveriuibase.h"
 
-#include <qvariant.h>
-#include <qpushbutton.h>
-#include <qlabel.h>
-#include <qtoolbutton.h>
-#include <qlineedit.h>
-#include <qframe.h>
-#include <qlayout.h>
-#include <qtooltip.h>
-#include <klocale.h>
+#include <ntqvariant.h>
+#include <ntqpushbutton.h>
+#include <ntqlabel.h>
+#include <ntqtoolbutton.h>
+#include <ntqlineedit.h>
+#include <ntqframe.h>
+#include <ntqlayout.h>
+#include <ntqtooltip.h>
+#include <tdelocale.h>
 
 /*
  *  Constructs a EvaLoginVeriUIBase as a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'.
  */
-EvaLoginVeriUIBase::EvaLoginVeriUIBase( QWidget* parent, const char* name, WFlags fl )
-    : QDialog( parent, name, false, fl )
+EvaLoginVeriUIBase::EvaLoginVeriUIBase( TQWidget* parent, const char* name, WFlags fl )
+    : TQDialog( parent, name, false, fl )
 {
     if ( !name )
 	setName( "EvaLoginVeriUIBase" );
-    EvaLoginVeriUIBaseLayout = new QGridLayout( this, 1, 1, 11, 6, "EvaLoginVeriUIBaseLayout"); 
+    EvaLoginVeriUIBaseLayout = new TQGridLayout( this, 1, 1, 11, 6, "EvaLoginVeriUIBaseLayout"); 
 
-    layout8 = new QVBoxLayout( 0, 0, 6, "layout8"); 
+    layout8 = new TQVBoxLayout( 0, 0, 6, "layout8"); 
 
-    layout1 = new QHBoxLayout( 0, 0, 6, "layout1"); 
+    layout1 = new TQHBoxLayout( 0, 0, 6, "layout1"); 
 
-    lblTopTip = new QLabel( this, "lblTopTip" );
+    lblTopTip = new TQLabel( this, "lblTopTip" );
     layout1->addWidget( lblTopTip );
-    spacer1 = new QSpacerItem( 41, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
+    spacer1 = new TQSpacerItem( 41, 20, TQSizePolicy::Expanding, TQSizePolicy::Minimum );
     layout1->addItem( spacer1 );
     layout8->addLayout( layout1 );
 
-    layout5 = new QHBoxLayout( 0, 8, 10, "layout5"); 
+    layout5 = new TQHBoxLayout( 0, 8, 10, "layout5"); 
 
-    layout2 = new QVBoxLayout( 0, 0, 6, "layout2"); 
+    layout2 = new TQVBoxLayout( 0, 0, 6, "layout2"); 
 
-    lblGraphicCode = new QLabel( this, "lblGraphicCode" );
+    lblGraphicCode = new TQLabel( this, "lblGraphicCode" );
     layout2->addWidget( lblGraphicCode );
 
-    lblVeriCode = new QLabel( this, "lblVeriCode" );
+    lblVeriCode = new TQLabel( this, "lblVeriCode" );
     layout2->addWidget( lblVeriCode );
     layout5->addLayout( layout2 );
 
-    layout4 = new QVBoxLayout( 0, 0, 6, "layout4"); 
+    layout4 = new TQVBoxLayout( 0, 0, 6, "layout4"); 
 
-    layout3 = new QHBoxLayout( 0, 4, 6, "layout3"); 
+    layout3 = new TQHBoxLayout( 0, 4, 6, "layout3"); 
 
-    lblGraphic = new QLabel( this, "lblGraphic" );
-    lblGraphic->setPaletteForegroundColor( QColor( 112, 162, 255 ) );
-    lblGraphic->setFrameShape( QLabel::Box );
+    lblGraphic = new TQLabel( this, "lblGraphic" );
+    lblGraphic->setPaletteForegroundColor( TQColor( 112, 162, 255 ) );
+    lblGraphic->setFrameShape( TQLabel::Box );
     layout3->addWidget( lblGraphic );
 
-    tbnChangeGraphic = new QToolButton( this, "tbnChangeGraphic" );
+    tbnChangeGraphic = new TQToolButton( this, "tbnChangeGraphic" );
     tbnChangeGraphic->setAutoRaise( TRUE );
     layout3->addWidget( tbnChangeGraphic );
     layout4->addLayout( layout3 );
 
-    leCode = new QLineEdit( this, "leCode" );
+    leCode = new TQLineEdit( this, "leCode" );
     layout4->addWidget( leCode );
     layout5->addLayout( layout4 );
     layout8->addLayout( layout5 );
 
-    line1 = new QFrame( this, "line1" );
-    line1->setFrameShape( QFrame::HLine );
-    line1->setFrameShadow( QFrame::Sunken );
+    line1 = new TQFrame( this, "line1" );
+    line1->setFrameShape( TQFrame::HLine );
+    line1->setFrameShadow( TQFrame::Sunken );
     line1->setMargin( 0 );
-    line1->setFrameShape( QFrame::HLine );
+    line1->setFrameShape( TQFrame::HLine );
     layout8->addWidget( line1 );
 
-    layout6 = new QHBoxLayout( 0, 10, 6, "layout6"); 
-    spacer2 = new QSpacerItem( 71, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
+    layout6 = new TQHBoxLayout( 0, 10, 6, "layout6"); 
+    spacer2 = new TQSpacerItem( 71, 20, TQSizePolicy::Expanding, TQSizePolicy::Minimum );
     layout6->addItem( spacer2 );
 
-    btnOK = new QPushButton( this, "btnOK" );
+    btnOK = new TQPushButton( this, "btnOK" );
     btnOK->setDefault( true);
     layout6->addWidget( btnOK );
 
-    btnCancel = new QPushButton( this, "btnCancel" );
+    btnCancel = new TQPushButton( this, "btnCancel" );
     layout6->addWidget( btnCancel );
     layout8->addLayout( layout6 );
 
     EvaLoginVeriUIBaseLayout->addLayout( layout8, 0, 0 );
     languageChange();
-    resize( QSize(320, 182).expandedTo(minimumSizeHint()) );
+    resize( TQSize(320, 182).expandedTo(minimumSizeHint()) );
     clearWState( WState_Polished );
 
 }
@@ -112,7 +112,7 @@ EvaLoginVeriUIBase::EvaLoginVeriUIBase( QWidget* parent, const char* name, WFlag
  */
 EvaLoginVeriUIBase::~EvaLoginVeriUIBase()
 {
-    // no need to delete child widgets, Qt does it all for us
+    // no need to delete child widgets, TQt does it all for us
 }
 
 /*
@@ -128,8 +128,8 @@ void EvaLoginVeriUIBase::languageChange()
     lblGraphic->setText( "pic"  );
     tbnChangeGraphic->setText( i18n( "Change image" ) );
     btnOK->setText( i18n( "&OK" ) );
-    btnOK->setAccel( QKeySequence( "Alt+O"  ) );
+    btnOK->setAccel( TQKeySequence( "Alt+O"  ) );
     btnCancel->setText( i18n( "&Cancel" ) );
-    btnCancel->setAccel( QKeySequence(  "Alt+C" ) );
+    btnCancel->setAccel( TQKeySequence(  "Alt+C" ) );
 }
 

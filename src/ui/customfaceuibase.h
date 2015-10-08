@@ -21,38 +21,38 @@
 #ifndef CUSTOMFACEUIBASE_H
 #define CUSTOMFACEUIBASE_H
 
-#include <qvariant.h>
-#include <qwidget.h>
+#include <ntqvariant.h>
+#include <ntqwidget.h>
 
-class QVBoxLayout;
-class QHBoxLayout;
-class QGridLayout;
-class QSpacerItem;
-class QTabWidget;
-class QToolButton;
-class QCheckBox;
-class QLabel;
+class TQVBoxLayout;
+class TQHBoxLayout;
+class TQGridLayout;
+class TQSpacerItem;
+class TQTabWidget;
+class TQToolButton;
+class TQCheckBox;
+class TQLabel;
 
-class CustomFaceUIBase : public QWidget
+class CustomFaceUIBase : public TQWidget
 {
     Q_OBJECT
 
 public:
-    CustomFaceUIBase( QWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
+    CustomFaceUIBase( TQWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
     ~CustomFaceUIBase();
 
-    QTabWidget* twSelector;
-    QToolButton* tbAdd;
-    QCheckBox* chbUseShortcut;
-    QLabel* lblPage;
-    QToolButton* tbPrev;
-    QToolButton* tbNext;
+    TQTabWidget* twSelector;
+    TQToolButton* tbAdd;
+    TQCheckBox* chbUseShortcut;
+    TQLabel* lblPage;
+    TQToolButton* tbPrev;
+    TQToolButton* tbNext;
 
 protected:
-    QGridLayout* CustomFaceUIBaseLayout;
-    QVBoxLayout* layout2;
-    QHBoxLayout* layout1;
-    QSpacerItem* spacer1;
+    TQGridLayout* CustomFaceUIBaseLayout;
+    TQVBoxLayout* layout2;
+    TQHBoxLayout* layout1;
+    TQSpacerItem* spacer1;
 
 protected slots:
     virtual void languageChange();

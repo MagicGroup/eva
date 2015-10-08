@@ -22,28 +22,28 @@
 #include "evamain.h"
 #include "evauser.h"
 
-#include <qlabel.h>
-#include <qpixmap.h>
-#include <qpushbutton.h>
-#include <qtoolbutton.h>
-#include <qlineedit.h>
+#include <ntqlabel.h>
+#include <ntqpixmap.h>
+#include <ntqpushbutton.h>
+#include <ntqtoolbutton.h>
+#include <ntqlineedit.h>
 
-EvaLoginVeriWindow::EvaLoginVeriWindow(QWidget *p)
+EvaLoginVeriWindow::EvaLoginVeriWindow(TQWidget *p)
 	: EvaLoginVeriUIBase(p, "Verify Window", WType_Dialog)
-				//Qt::WStyle_Customize | Qt::WStyle_Title | Qt::WStyle_SysMenu
-				 //| Qt::WStyle_NormalBorder | Qt::WDestructiveClose)
+				//TQt::WStyle_Customize | TQt::WStyle_Title | TQt::WStyle_SysMenu
+				 //| TQt::WStyle_NormalBorder | TQt::WDestructiveClose)
 {
 	slotImageReady();
-	QObject::connect(tbnChangeGraphic, SIGNAL(clicked()), SLOT(slotBtnChangeImageClicked()));
-	QObject::connect(btnOK, SIGNAL(clicked()), SLOT(slotBtnOKClicked()));
-	QObject::connect(btnCancel, SIGNAL(clicked()), SLOT(close()));
+	TQObject::connect(tbnChangeGraphic, SIGNAL(clicked()), SLOT(slotBtnChangeImageClicked()));
+	TQObject::connect(btnOK, SIGNAL(clicked()), SLOT(slotBtnOKClicked()));
+	TQObject::connect(btnCancel, SIGNAL(clicked()), SLOT(close()));
 }
 
 void EvaLoginVeriWindow::slotImageReady( )
 {
 	GraphicVerifyCode code = EvaMain::user->getLoginVerifyInfo();
 	if(!code.m_Data || !code.m_DataLen) return;
-	QPixmap pix;
+	TQPixmap pix;
 	pix.loadFromData(code.m_Data, code.m_DataLen);
 	lblGraphic->setPixmap( pix);
 	btnOK->setEnabled( true);

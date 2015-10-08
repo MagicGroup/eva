@@ -21,110 +21,110 @@
 #ifndef MAINLISTFONTSETTINGUIBASE_H
 #define MAINLISTFONTSETTINGUIBASE_H
 
-#include <qvariant.h>
-#include <qwidget.h>
+#include <ntqvariant.h>
+#include <ntqwidget.h>
 
-class QVBoxLayout;
-class QHBoxLayout;
-class QGridLayout;
-class QSpacerItem;
+class TQVBoxLayout;
+class TQHBoxLayout;
+class TQGridLayout;
+class TQSpacerItem;
 class KTabWidget;
-class QGroupBox;
-class QLabel;
+class TQGroupBox;
+class TQLabel;
 class KColorCombo;
-class QCheckBox;
+class TQCheckBox;
 
-class MainListFontSettingUIBase : public QWidget
+class MainListFontSettingUIBase : public TQWidget
 {
 	Q_OBJECT
 
 public:
-	MainListFontSettingUIBase( QWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
+	MainListFontSettingUIBase( TQWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
 	~MainListFontSettingUIBase();
 	
 	KTabWidget* ktabMainListFont;
-	QWidget* TabPage;
-	QGroupBox* gbBuddyNick;
-	QLabel* lblBuddyNickColor;
+	TQWidget* TabPage;
+	TQGroupBox* gbBuddyNick;
+	TQLabel* lblBuddyNickColor;
 	KColorCombo* kcbbBuddyNickColor;
-	QCheckBox* chbBuddyNickFontB;
-	QCheckBox* chbBuddyNickFontU;
-	QCheckBox* chbBuddyNickFontI;
-	QGroupBox* gbBuddyFlash;
-	QLabel* lblBuddyFlashColor;
+	TQCheckBox* chbBuddyNickFontB;
+	TQCheckBox* chbBuddyNickFontU;
+	TQCheckBox* chbBuddyNickFontI;
+	TQGroupBox* gbBuddyFlash;
+	TQLabel* lblBuddyFlashColor;
 	KColorCombo* kcbbBuddyFlashColor;
-	QCheckBox* chbBuddyFlashFontB;
-	QCheckBox* chbBuddyFlashFontU;
-	QCheckBox* chbBuddyFlashFontI;
-	QGroupBox* gbBuddySignature;
-	QLabel* lblBuddySigColor;
+	TQCheckBox* chbBuddyFlashFontB;
+	TQCheckBox* chbBuddyFlashFontU;
+	TQCheckBox* chbBuddyFlashFontI;
+	TQGroupBox* gbBuddySignature;
+	TQLabel* lblBuddySigColor;
 	KColorCombo* kcbbBuddySigColor;
-	QCheckBox* chbBuddySigFontB;
-	QCheckBox* chbBuddySigFontU;
-	QCheckBox* chbBuddySigFontI;
-	QWidget* TabPage_2;
-	QGroupBox* gbQunName;
-	QLabel* lblQunNameColor;
+	TQCheckBox* chbBuddySigFontB;
+	TQCheckBox* chbBuddySigFontU;
+	TQCheckBox* chbBuddySigFontI;
+	TQWidget* TabPage_2;
+	TQGroupBox* gbQunName;
+	TQLabel* lblQunNameColor;
 	KColorCombo* kcbbQunNameColor;
-	QCheckBox* chbQunNameFontB;
-	QCheckBox* chbQunNameFontU;
-	QCheckBox* chbQunNameFontI;
-	QGroupBox* gbQunFlash;
-	QLabel* lblQunFlashColor;
+	TQCheckBox* chbQunNameFontB;
+	TQCheckBox* chbQunNameFontU;
+	TQCheckBox* chbQunNameFontI;
+	TQGroupBox* gbQunFlash;
+	TQLabel* lblQunFlashColor;
 	KColorCombo* kcbbQunFlashColor;
-	QCheckBox* chbQunFlashFontB;
-	QCheckBox* chbQunFlashFontU;
-	QCheckBox* chbQunFlashFontI;
-	QWidget* TabPage_3;
-	QGroupBox* gbGroupName;
-	QLabel* lblGroupNameColor;
+	TQCheckBox* chbQunFlashFontB;
+	TQCheckBox* chbQunFlashFontU;
+	TQCheckBox* chbQunFlashFontI;
+	TQWidget* TabPage_3;
+	TQGroupBox* gbGroupName;
+	TQLabel* lblGroupNameColor;
 	KColorCombo* kcbbGroupNameColor;
-	QCheckBox* chbGroupNameFontB;
-	QCheckBox* chbGroupNameFontU;
-	QCheckBox* chbGroupNameFontI;
-	QGroupBox* gbGroupFlash;
-	QLabel* lblGroupFlashColor;
+	TQCheckBox* chbGroupNameFontB;
+	TQCheckBox* chbGroupNameFontU;
+	TQCheckBox* chbGroupNameFontI;
+	TQGroupBox* gbGroupFlash;
+	TQLabel* lblGroupFlashColor;
 	KColorCombo* kcbbGroupFlashColor;
-	QCheckBox* chbGroupFlashFontB;
-	QCheckBox* chbGroupFlashFontU;
-	QCheckBox* chbGroupFlashFontI;
-	QGroupBox* gbGroupOnlineCount;
-	QLabel* lblGroupOnlineColor;
+	TQCheckBox* chbGroupFlashFontB;
+	TQCheckBox* chbGroupFlashFontU;
+	TQCheckBox* chbGroupFlashFontI;
+	TQGroupBox* gbGroupOnlineCount;
+	TQLabel* lblGroupOnlineColor;
 	KColorCombo* kcbbGroupOnlineColor;
-	QCheckBox* chbGroupOnlineFontB;
-	QCheckBox* chbGroupOnlineFontU;
-	QCheckBox* chbGroupOnlineFontI;
+	TQCheckBox* chbGroupOnlineFontB;
+	TQCheckBox* chbGroupOnlineFontU;
+	TQCheckBox* chbGroupOnlineFontI;
 
 protected:
-	QGridLayout* MainListFontSettingUIBaseLayout;
-	QVBoxLayout* TabPageLayout;
-	QVBoxLayout* gbBuddyNickLayout;
-	QHBoxLayout* layout1;
-	QHBoxLayout* layout2;
-	QVBoxLayout* gbBuddyFlashLayout;
-	QHBoxLayout* layout3;
-	QHBoxLayout* layout4;
-	QVBoxLayout* gbBuddySignatureLayout;
-	QHBoxLayout* layout5;
-	QHBoxLayout* layout6;
-	QVBoxLayout* TabPageLayout_2;
-	QVBoxLayout* layout11;
-	QVBoxLayout* gbQunNameLayout;
-	QHBoxLayout* layout1_2;
-	QHBoxLayout* layout2_2;
-	QVBoxLayout* gbQunFlashLayout;
-	QHBoxLayout* layout3_2;
-	QHBoxLayout* layout4_2;
-	QVBoxLayout* TabPageLayout_3;
-	QVBoxLayout* gbGroupNameLayout;
-	QHBoxLayout* layout1_3;
-	QHBoxLayout* layout2_3;
-	QVBoxLayout* gbGroupFlashLayout;
-	QHBoxLayout* layout3_3;
-	QHBoxLayout* layout4_3;
-	QVBoxLayout* gbGroupOnlineCountLayout;
-	QHBoxLayout* layout5_2;
-	QHBoxLayout* layout6_2;
+	TQGridLayout* MainListFontSettingUIBaseLayout;
+	TQVBoxLayout* TabPageLayout;
+	TQVBoxLayout* gbBuddyNickLayout;
+	TQHBoxLayout* layout1;
+	TQHBoxLayout* layout2;
+	TQVBoxLayout* gbBuddyFlashLayout;
+	TQHBoxLayout* layout3;
+	TQHBoxLayout* layout4;
+	TQVBoxLayout* gbBuddySignatureLayout;
+	TQHBoxLayout* layout5;
+	TQHBoxLayout* layout6;
+	TQVBoxLayout* TabPageLayout_2;
+	TQVBoxLayout* layout11;
+	TQVBoxLayout* gbQunNameLayout;
+	TQHBoxLayout* layout1_2;
+	TQHBoxLayout* layout2_2;
+	TQVBoxLayout* gbQunFlashLayout;
+	TQHBoxLayout* layout3_2;
+	TQHBoxLayout* layout4_2;
+	TQVBoxLayout* TabPageLayout_3;
+	TQVBoxLayout* gbGroupNameLayout;
+	TQHBoxLayout* layout1_3;
+	TQHBoxLayout* layout2_3;
+	TQVBoxLayout* gbGroupFlashLayout;
+	TQHBoxLayout* layout3_3;
+	TQHBoxLayout* layout4_3;
+	TQVBoxLayout* gbGroupOnlineCountLayout;
+	TQHBoxLayout* layout5_2;
+	TQHBoxLayout* layout6_2;
 
 protected slots:
 	virtual void languageChange();

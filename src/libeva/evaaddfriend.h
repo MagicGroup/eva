@@ -81,8 +81,8 @@ public:
 	const std::string getMessage() const { return message; }
 	void setMessage(const std::string &msg) { message = msg; }
 	
-	const int getBuddyQQ() const { return buddyQQNum; }
-	void setBuddyQQ(const int id) { buddyQQNum = id; };
+	const int getBuddyQQ() const { return buddyTQQNum; }
+	void setBuddyQQ(const int id) { buddyTQQNum = id; };
 	
 	const uint8_t getType() const { return type; }
 	void setType(const uint8_t type) { this->type = type; }
@@ -92,7 +92,7 @@ protected:
 private:
 	static const unsigned char DIVIDER = 0x1f;
 	uint8_t type;
-	int buddyQQNum;
+	int buddyTQQNum;
 	std::string message;
 };
 
@@ -127,12 +127,12 @@ public:
 	OutPacket *copy(){return new DeleteFriendPacket(*this);}
 	DeleteFriendPacket &operator=(const DeleteFriendPacket &rhs);
 	
-	void setBuddyQQ(int id) { buddyQQNum = id; }
-	const int getBuddyQQ() const { return buddyQQNum; }
+	void setBuddyQQ(int id) { buddyTQQNum = id; }
+	const int getBuddyQQ() const { return buddyTQQNum; }
 protected:		
 	virtual int putBody(unsigned char* buf);
 private:
-	int buddyQQNum;
+	int buddyTQQNum;
 };
 
 class DeleteFriendReplyPacket : public InPacket
@@ -166,12 +166,12 @@ public:
 	OutPacket *copy(){return new DeleteMePacket(*this);}
 	DeleteMePacket &operator=(const DeleteMePacket &rhs);
 	
-	void setBuddyQQ(int id) { buddyQQNum = id; }
-	const int getBuddyQQ() const { return buddyQQNum; }
+	void setBuddyQQ(int id) { buddyTQQNum = id; }
+	const int getBuddyQQ() const { return buddyTQQNum; }
 protected:		
 	virtual int putBody(unsigned char* buf);
 private:
-	int buddyQQNum;
+	int buddyTQQNum;
 };
 
 class DeleteMeReplyPacket : public InPacket
@@ -240,8 +240,8 @@ public:
 	OutPacket *copy(){return new VerifyAddingMsgPacket(*this);}
 	VerifyAddingMsgPacket &operator=(const VerifyAddingMsgPacket &rhs);
 	
-	void setBuddyQQ(unsigned int id) { m_BuddyQQNum = id; }
-	const unsigned int getBuddyQQ() const { return m_BuddyQQNum; }
+	void setBuddyQQ(unsigned int id) { m_BuddyTQQNum = id; }
+	const unsigned int getBuddyQQ() const { return m_BuddyTQQNum; }
 	void setCode(const unsigned char *code, const unsigned int len);
 	
 	const unsigned char *getCode() const { return m_Code; }
@@ -249,7 +249,7 @@ public:
 protected:		
 	virtual int putBody(unsigned char* buf);
 private:
-	unsigned int m_BuddyQQNum;
+	unsigned int m_BuddyTQQNum;
 	unsigned char * m_Code;
 	unsigned int m_CodeLen;
 };
@@ -267,12 +267,12 @@ public:
 	
 	const unsigned char getFlag1() const { return m_Flag1; }
 	const unsigned char getFlag2() const { return m_Flag2; }
-	const unsigned int getBuddyQQ() const { return m_BuddyQQNum; }
+	const unsigned int getBuddyQQ() const { return m_BuddyTQQNum; }
 	const unsigned char getReplyCode() const { return m_ReplyCode; }
 protected:
 	virtual void parseBody();
 private:
-	unsigned int m_BuddyQQNum;
+	unsigned int m_BuddyTQQNum;
 	unsigned char m_Flag1;
 	unsigned char m_Flag2;
 	unsigned char m_ReplyCode;

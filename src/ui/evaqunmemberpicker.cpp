@@ -20,10 +20,10 @@
  
 #include "evaqunmemberpicker.h"
  
-#include <qlistview.h>
-#include <qimage.h>
-#include <qtextcodec.h>
-#include <qheader.h>
+#include <ntqlistview.h>
+#include <ntqimage.h>
+#include <ntqtextcodec.h>
+#include <ntqheader.h>
 #include <string>
 
 #include "../evamain.h"
@@ -34,7 +34,7 @@
 #include "evaqunlist.h"
 #include "evaqtutil.h"
 
-EvaQunMemberPicker::EvaQunMemberPicker(QWidget * parent, const char * name, WFlags fl, Qun *qun )
+EvaQunMemberPicker::EvaQunMemberPicker(TQWidget * parent, const char * name, WFlags fl, Qun *qun )
 	: EvaQunMemberPickerUI( parent, name, fl )
 {
 	mQun = qun;
@@ -46,7 +46,7 @@ void EvaQunMemberPicker::initListView()
 {
 	lvBuddyList->header()->hide();
 	lvBuddyList->setRootIsDecorated( true);
-	QObject::connect(lvBuddyList, SIGNAL(clicked(QListViewItem *)), SLOT(slotClicked(QListViewItem *)));
+	TQObject::connect(lvBuddyList, SIGNAL(clicked(TQListViewItem *)), SLOT(slotClicked(TQListViewItem *)));
 	//lvBuddyList->setTreeStepSize( 0 );   
 }
 
@@ -55,63 +55,63 @@ void EvaQunMemberPicker::updateBuddyListView()
 	//if(!mQun) return;
 	lvBuddyList->clear();
 	
-	QTextCodec *codec = QTextCodec::codecForName("GB18030");
+	TQTextCodec *codec = TQTextCodec::codecForName("GB18030");
 	std::list<std::string> names = EvaMain::user->getGroupNames();
 	std::list<std::string>::iterator groupIter;
 	int i=0;
 	for(groupIter = names.begin(); groupIter!= names.end(); ++groupIter){
-		QString g = codec->toUnicode(groupIter->c_str());
-		QCheckListItem *item = new QCheckListItem(lvBuddyList, g, QCheckListItem::CheckBox);
-		item->setState(QCheckListItem::Off);
+		TQString g = codec->toUnicode(groupIter->c_str());
+		TQCheckListItem *item = new TQCheckListItem(lvBuddyList, g, TQCheckListItem::CheckBox);
+		item->setState(TQCheckListItem::Off);
 		groups[i++] = item;
 	}
 	
 	//QunInfo info = mQun->getDetails();
 	
-	std::map<unsigned int, QQFriend>::iterator iter;
-	std::map<unsigned int, QQFriend> list = (EvaMain::user->getFriendList()).getAllFriendsMap();
+	std::map<unsigned int, TQQFriend>::iterator iter;
+	std::map<unsigned int, TQQFriend> list = (EvaMain::user->getFriendList()).getAllFriendsMap();
 	for(iter = list.begin(); iter != list.end(); ++iter){
 	
 		int id = iter->second.getQQ();
-		QString nick = EvaTextFilter::filter(codec->toUnicode(iter->second.getNick().c_str()));
+		TQString nick = EvaTextFilter::filter(codec->toUnicode(iter->second.getNick().c_str()));
 		
 		int groupIndex = iter->second.getGroupIndex();
-		QCheckListItem *group = groups[groupIndex];
+		TQCheckListItem *group = groups[groupIndex];
 		if(!group) continue;
 		
 		short faceID = (iter->second.getFace())/3 + 1;
 		if(faceID<1) faceID = 1;
-		QCheckListItem *item = new QCheckListItem(group, nick + "(" + QString::number(id) + ")", QCheckListItem::CheckBox);
+		TQCheckListItem *item = new TQCheckListItem(group, nick + "(" + TQString::number(id) + ")", TQCheckListItem::CheckBox);
 
-		QPixmap *pic = EvaMain::images->getFace(faceID, true);
+		TQPixmap *pic = EvaMain::images->getFace(faceID, true);
 		if(pic) {
-			QImage img(pic->convertToImage().smoothScale(16, 16));
-			item->setPixmap(0, QPixmap(img));
+			TQImage img(pic->convertToImage().smoothScale(16, 16));
+			item->setPixmap(0, TQPixmap(img));
 		}else{
-			fprintf(stderr, "EvaQunMemberPicker::updateBuddyListView (id:%d, faceID:%d, %s) --  NULL QPixmap pointer, ignored!\n", id, faceID, nick.ascii());
+			fprintf(stderr, "EvaQunMemberPicker::updateBuddyListView (id:%d, faceID:%d, %s) --  NULL TQPixmap pointer, ignored!\n", id, faceID, nick.ascii());
 		}
 		if(mQun && mQun->hasMember(id))
-			item->setState(QCheckListItem::On);
+			item->setState(TQCheckListItem::On);
 		else
-			item->setState(QCheckListItem::Off);
+			item->setState(TQCheckListItem::Off);
 			
 		buddyList[id] = item;
 	}
 }
 
-void EvaQunMemberPicker::slotClicked(QListViewItem *item)
+void EvaQunMemberPicker::slotClicked(TQListViewItem *item)
 {
 	if(!item) return;
-	QCheckListItem *chkItem = dynamic_cast<QCheckListItem *>(item);
+	TQCheckListItem *chkItem = dynamic_cast<TQCheckListItem *>(item);
 	if(!chkItem) return;
 	unsigned int id;
-	QString txt;
-	QString strID;
+	TQString txt;
+	TQString strID;
 	bool ok;
-	QString nick;
-	QPixmap face;
+	TQString nick;
+	TQPixmap face;
 	
-	QCheckListItem *child = dynamic_cast<QCheckListItem *>(chkItem->firstChild());
+	TQCheckListItem *child = dynamic_cast<TQCheckListItem *>(chkItem->firstChild());
 	if(!child){
 		txt = chkItem->text(0);
 		int index = txt.findRev("(");
@@ -137,13 +137,13 @@ void EvaQunMemberPicker::slotClicked(QListViewItem *item)
 		face = *(child->pixmap(0));
 		
 		emit memberClicked(id, child->isOn());
-		child = dynamic_cast<QCheckListItem *>(child->nextSibling());
+		child = dynamic_cast<TQCheckListItem *>(child->nextSibling());
 	}
 }
 
 void EvaQunMemberPicker::slotSetMemberOff(const unsigned int id)
 {
-	std::map<int, QCheckListItem *>::iterator iter;
+	std::map<int, TQCheckListItem *>::iterator iter;
 	iter = buddyList.find(id);
 	if(iter == buddyList.end()) return;
 	iter->second->setOn(false);

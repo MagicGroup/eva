@@ -18,42 +18,42 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef EVAQUNMEMBERPICKERUI_H
-#define EVAQUNMEMBERPICKERUI_H
+#ifndef EVATQUNMEMBERPICKERUI_H
+#define EVATQUNMEMBERPICKERUI_H
 
-#include <qvariant.h>
-#include <qwidget.h>
+#include <ntqvariant.h>
+#include <ntqwidget.h>
 
-class QVBoxLayout;
-class QHBoxLayout;
-class QGridLayout;
-class QSpacerItem;
-class QFrame;
-class QLabel;
-class QListView;
+class TQVBoxLayout;
+class TQHBoxLayout;
+class TQGridLayout;
+class TQSpacerItem;
+class TQFrame;
+class TQLabel;
+class TQListView;
 
-class EvaQunMemberPickerUI : public QWidget
+class EvaQunMemberPickerUI : public TQWidget
 {
     Q_OBJECT
 
 public:
-	EvaQunMemberPickerUI( QWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
+	EvaQunMemberPickerUI( TQWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
 	~EvaQunMemberPickerUI();
 	
-	QFrame* fraMain;
-	QFrame* line1;
-	QFrame* line2;
-	QLabel* lblTitle;
-	QListView* lvBuddyList;
+	TQFrame* fraMain;
+	TQFrame* line1;
+	TQFrame* line2;
+	TQLabel* lblTitle;
+	TQListView* lvBuddyList;
 
 protected:
-	QGridLayout* EvaQunMemberPickerUILayout;
-	QGridLayout* fraMainLayout;
-	QVBoxLayout* layout1;
+	TQGridLayout* EvaQunMemberPickerUILayout;
+	TQGridLayout* fraMainLayout;
+	TQVBoxLayout* layout1;
 
 protected slots:
     virtual void languageChange();
 
 };
 
-#endif // EVAQUNMEMBERPICKERUI_H
+#endif // EVATQUNMEMBERPICKERUI_H

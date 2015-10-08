@@ -23,13 +23,13 @@
 
 #include "../evanetwork.h"
 #include <map>
-#include <qobject.h>
-#include <qthread.h>
-#include <qhostaddress.h>
-#include <qvaluelist.h>
-#include <qevent.h>
-#include <qdatetime.h>
-#include <qptrlist.h>
+#include <ntqobject.h>
+#include <ntqthread.h>
+#include <ntqhostaddress.h>
+#include <ntqvaluelist.h>
+#include <ntqevent.h>
+#include <ntqdatetime.h>
+#include <ntqptrlist.h>
 #include <cstring>
 #include <cstdlib>
 
@@ -47,10 +47,10 @@
 typedef unsigned char uint8_t;
 enum EvaFileStatus { ESNone, ESError, ESResume, ESSendFinished, ESReceiveFinished };
 
-class EvaFileNotifyAgentEvent : public QCustomEvent
+class EvaFileNotifyAgentEvent : public TQCustomEvent
 {
 public:
-	EvaFileNotifyAgentEvent() : QCustomEvent(Eva_FileNotifyAgentEvent){}
+	EvaFileNotifyAgentEvent() : TQCustomEvent(Eva_FileNotifyAgentEvent){}
 	void setOldSession(const unsigned int s) { m_OldSession = s; }
 	void setAgentSession(const unsigned int s) { m_Session = s; }
 	void setAgentIp(const unsigned int ip) { m_Ip = ip; }
@@ -76,10 +76,10 @@ private:
 	unsigned char m_TransferType;
 };
 
-class EvaFileNotifyStatusEvent : public QCustomEvent
+class EvaFileNotifyStatusEvent : public TQCustomEvent
 {
 public:
-	EvaFileNotifyStatusEvent() : QCustomEvent(Eva_FileNotifyStatusEvent){}
+	EvaFileNotifyStatusEvent() : TQCustomEvent(Eva_FileNotifyStatusEvent){}
 	void setSession(const unsigned int s) { m_Session = s; }
 	void setFileSize(const unsigned int size) { m_FileSize = size; }
 	void setBytesSent(const unsigned int bytes) { m_BytesSent = bytes; }
@@ -99,10 +99,10 @@ private:
 	int m_TimeElapsed; // how many seconds
 };
 
-class EvaFileNotifySessionEvent : public QCustomEvent
+class EvaFileNotifySessionEvent : public TQCustomEvent
 {
 public:
-	EvaFileNotifySessionEvent() : QCustomEvent(Eva_FileNotifySessionEvent){}
+	EvaFileNotifySessionEvent() : TQCustomEvent(Eva_FileNotifySessionEvent){}
 	void setBuddyQQ(const unsigned int id) { m_Id = id; }
 	void setOldSession(const unsigned int s) { m_OldSession = s; }
 	void setNewSession(const unsigned int s) { m_NewSession = s; }
@@ -116,24 +116,24 @@ private:
 	unsigned int m_NewSession;
 };
 
-class EvaFileNotifyNormalEvent : public QCustomEvent
+class EvaFileNotifyNormalEvent : public TQCustomEvent
 {
 public:
-	EvaFileNotifyNormalEvent() : QCustomEvent(Eva_FileNotifyNormalEvent){}
+	EvaFileNotifyNormalEvent() : TQCustomEvent(Eva_FileNotifyNormalEvent){}
 
 	void setBuddyQQ(const unsigned int id) { m_Id = id; }
 	void setSession(const unsigned int s) { m_Session = s; }
 	void setStatus(EvaFileStatus status) { m_Status = status; }
-	void setFileDir(const QString &dir) { m_Dir = dir; }
-	void setFileName(const QString &file) { m_FileName = file; }
+	void setFileDir(const TQString &dir) { m_Dir = dir; }
+	void setFileName(const TQString &file) { m_FileName = file; }
 	void setFileSize(const unsigned int size) { m_Size = size; }
 	void setTransferType(const unsigned char type) { m_TransferType = type; }
 
 	const unsigned int getBuddyQQ() const { return m_Id; }
 	const unsigned int getSession() const { return m_Session; }
 	const EvaFileStatus getStatus() const { return m_Status; }
-	const QString getDir() const { return m_Dir; }
-	const QString getFileName() const { return m_FileName; }
+	const TQString getDir() const { return m_Dir; }
+	const TQString getFileName() const { return m_FileName; }
 	const unsigned int getFileSize() const { return m_Size; }
 	const unsigned char getTransferType() const { return m_TransferType; }
 	
@@ -141,16 +141,16 @@ private:
 	unsigned int m_Id;
 	unsigned int m_Session;
 	EvaFileStatus m_Status;
-	QString m_Dir;
-	QString m_FileName;
+	TQString m_Dir;
+	TQString m_FileName;
 	unsigned int m_Size;
 	unsigned char m_TransferType;
 };
 
-class EvaFileNotifyAddressEvent : public QCustomEvent
+class EvaFileNotifyAddressEvent : public TQCustomEvent
 {
 public:
-	EvaFileNotifyAddressEvent() : QCustomEvent(Eva_FileNotifyAddressEvent){}
+	EvaFileNotifyAddressEvent() : TQCustomEvent(Eva_FileNotifyAddressEvent){}
 	void setSession(const unsigned int s) { m_Session = s; }
 	void setSynSession(const unsigned int s) { m_SynSession = s; }
 	void setIp(const unsigned int ip) { m_Ip = ip; }
@@ -179,64 +179,64 @@ private:
 
 
 class EvaCachedFile;
-class QDns;
+class TQDns;
 
 
-class EvaFileThread : public QObject, public QThread
+class EvaFileThread : public TQObject, public TQThread
 {
 	Q_OBJECT
 public:
 	// for sending
-	EvaFileThread(QObject *receiver, const unsigned int id, const QValueList<QString> &dirList,
-			const QValueList<QString> &filenameList,
-			const QValueList<unsigned int> sizeList, const bool isSender);
+	EvaFileThread(TQObject *receiver, const unsigned int id, const TQValueList<TQString> &dirList,
+			const TQValueList<TQString> &filenameList,
+			const TQValueList<unsigned int> sizeList, const bool isSender);
 
 	~EvaFileThread();
 
 	inline void setBuddyQQ(const unsigned int id) { m_Id = id; }
 	inline void setQQ(const unsigned int id) { m_MyId = id; }
 	inline void setSession(const unsigned int session) { m_Session = session; }
-	inline void setFileName(const QString &file) { m_FileName = file; }
+	inline void setFileName(const TQString &file) { m_FileName = file; }
 	inline void setTransferType(const unsigned char type) { m_TransferType = type; }
 
 	inline const unsigned int getBuddyQQ() const { return m_Id; }
 	inline const unsigned int getQQ() const { return m_MyId; }
 	inline const unsigned int getSession() const { return m_Session; }
-	inline const QString getFileName() const { return m_FileName; }
+	inline const TQString getFileName() const { return m_FileName; }
 	inline const unsigned char getTransferType() const { return m_TransferType; }
 
 	inline const bool isSender() const { return m_IsSender; }
 	inline void stop() { m_ExitNow = true; }
 
-	void setDir(const QString &dir);
-	const QString getDir() const;
+	void setDir(const TQString &dir);
+	const TQString getDir() const;
 	const unsigned int getFileSize();
 
-	const QValueList<QString> &getDirList() const { return m_DirList; }
-	const QValueList<QString> &getFileNameList() const { return m_FileNameList; }
-	const QValueList<unsigned int> &getSizeList() const { return m_SizeList; }
+	const TQValueList<TQString> &getDirList() const { return m_DirList; }
+	const TQValueList<TQString> &getFileNameList() const { return m_FileNameList; }
+	const TQValueList<unsigned int> &getSizeList() const { return m_SizeList; }
 protected:
 	bool m_IsSender;
-	QObject *m_Receiver;
+	TQObject *m_Receiver;
 	unsigned int m_Id, m_MyId;
 	unsigned int m_Session;
 	unsigned short m_Sequence;
 	unsigned char m_TransferType;
 
-	QString m_Dir;
-	QString m_FileName;
+	TQString m_Dir;
+	TQString m_FileName;
 	unsigned int m_StartOffset;
 	int m_FileSize;
 	bool m_ExitNow;
 
 	unsigned int m_BytesSent;
-	QDateTime m_StartTime;
+	TQDateTime m_StartTime;
 
 	EvaCachedFile *m_File;
-	QPtrList<EvaCachedFile> m_FileList;
-	QValueList<QString> m_DirList;
-	QValueList<QString> m_FileNameList;
-	QValueList<unsigned int> m_SizeList;
+	TQPtrList<EvaCachedFile> m_FileList;
+	TQValueList<TQString> m_DirList;
+	TQValueList<TQString> m_FileNameList;
+	TQValueList<unsigned int> m_SizeList;
 	
 	EvaNetwork *m_Connecter;
 	void cleanUp();
@@ -257,9 +257,9 @@ class EvaAgentThread : public EvaFileThread
 {
 	Q_OBJECT
 public:
-	EvaAgentThread(QObject *receiver, const unsigned int id, const QValueList<QString> &dirList,
-			const QValueList<QString> &filenameList,
-			const QValueList<unsigned int> sizeList, const bool isSender);
+	EvaAgentThread(TQObject *receiver, const unsigned int id, const TQValueList<TQString> &dirList,
+			const TQValueList<TQString> &filenameList,
+			const TQValueList<unsigned int> sizeList, const bool isSender);
 	virtual ~EvaAgentThread();
 
 	// user must call following 3 methods before running the thread
@@ -267,7 +267,7 @@ public:
 	void setFileAgentKey(const unsigned char *key);
 
 	void setServerAddress(const unsigned int ip, const unsigned short port);
-	void setProxySettings(const QHostAddress addr, const short port, const QCString &param);
+	void setProxySettings(const TQHostAddress addr, const short port, const TQCString &param);
 
 protected:
 	enum AgentState { ENone, EDnsQuery, EDnsReady, ENetworkReady, ECreatingReady,
@@ -279,7 +279,7 @@ protected:
 	unsigned char *m_Token;
 	int m_TokenLength;
 
-	QValueList<QHostAddress> m_HostAddresses;
+	TQValueList<TQHostAddress> m_HostAddresses;
 	unsigned short m_ServerPort;
 
 	void doCreateConnection();
@@ -292,9 +292,9 @@ private:
 	unsigned short m_PacketLength;
 
 	bool m_UsingProxy;
-	QHostAddress m_ProxyServer;
+	TQHostAddress m_ProxyServer;
 	short m_ProxyPort;
-	QCString m_ProxyAuthParam;
+	TQCString m_ProxyAuthParam;
 
 
 private slots:
@@ -307,8 +307,8 @@ class EvaAgentUploader : public EvaAgentThread
 {
 	Q_OBJECT
 public:
-	EvaAgentUploader(QObject *receiver, const unsigned int id,const QValueList<QString> &dirList,
-			const QValueList<QString> &filenameList);
+	EvaAgentUploader(TQObject *receiver, const unsigned int id,const TQValueList<TQString> &dirList,
+			const TQValueList<TQString> &filenameList);
 	~EvaAgentUploader();
 
 	// user must call this method before running the thread
@@ -323,7 +323,7 @@ private:
 	unsigned int m_OutBufferLength;
 	unsigned int m_OutBytesSent;
 	unsigned int m_NumPackets;
-	QDns *m_Dns;
+	TQDns *m_Dns;
 	void doDnsRequest();
 
 	void run();
@@ -360,9 +360,9 @@ class EvaAgentDownloader : public EvaAgentThread
 {
 	Q_OBJECT
 public:
-	EvaAgentDownloader(QObject *receiver, const unsigned int id, const QValueList<QString> &dirList,
-			const QValueList<QString> &filenameList,
-			const QValueList<unsigned int> sizeList);
+	EvaAgentDownloader(TQObject *receiver, const unsigned int id, const TQValueList<TQString> &dirList,
+			const TQValueList<TQString> &filenameList,
+			const TQValueList<unsigned int> sizeList);
 	~EvaAgentDownloader();
 	/** 
 	* @param factor the times of 50 * EVA_FILE_BUFFER_UNIT, default buffer size is 1, which
@@ -406,9 +406,9 @@ class EvaUDPThread : public EvaFileThread
 {
 	Q_OBJECT
 public:
-	EvaUDPThread(QObject *receiver, const unsigned int id, const QValueList<QString> &dirList,
-			const QValueList<QString> &filenameList,
-			const QValueList<unsigned int> sizeList, const bool isSender);
+	EvaUDPThread(TQObject *receiver, const unsigned int id, const TQValueList<TQString> &dirList,
+			const TQValueList<TQString> &filenameList,
+			const TQValueList<unsigned int> sizeList, const bool isSender);
 	virtual ~EvaUDPThread();
 
 	// user must call following 3 methods before running the thread
@@ -425,7 +425,7 @@ protected:
 	unsigned char *m_Token;
 	int m_TokenLength;
 
-	QValueList<QHostAddress> m_HostAddresses;
+	TQValueList<TQHostAddress> m_HostAddresses;
 	unsigned short m_ServerPort;
 
 	void doCreateConnection();
@@ -443,12 +443,12 @@ class EvaUdpUploader : public EvaUDPThread
 {
 	Q_OBJECT
 public:
-	EvaUdpUploader(QObject *receiver, const unsigned int id, const QValueList<QString> &dirList,
-			const QValueList<QString> &filenameList);
+	EvaUdpUploader(TQObject *receiver, const unsigned int id, const TQValueList<TQString> &dirList,
+			const TQValueList<TQString> &filenameList);
 	~EvaUdpUploader();
 
 private:
-	QDns *m_Dns;
+	TQDns *m_Dns;
 	void doDnsRequest();
 
 	void run();
@@ -473,8 +473,8 @@ class EvaUdpDownloader : public EvaUDPThread
 {
 	Q_OBJECT
 public:
-	EvaUdpDownloader(QObject *receiver, const unsigned int id, const QValueList<QString> &dirList, 
-			const QValueList<QString> &filenameList, const QValueList<unsigned int> sizeList)
+	EvaUdpDownloader(TQObject *receiver, const unsigned int id, const TQValueList<TQString> &dirList, 
+			const TQValueList<TQString> &filenameList, const TQValueList<unsigned int> sizeList)
 		: EvaUDPThread(receiver, id, dirList, filenameList, sizeList, false) {};
 	~EvaUdpDownloader() {};
 private:

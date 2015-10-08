@@ -18,54 +18,54 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef QUNDETAILSWINDOW_H
-#define QUNDETAILSWINDOW_H
+#ifndef TQUNDETAILSWINDOW_H
+#define TQUNDETAILSWINDOW_H
 
 #include "qundetailsui.h"
 #include <list>
 
 class Qun;
-class QTextCodec;
+class TQTextCodec;
 class EvaQunMemberPicker;
-class QCloseEvent;
-class QMoveEvent;
+class TQCloseEvent;
+class TQMoveEvent;
 class QunDetailsWindow : public QunDetailsUI
 {
 	Q_OBJECT
 
 public:
-	//QunDetailsWindow(QWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
-	QunDetailsWindow(Qun *qun, const bool isInList = true, QWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
+	//QunDetailsWindow(TQWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
+	QunDetailsWindow(Qun *qun, const bool isInList = true, TQWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
 	~QunDetailsWindow();
 	
 public slots:
-	void slotQunInfomationReady(const unsigned int id, const bool ok, QString msg);
-	void slotModifyQunInfo(const unsigned int id, const bool ok, QString msg = QString::null);
-	void slotModifyQunCardReply(const unsigned int id, const bool ok, const unsigned int qq, QString msg = QString::null);
-	void slotSetAdmin(const unsigned int id, const bool ok, const unsigned int qq, const bool isSetAdmin, QString msg = QString::null);
-	void slotTransferQun(const unsigned int id, const bool ok, const unsigned int qq, QString msg = QString::null);
-	void slotModifyQunMembers(const unsigned int id, const bool ok, QString msg = QString::null);
-	void slotReceivedQunCard(const unsigned int id, const bool ok, const unsigned int qq, QString realName, const unsigned char gender, 
-				QString phone, QString email, QString memo, QString msg);
+	void slotQunInfomationReady(const unsigned int id, const bool ok, TQString msg);
+	void slotModifyQunInfo(const unsigned int id, const bool ok, TQString msg = TQString::null);
+	void slotModifyQunCardReply(const unsigned int id, const bool ok, const unsigned int qq, TQString msg = TQString::null);
+	void slotSetAdmin(const unsigned int id, const bool ok, const unsigned int qq, const bool isSetAdmin, TQString msg = TQString::null);
+	void slotTransferQun(const unsigned int id, const bool ok, const unsigned int qq, TQString msg = TQString::null);
+	void slotModifyQunMembers(const unsigned int id, const bool ok, TQString msg = TQString::null);
+	void slotReceivedQunCard(const unsigned int id, const bool ok, const unsigned int qq, TQString realName, const unsigned char gender, 
+				TQString phone, TQString email, TQString memo, TQString msg);
 	void slotMembersUpdated(const unsigned int id);
 signals:
 	void requestQunInfo(const unsigned int id);
 	void requestQunCard(const unsigned int, const unsigned int);
-	void requestModifyQunInfo(const unsigned int id, unsigned char auth, unsigned short cate, QString name, QString notice, QString description);
-	void requestModifyQunCard(const unsigned int id, const unsigned int qq, QString name, unsigned char gender, QString phone, QString email, QString memo);
+	void requestModifyQunInfo(const unsigned int id, unsigned char auth, unsigned short cate, TQString name, TQString notice, TQString description);
+	void requestModifyQunCard(const unsigned int id, const unsigned int qq, TQString name, unsigned char gender, TQString phone, TQString email, TQString memo);
 	void requestQunSetAdmin(const unsigned int id, const unsigned int qq, const bool isSetAdmin);
 	void requestQunTransfer(const unsigned int id, const unsigned int qq);
 	void requestModifyQunMembers(const unsigned int id, const std::list<unsigned int> list, const bool isAdd);
-	void requestAddBuddy(const unsigned int id, const QString nick, const unsigned short face);
+	void requestAddBuddy(const unsigned int id, const TQString nick, const unsigned short face);
 	void requestUpdateQunMessageSettings(const unsigned int id, const signed char type);
 	
 	void removeMember(const unsigned int id);
 protected:
-	virtual void closeEvent( QCloseEvent *event);
-	virtual void moveEvent (QMoveEvent *event);
+	virtual void closeEvent( TQCloseEvent *event);
+	virtual void moveEvent (TQMoveEvent *event);
 private:
 	Qun *mQun;
-	QTextCodec *codec;
+	TQTextCodec *codec;
 	EvaQunMemberPicker *picker;
 	bool m_IsInList;
 	
@@ -83,7 +83,7 @@ private slots:
 	void slotUpdateClicked();
 	void slotModifyInfo();
 	void slotModifyQunCard();
-	void slotTableClicked(int row,int col,int button,const QPoint& mousePos);
+	void slotTableClicked(int row,int col,int button,const TQPoint& mousePos);
 	
 	void slotSetMembersClicked();
 	void slotAddToMeClicked();

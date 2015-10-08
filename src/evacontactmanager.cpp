@@ -28,7 +28,7 @@
 #include "libeva.h"
 #include "evaapi.h"
 #include <assert.h>
-#include <qapplication.h>
+#include <ntqapplication.h>
 #include <kdebug.h>
 
 
@@ -49,13 +49,13 @@ EvaContactManager::~ EvaContactManager( )
 {
 }
 
-void EvaContactManager::notifyEvent( int eId, const QString & msg, EPARAM param)
+void EvaContactManager::notifyEvent( int eId, const TQString & msg, EPARAM param)
 {
 	EvaNotifyEvent *e = new EvaNotifyEvent(eId);
 	e->m_desc = msg;
 	e->m_param = param;
 	
-	QApplication::postEvent(g_eva, e);
+	TQApplication::postEvent(g_eva, e);
 }
 
 void EvaContactManager::setPacketManager( EvaPacketManager * pm )
@@ -65,10 +65,10 @@ void EvaContactManager::setPacketManager( EvaPacketManager * pm )
 
 	m_status = ESCM_NONE;
 			
-	//QObject::connect();
-	//QObject::connect();
-	//QObject::connect();
-	//QObject::connect();
+	//TQObject::connect();
+	//TQObject::connect();
+	//TQObject::connect();
+	//TQObject::connect();
 	
 }
 
@@ -90,7 +90,7 @@ void EvaContactManager::fetchContacts( )
 	//clear private list first
 	m_Contacts.clearFriendList();
 	//user->getFriendList().clearFriendList();
-	m_packetManager->doGetContacts(QQ_FRIEND_LIST_POSITION_START);	
+	m_packetManager->doGetContacts(TQQ_FRIEND_LIST_POSITION_START);	
 }
 
 void EvaContactManager::processGetFriendListReply( const GetFriendListReplyPacket * packet )
@@ -101,12 +101,12 @@ void EvaContactManager::processGetFriendListReply( const GetFriendListReplyPacke
 	friendItemList gotList = packet->getFriendList();
 	friendItemList::iterator iter;
 	for(iter = gotList.begin(); iter!= gotList.end(); ++iter){
-		QQFriend frd;
+		TQQFriend frd;
 		frd.setFriendItem(*iter);
 		//user->getFriendList().addFriend(frd);
 		m_Contacts.addFriend(frd);
 	}
-	if(packet->getPosition()!=QQ_FRIEND_LIST_POSITION_END){
+	if(packet->getPosition()!=TQQ_FRIEND_LIST_POSITION_END){
 		m_packetManager->doGetContacts( packet->getPosition());
 		notifyEvent(E_ContactsDownloading);
 	}else{
@@ -188,7 +188,7 @@ void EvaContactManager::processDownloadGroupFriendReply( const DownloadGroupFrie
 			m_QunList.add(q);
 		}
 	}
-	QString msg = QString(i18n("%1")).arg(m_GroupedContacts.size());
+	TQString msg = TQString(i18n("%1")).arg(m_GroupedContacts.size());
 	notifyEvent(E_GroupContactsReceived, msg);
 	
 	int nextID = packet->getNextStartID();
@@ -255,7 +255,7 @@ void EvaContactManager::processQunInfoReply( const QunReplyPacket * packet )
 		user->saveQunList();
 	}
 	
-	QString msg = QString("%1").arg(m_QunInfo.getQunID());
+	TQString msg = TQString("%1").arg(m_QunInfo.getQunID());
 	notifyEvent(E_QunInfoFinished, msg, (EPARAM)(m_QunInfo.getQunID()));
 	if(m_downloadAll){
 		Qun *q = m_QunList.next();
@@ -409,7 +409,7 @@ void EvaContactManager::processGetUserInfoReply( const GetUserInfoReplyPacket * 
 			user->saveGroupedBuddyList();
 		}
 	
-	QString msg = QString("%1").arg(id);
+	TQString msg = TQString("%1").arg(id);
 	notifyEvent(E_ContactDetailDone, msg, (EPARAM)id);
 }
 
@@ -432,8 +432,8 @@ void EvaContactManager::processSignatureReply( const SignatureReplyPacket * pack
 	assert(packet);
 
 	unsigned int id = 0;
-	QString sig = "";
-	//QTextCodec *codec = QTextCodec::codecForName("GB18030");
+	TQString sig = "";
+	//TQTextCodec *codec = TQTextCodec::codecForName("GB18030");
 	std::map<unsigned int, SignatureElement> members = packet->getMembers();
 	std::map<unsigned int, SignatureElement>::iterator iter;
 	for(iter = members.begin(); iter!= members.end(); ++iter){

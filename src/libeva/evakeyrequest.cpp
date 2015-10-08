@@ -23,12 +23,12 @@
 #include <cstring>
 
 EvaRequestKeyPacket::EvaRequestKeyPacket()
-      : OutPacket(QQ_CMD_REQUEST_KEY, true)
+      : OutPacket(TQQ_CMD_REQUEST_KEY, true)
 {
 }
 
 EvaRequestKeyPacket::EvaRequestKeyPacket(const unsigned char requestType)
-      : OutPacket(QQ_CMD_REQUEST_KEY, true)
+      : OutPacket(TQQ_CMD_REQUEST_KEY, true)
 {
 	request = requestType;
 }
@@ -86,16 +86,16 @@ void EvaRequestKeyReplyPacket::parseBody()
 {
 	keyType = decryptedBuf[0];
 	replyCode = decryptedBuf[1];
-	if(replyCode == QQ_REQUEST_KEY_REPLY_OK) {            
-		memcpy(key, decryptedBuf+2, QQ_KEY_LENGTH);
+	if(replyCode == TQQ_REQUEST_KEY_REPLY_OK) {            
+		memcpy(key, decryptedBuf+2, TQQ_KEY_LENGTH);
 		
-		if(keyType == QQ_REQUEST_FILE_AGENT_KEY) 
+		if(keyType == TQQ_REQUEST_FILE_AGENT_KEY) 
 			setFileAgentKey(key);                   // now we set file agent key
 		
-		tokenLength = (int)(decryptedBuf[2+QQ_KEY_LENGTH+12]) & 0xFF;            
-		memcpy(token, decryptedBuf+2+QQ_KEY_LENGTH+12+1, tokenLength);
+		tokenLength = (int)(decryptedBuf[2+TQQ_KEY_LENGTH+12]) & 0xFF;            
+		memcpy(token, decryptedBuf+2+TQQ_KEY_LENGTH+12+1, tokenLength);
 		
-		if(keyType == QQ_REQUEST_FILE_AGENT_KEY) 
+		if(keyType == TQQ_REQUEST_FILE_AGENT_KEY) 
 			setFileAgentToken(token, tokenLength);          // now we can set file agent token
 	}
 }

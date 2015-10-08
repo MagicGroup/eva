@@ -43,7 +43,7 @@ FONT_U:              underline.png
 FONT_I:              italic.png
 CUSTOM_SMILEY:       custom_smiley.png
 SCREEN_SHOT:         screen_shot.png
-QUICK_REPLY:         quickreply.png
+QUICK_REPLY:         tquickreply.png
 
 QUIT:                quit.png
 

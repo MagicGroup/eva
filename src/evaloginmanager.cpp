@@ -21,15 +21,15 @@
 #include "evaloginmanager.h"
 
 #include "evapacketmanager.h"
-#include <qhostaddress.h>
+#include <ntqhostaddress.h>
 #include <assert.h>
 #include "evamain.h"
 #include "evasetting.h"
 #include "evaconnecter.h"
 #include "evaapi.h"
 #include "evaloginveriwindow.h"
-#include <qapplication.h>
-#include <kapplication.h>
+#include <ntqapplication.h>
+#include <tdeapplication.h>
 #include <kdebug.h>
 
 
@@ -47,12 +47,12 @@ EvaLoginManager::EvaLoginManager( )
 {
 }
 
-void EvaLoginManager::notifyEvent(const int eId, const QString &msg)
+void EvaLoginManager::notifyEvent(const int eId, const TQString &msg)
 {
 	EvaNotifyEvent *e = new EvaNotifyEvent(eId);
 	e->m_desc = msg;
 	
-	QApplication::postEvent(g_eva, e);
+	TQApplication::postEvent(g_eva, e);
 }
 
 void EvaLoginManager::setPacketManager( EvaPacketManager * pm )
@@ -60,18 +60,18 @@ void EvaLoginManager::setPacketManager( EvaPacketManager * pm )
 	assert(pm);
 	m_packetManager = pm;
 	
-	QObject::disconnect(m_veriWin, 0, 0, 0);
+	TQObject::disconnect(m_veriWin, 0, 0, 0);
 	if(m_veriWin) delete m_veriWin;
 	m_veriWin = new EvaLoginVeriWindow();
-	QObject::connect(m_veriWin, SIGNAL(changeImage()), m_packetManager, SLOT(doRequestLoginTokenEx()));
-	QObject::connect(m_veriWin, SIGNAL(sendVerifyCode(const QString &)), 
-									 m_packetManager, SLOT(doRequestLoginTokenEx( const QString &) ) );
+	TQObject::connect(m_veriWin, SIGNAL(changeImage()), m_packetManager, SLOT(doRequestLoginTokenEx()));
+	TQObject::connect(m_veriWin, SIGNAL(sendVerifyCode(const TQString &)), 
+									 m_packetManager, SLOT(doRequestLoginTokenEx( const TQString &) ) );
 
-// 	QObject::disconnect(m_packetManager, SIGNAL(loginNeedVerification()), 
+// 	TQObject::disconnect(m_packetManager, SIGNAL(loginNeedVerification()), 
 // 											this, 				SLOT(slotLoginVerification()));
-// 	QObject::connect(m_packetManager, 	SIGNAL(loginNeedVerification()), 
+// 	TQObject::connect(m_packetManager, 	SIGNAL(loginNeedVerification()), 
 // 									 win, 					SLOT(slotImageReady()));
-// 	QObject::connect(m_packetManager, 	SIGNAL(loginVerifyPassed()), 
+// 	TQObject::connect(m_packetManager, 	SIGNAL(loginVerifyPassed()), 
 // 									 win, 					SLOT(slotVerifyPassed())); 
 }
 
@@ -81,7 +81,7 @@ void EvaLoginManager::serverBusy( )
 	notifyEvent(E_Err);	
 }
 
-void EvaLoginManager::login( QHostAddress &server)
+void EvaLoginManager::login( TQHostAddress &server)
 {
 	assert(m_packetManager);
 	m_isLoggedIn = false;
@@ -98,23 +98,23 @@ void EvaLoginManager::login( QHostAddress &server)
 void EvaLoginManager::loginVerification( )
 {
 //	EvaLoginVeriWindow *win = new EvaLoginVeriWindow();
-// 	QObject::connect(win, SIGNAL(changeImage()), m_packetManager, SLOT(doRequestLoginTokenEx()));
-// 	QObject::connect(win, SIGNAL(sendVerifyCode(const QString &)), 
-// 					 m_packetManager, SLOT(doRequestLoginTokenEx( const QString &) ) );
+// 	TQObject::connect(win, SIGNAL(changeImage()), m_packetManager, SLOT(doRequestLoginTokenEx()));
+// 	TQObject::connect(win, SIGNAL(sendVerifyCode(const TQString &)), 
+// 					 m_packetManager, SLOT(doRequestLoginTokenEx( const TQString &) ) );
 // 
-// 	QObject::disconnect(m_packetManager, SIGNAL(loginNeedVerification()), 
+// 	TQObject::disconnect(m_packetManager, SIGNAL(loginNeedVerification()), 
 // 						this, 				SLOT(slotLoginVerification()));
-// 	QObject::connect(m_packetManager, 	SIGNAL(loginNeedVerification()), 
+// 	TQObject::connect(m_packetManager, 	SIGNAL(loginNeedVerification()), 
 // 					 win, 					SLOT(slotImageReady()));
-// 	QObject::connect(m_packetManager, 	SIGNAL(loginVerifyPassed()), 
+// 	TQObject::connect(m_packetManager, 	SIGNAL(loginVerifyPassed()), 
 // 					 win, 					SLOT(slotVerifyPassed())); 
 	if(!m_veriWin) return;
 	
 	if(m_veriWin->isVisible())
 		m_veriWin->slotImageReady();
 	else{
-		QRect scr = KApplication::desktop()->screenGeometry();
-		//QRect scr = g_mainWin->rect();
+		TQRect scr = TDEApplication::desktop()->screenGeometry();
+		//TQRect scr = g_mainWin->rect();
 		m_veriWin->move(scr.center() - m_veriWin->rect().center());
 		m_veriWin->show();
 	}
@@ -140,7 +140,7 @@ void EvaLoginManager::loginOK( )
 
 }
 
-void EvaLoginManager::wrongPassword( QString msg )
+void EvaLoginManager::wrongPassword( TQString msg )
 {	
 	//KMessageBox::information(0, msg, i18n("Eva Login"));
 	m_status = EStart;

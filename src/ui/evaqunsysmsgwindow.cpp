@@ -21,16 +21,16 @@
 #include "evaqunsysmsgwindow.h"
 
 #include <cstring>
-#include <qpushbutton.h>
-#include <qframe.h>
-#include <qtoolbutton.h>
-#include <qlabel.h>
-#include <qbuttongroup.h>
-#include <qradiobutton.h>
-#include <qlineedit.h>
-#include <qcheckbox.h>
+#include <ntqpushbutton.h>
+#include <ntqframe.h>
+#include <ntqtoolbutton.h>
+#include <ntqlabel.h>
+#include <ntqbuttongroup.h>
+#include <ntqradiobutton.h>
+#include <ntqlineedit.h>
+#include <ntqcheckbox.h>
 
-#include <klocale.h>
+#include <tdelocale.h>
 #include <kdebug.h>
 
 #include "evamain.h"
@@ -47,26 +47,26 @@ EvaQunSysMsgWindow::EvaQunSysMsgWindow( EvaPacketManager * packetManager )
 	chbRejectForever->setHidden(true);
 	btnOk->setHidden(true);
 
-	QObject::connect(tbQQ, SIGNAL(clicked()), SLOT(slotQQClicked()));
-	QObject::connect(tbQun, SIGNAL(clicked()), SLOT(slotQunClicked()));
+	TQObject::connect(tbQQ, SIGNAL(clicked()), SLOT(slotTQQClicked()));
+	TQObject::connect(tbQun, SIGNAL(clicked()), SLOT(slotQunClicked()));
 
-	QObject::connect(rbtnAccept, SIGNAL(clicked()), SLOT(slotRejectClicked( )));
-	QObject::connect(rbtnReject, SIGNAL(clicked()), SLOT(slotRejectClicked( )));
+	TQObject::connect(rbtnAccept, SIGNAL(clicked()), SLOT(slotRejectClicked( )));
+	TQObject::connect(rbtnReject, SIGNAL(clicked()), SLOT(slotRejectClicked( )));
 
-	QObject::connect(btnOk, SIGNAL(clicked()), SLOT(slotOkClicked()));
-	QObject::connect(btnClose, SIGNAL(clicked()), SLOT(close()));
+	TQObject::connect(btnOk, SIGNAL(clicked()), SLOT(slotOkClicked()));
+	TQObject::connect(btnClose, SIGNAL(clicked()), SLOT(close()));
 
-	QObject::connect(EvaMain::g_AddingManager, SIGNAL(joinQunAuthReply(const unsigned int, const unsigned char)),
+	TQObject::connect(EvaMain::g_AddingManager, SIGNAL(joinQunAuthReply(const unsigned int, const unsigned char)),
 					SLOT(slotJoinQunAuthReply(const unsigned int, const unsigned char)));
 	adjustSize();
 }
 
-void EvaQunSysMsgWindow::closeEvent( QCloseEvent * /*e*/ )
+void EvaQunSysMsgWindow::closeEvent( TQCloseEvent * /*e*/ )
 {
 	deleteLater();
 }
 
-void EvaQunSysMsgWindow::slotQQClicked()
+void EvaQunSysMsgWindow::slotTQQClicked()
 {
 	emit requestDetails(m_Sender);
 }
@@ -105,7 +105,7 @@ void EvaQunSysMsgWindow::slotOkClicked()
 
 void EvaQunSysMsgWindow::setMessage(const unsigned short msgType, const unsigned char type,
 					const unsigned int sender, const unsigned int extQunID,
-					const QString message, const unsigned int internalQunID,
+					const TQString message, const unsigned int internalQunID,
 					const unsigned int commander)
 {
 	m_QunID = internalQunID;
@@ -117,54 +117,54 @@ void EvaQunSysMsgWindow::setMessage(const unsigned short msgType, const unsigned
 	m_Message = message;
 
 	switch(msgType){
-	case QQ_RECV_IM_CREATE_QUN:
+	case TQQ_RECV_IM_CREATE_QUN:
 		tbQQ->setHidden(true);
 		lblAction->setText(i18n("You have created Qun"));
-		tbQun->setText(QString(i18n("(%1)")).arg(m_QunExtID));
+		tbQun->setText(TQString(i18n("(%1)")).arg(m_QunExtID));
 		break;
-	case QQ_RECV_IM_ADDED_TO_QUN:
-		tbQQ->setText(QString::number(m_Commander));
-		tbQun->setText(QString::number(m_QunExtID));
+	case TQQ_RECV_IM_ADDED_TO_QUN:
+		tbQQ->setText(TQString::number(m_Commander));
+		tbQun->setText(TQString::number(m_QunExtID));
 		lblAction->setText(i18n("has added you to Qun"));
 		break;       
-	case QQ_RECV_IM_DELETED_FROM_QUN:
-		tbQun->setText(QString::number(m_QunExtID));
+	case TQQ_RECV_IM_DELETED_FROM_QUN:
+		tbQun->setText(TQString::number(m_QunExtID));
 		if(m_Sender == EvaMain::user->getQQ()){
 			tbQQ->setHidden(true);
 			lblAction->setText(i18n("You have been removed from Qun"));
 		} else{
-			tbQQ->setText(QString::number(m_Sender));
+			tbQQ->setText(TQString::number(m_Sender));
 			lblAction->setText(i18n("has quit Qun"));
 		}
 		break;
-	case QQ_RECV_IM_REQUEST_JOIN_QUN:
-		tbQQ->setText(QString::number(m_Sender));
-		tbQun->setText(QString::number(m_QunExtID));
+	case TQQ_RECV_IM_REQUEST_JOIN_QUN:
+		tbQQ->setText(TQString::number(m_Sender));
+		tbQun->setText(TQString::number(m_QunExtID));
 		lblAction->setText(i18n("requests to join Qun"));
 		bgActions->setHidden(false);
 		btnOk->setHidden(false);
 		break;
-	case QQ_RECV_IM_APPROVE_JOIN_QUN:
-		tbQQ->setText(QString::number(m_Commander));
-		tbQun->setText(QString::number(m_QunExtID));
+	case TQQ_RECV_IM_APPROVE_JOIN_QUN:
+		tbQQ->setText(TQString::number(m_Commander));
+		tbQun->setText(TQString::number(m_QunExtID));
 		lblAction->setText(i18n("has approved your request to be a member of Qun"));
 		break;
-	case QQ_RECV_IM_REJECT_JOIN_QUN:
-		tbQQ->setText(QString::number(m_Commander));
-		tbQun->setText(QString::number(m_QunExtID));
+	case TQQ_RECV_IM_REJECT_JOIN_QUN:
+		tbQQ->setText(TQString::number(m_Commander));
+		tbQun->setText(TQString::number(m_QunExtID));
 		lblAction->setText(i18n("has rejected your request to be a member of Qun"));
 		break;
-	case QQ_RECV_IM_SET_QUN_ADMIN:
+	case TQQ_RECV_IM_SET_QUN_ADMIN:
 		if(m_Sender == EvaMain::user->getQQ()){
 			tbQQ->setHidden(true);
-			tbQun->setText(QString::number(m_QunExtID));
+			tbQun->setText(TQString::number(m_QunExtID));
 			if(m_Commander == 0x01)
 				lblAction->setText(i18n("You have been set as an administrator of Qun"));
 			else
 				lblAction->setText(i18n("You have been set as an non-administrator(normal member) of Qun"));
 		} else {
-			tbQQ->setText(QString::number(m_Sender));
-			tbQun->setText(QString::number(m_QunExtID));
+			tbQQ->setText(TQString::number(m_Sender));
+			tbQun->setText(TQString::number(m_QunExtID));
 			if(m_Commander == 0x01)
 				lblAction->setText(i18n("has been set as an administrator of Qun"));
 			else
@@ -172,7 +172,7 @@ void EvaQunSysMsgWindow::setMessage(const unsigned short msgType, const unsigned
 		}
 	}
 	if(!m_Message.isEmpty()){
-		lblMessage->setText(QString(i18n("Additional message: %1")).arg(m_Message));
+		lblMessage->setText(TQString(i18n("Additional message: %1")).arg(m_Message));
 	}
 	adjustSize();
 }

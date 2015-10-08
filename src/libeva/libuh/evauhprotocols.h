@@ -29,8 +29,8 @@ public:
 	EvaUHInfoRequest();
 	virtual ~EvaUHInfoRequest() {}
 
-	void setQQList(const std::list<unsigned int> &l)	 { mList = l; }
-	std::list<unsigned int> getQQList() { return mList; }
+	void setTQQList(const std::list<unsigned int> &l)	 { mList = l; }
+	std::list<unsigned int> getTQQList() { return mList; }
 protected:
 	virtual const bool fillBody(unsigned char *buf, int *len);
 private:

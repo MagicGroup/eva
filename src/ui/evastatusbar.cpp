@@ -19,69 +19,69 @@
  ***************************************************************************/
 #include "evastatusbar.h"
 
-#include <qlabel.h>
-#include <qtoolbutton.h>
-#include <qlayout.h>
+#include <ntqlabel.h>
+#include <ntqtoolbutton.h>
+#include <ntqlayout.h>
 
-EvaStatusBar::EvaStatusBar( QWidget* parent, const char* name, WFlags fl )
-    : QFrame( parent, name, fl )
+EvaStatusBar::EvaStatusBar( TQWidget* parent, const char* name, WFlags fl )
+    : TQFrame( parent, name, fl )
 {
 	if ( !name )
 		setName( "Eva Status Bar" );
 
-	setFrameShape( QFrame::NoFrame );
-	setFrameShadow( QFrame::Raised );
-	setSizePolicy( QSizePolicy( (QSizePolicy::SizeType)5, (QSizePolicy::SizeType)0, 0, 0, sizePolicy().hasHeightForWidth() ) );
+	setFrameShape( TQFrame::NoFrame );
+	setFrameShadow( TQFrame::Raised );
+	setSizePolicy( TQSizePolicy( (TQSizePolicy::SizeType)5, (TQSizePolicy::SizeType)0, 0, 0, sizePolicy().hasHeightForWidth() ) );
 
-	frame4Layout = new QGridLayout( this, 1, 1, 1, 1, "frame4Layout");
+	frame4Layout = new TQGridLayout( this, 1, 1, 1, 1, "frame4Layout");
 
-	layout4 = new QHBoxLayout( 0, 1, 1, "layout4"); 
+	layout4 = new TQHBoxLayout( 0, 1, 1, "layout4"); 
 	
-	lblNotification = new QLabel( this, "lblNotification" );
-	lblNotification->setSizePolicy( QSizePolicy( (QSizePolicy::SizeType)7, (QSizePolicy::SizeType)5, 0, 0, lblNotification->sizePolicy().hasHeightForWidth() ) );
+	lblNotification = new TQLabel( this, "lblNotification" );
+	lblNotification->setSizePolicy( TQSizePolicy( (TQSizePolicy::SizeType)7, (TQSizePolicy::SizeType)5, 0, 0, lblNotification->sizePolicy().hasHeightForWidth() ) );
 	layout4->addWidget( lblNotification );
 
-	fraSystem = new QFrame( this, "fraSystem" );
-	fraSystem->setSizePolicy( QSizePolicy( (QSizePolicy::SizeType)1, (QSizePolicy::SizeType)1, 0, 0, fraSystem->sizePolicy().hasHeightForWidth() ) );
-	fraSystem->setFrameShape( QFrame::NoFrame );
-	fraSystem->setFrameShadow( QFrame::Raised );
-	fraSystemLayout = new QGridLayout( fraSystem, 1, 1, 2, 2, "fraSystemLayout"); 
+	fraSystem = new TQFrame( this, "fraSystem" );
+	fraSystem->setSizePolicy( TQSizePolicy( (TQSizePolicy::SizeType)1, (TQSizePolicy::SizeType)1, 0, 0, fraSystem->sizePolicy().hasHeightForWidth() ) );
+	fraSystem->setFrameShape( TQFrame::NoFrame );
+	fraSystem->setFrameShadow( TQFrame::Raised );
+	fraSystemLayout = new TQGridLayout( fraSystem, 1, 1, 2, 2, "fraSystemLayout"); 
 
-	layout3 = new QHBoxLayout( 0, 0, 6, "layout3");
+	layout3 = new TQHBoxLayout( 0, 0, 6, "layout3");
 
-	tbSearch = new QToolButton( fraSystem, "tbSearch" );
-	tbSearch->setMinimumSize( QSize( 24, 24 ) );
-	tbSearch->setMaximumSize( QSize( 24, 24 ) );
+	tbSearch = new TQToolButton( fraSystem, "tbSearch" );
+	tbSearch->setMinimumSize( TQSize( 24, 24 ) );
+	tbSearch->setMaximumSize( TQSize( 24, 24 ) );
 	tbSearch->setAutoRaise( TRUE );
 	layout3->addWidget( tbSearch );
 	
-	tbSysMsg = new QToolButton( fraSystem, "tbSysMsg" );
-	tbSysMsg->setMinimumSize( QSize( 24, 24 ) );
-	tbSysMsg->setMaximumSize( QSize( 24, 24 ) );
+	tbSysMsg = new TQToolButton( fraSystem, "tbSysMsg" );
+	tbSysMsg->setMinimumSize( TQSize( 24, 24 ) );
+	tbSysMsg->setMaximumSize( TQSize( 24, 24 ) );
 	tbSysMsg->setAutoRaise( TRUE );
 	layout3->addWidget( tbSysMsg );
 	
-	tbSystem = new QToolButton( fraSystem, "tbSystem" );
-	tbSystem->setMinimumSize( QSize( 24, 24 ) );
-	tbSystem->setMaximumSize( QSize( 24, 24 ) );
+	tbSystem = new TQToolButton( fraSystem, "tbSystem" );
+	tbSystem->setMinimumSize( TQSize( 24, 24 ) );
+	tbSystem->setMaximumSize( TQSize( 24, 24 ) );
 	//tbSystem->setPopupDelay(0);
 	tbSystem->setAutoRaise( TRUE );
 	layout3->addWidget( tbSystem );
 
 	fraSystemLayout->addLayout( layout3, 0, 0 );
 	layout4->addWidget( fraSystem );
-	spacer2 = new QSpacerItem( 21, 20, QSizePolicy::Fixed, QSizePolicy::Minimum );
+	spacer2 = new TQSpacerItem( 21, 20, TQSizePolicy::Fixed, TQSizePolicy::Minimum );
 	layout4->addItem( spacer2 );
 
-	fraStatus = new QFrame( this, "fraStatus" );
-	fraStatus->setSizePolicy( QSizePolicy( (QSizePolicy::SizeType)1, (QSizePolicy::SizeType)1, 0, 0, fraStatus->sizePolicy().hasHeightForWidth() ) );
-	fraStatus->setFrameShape( QFrame::NoFrame );
-	fraStatus->setFrameShadow( QFrame::Raised );
-	fraStatusLayout = new QGridLayout( fraStatus, 1, 1, 2, 2, "fraStatusLayout"); 
+	fraStatus = new TQFrame( this, "fraStatus" );
+	fraStatus->setSizePolicy( TQSizePolicy( (TQSizePolicy::SizeType)1, (TQSizePolicy::SizeType)1, 0, 0, fraStatus->sizePolicy().hasHeightForWidth() ) );
+	fraStatus->setFrameShape( TQFrame::NoFrame );
+	fraStatus->setFrameShadow( TQFrame::Raised );
+	fraStatusLayout = new TQGridLayout( fraStatus, 1, 1, 2, 2, "fraStatusLayout"); 
 	
-	tbStatus = new QToolButton( fraStatus, "tbStatus" );
-	tbStatus->setMinimumSize( QSize( 24, 24 ) );
-	tbStatus->setMaximumSize( QSize( 24, 24 ) );
+	tbStatus = new TQToolButton( fraStatus, "tbStatus" );
+	tbStatus->setMinimumSize( TQSize( 24, 24 ) );
+	tbStatus->setMaximumSize( TQSize( 24, 24 ) );
 	//tbStatus->setPopupDelay(0);
 	tbStatus->setAutoRaise( TRUE );
 	
@@ -89,7 +89,7 @@ EvaStatusBar::EvaStatusBar( QWidget* parent, const char* name, WFlags fl )
 	layout4->addWidget( fraStatus );
 
 	frame4Layout->addLayout( layout4, 0, 0 );
-	resize( QSize(600, 30).expandedTo(minimumSizeHint()) );
+	resize( TQSize(600, 30).expandedTo(minimumSizeHint()) );
 	clearWState( WState_Polished );
 }
 

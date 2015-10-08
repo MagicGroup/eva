@@ -33,7 +33,7 @@ Feathers:
 - adding request approving
 - system messages recording
 - auto replying
-- quick replying
+- tquick replying
 - system setting
 
 More details of changing in ChangeLog file.
@@ -42,7 +42,7 @@ More details of changing in ChangeLog file.
 Compile and Run
 ==============================================
 1. enter eva directory, input
-   ./configure --prefix=`kde-config --prefix`
+   ./configure --prefix=`tde-config --prefix`
 2. then type,
    make
    and press enter

@@ -24,27 +24,27 @@
 #include "evatipuibase.h"
 
 class EvaImageResource;
-class QTimer;
+class TQTimer;
 
 class EvaTipWindow : public EvaTipUIBase
 {
 	Q_OBJECT
 public:
-	EvaTipWindow(EvaImageResource *res, const QString nick, const unsigned int id, const short face, const QString &message);
+	EvaTipWindow(EvaImageResource *res, const TQString nick, const unsigned int id, const short face, const TQString &message);
 	~EvaTipWindow();
 signals:
 	void requestChat(const unsigned int);
 protected:
-	//virtual void showEvent(QShowEvent *);
-	//virtual void paintEvent( QPaintEvent *);
-	virtual void mousePressEvent(QMouseEvent *e);
+	//virtual void showEvent(TQShowEvent *);
+	//virtual void paintEvent( TQPaintEvent *);
+	virtual void mousePressEvent(TQMouseEvent *e);
 private:
 	EvaImageResource *images;
-	QPixmap *m_BgPixmap;
+	TQPixmap *m_BgPixmap;
 	unsigned int qqNum;
 	int timelast;
-	QTimer *timer;
-	QRect scr;
+	TQTimer *timer;
+	TQRect scr;
 private slots:
 	void slotTimeout();
 };

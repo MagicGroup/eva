@@ -18,21 +18,21 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
-#ifndef EVAQUNMEMBERPICKER_H 
-#define EVAQUNMEMBERPICKER_H 
+#ifndef EVATQUNMEMBERPICKER_H 
+#define EVATQUNMEMBERPICKER_H 
 
 #include "evaqunmemberpickerui.h"
 #include <map>
-#include <qpixmap.h>
+#include <ntqpixmap.h>
 
 class Qun;
-class QListViewItem;
-class QCheckListItem;
+class TQListViewItem;
+class TQCheckListItem;
 class EvaQunMemberPicker : public EvaQunMemberPickerUI
 {
 	Q_OBJECT
 public:
-	EvaQunMemberPicker(QWidget* parent = 0, const char* name = 0, WFlags fl = 0, Qun *qun = NULL);
+	EvaQunMemberPicker(TQWidget* parent = 0, const char* name = 0, WFlags fl = 0, Qun *qun = NULL);
 	~EvaQunMemberPicker() {};
 	
 	void updateBuddyListView();
@@ -42,11 +42,11 @@ public slots:
 	void slotSetMemberOff(const unsigned int id);
 private:
 	Qun *mQun;
-	std::map<int, QCheckListItem*> groups;  // key is group index
-	std::map<int, QCheckListItem*> buddyList; // key is buddy QQ
+	std::map<int, TQCheckListItem*> groups;  // key is group index
+	std::map<int, TQCheckListItem*> buddyList; // key is buddy QQ
 	void initListView();
 private slots:
-	void slotClicked(QListViewItem *item);
+	void slotClicked(TQListViewItem *item);
 };
 
 #endif

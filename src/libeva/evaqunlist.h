@@ -17,8 +17,8 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef LIBEVAQUNLIST_H
-#define LIBEVAQUNLIST_H
+#ifndef LIBEVATQUNLIST_H
+#define LIBEVATQUNLIST_H
 #include "evaqun.h"
 #include "evafriend.h"
 #include <list>
@@ -49,7 +49,7 @@ public:
 	const unsigned int getQunID() const { return qunID; }
 	const unsigned int getParentID() const { return parentID; }
 	const std::string &getName() const { return name; }
-	const std::list<unsigned int> &getMemberQQList() const { return memberList; }
+	const std::list<unsigned int> &getMemberTQQList() const { return memberList; }
 private:
 	unsigned int qunID;
 	unsigned int parentID;
@@ -82,8 +82,8 @@ public:
 
 	void updateOnlineMembers(const std::list<unsigned int> &list);
 	
-	//void setQQList(const std::list<unsigned int> &list) { numberList = list; }
-	//const std::list<unsigned int> getQQList() const { return numberList; }
+	//void setTQQList(const std::list<unsigned int> &list) { numberList = list; }
+	//const std::list<unsigned int> getTQQList() const { return numberList; }
 	
 	void setMemberArgs(const std::map<unsigned int, QunMember> &list);
 	const std::map<unsigned int, QunMember> &getMemberArgs() const { return memberArgs; }
@@ -185,7 +185,7 @@ public:
 	
 	void setOnlineMembers(const unsigned int id, const std::list<unsigned int> &list);
 	
-	//void setQQList(const unsigned int id, const std::list<unsigned int> &list);
+	//void setTQQList(const unsigned int id, const std::list<unsigned int> &list);
 	void setMemberArgs(const unsigned int id, const std::map<unsigned int, QunMember> &member);
 	
 	const std::list<Qun> &getQunList() const { return qunList; }

@@ -28,7 +28,7 @@
 #include <cstring>
 #include <cstdlib>
 
-// const char EvaUtil::smileyMap[QQ_SMILEY_AMOUNT] = {
+// const char EvaUtil::smileyMap[TQQ_SMILEY_AMOUNT] = {
 // 	0x41,0x42,0x43,0x44,0x45,0x46,0x47,0x48,
 // 	0x49,0x4a,0x4b,0x4c,0x4d,0x4e,0x4f,0x73,
 // 	0x74,0x75,0x76,0x77,0x8a,0x8b,0x8c,0x8d,
@@ -48,7 +48,7 @@
 // 	0xc1,0xc2,0xc3,0xc4,0xc5,0xc6,0xc7
 // };
 
-const char EvaUtil::smileyMap[QQ_SMILEY_AMOUNT] = {
+const char EvaUtil::smileyMap[TQQ_SMILEY_AMOUNT] = {
 	0x4f, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48,
 	0x49, 0x4a, 0x4b, 0x4c, 0x4d, 0x4e, 0x41, 0x73,
 	0x74, 0xa1, 0x76, 0x77, 0x8a, 0x8b, 0x8c, 0x8d,
@@ -72,7 +72,7 @@ const char EvaUtil::smileyMap[QQ_SMILEY_AMOUNT] = {
 };
 char EvaUtil::md5Buf[KEY_LENGTH];
 
-EvaUtil::textMap EvaUtil::map[QQ_SMILEY_AMOUNT];
+EvaUtil::textMap EvaUtil::map[TQQ_SMILEY_AMOUNT];
 
 EvaUtil::EvaUtil()
 {
@@ -106,7 +106,7 @@ std::string EvaUtil::smileyToText(const char smileyCode)
 char EvaUtil::textToSmiley(const std::string &textTag)
 {
 	std::string strEn, strPy;
-	for(int i=0; i<QQ_SMILEY_AMOUNT; i++){
+	for(int i=0; i<TQQ_SMILEY_AMOUNT; i++){
 		strEn = map[i].en;
 		strPy = map[i].py;
 		if(strEn == textTag || strPy == textTag){
@@ -124,7 +124,7 @@ int EvaUtil::textToFileIndex(const std::string &textTag)
 
 int EvaUtil::smileyToFileIndex( const char smileyCode)
 {
-	for(int i=0; i<QQ_SMILEY_AMOUNT; i++){
+	for(int i=0; i<TQQ_SMILEY_AMOUNT; i++){
 		if(smileyMap[i]==smileyCode)
 			return i;
 	}
@@ -133,7 +133,7 @@ int EvaUtil::smileyToFileIndex( const char smileyCode)
 
 std::string EvaUtil::fileIndexToText( const int fileIndex)
 {
-	if(fileIndex<0 || fileIndex > QQ_SMILEY_AMOUNT - 1 ) return "";
+	if(fileIndex<0 || fileIndex > TQQ_SMILEY_AMOUNT - 1 ) return "";
 	return map[fileIndex].py;
 }
 

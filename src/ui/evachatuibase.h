@@ -21,80 +21,80 @@
 #ifndef EVACHATUIBASE_H
 #define EVACHATUIBASE_H
 
-#include <qvariant.h>
-#include <qwidget.h>
+#include <ntqvariant.h>
+#include <ntqwidget.h>
 
-class QVBoxLayout;
-class QHBoxLayout;
-class QGridLayout;
-class QSpacerItem;
-class QToolButton;
-class QLabel;
-class QLineEdit;
+class TQVBoxLayout;
+class TQHBoxLayout;
+class TQGridLayout;
+class TQSpacerItem;
+class TQToolButton;
+class TQLabel;
+class TQLineEdit;
 class EvaTextEdit;
 class EvaChatView;
-class QPushButton;
-class QSplitter;
-class QFrame;
+class TQPushButton;
+class TQSplitter;
+class TQFrame;
 class EvaFilePanel;
 
-class EvaChatUIBase : public QWidget
+class EvaChatUIBase : public TQWidget
 {
 	Q_OBJECT
 
 public:
-	EvaChatUIBase( QWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
+	EvaChatUIBase( TQWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
 	~EvaChatUIBase();
 	
-	QToolButton* tbBuddy;
-	QLabel* lblIP;
-	QLineEdit* leIP;
-	QLabel* lblSignature;
+	TQToolButton* tbBuddy;
+	TQLabel* lblIP;
+	TQLineEdit* leIP;
+	TQLabel* lblSignature;
 	EvaChatView *chatDisplay;
-	QWidget *lowerLayoutWidget;
-	QToolButton* tbSmiley;
-	QToolButton* tbFont;
-	QToolButton* tbFile;
-	QToolButton* tbB;
-	QToolButton* tbU;
-	QToolButton* tbI;
-	QToolButton* tbAddImage;
-	QToolButton* tbScreenShot;
-	QToolButton* tbQuickReply;
-	QToolButton* tbHideShows;
-	QToolButton* tbEnableSound;
+	TQWidget *lowerLayoutWidget;
+	TQToolButton* tbSmiley;
+	TQToolButton* tbFont;
+	TQToolButton* tbFile;
+	TQToolButton* tbB;
+	TQToolButton* tbU;
+	TQToolButton* tbI;
+	TQToolButton* tbAddImage;
+	TQToolButton* tbScreenShot;
+	TQToolButton* tbQuickReply;
+	TQToolButton* tbHideShows;
+	TQToolButton* tbEnableSound;
 	EvaTextEdit* kteInput;
-	QPushButton* pbHistory;
-	QPushButton* pbClose;
-	QPushButton* pbSend;
-	QPushButton* pbSendKey;
-	QFrame *m_ShowFrame;
-	QLabel* lblBuddyShow;
-	QToolButton* tbShowBuddy;
-	QLabel* lblMeShow;
-	QToolButton* tbShowMe;
-	QSplitter* splitter;
+	TQPushButton* pbHistory;
+	TQPushButton* pbClose;
+	TQPushButton* pbSend;
+	TQPushButton* pbSendKey;
+	TQFrame *m_ShowFrame;
+	TQLabel* lblBuddyShow;
+	TQToolButton* tbShowBuddy;
+	TQLabel* lblMeShow;
+	TQToolButton* tbShowMe;
+	TQSplitter* splitter;
 
 	EvaFilePanel *m_FilePanel;
-	QFrame *m_FilePanelFrame;
+	TQFrame *m_FilePanelFrame;
 
 protected:
-	//QGridLayout* EvaChatUIBaseLayout;
-	QHBoxLayout* EvaChatUIBaseLayout;
-	QVBoxLayout* layout5;
-	QHBoxLayout* layout4;
-	QHBoxLayout* layout3;
-	QSpacerItem* spcTootBtn1;
-	QSpacerItem* spcToolBtn2;
-	QSpacerItem* spcToolBtn3;
-	QHBoxLayout* layout2;
-	QSpacerItem* spcBottom;
-	QVBoxLayout* layout19;
-	QSpacerItem* spacer12;
-	QSpacerItem* spacer10;
-	QVBoxLayout* lowerLayout;
-	QVBoxLayout* m_ShowLayout;
-	QVBoxLayout* m_FilePanelLayout;
+	//TQGridLayout* EvaChatUIBaseLayout;
+	TQHBoxLayout* EvaChatUIBaseLayout;
+	TQVBoxLayout* layout5;
+	TQHBoxLayout* layout4;
+	TQHBoxLayout* layout3;
+	TQSpacerItem* spcTootBtn1;
+	TQSpacerItem* spcToolBtn2;
+	TQSpacerItem* spcToolBtn3;
+	TQHBoxLayout* layout2;
+	TQSpacerItem* spcBottom;
+	TQVBoxLayout* layout19;
+	TQSpacerItem* spacer12;
+	TQSpacerItem* spacer10;
+	TQVBoxLayout* lowerLayout;
+	TQVBoxLayout* m_ShowLayout;
+	TQVBoxLayout* m_FilePanelLayout;
 
 protected slots:
 	virtual void languageChange();

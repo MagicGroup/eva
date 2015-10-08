@@ -20,19 +20,19 @@
 
 #include "evafilepanel.h"
 #include "evafilestatusuibase.h"
-#include <qlabel.h>
+#include <ntqlabel.h>
 #include <kpushbutton.h>
 #include <kprogress.h>
 #include <kmimetype.h>
 
-EvaFilePanel::EvaFilePanel(QWidget *parent, const char *name, WFlags f)
+EvaFilePanel::EvaFilePanel(TQWidget *parent, const char *name, WFlags f)
 	: KTabWidget(parent, name, f)
 {
-	setSizePolicy( QSizePolicy( (QSizePolicy::SizeType)0, (QSizePolicy::SizeType)0, 0, 0,
+	setSizePolicy( TQSizePolicy( (TQSizePolicy::SizeType)0, (TQSizePolicy::SizeType)0, 0, 0,
 				 sizePolicy().hasHeightForWidth() ) );
-	setMaximumSize( QSize( 112, 200 ) );
-	setTabShape(QTabWidget::Triangular);
-	setTabPosition(QTabWidget::Bottom);
+	setMaximumSize( TQSize( 112, 200 ) );
+	setTabShape(TQTabWidget::Triangular);
+	setTabPosition(TQTabWidget::Bottom);
 }
 
 void EvaFilePanel::updateStatus(const unsigned int session, const KURL &url, const unsigned int size,
@@ -60,15 +60,15 @@ EvaFileStatusUIBase * EvaFilePanel::newTab(const unsigned int session, const uns
 					const KURL &url)
 {
 	EvaFileStatusUIBase *item = new EvaFileStatusUIBase(session, size, this);
-	item->setMimePixmap(KMimeType::pixmapForURL(url, 0, KIcon::Desktop, KIcon::SizeMedium));
+	item->setMimePixmap(KMimeType::pixmapForURL(url, 0, TDEIcon::Desktop, TDEIcon::SizeMedium));
 	item->setFileName(url.fileName(false)); // should be no trailing slash
-	addTab(item, QString::number(count()+1));
-	QObject::connect(item, SIGNAL(closeRequest(const unsigned int, QWidget *)), 
-				SLOT(slotCloseTab(const unsigned int, QWidget *)));
+	addTab(item, TQString::number(count()+1));
+	TQObject::connect(item, SIGNAL(closeRequest(const unsigned int, TQWidget *)), 
+				SLOT(slotCloseTab(const unsigned int, TQWidget *)));
 	return item;
 }
 
-void EvaFilePanel::slotCloseTab( const unsigned int session, QWidget * widget)
+void EvaFilePanel::slotCloseTab( const unsigned int session, TQWidget * widget)
 {
 	removePage(widget);
 	EvaFileStatusUIBase *item = dynamic_cast<EvaFileStatusUIBase *>(widget);
@@ -82,7 +82,7 @@ void EvaFilePanel::slotCloseTab( const unsigned int session, QWidget * widget)
 	for(int i=0; i<count(); i++){
 		item = dynamic_cast<EvaFileStatusUIBase *>(page(i));
 		if(!item) continue;
-		setTabLabel(item, QString::number( i+1));
+		setTabLabel(item, TQString::number( i+1));
 	}
 	emit closeSession(session);
 }

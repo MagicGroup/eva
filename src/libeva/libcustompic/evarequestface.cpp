@@ -28,7 +28,7 @@
 #include <cstring>
 
 EvaRequestFacePacket::EvaRequestFacePacket()
-	: EvaPicOutPacket(QQ_05_CMD_REQUEST_FACE, true), fileAgentToken(NULL)
+	: EvaPicOutPacket(TQQ_05_CMD_REQUEST_FACE, true), fileAgentToken(NULL)
 {
 	cryptPosition = 12;
 }

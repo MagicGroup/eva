@@ -1363,11 +1363,11 @@ sub tag_UIFILES ()
                 $dep_lines .= "\trm -f $source.$cxxsuffix\n";
                 if (!$kdeopts{"qtonly"}) {
                     $dep_lines .= "\techo '#include <kdialog.h>' > $source.$cxxsuffix\n";
-                    $dep_lines .= "\techo '#include <klocale.h>' >> $source.$cxxsuffix\n";
+                    $dep_lines .= "\techo '#include <tdelocale.h>' >> $source.$cxxsuffix\n";
                     my ($mangled_source) = $source;
                     $mangled_source =~ s/[^A-Za-z0-9]/_/g;  # get rid of garbage
                     $dep_lines .= "\t\$(UIC) -tr \${UIC_TR} -i $source.h $sourcedir$source.ui > $source.$cxxsuffix.temp ; ret=\$\$?; \\\n";
-                    $dep_lines .= "\t\$(PERL) -pe \"s,\${UIC_TR}( \\\"\\\" ),QString::null,g\" $source.$cxxsuffix.temp | \$(PERL) -pe \"s,\${UIC_TR}( \\\"\\\"\\, \\\"\\\" ),QString::null,g\" | \$(PERL) -pe \"s,image([0-9][0-9]*)_data,img\\\$\$1_" . $mangled_source . ",g\" | \$(PERL) -pe \"s,: QWizard\\(,: KWizard(,g\" >> $source.$cxxsuffix ;\\\n";
+                    $dep_lines .= "\t\$(PERL) -pe \"s,\${UIC_TR}( \\\"\\\" ),QString::null,g\" $source.$cxxsuffix.temp | \$(PERL) -pe \"s,\${UIC_TR}( \\\"\\\"\\, \\\"\\\" ),QString::null,g\" | \$(PERL) -pe \"s,image([0-9][0-9]*)_data,img\\\$\$1_" . $mangled_source . ",g\" | \$(PERL) -pe \"s,: TQWizard\\(,: KWizard(,g; s,: QWizard\\(,: KWizard(,g;\" >> $source.$cxxsuffix ;\\\n";
 		    $dep_lines .= "\trm -f $source.$cxxsuffix.temp ;\\\n";
                 } else {
                     $dep_lines .= "\t\$(UIC) -i $source.h $sourcedir$source.ui > $source.$cxxsuffix; ret=\$\$?; \\\n";
@@ -1376,7 +1376,7 @@ sub tag_UIFILES ()
                 $dep_lines .= "$source.h: $sourcedir$source.ui\n";
                 $dep_lines .= "\trm -rf $source.h;\n";
                 if (!$kdeopts{"qtonly"}) {
-                    $dep_lines .= "\t\$(UIC) $sourcedir$source.ui | \$(PERL) -pi -e \"s,public QWizard,public KWizard,g; s,#include <qwizard.h>,#include <kwizard.h>,g\" >> $source.h ;\n";
+                    $dep_lines .= "\t\$(UIC) $sourcedir$source.ui | \$(PERL) -pi -e \"s,public TQWizard,public KWizard,g; s,#include <ntqwizard.h>,#include <kwizard.h>,g; s,public QWizard,public KWizard,g; s,#include <qwizard.h>,#include <kwizard.h>,g\" >> $source.h ;\n";
                 } else {
                     $dep_lines .= "\t\$(UIC) -o $source.h $sourcedir$source.ui\n";
                 }
@@ -1528,13 +1528,14 @@ sub tag_ICON()
             my $type = $prefix;
             $type =~ s/^.*-([^-]+)$/$1/;
             $prefix =~ s/^(.*)-[^-]+$/$1/;
-            
+
             my %type_hash =
               (
                'action' => 'actions',
                'app' => 'apps',
+               'category' => 'categories',
                'device' => 'devices',
-               'filesys' => 'filesystems',
+               'filesys' => 'places',
                'mime' => 'mimetypes'
               );
 
@@ -1552,19 +1553,25 @@ sub tag_ICON()
                'lo16' => 'locolor/16x16',
                'lo22' => 'locolor/22x22',
                'lo32' => 'locolor/32x32',
+               'lo48' => 'locolor/48x48',
+               'lo64' => 'locolor/64x64',
+               'lo128' => 'locolor/128x128',
+               'lo256' => 'locolor/256x256',
                'hi16' => 'hicolor/16x16',
                'hi22' => 'hicolor/22x22',
                'hi32' => 'hicolor/32x32',
                'hi48' => 'hicolor/48x48',
                'hi64' => 'hicolor/64x64',
                'hi128' => 'hicolor/128x128',
+               'hi256' => 'hicolor/256x256',
                'hisc' => 'hicolor/scalable',
- 	       'cr16' => 'crystalsvg/16x16',
+               'cr16' => 'crystalsvg/16x16',
                'cr22' => 'crystalsvg/22x22',
                'cr32' => 'crystalsvg/32x32',
                'cr48' => 'crystalsvg/48x48',
                'cr64' => 'crystalsvg/64x64',
                'cr128' => 'crystalsvg/128x128',
+               'cr256' => 'crystalsvg/256x256',
                'crsc' => 'crystalsvg/scalable'
               );
             
@@ -1574,15 +1581,16 @@ sub tag_ICON()
                 print STDERR "unknown icon prefix $prefix in $printname\n";
                 next;
             }
-            
+
             my $dir = $dir_hash{$prefix} . "/" . $type_hash{$type};
-            if ($newfile =~ /-[^\.]/) {
-                my $tmp = $newfile;
-                $tmp =~ s/^([^-]+)-.*$/$1/;
-                $dir = $dir . "/" . $tmp;
-                $newfile =~ s/^[^-]+-//;
-            }
-            
+            #-- does not convert from dashes to folders inside icon names
+            #if ($newfile =~ /-[^\.]/) {
+            #    my $tmp = $newfile;
+            #    $tmp =~ s/^([^-]+)-.*$/$1/;
+            #    $dir = $dir . "/" . $tmp;
+            #    $newfile =~ s/^[^-]+-//;
+            #}
+
             if (!defined $directories{$dir}) {
                 $install .= "\t\$(mkinstalldirs) \$(DESTDIR)\$($destdir)/$dir\n";
                 $directories{$dir} = 1;
@@ -1980,7 +1988,7 @@ sub tag_DOCFILES ()
     {
         opendir (THISDIR, ".");
 	foreach $entry (readdir(THISDIR)) {
-	  next if ($entry eq "CVS" || $entry =~ /^\./  || $entry =~ /^Makefile/ || $entry =~ /~$/ || $entry =~ /^\#.*\#$/ || $entry eq "core" || $entry eq "index.cache.bz2");
+	  next if ($entry eq "CVS" || $entry =~ /^\./  || $entry =~ /^Makefile/ || $entry eq "CMakeLists.txt" || $entry eq "ConfigureChecks.cmake" || $entry =~ /~$/ || $entry =~ /^\#.*\#$/ || $entry eq "core" || $entry eq "index.cache.bz2");
 	  next if (! -f $entry);
 	  $files .= "$entry ";
 	}
@@ -2004,7 +2012,7 @@ sub tag_DOCFILES ()
       }
       $lookup = 'KDE_XSL_STYLESHEET\s*=';
       if ($MakefileData !~ /\n($lookup)/) {
-        $lines .= "KDE_XSL_STYLESHEET=/\$(kde_datadir)/ksgmltools2/customization/kde-chunk.xsl\n";
+        $lines .= "KDE_XSL_STYLESHEET=/\$(kde_datadir)/ksgmltools2/customization/tde-chunk.xsl\n";
       }
       $lookup = '\nindex.cache.bz2:';
       if ($MakefileData !~ /\n($lookup)/) {
@@ -2053,7 +2061,7 @@ sub tag_DOCFILES ()
     $tmp .= "\tdone\n";
     if ($appname eq 'common') {
       $tmp .= "\t\@echo \"merging common and language specific dir\" ;\\\n";
-      $tmp .= "\tif test ! -f \$(kde_htmldir)/en/common/kde-common.css; then echo 'no english docs found in \$(kde_htmldir)/en/common/'; exit 1; fi \n";
+      $tmp .= "\tif test ! -f \$(kde_htmldir)/en/common/tde-common.css; then echo 'no english docs found in \$(kde_htmldir)/en/common/'; exit 1; fi \n";
       $tmp .= "\t\@com_files=`cd \$(kde_htmldir)/en/common && echo *` ;\\\n";
       $tmp .= "\tcd \$(DESTDIR)\$(kde_htmldir)/$kdelang/common ;\\\n";
       $tmp .= "\tif test -n \"\$\$com_files\"; then for p in \$\$com_files ; do \\\n";

@@ -20,48 +20,48 @@
 #ifndef EVACUSTOMFACE_H
 #define EVACUSTOMFACE_H
 
-#include <qstring.h>
-#include <qstringlist.h>
-#include <qdom.h>
+#include <ntqstring.h>
+#include <ntqstringlist.h>
+#include <ntqdom.h>
 
-#define QQ_FACE_THUMBNAIL_SIZE    20
+#define TQQ_FACE_THUMBNAIL_SIZE    20
 
 class CustomFace {
 public:
 	CustomFace();
 	CustomFace(const CustomFace&rhs);
-	CustomFace(const QString &name, const int groupId = 0);
-	CustomFace(const QString &name,
-				const QString &shortcut,
-				const QString &tip,
+	CustomFace(const TQString &name, const int groupId = 0);
+	CustomFace(const TQString &name,
+				const TQString &shortcut,
+				const TQString &tip,
 				const int frames=0,
 				const int groupId = 0);
 
-	const QString id() const; // should be the md5 string representation of the file
-	const QString &org() const { return m_OrgName; }  // original name, md5+extension
-	const QString fixed()  const; // thumbnail name
-	const QString &shortcut()  const { return m_Shortcut; } // shortcut 
-	const QString &tip()  const { return m_Tip; } // tip
+	const TQString id() const; // should be the md5 string representation of the file
+	const TQString &org() const { return m_OrgName; }  // original name, md5+extension
+	const TQString fixed()  const; // thumbnail name
+	const TQString &shortcut()  const { return m_Shortcut; } // shortcut 
+	const TQString &tip()  const { return m_Tip; } // tip
 	const int numFrames()  const { return m_Frames; } // number of frames
 	const int group()  const { return m_GroupId; } // group id of this custom smiley
 
-	void setOrg(const QString &name) { m_OrgName = name; }
-	void setShortcut(const QString &shortcut) { m_Shortcut = shortcut; }
-	void setTip(const QString &tip) { m_Tip = tip; }
+	void setOrg(const TQString &name) { m_OrgName = name; }
+	void setShortcut(const TQString &shortcut) { m_Shortcut = shortcut; }
+	void setTip(const TQString &tip) { m_Tip = tip; }
 	void setNumFrames(const int n) { m_Frames = n; }
 	void setGroup(const int id) { m_GroupId = id; }
 
 	CustomFace &operator=( const CustomFace &rhs);
 private:
-	QString m_OrgName, m_Shortcut, m_Tip;
+	TQString m_OrgName, m_Shortcut, m_Tip;
 	int m_Frames, m_GroupId;
 };
 
-typedef QValueList<CustomFace> FaceList;
+typedef TQValueList<CustomFace> FaceList;
 
 class CustomFaceConfig {
 public:
-	CustomFaceConfig(const QString &dir);
+	CustomFaceConfig(const TQString &dir);
 	~CustomFaceConfig();
 
 	void createConfig();// create an empty xml config file
@@ -76,29 +76,29 @@ public:
 	bool removeFace(const CustomFace &face);
 	bool removeFace(const int gId, const int fNo);
 
-	bool updateFaceTip(const int gId, const int fNo, const QString &tip);
-	bool updateFaceShortcut(const int gId, const int fNo, const QString &shortcut);
+	bool updateFaceTip(const int gId, const int fNo, const TQString &tip);
+	bool updateFaceShortcut(const int gId, const int fNo, const TQString &shortcut);
 
-	bool addGroup(const QString &name); // group name cannot be an empty string
+	bool addGroup(const TQString &name); // group name cannot be an empty string
 	bool removeGroup(const int groupIndex);
-	bool removeGroup(const QString &name);
+	bool removeGroup(const TQString &name);
 
-	bool renameGroup(const QString &oldName, const QString &newName);
+	bool renameGroup(const TQString &oldName, const TQString &newName);
 	bool moveChildrenTo(const int srcIndex, const int destIndex);
 
-	int groupIndex( const QString &name);
+	int groupIndex( const TQString &name);
 	const int numGroups();
-	QString groupName(const int groupIndex); // id starts from 0
-	QStringList groupNames();
+	TQString groupName(const int groupIndex); // id starts from 0
+	TQStringList groupNames();
 	FaceList groupMembers(const int groupIndex);
 
 	bool loadXML();
 	bool saveXML();
 
-	QString toString();
+	TQString toString();
 private:
-	QString m_Dir;
-	QDomDocument *m_Doc;
+	TQString m_Dir;
+	TQDomDocument *m_Doc;
 };
 
 #endif // EVACUSTOMFACE_H

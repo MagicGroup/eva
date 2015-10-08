@@ -20,34 +20,34 @@
 #ifndef EVA_SCRIPT_WIDGET_H
 #define EVA_SCRIPT_WIDGET_H
 
-#include <khtmlview.h>
-#include <khtml_part.h>
+#include <tdehtmlview.h>
+#include <tdehtml_part.h>
 #include <kurl.h>
-#include <qdatetime.h>
-#include <qcolor.h>
+#include <ntqdatetime.h>
+#include <ntqcolor.h>
 
-class KPopupMenu;
+class TDEPopupMenu;
 class MenuPrivateData;
-//class KAction;
+//class TDEAction;
 
-class EvaScriptWidget : public KHTMLPart
+class EvaScriptWidget : public TDEHTMLPart
 {
 	Q_OBJECT
 	public:
-		EvaScriptWidget(QWidget* parent = 0, const char* name = 0);
+		EvaScriptWidget(TQWidget* parent = 0, const char* name = 0);
 		virtual ~EvaScriptWidget();
 // 	signals:
-// 		void saveAsCustomSmiley(QString ); // full name with absolute path
+// 		void saveAsCustomSmiley(TQString ); // full name with absolute path
 	private:
 	
-		KPopupMenu *m_menu;
+		TDEPopupMenu *m_menu;
 		MenuPrivateData *m_d;
-		KAction *m_copyAction;
+		TDEAction *m_copyAction;
 
-		QString getNodeText(DOM::Node &node);
+		TQString getNodeText(DOM::Node &node);
 	private slots:
 
-		void slotPopupMenu(const QString &url, const QPoint &point);
+		void slotPopupMenu(const TQString &url, const TQPoint &point);
 
 		void slotSelectionChanged();
 		void slotOpenExternalBrower();
@@ -58,7 +58,7 @@ class EvaScriptWidget : public KHTMLPart
 		void slotSaveImageAs();
 		void slotSaveAsCustomSmiley();
 		void slotInstallRemoteScript();
-		void slotDownloadScriptDone (KIO::Job *job, const KURL &from, const KURL &to, bool directory, bool renamed);
+		void slotDownloadScriptDone (TDEIO::Job *job, const KURL &from, const KURL &to, bool directory, bool renamed);
 
 };
 

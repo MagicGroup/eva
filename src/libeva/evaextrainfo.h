@@ -68,7 +68,7 @@ class SignaturePacket : public OutPacket
 {
 public:
 	SignaturePacket() {}
-	SignaturePacket(const unsigned char type); // type includes QQ_SIGNATURE_MODIFY, QQ_SIGNATURE_DELETE and QQ_SIGNATURE_REQUEST
+	SignaturePacket(const unsigned char type); // type includes TQQ_SIGNATURE_MODIFY, TQQ_SIGNATURE_DELETE and TQQ_SIGNATURE_REQUEST
 	SignaturePacket(const SignaturePacket &rhs);
 	virtual ~SignaturePacket() {};
 	

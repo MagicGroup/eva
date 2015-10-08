@@ -21,45 +21,45 @@
 #include "evalistview.h"
 #include "evamain.h"
 #include "evaresource.h"
-#include <qheader.h>
-#include <qpixmap.h>
-#include <qimage.h>
-#include <qtimer.h>
-#include <qdragobject.h>
-#include <qtextcodec.h>
-#include <qpoint.h>
-#include <qrect.h>
-#include <qtooltip.h>
-#include <qpainter.h>
-#include <qpalette.h>
-#include <qstyle.h>
-#include <qsimplerichtext.h>
-//#include <qapplication.h>
-#include <klocale.h>
+#include <ntqheader.h>
+#include <ntqpixmap.h>
+#include <ntqimage.h>
+#include <ntqtimer.h>
+#include <ntqdragobject.h>
+#include <ntqtextcodec.h>
+#include <ntqpoint.h>
+#include <ntqrect.h>
+#include <ntqtooltip.h>
+#include <ntqpainter.h>
+#include <ntqpalette.h>
+#include <ntqstyle.h>
+#include <ntqsimplerichtext.h>
+//#include <ntqapplication.h>
+#include <tdelocale.h>
 
 #define EVA_LV_LEFT_MARGIN     6
 
 
-EvaLVToolTip::EvaLVToolTip(EvaListView *lv, QToolTipGroup *group)
-	: QToolTip(static_cast<QWidget *>(lv->viewport()), group),
+EvaLVToolTip::EvaLVToolTip(EvaListView *lv, TQToolTipGroup *group)
+	: TQToolTip(static_cast<TQWidget *>(lv->viewport()), group),
 	m_lv(lv)
 {
-	//setPalette( QPalette(Qt::yellow, QColor(20,190,255)));
+	//setPalette( TQPalette(TQt::yellow, TQColor(20,190,255)));
 }
 
 EvaLVToolTip::~EvaLVToolTip()
 {
 }
 
-void EvaLVToolTip::maybeTip(const QPoint &p)
+void EvaLVToolTip::maybeTip(const TQPoint &p)
 {
 	EvaListViewItem *item = dynamic_cast<EvaListViewItem *>(m_lv->itemAt(p));
 	if(!item) return;
 
 	int section = m_lv->header()->sectionAt(p.x());
-	QRect itemRect = m_lv->itemRect(item);
-	QRect headerRect = m_lv->header()->sectionRect(section);
-	QRect destRect(headerRect.left(), itemRect.top(), headerRect.width(), itemRect.height());
+	TQRect itemRect = m_lv->itemRect(item);
+	TQRect headerRect = m_lv->header()->sectionRect(section);
+	TQRect destRect(headerRect.left(), itemRect.top(), headerRect.width(), itemRect.height());
 	
         tip(destRect, item->tip());
 	
@@ -67,23 +67,23 @@ void EvaLVToolTip::maybeTip(const QPoint &p)
 
 /// ==============================================
 
-EvaListViewItem::EvaListViewItem( QListViewItem *parent, QString label, QPixmap *p)
-		: QListViewItem( parent, label),
+EvaListViewItem::EvaListViewItem( TQListViewItem *parent, TQString label, TQPixmap *p)
+		: TQListViewItem( parent, label),
                 m_richText(0)
 {
-	codec = QTextCodec::codecForName("GB18030");
+	codec = TQTextCodec::codecForName("GB18030");
 	m_icon = 0;
 	if(p)
-	m_icon = new QPixmap(*p);
+	m_icon = new TQPixmap(*p);
 	setDragEnabled(true);
 	setText(label);
 }
 
-EvaListViewItem::EvaListViewItem( QListView *parent)
-		: QListViewItem( parent),
+EvaListViewItem::EvaListViewItem( TQListView *parent)
+		: TQListViewItem( parent),
                 m_richText(0)
 {
-	codec = QTextCodec::codecForName("GB18030");
+	codec = TQTextCodec::codecForName("GB18030");
 	m_icon = 0;
 	setDragEnabled(false);
 }
@@ -94,42 +94,42 @@ EvaListViewItem::~EvaListViewItem()
     if(m_icon) delete m_icon;
 }
 
-void EvaListViewItem::updateIcon(QPixmap *p)
+void EvaListViewItem::updateIcon(TQPixmap *p)
 {
     if(!p) return;
     if(m_icon) delete m_icon;
-    m_icon = new QPixmap(*p);
+    m_icon = new TQPixmap(*p);
 }
 
-void EvaListViewItem::setText(const QString &text)
+void EvaListViewItem::setText(const TQString &text)
 {
     if(!listView()) return;
     if(m_richText) delete m_richText;
-    QListViewItem::setText(0, text);
-    m_richText = new QSimpleRichText( "<qt><nobr>" + text + "</nobr></qt>",
-                                listView()->viewport()->font(), QString::null, 0/*, mimeFactory_*/ );
+    TQListViewItem::setText(0, text);
+    m_richText = new TQSimpleRichText( "<qt><nobr>" + text + "</nobr></qt>",
+                                listView()->viewport()->font(), TQString::null, 0/*, mimeFactory_*/ );
 }
 
-QString EvaListViewItem::tip()
+TQString EvaListViewItem::tip()
 {
     return text(0);
 }
 
-void EvaListViewItem::paintBranches( QPainter * p, const QColorGroup & cg, int w, int /*y*/, int h )
+void EvaListViewItem::paintBranches( TQPainter * p, const TQColorGroup & cg, int w, int /*y*/, int h )
 {
-	QListView *lv = listView();
-	lv->style().drawComplexControl( QStyle::CC_ListView,
-			p, lv, QRect( 0, 0, w, h ), cg,
-			QStyle::Style_Enabled | QStyle::Style_Default, QStyle::SC_ListView, QStyle::SC_None,
-			QStyleOption() );
+	TQListView *lv = listView();
+	lv->style().drawComplexControl( TQStyle::CC_ListView,
+			p, lv, TQRect( 0, 0, w, h ), cg,
+			TQStyle::Style_Enabled | TQStyle::Style_Default, TQStyle::SC_ListView, TQStyle::SC_None,
+			TQStyleOption() );
 }
 
-void EvaListViewItem::paintCell( QPainter * painter, const QColorGroup & colourGroup, int column, int width, int align )
+void EvaListViewItem::paintCell( TQPainter * painter, const TQColorGroup & colourGroup, int column, int width, int align )
 {
     if( ! isVisible() ) return;
     if ( column == 0){
-        QBrush *brush;
-        QPalette palette;
+        TQBrush *brush;
+        TQPalette palette;
 
         EvaListView *lv = dynamic_cast<EvaListView *> (listView());
         if( !lv ) return;
@@ -138,17 +138,17 @@ void EvaListViewItem::paintCell( QPainter * painter, const QColorGroup & colourG
         brush   = 0;
 
         const BackgroundMode bgmode = lv->viewport()->backgroundMode();
-        const QColorGroup::ColorRole crole = QPalette::backgroundRoleFromMode( bgmode );
+        const TQColorGroup::ColorRole crole = TQPalette::backgroundRoleFromMode( bgmode );
         if ( colourGroup.brush( crole ) != lv->colorGroup().brush( crole ) )
             painter->fillRect( 0, 0, width, height(), colourGroup.brush( crole ) );
         else
-            lv->paintEmptyArea( painter, QRect( 0, 0, width, height() ) );
+            lv->paintEmptyArea( painter, TQRect( 0, 0, width, height() ) );
 
         if ( isSelected() ) {
-            brush = new QBrush( palette.color(QPalette::Active, QColorGroup::Highlight) );
-            // painter->setPen( palette.color(QPalette::Active, QColorGroup::Text) );
+            brush = new TQBrush( palette.color(TQPalette::Active, TQColorGroup::Highlight) );
+            // painter->setPen( palette.color(TQPalette::Active, TQColorGroup::Text) );
         } else {
-            // painter->setPen( palette.color(QPalette::Normal, QColorGroup::Text) );
+            // painter->setPen( palette.color(TQPalette::Normal, TQColorGroup::Text) );
             }
 
         int icon_width = 0;
@@ -157,7 +157,7 @@ void EvaListViewItem::paintCell( QPainter * painter, const QColorGroup & colourG
         }
         // TODO: Change the font for highlighted text
         m_richText->draw( painter, lv->itemMargin() + icon_width, 0, 
-                                QRect( icon_width, 0, width, height() ), colourGroup, brush );
+                                TQRect( icon_width, 0, width, height() ), colourGroup, brush );
         //setHeight( m_RichText->height() );
         if(m_icon){
             int xo = lv->itemMargin();
@@ -173,7 +173,7 @@ void EvaListViewItem::paintCell( QPainter * painter, const QColorGroup & colourG
         widthChanged( 0 );
         delete brush;
     } else {
-        QListViewItem::paintCell( painter, colourGroup, column, width, align );
+        TQListViewItem::paintCell( painter, colourGroup, column, width, align );
     }
 }
 
@@ -183,8 +183,8 @@ void EvaListViewItem::paintCell( QPainter * painter, const QColorGroup & colourG
 
 
 
-EvaListView::EvaListView(QWidget *parent, const char *name, WFlags f)
-	: QListView(parent, name, f)
+EvaListView::EvaListView(TQWidget *parent, const char *name, WFlags f)
+	: TQListView(parent, name, f)
 {
 	setItemMargin(EVA_LV_LEFT_MARGIN);
 	addColumn("1");
@@ -196,12 +196,12 @@ EvaListView::EvaListView(QWidget *parent, const char *name, WFlags f)
 	setRootIsDecorated( false );
 	setTreeStepSize( 8 );
 	setDragAutoScroll(true);
-	setHScrollBarMode(QScrollView::AlwaysOff);
-	setFrameShape( QFrame::NoFrame );
+	setHScrollBarMode(TQScrollView::AlwaysOff);
+	setFrameShape( TQFrame::NoFrame );
 	
 	setAcceptDrops( true );
-	setSelectionMode( QListView::Extended );
-	setSelectionMode(QListView::Single);
+	setSelectionMode( TQListView::Extended );
+	setSelectionMode(TQListView::Single);
 	m_tooltip = new EvaLVToolTip(this);
 	
 	clearWFlags( WStaticContents );
@@ -210,7 +210,7 @@ EvaListView::EvaListView(QWidget *parent, const char *name, WFlags f)
 	static_cast<EvaListView*>(viewport())->clearWFlags( WStaticContents );
 	static_cast<EvaListView*>(viewport())->setWFlags( WNoAutoErase );
 	
-	codec = QTextCodec::codecForName("GB18030");
+	codec = TQTextCodec::codecForName("GB18030");
 
 }
 

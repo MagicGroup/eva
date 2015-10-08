@@ -21,36 +21,36 @@
 #ifndef EVAPICMANAGER_H
 #define EVAPICMANAGER_H
 
-#include <qobject.h>
-#include <qptrlist.h>
+#include <ntqobject.h>
+#include <ntqptrlist.h>
 #include "evahtmlparser.h"
 
-class QCustomEvent;
+class TQCustomEvent;
 class EvaUser;
 class EvaNetwork;
 class EvaPicOutPacket;
 class EvaPicInPacket;
-class QTextCodec;
-class QTimer;
+class TQTextCodec;
+class TQTimer;
 
-class EvaPicManager : public QObject {
+class EvaPicManager : public TQObject {
 	Q_OBJECT
 public:
 	EvaPicManager(EvaUser *u, bool useProxy = false);
 	virtual ~EvaPicManager();
 	
-	void setProxyServer(const QString ip = "", const short port = 0, QCString proxyParam = "");
+	void setProxyServer(const TQString ip = "", const short port = 0, TQCString proxyParam = "");
 	void append(EvaPicOutPacket *packet);
 	void stop();
 signals:
-	void pictureReady(const unsigned int id, const QString fileName, const QString tmpFileName);
+	void pictureReady(const unsigned int id, const TQString fileName, const TQString tmpFileName);
 	void pictureSent(const unsigned int id, const unsigned int sessionID, const unsigned int ip, const unsigned short port);
-	void sendErrorMessage(const unsigned int id, const QString msg);
+	void sendErrorMessage(const unsigned int id, const TQString msg);
 protected:
-	virtual void customEvent( QCustomEvent *e);
+	virtual void customEvent( TQCustomEvent *e);
 private:
 	typedef struct FileItem{
-	QString filename;
+	TQString filename;
 	int length;
 	int offset;
 	unsigned short lastPacketSeq;
@@ -59,13 +59,13 @@ private:
 	
 	EvaUser *user;
 	EvaNetwork *connecter;
-	QString proxyIP;
+	TQString proxyIP;
 	short proxyPort;
 	bool usingProxy;
-	QCString proxyAuthParam;
+	TQCString proxyAuthParam;
 	int sendCount;
 	
-	QTextCodec *codec;
+	TQTextCodec *codec;
 	
 	bool isBusy;
 	typedef struct Session {
@@ -109,8 +109,8 @@ private:
 	bool isSend;
 	bool isAppending, isRemoving;
 	
-	QPtrList<EvaPicOutPacket> outPool;
-	QTimer *timer;
+	TQPtrList<EvaPicOutPacket> outPool;
+	TQTimer *timer;
 	void removePacket(const int hashCode ); // remove packet which needs acknowlegement
 	void clearManager();
 private slots:

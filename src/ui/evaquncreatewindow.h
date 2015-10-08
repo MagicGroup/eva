@@ -18,46 +18,46 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
-#ifndef QUNCREATEWINDOW_H
-#define QUNCREATEWINDOW_H
+#ifndef TQUNCREATEWINDOW_H
+#define TQUNCREATEWINDOW_H
 
 #include "quncreateui.h"
 #include <list>
 
-class QTextCodec;
+class TQTextCodec;
 class EvaQunMemberPicker;
-class QCloseEvent;
-class QMoveEvent; 
+class TQCloseEvent;
+class TQMoveEvent; 
 
 class EvaQunCreateWindow : public QunCreateUI
 {
 	Q_OBJECT
 public:
-	EvaQunCreateWindow(QWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
+	EvaQunCreateWindow(TQWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
 	virtual ~EvaQunCreateWindow(){};
 signals:
-	void doQunCreate(const QString &name, const unsigned short category, const unsigned char auth, const QString &notice, 
-			const QString &description, const std::list<unsigned int> &members);
+	void doQunCreate(const TQString &name, const unsigned short category, const unsigned char auth, const TQString &notice, 
+			const TQString &description, const std::list<unsigned int> &members);
 	void removeMember(const unsigned int id);
 	
 public slots:
 	void slotQunCreateDone(const unsigned int id);
-	void slotQunCreateFailed(QString msg);
+	void slotQunCreateFailed(TQString msg);
 	
 
 protected:
-	virtual void closeEvent( QCloseEvent *event);
-	virtual void moveEvent (QMoveEvent *event);
+	virtual void closeEvent( TQCloseEvent *event);
+	virtual void moveEvent (TQMoveEvent *event);
 	
 private:
-	QTextCodec *codec;
+	TQTextCodec *codec;
 	EvaQunMemberPicker *picker;
 	
-	QString qunName;
+	TQString qunName;
 	unsigned short qunCategory;
 	unsigned char qunAuth;
-	QString qunNotice;
-	QString qunDescription;
+	TQString qunNotice;
+	TQString qunDescription;
 	std::list<int> members;
 	
 	void initTable();
@@ -73,7 +73,7 @@ private slots:
 	void slotCancel();
 	void slotLoadMembers();
 	
-	void slotTableClicked(int row,int col,int button,const QPoint& mousePos);
+	void slotTableClicked(int row,int col,int button,const TQPoint& mousePos);
 	void slotSetMembersClicked();
 	void slotDelMembersClicked();
 	void slotPickerMemberClicked(const unsigned int id, const bool isChecked);

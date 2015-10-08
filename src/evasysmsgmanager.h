@@ -21,14 +21,14 @@
 #ifndef EVASYSMSGMANAGER_H
 #define EVASYSMSGMANAGER_H
 
-#include <qobject.h>
-#include <qcstring.h>
-#include <qpixmap.h>
-#include <qfile.h>
+#include <ntqobject.h>
+#include <ntqcstring.h>
+#include <ntqpixmap.h>
+#include <ntqfile.h>
 
 class EvaPacketManager;
 
-class EvaSysMsgManager : public QObject
+class EvaSysMsgManager : public TQObject
 {
 	Q_OBJECT
 public:
@@ -38,8 +38,8 @@ public:
 	void setPacketManager(EvaPacketManager *packetManager);
 
 signals:
-	void requestAddBuddy(const unsigned int id, const QString nick, const unsigned short face);
-	void buddyAdded(const unsigned int id, const QString nick, const unsigned short face, const int group);
+	void requestAddBuddy(const unsigned int id, const TQString nick, const unsigned short face);
+	void buddyAdded(const unsigned int id, const TQString nick, const unsigned short face, const int group);
 
 	void requestDetails(const unsigned int id);
 	void requestQunDetails(const unsigned int id);
@@ -51,9 +51,9 @@ private:
 	EvaPacketManager *m_PacketManager;
 
 private slots:
-	void slotReceivedQQNews(const QString &title, const QString &brief, const QString &url);
+	void slotReceivedTQQNews(const TQString &title, const TQString &brief, const TQString &url);
 	void slotReceivedSysMessage(const unsigned char type, const unsigned int myID, const unsigned int fromID,
-				const QString &msg, const bool allowReverse,
+				const TQString &msg, const bool allowReverse,
 				const unsigned char *code, const unsigned int codeLen);
 
 	void slotReceivedVerifyAddingMessageReply(const unsigned int id, const unsigned char reply,
@@ -61,14 +61,14 @@ private slots:
 	void slotQunSysMessage(const unsigned int id, const unsigned short imType,
 				const unsigned int ext, const unsigned char qunType,
 				const unsigned int sender, const unsigned int commander,
-				const QString &msg, const unsigned char *code, const unsigned short codeLen,
+				const TQString &msg, const unsigned char *code, const unsigned short codeLen,
 				const unsigned char *token, const unsigned short tokenLen);
 
 public slots:
 	void showSysMessage();
 	/// NOTE: the last arg could be allowReverse(yes:1, no:0) if msgType is not Qun related
 	void showSysMessage(const unsigned short msgType, const unsigned char type, const unsigned int from, const unsigned int to, 
-				const QString message, const unsigned int internalQunID, const unsigned int commander,
+				const TQString message, const unsigned int internalQunID, const unsigned int commander,
 				const unsigned char *code, const unsigned short codeLen,
 				const unsigned char *token, const unsigned short tokenLen);
 };

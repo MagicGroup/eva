@@ -20,15 +20,15 @@
 #include "evasyshistoryviewer.h"
 #include "evadefines.h"
 
-#include <qpushbutton.h>
-#include <qtable.h>
-#include <klocale.h>
-#include <qcheckbox.h>
-#include <qdatetimeedit.h>
+#include <ntqpushbutton.h>
+#include <ntqtable.h>
+#include <tdelocale.h>
+#include <ntqcheckbox.h>
+#include <ntqdatetimeedit.h>
 
 EvaSysHistoryViewer::EvaSysHistoryViewer(EvaUserSetting *userSetting)
-	: EvaHistoryUIBase(0,0,Qt::WStyle_Customize  | Qt::WStyle_Title | Qt::WStyle_SysMenu | Qt::WStyle_NormalBorder 
-				| Qt::WStyle_Tool | Qt::WDestructiveClose), 
+	: EvaHistoryUIBase(0,0,TQt::WStyle_Customize  | TQt::WStyle_Title | TQt::WStyle_SysMenu | TQt::WStyle_NormalBorder 
+				| TQt::WStyle_Tool | TQt::WDestructiveClose), 
 	setting(userSetting)
 {
 	page = 0;
@@ -43,9 +43,9 @@ EvaSysHistoryViewer::EvaSysHistoryViewer(EvaUserSetting *userSetting)
 	pbPrev->setEnabled(false);
 	display();
 	
-	QObject::connect( pbPrev, SIGNAL( clicked() ), this, SLOT( slotPbPrevClick() ) );
-	QObject::connect( pbNext, SIGNAL( clicked() ), this, SLOT( slotPbNextClick() ) );
-	QObject::connect(tblDisplay, SIGNAL(doubleClicked( int,int, int, const QPoint &)), 
+	TQObject::connect( pbPrev, SIGNAL( clicked() ), this, SLOT( slotPbPrevClick() ) );
+	TQObject::connect( pbNext, SIGNAL( clicked() ), this, SLOT( slotPbNextClick() ) );
+	TQObject::connect(tblDisplay, SIGNAL(doubleClicked( int,int, int, const TQPoint &)), 
 					this, SLOT( slotTblDisplayDoubleClick(int)));				
 }
 
@@ -62,27 +62,27 @@ void EvaSysHistoryViewer::display()
 	
 	std::list<EvaUserSetting::sysMessage>::iterator iter;
 	int i=0;
-	QString strType;
+	TQString strType;
 	for(iter = list.begin(); iter!=list.end(); iter++){
-		tblDisplay->setText(i,0, QString::number(iter->from));
+		tblDisplay->setText(i,0, TQString::number(iter->from));
 		if(iter->messageType == SYSTEM_MESSAGE_NORMAL){
 			switch(iter->type){
-			case QQ_MSG_SYS_BEING_ADDED:
-			case QQ_MSG_SYS_BEING_ADDED_EX:
-			case QQ_MSG_SYS_ADDED_BY_CORRECT_ANSWER:
+			case TQQ_MSG_SYS_BEING_ADDED:
+			case TQQ_MSG_SYS_BEING_ADDED_EX:
+			case TQQ_MSG_SYS_ADDED_BY_CORRECT_ANSWER:
 				strType = i18n("added");
 				break;
-			case QQ_MSG_SYS_ADD_FRIEND_APPROVED_AND_ADD:
+			case TQQ_MSG_SYS_ADD_FRIEND_APPROVED_AND_ADD:
 				strType = i18n("approved and added");
 				break;
-			case QQ_MSG_SYS_ADD_FRIEND_REQUEST:
-			case QQ_MSG_SYS_ADD_FRIEND_REQUEST_EX:
+			case TQQ_MSG_SYS_ADD_FRIEND_REQUEST:
+			case TQQ_MSG_SYS_ADD_FRIEND_REQUEST_EX:
 				strType = i18n("request");
 				break;
-			case QQ_MSG_SYS_ADD_FRIEND_APPROVED:
+			case TQQ_MSG_SYS_ADD_FRIEND_APPROVED:
 				strType = i18n("approved");
 				break;
-			case QQ_MSG_SYS_ADD_FRIEND_REJECTED:
+			case TQQ_MSG_SYS_ADD_FRIEND_REJECTED:
 				strType = i18n("rejected");
 				break;
 			case Q_MSG_SYS_EVA_QQ_NEWS:
@@ -93,29 +93,29 @@ void EvaSysHistoryViewer::display()
 				strType = i18n("system");
 			}
 		}else{
-			strType = i18n("Qun") + "(" + QString::number(iter->to) + ") ";
+			strType = i18n("Qun") + "(" + TQString::number(iter->to) + ") ";
 			switch(iter->messageType){
-			case QQ_RECV_IM_CREATE_QUN:
+			case TQQ_RECV_IM_CREATE_QUN:
 				strType += i18n("created");
 				break;
-			case QQ_RECV_IM_ADDED_TO_QUN:
+			case TQQ_RECV_IM_ADDED_TO_QUN:
 				strType += i18n("joined");
 				break;       
-			case QQ_RECV_IM_DELETED_FROM_QUN:
+			case TQQ_RECV_IM_DELETED_FROM_QUN:
 				strType += i18n("removed");
 				break;
-			case QQ_RECV_IM_REQUEST_JOIN_QUN:
+			case TQQ_RECV_IM_REQUEST_JOIN_QUN:
 				strType += i18n("request");
 				break;
-			case QQ_RECV_IM_APPROVE_JOIN_QUN:
+			case TQQ_RECV_IM_APPROVE_JOIN_QUN:
 				strType += i18n("approved");
-				tblDisplay->setText(i,0, QString::number(iter->commander));
+				tblDisplay->setText(i,0, TQString::number(iter->commander));
 				break;
-			case QQ_RECV_IM_REJECT_JOIN_QUN:
+			case TQQ_RECV_IM_REJECT_JOIN_QUN:
 				strType += i18n("rejected");
-				tblDisplay->setText(i,0, QString::number(iter->commander));
+				tblDisplay->setText(i,0, TQString::number(iter->commander));
 				break;
-			case QQ_RECV_IM_SET_QUN_ADMIN:
+			case TQQ_RECV_IM_SET_QUN_ADMIN:
 				if(iter->commander == 0x01)
 					strType += i18n("set admin");
 				else

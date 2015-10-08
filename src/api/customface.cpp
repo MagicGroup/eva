@@ -20,10 +20,10 @@
 
 #include "customface.h"
 
-#include <qfile.h>
-#include <qtextstream.h>
-#include <qtextcodec.h>
-#include <klocale.h>
+#include <ntqfile.h>
+#include <ntqtextstream.h>
+#include <ntqtextcodec.h>
+#include <tdelocale.h>
 
 #define XML_FACE_FILE                   "face.xml"
 
@@ -66,16 +66,16 @@ CustomFace::CustomFace(const CustomFace&rhs)
 	(*this) = rhs;
 }
 
-CustomFace::CustomFace(const QString &name, const int groupId)
+CustomFace::CustomFace(const TQString &name, const int groupId)
 	: m_OrgName(name), m_Frames(0), m_GroupId(groupId)
 {
 	m_Shortcut = m_OrgName.left(6);
 	m_Tip = m_OrgName.left(m_OrgName.findRev('.')); // get rid of the file ext
 }
 
-CustomFace::CustomFace(const QString &name,
-				const QString &shortcut,
-				const QString &tip,
+CustomFace::CustomFace(const TQString &name,
+				const TQString &shortcut,
+				const TQString &tip,
 				const int frames,
 				const int groupId)
 	: m_OrgName(name),
@@ -96,12 +96,12 @@ CustomFace & CustomFace::operator =( const CustomFace & rhs )
 	return *this;
 }
 
-const QString CustomFace::id()  const
+const TQString CustomFace::id()  const
 {
 	return m_OrgName.left(m_OrgName.findRev('.'));
 }
 
-const QString CustomFace::fixed()  const
+const TQString CustomFace::fixed()  const
 {
 	return id() + "fixed.bmp";
 }
@@ -109,7 +109,7 @@ const QString CustomFace::fixed()  const
 
 /* ================================================================= */
 
-CustomFaceConfig::CustomFaceConfig(const QString &dir)
+CustomFaceConfig::CustomFaceConfig(const TQString &dir)
 	: m_Dir(dir), m_Doc(0)
 {
 }
@@ -122,13 +122,13 @@ CustomFaceConfig::~CustomFaceConfig()
 void CustomFaceConfig::createConfig()
 {
 	if(m_Doc ) delete m_Doc;
-	m_Doc = new QDomDocument(XML_NAME);
+	m_Doc = new TQDomDocument(XML_NAME);
 	// add a root node
-	QDomElement root = m_Doc->createElement(XML_ROOT);
+	TQDomElement root = m_Doc->createElement(XML_ROOT);
 	m_Doc->appendChild(root);
 
 	///NOTE: do we follow Tencent way? Yes, we do.
-	QDomElement g = m_Doc->createElement(TAG_CUSTOMFACE);
+	TQDomElement g = m_Doc->createElement(TAG_CUSTOMFACE);
 	g.setAttribute(ATTR_count, 0);
 	g.setAttribute(ATTR_version, FACE_GROUP_VERSION);
 	g.setAttribute(ATTR_name, i18n("Default"));
@@ -145,31 +145,31 @@ bool CustomFaceConfig::addFace(const CustomFace &face)
 		return false; // out of range
 
 	// create a new node & set attributes
-	QDomElement f = m_Doc->createElement(TAG_FACE);
+	TQDomElement f = m_Doc->createElement(TAG_FACE);
 	f.setAttribute(ATTR_id, face.id());
 	f.setAttribute(ATTR_shortcut, face.shortcut());
 	f.setAttribute(ATTR_tip, face.tip());
 	f.setAttribute(ATTR_multiframe, face.numFrames());
 
 	// sub item: org
-	QDomElement org = m_Doc->createElement(TAG_FILE_ORG);
+	TQDomElement org = m_Doc->createElement(TAG_FILE_ORG);
 	f.appendChild(org);  // append it to face node
 	// data of org node
-	QDomText orgData = m_Doc->createTextNode(face.org());
+	TQDomText orgData = m_Doc->createTextNode(face.org());
 	org.appendChild(orgData); // append it to the node
 
 	// sub item: fixed
-	QDomElement fixed = m_Doc->createElement(TAG_FILE_FIXED);
+	TQDomElement fixed = m_Doc->createElement(TAG_FILE_FIXED);
 	f.appendChild(fixed); // add it the end of face node
 	// data of fixed node
-	QDomText fixedData = m_Doc->createTextNode(face.fixed());
+	TQDomText fixedData = m_Doc->createTextNode(face.fixed());
 	fixed.appendChild(fixedData); // add data to fixed node
 
-	QDomNode root = m_Doc->documentElement();
-	QDomNodeList groups = root.childNodes();
-	QDomNode node = groups.item(gId);
+	TQDomNode root = m_Doc->documentElement();
+	TQDomNodeList groups = root.childNodes();
+	TQDomNode node = groups.item(gId);
 	if(node.isNull()) return false;
-	QDomElement group = node.toElement();
+	TQDomElement group = node.toElement();
 	// add the face to group
 	group.appendChild(f);
 
@@ -186,17 +186,17 @@ CustomFace CustomFaceConfig::getFace(const int gId, const int fNo)
 	if(gId <0 || gId >= numGroups())
 		return face; // out of range
 
-	QDomNode root = m_Doc->documentElement();
-	QDomNodeList groups = root.childNodes();
-	QDomNode node = groups.item(gId);
+	TQDomNode root = m_Doc->documentElement();
+	TQDomNodeList groups = root.childNodes();
+	TQDomNode node = groups.item(gId);
 	if(node.isNull()) return face;
-	QDomElement group = node.toElement();
+	TQDomElement group = node.toElement();
 	
 	int index = 0;
-	QDomNode n = group.firstChild();
+	TQDomNode n = group.firstChild();
 	while(!n.isNull()){
 		if(index == fNo){
-			QDomElement e = n.toElement();
+			TQDomElement e = n.toElement();
 			if(!e.isNull()){
 				if( e.tagName() == TAG_FACE){
 					face.setGroup( gId);
@@ -204,9 +204,9 @@ CustomFace CustomFaceConfig::getFace(const int gId, const int fNo)
 					face.setTip( e.attribute( ATTR_tip, ""));
 					face.setNumFrames( e.attribute( ATTR_multiframe, 0).toInt() );
 					
-					QDomNode o = e.firstChild();
+					TQDomNode o = e.firstChild();
 					if(!o.isNull()){
-						QDomElement org = o.toElement();
+						TQDomElement org = o.toElement();
 						if(!org.isNull()){
 							face.setOrg( org.text() );
 						}
@@ -230,21 +230,21 @@ bool CustomFaceConfig::moveFaceUp( const int gId, const int fNo )
 	if(gId <0 || gId >= numGroups())
 		return false; // out of range
 
-	QDomNode root = m_Doc->documentElement();
-	QDomNodeList groups = root.childNodes();
-	QDomNode node = groups.item(gId);
+	TQDomNode root = m_Doc->documentElement();
+	TQDomNodeList groups = root.childNodes();
+	TQDomNode node = groups.item(gId);
 	if(node.isNull()) return false;
-	QDomElement group = node.toElement();
+	TQDomElement group = node.toElement();
 
-	QDomNode result;
-	QDomNode n = group.firstChild();
+	TQDomNode result;
+	TQDomNode n = group.firstChild();
 	int index = 0;
 	while(!n.isNull()){
 		if(index == fNo){
-			QDomElement e = n.toElement();
+			TQDomElement e = n.toElement();
 			if(!e.isNull()){
 				if( e.tagName() == TAG_FACE){
-					QDomNode bef = e.previousSibling();
+					TQDomNode bef = e.previousSibling();
 					result = group.insertBefore( e, bef);
 					break;
 				}
@@ -265,21 +265,21 @@ bool CustomFaceConfig::moveFaceDown( const int gId, const int fNo )
 	if(gId <0 || gId >= numGroups())
 		return false; // out of range
 
-	QDomNode root = m_Doc->documentElement();
-	QDomNodeList groups = root.childNodes();
-	QDomNode node = groups.item(gId);
+	TQDomNode root = m_Doc->documentElement();
+	TQDomNodeList groups = root.childNodes();
+	TQDomNode node = groups.item(gId);
 	if(node.isNull()) return false;
-	QDomElement group = node.toElement();
+	TQDomElement group = node.toElement();
 
-	QDomNode result;
-	QDomNode n = group.firstChild();
+	TQDomNode result;
+	TQDomNode n = group.firstChild();
 	int index = 0;
 	while(!n.isNull()){
 		if(index == fNo){
-			QDomElement e = n.toElement();
+			TQDomElement e = n.toElement();
 			if(!e.isNull()){
 				if( e.tagName() == TAG_FACE){
-					QDomNode aft = e.nextSibling();
+					TQDomNode aft = e.nextSibling();
 					result = group.insertAfter( e, aft);
 					break;
 				}
@@ -301,20 +301,20 @@ bool CustomFaceConfig::moveFaceTo( const int gId, const int fNo, const int gDest
 	if(gDestId <0 || gDestId >= numGroups())
 		return false; // out of range
 
-	QDomNode root = m_Doc->documentElement();
-	QDomNodeList groups = root.childNodes();
-	QDomNode src = groups.item(gId);
+	TQDomNode root = m_Doc->documentElement();
+	TQDomNodeList groups = root.childNodes();
+	TQDomNode src = groups.item(gId);
 	if(src.isNull()) return false;
 
-	QDomNode dest = groups.item(gDestId);
+	TQDomNode dest = groups.item(gDestId);
 	if(dest.isNull()) return false;
 
-	QDomNode n = src.firstChild();
-	QDomNode sibling;
+	TQDomNode n = src.firstChild();
+	TQDomNode sibling;
 	int index = 0;
 	while(!n.isNull()){
 		if(index == fNo){
-			QDomElement e = n.toElement();
+			TQDomElement e = n.toElement();
 			if(!e.isNull()){
 				if( e.tagName() == TAG_FACE){
 					n = src.removeChild( n );
@@ -338,16 +338,16 @@ bool CustomFaceConfig::removeFace(const CustomFace &face)
 	if(gId <0 || gId >= numGroups())
 		return false; // out of range
 
-	QDomNode root = m_Doc->documentElement();
-	QDomNodeList groups = root.childNodes();
-	QDomNode node = groups.item(gId);
+	TQDomNode root = m_Doc->documentElement();
+	TQDomNodeList groups = root.childNodes();
+	TQDomNode node = groups.item(gId);
 	if(node.isNull()) return false;
-	QDomElement group = node.toElement();
+	TQDomElement group = node.toElement();
 	
-	QDomNode result;
-	QDomNode n = group.firstChild();
+	TQDomNode result;
+	TQDomNode n = group.firstChild();
 	while(!n.isNull()){
-		QDomElement e = n.toElement();
+		TQDomElement e = n.toElement();
 		if(!e.isNull()){
 			if( e.tagName() == TAG_FACE){
 				if(face.id() == e.attribute(ATTR_id, "")){
@@ -375,18 +375,18 @@ bool CustomFaceConfig::removeFace(const int gId, const int fNo)
 	if(gId <0 || gId >= numGroups())
 		return false; // out of range
 
-	QDomNode root = m_Doc->documentElement();
-	QDomNodeList groups = root.childNodes();
-	QDomNode node = groups.item(gId);
+	TQDomNode root = m_Doc->documentElement();
+	TQDomNodeList groups = root.childNodes();
+	TQDomNode node = groups.item(gId);
 	if(node.isNull()) return false;
-	QDomElement group = node.toElement();
+	TQDomElement group = node.toElement();
 	
 	int index = 0;
-	QDomNode result;
-	QDomNode n = group.firstChild();
+	TQDomNode result;
+	TQDomNode n = group.firstChild();
 	while(!n.isNull()){
 		if(index == fNo){
-			QDomElement e = n.toElement();
+			TQDomElement e = n.toElement();
 			if(!e.isNull()){
 				if( e.tagName() == TAG_FACE){
 					result = group.removeChild(e);
@@ -410,24 +410,24 @@ bool CustomFaceConfig::removeFace(const int gId, const int fNo)
 
 bool CustomFaceConfig::updateFaceTip( const int gId,
 							const  int fNo,
-							const QString & tip)
+							const TQString & tip)
 {
 	if(!m_Doc) return false;
 
 	if(gId <0 || gId >= numGroups())
 		return false; // out of range
 
-	QDomNode root = m_Doc->documentElement();
-	QDomNodeList groups = root.childNodes();
-	QDomNode node = groups.item(gId);
+	TQDomNode root = m_Doc->documentElement();
+	TQDomNodeList groups = root.childNodes();
+	TQDomNode node = groups.item(gId);
 	if(node.isNull()) return false;
-	QDomElement group = node.toElement();
+	TQDomElement group = node.toElement();
 
-	QDomNode n = group.firstChild();
+	TQDomNode n = group.firstChild();
 	int index = 0;
 	while(!n.isNull()){
 		if(index == fNo){
-			QDomElement e = n.toElement();
+			TQDomElement e = n.toElement();
 			if(!e.isNull()){
 				if( e.tagName() == TAG_FACE){
 					e.setAttribute(ATTR_tip, tip);
@@ -445,24 +445,24 @@ bool CustomFaceConfig::updateFaceTip( const int gId,
 
 bool CustomFaceConfig::updateFaceShortcut( const int gId,
 							const  int fNo,
-							const QString & shortcut )
+							const TQString & shortcut )
 {
 	if(!m_Doc) return false;
 
 	if(gId <0 || gId >= numGroups())
 		return false; // out of range
 
-	QDomNode root = m_Doc->documentElement();
-	QDomNodeList groups = root.childNodes();
-	QDomNode node = groups.item(gId);
+	TQDomNode root = m_Doc->documentElement();
+	TQDomNodeList groups = root.childNodes();
+	TQDomNode node = groups.item(gId);
 	if(node.isNull()) return false;
-	QDomElement group = node.toElement();
+	TQDomElement group = node.toElement();
 
-	QDomNode n = group.firstChild();
+	TQDomNode n = group.firstChild();
 	int index = 0;
 	while(!n.isNull()){
 		if(index == fNo){
-			QDomElement e = n.toElement();
+			TQDomElement e = n.toElement();
 			if(!e.isNull()){
 				if( e.tagName() == TAG_FACE){
 					e.setAttribute(ATTR_shortcut, shortcut);
@@ -478,12 +478,12 @@ bool CustomFaceConfig::updateFaceShortcut( const int gId,
 	return false;
 }
 
-bool CustomFaceConfig::addGroup(const QString &name)
+bool CustomFaceConfig::addGroup(const TQString &name)
 {
 	if(name.isEmpty()) return false;
 	if(!m_Doc) createConfig();
 
-	QDomElement g = m_Doc->createElement(TAG_CUSTOMFACEGROUP);
+	TQDomElement g = m_Doc->createElement(TAG_CUSTOMFACEGROUP);
 	g.setAttribute(ATTR_count, 0);
 	g.setAttribute(ATTR_version, FACE_GROUP_VERSION);
 	g.setAttribute(ATTR_name, name);
@@ -498,31 +498,31 @@ bool CustomFaceConfig::removeGroup(const int groupIndex)
 	// default group never be removed
 	if(groupIndex == 0) return false;
 
-	QDomNode root = m_Doc->documentElement();
-	QDomNodeList groups = root.childNodes();
+	TQDomNode root = m_Doc->documentElement();
+	TQDomNodeList groups = root.childNodes();
 	printf("groupIndex: %d, nums: %d\n", groupIndex, groups.count());
-	QDomNode group = groups.item(groupIndex);
+	TQDomNode group = groups.item(groupIndex);
 	if(group.isNull()) return false;
-	QDomNode result = root.removeChild(group);
+	TQDomNode result = root.removeChild(group);
 	return (result.isNull()) ? false : true;
 }
 
-bool CustomFaceConfig::removeGroup( const QString & name )
+bool CustomFaceConfig::removeGroup( const TQString & name )
 {
 	if(!m_Doc) return false;
 
-	QDomNode root = m_Doc->documentElement();
-	QDomNode n = root.firstChild();
-	QDomNode sibling;
+	TQDomNode root = m_Doc->documentElement();
+	TQDomNode n = root.firstChild();
+	TQDomNode sibling;
 	printf("CustomFaceConfig::removeGroup: %s\n", name.local8Bit().data());
 	while(!n.isNull()){
-		QDomElement e = n.toElement();
+		TQDomElement e = n.toElement();
 		sibling = e.nextSibling();
 		if(!e.isNull()){
 			if( e.tagName() == TAG_CUSTOMFACEGROUP){
 				printf("group name: %s\n", e.attribute(ATTR_name, "").local8Bit().data());
 				if(e.attribute(ATTR_name, "") == name){
-					QDomNode old = root.removeChild( e);
+					TQDomNode old = root.removeChild( e);
 					printf("finished remove\n");
 					if(old.isNull()) return false;
 					else return true;
@@ -534,16 +534,16 @@ bool CustomFaceConfig::removeGroup( const QString & name )
 	return false;
 }
 
-bool CustomFaceConfig::renameGroup( const QString & oldName, const QString & newName )
+bool CustomFaceConfig::renameGroup( const TQString & oldName, const TQString & newName )
 {
 	if(!m_Doc) return false;
 	
 	bool renamed = false;
 
-	QDomNode root = m_Doc->documentElement();
-	QDomNode n = root.firstChild();
+	TQDomNode root = m_Doc->documentElement();
+	TQDomNode n = root.firstChild();
 	while(!n.isNull()){
-		QDomElement e = n.toElement();
+		TQDomElement e = n.toElement();
 		if(!e.isNull()){
 			if( e.tagName() == TAG_CUSTOMFACEGROUP){
 				if(e.attribute(ATTR_name, "") == oldName){
@@ -561,16 +561,16 @@ bool CustomFaceConfig::moveChildrenTo(const int srcIndex, const int destIndex)
 {
 	if(!m_Doc) return false;
 
-	QDomNode root = m_Doc->documentElement();
-	QDomNodeList groups = root.childNodes();
-	QDomNode src = groups.item(srcIndex);
+	TQDomNode root = m_Doc->documentElement();
+	TQDomNodeList groups = root.childNodes();
+	TQDomNode src = groups.item(srcIndex);
 	if(src.isNull()) return false;
 
-	QDomNode dest = groups.item(destIndex);
+	TQDomNode dest = groups.item(destIndex);
 	if(dest.isNull()) return false;
 
-	QDomNode n = src.firstChild();
-	QDomNode sibling;
+	TQDomNode n = src.firstChild();
+	TQDomNode sibling;
 	while(!n.isNull()){
 		sibling = n.nextSibling();
 		n = src.removeChild( n );
@@ -580,14 +580,14 @@ bool CustomFaceConfig::moveChildrenTo(const int srcIndex, const int destIndex)
 	return true;
 }
 
-int CustomFaceConfig::groupIndex( const QString & name )
+int CustomFaceConfig::groupIndex( const TQString & name )
 {
 	if(!m_Doc) return -1;
 	int count = -1, index = -1;
-	QDomNode root = m_Doc->documentElement();
-	QDomNode n = root.firstChild();
+	TQDomNode root = m_Doc->documentElement();
+	TQDomNode n = root.firstChild();
 	while(!n.isNull()){
-		QDomElement e = n.toElement();
+		TQDomElement e = n.toElement();
 		if(!e.isNull()){
 			if(e.tagName() == TAG_CUSTOMFACE){
 				count++;
@@ -616,27 +616,27 @@ const int CustomFaceConfig::numGroups()
 	return m_Doc->documentElement().childNodes().count();
 }
 
-QString CustomFaceConfig::groupName(const int groupIndex)
+TQString CustomFaceConfig::groupName(const int groupIndex)
 {
 	if(!m_Doc) return "";
 
-	QDomNode root = m_Doc->documentElement();
-	QDomNodeList groups = root.childNodes();
-	QDomNode node = groups.item(groupIndex);
+	TQDomNode root = m_Doc->documentElement();
+	TQDomNodeList groups = root.childNodes();
+	TQDomNode node = groups.item(groupIndex);
 	if(node.isNull()) return "";
-	QDomElement group = node.toElement();
+	TQDomElement group = node.toElement();
 	return group.attribute(ATTR_name, i18n("Default"));
 }
 
-QStringList CustomFaceConfig::groupNames()
+TQStringList CustomFaceConfig::groupNames()
 {
-	QStringList list;
+	TQStringList list;
 	if(!m_Doc) return list;
 
-	QDomNode root = m_Doc->documentElement();
-	QDomNode n = root.firstChild();
+	TQDomNode root = m_Doc->documentElement();
+	TQDomNode n = root.firstChild();
 	while(!n.isNull()){
-		QDomElement e = n.toElement();
+		TQDomElement e = n.toElement();
 		if(!e.isNull()){
 			if( e.tagName() == TAG_CUSTOMFACEGROUP ||
 				e.tagName() == TAG_CUSTOMFACE){
@@ -654,36 +654,36 @@ FaceList CustomFaceConfig::groupMembers(const int groupIndex)
 	FaceList list;
 	if(!m_Doc) return list;
 
-	QDomNode root = m_Doc->documentElement();
-	QDomNodeList groups = root.childNodes();
-	QDomNode node = groups.item(groupIndex);
+	TQDomNode root = m_Doc->documentElement();
+	TQDomNodeList groups = root.childNodes();
+	TQDomNode node = groups.item(groupIndex);
 	if(node.isNull()) return list;
-	QDomElement group = node.toElement();
+	TQDomElement group = node.toElement();
 
-	QDomNode n = group.firstChild();
+	TQDomNode n = group.firstChild();
 	while(!n.isNull()){
-		QDomElement e = n.toElement();
+		TQDomElement e = n.toElement();
 		if(!e.isNull()){
 			if( e.tagName() == TAG_FACE){
-				QString id = e.attribute(ATTR_id, "");
-				QString shortcut = e.attribute(ATTR_shortcut, "");
-				QString tip = e.attribute(ATTR_tip, "");
-				QString frames = e.attribute(ATTR_multiframe, 0);
-				QString org, fixed;
-				QDomNode fsubN = e.firstChild();
+				TQString id = e.attribute(ATTR_id, "");
+				TQString shortcut = e.attribute(ATTR_shortcut, "");
+				TQString tip = e.attribute(ATTR_tip, "");
+				TQString frames = e.attribute(ATTR_multiframe, 0);
+				TQString org, fixed;
+				TQDomNode fsubN = e.firstChild();
 				if(fsubN.isNull()){
 					org = id+".jpg";
 					// fixed could be generated automatically in CustomFace
 					//fixed = id+"fixed.bmp";
 				} else {
-					QDomElement fsub = fsubN.toElement();
+					TQDomElement fsub = fsubN.toElement();
 					if(fsub.tagName() == TAG_FILE_ORG){
 						org = fsub.text();
 						// we got org, we might stop looking for fixed?
-						QDomNode fixN = fsub.nextSibling();
+						TQDomNode fixN = fsub.nextSibling();
 						if(fixN.isNull()) fixed = org.left(org.findRev('.')) + "fixed.bmp";
 						else{
-							QDomElement ssub = fixN.toElement();
+							TQDomElement ssub = fixN.toElement();
 							if(ssub.isNull()) 
 								fixed = org.left(org.findRev('.')) + "fixed.bmp";
 							else
@@ -691,11 +691,11 @@ FaceList CustomFaceConfig::groupMembers(const int groupIndex)
 						}
 					}else if(fsub.tagName() == TAG_FILE_FIXED){
 						fixed = fsub.text();
-						QDomNode orgN = fsub.nextSibling();
+						TQDomNode orgN = fsub.nextSibling();
 						if(orgN.isNull())  // in this case, just a guess
 							org = fixed.left(org.findRev('.')) + ".jpg";
 						else{
-							QDomElement ssub = orgN.toElement();
+							TQDomElement ssub = orgN.toElement();
 							if(ssub.isNull()) // give a guessed value
 								org = fixed.left(org.findRev('.')) + ".jpg";
 							else 
@@ -720,7 +720,7 @@ FaceList CustomFaceConfig::groupMembers(const int groupIndex)
 
 bool CustomFaceConfig::loadXML()
 {
-	QFile xmlFile(m_Dir+"/"XML_FACE_FILE);
+	TQFile xmlFile(m_Dir+"/"XML_FACE_FILE);
 	if(! xmlFile.open( IO_ReadOnly ) ) {
 		// if config file not existed we create an default config file
 		createConfig();
@@ -728,20 +728,20 @@ bool CustomFaceConfig::loadXML()
 		return false;
 	}
 	
-	QTextStream xmlStream(&xmlFile);
-	xmlStream.setCodec(QTextCodec::codecForName("GB18030") );
-	QString xmlstr = xmlStream.read();
+	TQTextStream xmlStream(&xmlFile);
+	xmlStream.setCodec(TQTextCodec::codecForName("GB18030") );
+	TQString xmlstr = xmlStream.read();
 	xmlFile.close();
 
 	xmlstr.replace(__FILE_ORG, TAG_FILE_ORG);
 	xmlstr.replace(__FILE_FIXED, TAG_FILE_FIXED);
 
 	if(!m_Doc) {
-		m_Doc = new QDomDocument();
+		m_Doc = new TQDomDocument();
 	}
 
 	bool result = false;
-	QString errmsg;
+	TQString errmsg;
 	int line, col;
 	result = m_Doc->setContent(xmlstr, &errmsg, &line, &col);
 	if(!result){
@@ -754,22 +754,22 @@ bool CustomFaceConfig::saveXML()
 {
 	if(!m_Doc) return false;
 
-	QString xmlstr = m_Doc->toString();
+	TQString xmlstr = m_Doc->toString();
 	xmlstr.replace(TAG_FILE_ORG, __FILE_ORG);
 	xmlstr.replace(TAG_FILE_FIXED, __FILE_FIXED);
 
-	QFile xmlFile(m_Dir+"/"XML_FACE_FILE);
+	TQFile xmlFile(m_Dir+"/"XML_FACE_FILE);
 	if(! xmlFile.open( IO_WriteOnly ) ) return false;
 
-	QTextStream xmlStream(&xmlFile);
-	xmlStream.setCodec(QTextCodec::codecForName("GB18030") );
+	TQTextStream xmlStream(&xmlFile);
+	xmlStream.setCodec(TQTextCodec::codecForName("GB18030") );
 	xmlStream << xmlstr;
 	xmlFile.close();
 
 	return true;
 }
 
-QString CustomFaceConfig::toString() 
+TQString CustomFaceConfig::toString() 
 {
 	if(!m_Doc) return "";
 	return m_Doc->toString();

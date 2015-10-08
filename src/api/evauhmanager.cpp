@@ -23,13 +23,13 @@
 #include "evauhprotocols.h"
 #include "evamain.h"
 #include "evaresource.h"
-#include <qfile.h>
-#include <qdatastream.h>
-#include <qtextstream.h>
-#include <qsocketdevice.h>
-#include <qdns.h>
-#include <qstringlist.h>
-#include <qapplication.h>
+#include <ntqfile.h>
+#include <ntqdatastream.h>
+#include <ntqtextstream.h>
+#include <ntqsocketdevice.h>
+#include <ntqdns.h>
+#include <ntqstringlist.h>
+#include <ntqapplication.h>
 #include <string.h>
 #include <cstring>
 
@@ -53,7 +53,7 @@ public:
 			const unsigned int fileSize, const unsigned int partStart, 
 			const unsigned int partSize, const unsigned char *buf);
 	
-	const QString getMd5String() const;
+	const TQString getMd5String() const;
 	const unsigned int getQQ() const { return mId; }
 	const int getSessionId() const { return mSessionId; }
 	
@@ -64,7 +64,7 @@ public:
 	const unsigned int nextBlock(unsigned int *start, unsigned int *size);
 	
 	const bool isMD5Correct();
-	void save(QString &dir);
+	void save(TQString &dir);
 	void initSettings();
 private:
 	unsigned int mId;
@@ -124,7 +124,7 @@ printf("mFileSize=%d,fileSize=%d\n",mFileSize,fileSize);
 	return true;
 }
 
-const QString EvaUHFile::getMd5String() const
+const TQString EvaUHFile::getMd5String() const
 {
 	return EvaHelper::md5ToString(md5);
 }
@@ -185,27 +185,27 @@ const bool EvaUHFile::isMD5Correct()
 }
 
 // Given a directory, that's enough
-void EvaUHFile::save(QString &dir)
+void EvaUHFile::save(TQString &dir)
 {
 	if(!mBuffer){
 		fprintf(stderr, "EvaUHFile::save -- NULL file buffer, failed %d\n",mFileSize);
 		return;
 	}
 	
-	QString filePrefix = dir + "/" + getMd5String();
-	QFile file(filePrefix + ".bmp");
+	TQString filePrefix = dir + "/" + getMd5String();
+	TQFile file(filePrefix + ".bmp");
 	if(!file.open(IO_WriteOnly | IO_Raw )){
 		fprintf(stderr, "EvaUHFile::save -- file creating, failed\n");
 		return;
 	}
   
-	QDataStream stream(&file);
+	TQDataStream stream(&file);
 	stream.writeRawBytes((char *)mBuffer, mFileSize);
 	file.flush();
 	file.close();
-	QImage grayPic;
+	TQImage grayPic;
 	grayPic.loadFromData(mBuffer, mFileSize);
-	EvaQtUtils::convertToGrayscale(&grayPic);
+	EvaTQtUtils::convertToGrayscale(&grayPic);
 	grayPic.save(filePrefix +"_off.bmp", "BMP");
 }
 
@@ -226,35 +226,35 @@ void EvaUHFile::initSettings()
  
 class EvaUHProfile {
 public:
-	QString dir;            // note must set the UH directory first
-	QMap<unsigned int, UHInfoItem> list;
+	TQString dir;            // note must set the UH directory first
+	TQMap<unsigned int, UHInfoItem> list;
 	bool loadProfile();
 	void saveProfile();
 	void updateInfo(UHInfoItem item);
 	void updateInfo(const unsigned int id, char *md5, unsigned int sid);
 	void remove(const unsigned int id);
 	void fileFinished(const unsigned int id);
-	char *strMd5ToChar(const QString &strMd5);
+	char *strMd5ToChar(const TQString &strMd5);
 	char *getMd5(const unsigned int id); // if not exists, NULL return
 	// cuz session id only used within one session and will not be saved as well
 	// but it does help to download the new file :)
 	unsigned int getSession(const unsigned int id); 
 	UHInfoItem nextDownload(); // if id is 0, means no file downloading needed
-	QString getStrMd5(const unsigned int id);
+	TQString getStrMd5(const unsigned int id);
 };
 
 bool EvaUHProfile::loadProfile()
 {
-	QString filename = dir + "/" + UH_PROFILE_NAME;
-	QFile file(filename);
+	TQString filename = dir + "/" + UH_PROFILE_NAME;
+	TQFile file(filename);
 	if(!file.open(IO_ReadOnly)){
 		fprintf(stderr, "EvaUHProfile::loadProfile -- file not exists\n");
 		return false;
 	}
-	QTextStream stream(&file);
+	TQTextStream stream(&file);
 	while(!stream.atEnd()){
-		QString line = stream.readLine();
-		QStringList lines = QStringList::split(":", line);
+		TQString line = stream.readLine();
+		TQStringList lines = TQStringList::split(":", line);
 		if(lines.size() != 2) continue;
 		bool ok;
 		int id = lines[0].stripWhiteSpace().toInt(&ok);
@@ -275,7 +275,7 @@ bool EvaUHProfile::loadProfile()
 
 void EvaUHProfile::updateInfo(UHInfoItem item)
 {
-	QMap<unsigned int, UHInfoItem>::Iterator it = list.find(item.id);
+	TQMap<unsigned int, UHInfoItem>::Iterator it = list.find(item.id);
 	if(it != list.end()){
 		if(memcmp(it.data().md5, item.md5, 16)!=0){
 			memcpy(it.data().md5, item.md5, 16);
@@ -290,7 +290,7 @@ void EvaUHProfile::updateInfo(UHInfoItem item)
 
 void EvaUHProfile::updateInfo(const unsigned int id, char *md5, unsigned int sid)
 {
-	QMap<unsigned int, UHInfoItem>::Iterator it = list.find(id);
+	TQMap<unsigned int, UHInfoItem>::Iterator it = list.find(id);
 	if(it != list.end()){
 		if(memcmp(it.data().md5, md5, 16)!=0){
 			memcpy(it.data().md5, md5, 16);
@@ -314,25 +314,25 @@ void EvaUHProfile::remove(const unsigned int id)
 
 void EvaUHProfile::fileFinished(const unsigned int id)
 {
-	QMap<unsigned int, UHInfoItem>::Iterator it = list.find(id);
+	TQMap<unsigned int, UHInfoItem>::Iterator it = list.find(id);
 	if(it != list.end())
 		it.data().isUpdated = false;
 }
 
 void EvaUHProfile::saveProfile()
 {
-	QString filename = dir + "/" + UH_PROFILE_NAME;
-	QFile file(filename);
+	TQString filename = dir + "/" + UH_PROFILE_NAME;
+	TQFile file(filename);
 	if(!file.open(IO_WriteOnly)){
 		fprintf(stderr, "EvaUHProfile::saveProfile -- cannot open file to write\n");
 		return;
 	}
-	QTextStream stream(&file);
-	QMap<unsigned int, UHInfoItem>::Iterator it;
+	TQTextStream stream(&file);
+	TQMap<unsigned int, UHInfoItem>::Iterator it;
 	for(it = list.begin(); it!=list.end(); ++it){
 		if(it.data().isUpdated) continue;     // only save the downloaded ones
-		QString strId = QString::number(it.key());
-		QString strMd5 = EvaHelper::md5ToString(it.data().md5);
+		TQString strId = TQString::number(it.key());
+		TQString strMd5 = EvaHelper::md5ToString(it.data().md5);
 		stream<<strId << ":" << strMd5 << "\n";
 	}
 	file.flush();
@@ -340,9 +340,9 @@ void EvaUHProfile::saveProfile()
 }
 
 // we new a char[], so calling function should delete the memory
-char *EvaUHProfile::strMd5ToChar(const QString &strMd5)
+char *EvaUHProfile::strMd5ToChar(const TQString &strMd5)
 {
-	QString ch;
+	TQString ch;
 	bool ok;
 	int tmp;
 	if(strMd5.length() != 32) return NULL;
@@ -361,7 +361,7 @@ char *EvaUHProfile::strMd5ToChar(const QString &strMd5)
 // calling function shouldn't delete the memory
 char *EvaUHProfile::getMd5(const unsigned int id)
 {
-	QMap<unsigned int, UHInfoItem>::Iterator it = list.find(id);
+	TQMap<unsigned int, UHInfoItem>::Iterator it = list.find(id);
 	if(it != list.end())
 		return it.data().md5;
 	else
@@ -371,7 +371,7 @@ char *EvaUHProfile::getMd5(const unsigned int id)
 // 0 means no session id avalible
 unsigned int EvaUHProfile::getSession(const unsigned int id)
 {
-	QMap<unsigned int, UHInfoItem>::Iterator it = list.find(id);
+	TQMap<unsigned int, UHInfoItem>::Iterator it = list.find(id);
 	if(it != list.end())
 		return it.data().sessionId;
 	else
@@ -381,7 +381,7 @@ unsigned int EvaUHProfile::getSession(const unsigned int id)
 // return item.id == 0 means all finished, no more downloading needed
 UHInfoItem EvaUHProfile::nextDownload()
 {
-	QMap<unsigned int, UHInfoItem>::Iterator it = list.begin();
+	TQMap<unsigned int, UHInfoItem>::Iterator it = list.begin();
 	while(it != list.end()){
 		if(it.data().isUpdated)
 			return list[it.key()];
@@ -392,15 +392,15 @@ UHInfoItem EvaUHProfile::nextDownload()
 	return item;
 }
 
-QString EvaUHProfile::getStrMd5(const unsigned int id)
+TQString EvaUHProfile::getStrMd5(const unsigned int id)
 {
 	return EvaHelper::md5ToString(getMd5(id));
 }
 
 /************************************************************************************************/
 
-EvaUHManager::EvaUHManager(QObject *receiver, const QString &dir)
-	: QObject(), QThread(), mReceiver(receiver), m_retryCount(0), AllInfoGotCounter(0), 
+EvaUHManager::EvaUHManager(TQObject *receiver, const TQString &dir)
+	: TQObject(), TQThread(), mReceiver(receiver), m_retryCount(0), AllInfoGotCounter(0), 
 	mUHDir(dir), mAskForStop(false), mSocket(NULL), 
 	mProfileManager(NULL), mCurrentFile(NULL), mDns(NULL)
 {
@@ -413,19 +413,19 @@ EvaUHManager::~EvaUHManager()
 	mProfileManager = NULL;
 }
 
-void EvaUHManager::initiate(QSize /*size*/)
+void EvaUHManager::initiate(TQSize /*size*/)
 {
 	if(mProfileManager) delete mProfileManager;
 	mProfileManager = new EvaUHProfile();
 	mProfileManager->dir = mUHDir;
 	if(mProfileManager->loadProfile()){
 		imageOnList.clear();
-		QMap<unsigned int, UHInfoItem>::Iterator it = mProfileManager->list.begin();
+		TQMap<unsigned int, UHInfoItem>::Iterator it = mProfileManager->list.begin();
 		while(it != mProfileManager->list.end()){
-			QString filename = getFileName(it.data().id);
+			TQString filename = getFileName(it.data().id);
 			//printf("User Head: id(%d), data.id(%d), file(%s)\n", it.key(), it.data().id, filename.local8Bit().data());
-//			imageOnList[it.key()] = QImage(filename).smoothScale(size);
-			imageOnList[it.key()] = QImage(filename);
+//			imageOnList[it.key()] = TQImage(filename).smoothScale(size);
+			imageOnList[it.key()] = TQImage(filename);
 			if(imageOnList[it.key()].isNull()) {
 				printf("EvaUHManager::initiate() -- buddy %d has a NULL Image :%s, remove it from evauh.profile\n", it.key(), filename.ascii());
 				mProfileManager->remove(it.key());
@@ -435,8 +435,8 @@ void EvaUHManager::initiate(QSize /*size*/)
 				return;
 			}
 			filename = getFileName(it.data().id, true);
-//			imageOffList[it.key()] = QImage(filename).smoothScale(size);
-			imageOffList[it.key()] = QImage(filename);
+//			imageOffList[it.key()] = TQImage(filename).smoothScale(size);
+			imageOffList[it.key()] = TQImage(filename);
 			++it;
 		}
 	}
@@ -447,7 +447,7 @@ void EvaUHManager::run()
 	doDnsRequest();
 	int availableBytes = 0;
 	bytesRead = 0;
-	mSocket = new QSocketDevice(QSocketDevice::Datagram);
+	mSocket = new TQSocketDevice(TQSocketDevice::Datagram);
 	doAllInfoRequest();
 	while(1){
 		if( (availableBytes = mSocket->bytesAvailable()) ){
@@ -470,8 +470,8 @@ void EvaUHManager::doDnsRequest()
 {
 	mHostAddresses.clear();
 	if(mDns) delete mDns;
-	mDns = new QDns(CFACE_SERVER);
-	QObject::connect(mDns, SIGNAL(resultsReady()), SLOT(slotDnsReady()));
+	mDns = new TQDns(CFACE_SERVER);
+	TQObject::connect(mDns, SIGNAL(resultsReady()), SLOT(slotDnsReady()));
 	
 	while(!mHostAddresses.size()){
 		if(mAskForStop) break;
@@ -485,7 +485,7 @@ void EvaUHManager::slotDnsReady()
 	//printf("EvaUHManager::slotDnsReady ----   got\n");
 	mHostAddresses = mDns->addresses();
 	if(!mHostAddresses.size()){
-		QHostAddress host;
+		TQHostAddress host;
 		host.setAddress("219.133.51.161");
 		mHostAddresses.append(host);
 	}
@@ -530,10 +530,10 @@ void EvaUHManager::doAllInfoRequest()
 	if(!toSend.size()) return;
 	//printf("EvaUHManager::doAllInfoRequest -- %d Buddies sent\n", toSend.size());
 	EvaUHInfoRequest *packet = new EvaUHInfoRequest();
-	packet->setQQList(toSend);
+	packet->setTQQList(toSend);
 	send(packet);
 	cmdSent = All_Info;
-	timeSent = QDateTime::currentDateTime();
+	timeSent = TQDateTime::currentDateTime();
 }
 
 void EvaUHManager::processComingData()
@@ -598,10 +598,10 @@ bool EvaUHManager::doInfoRequest()
 	std::list<unsigned int> qqList;
 	qqList.push_back(item.id);
 	EvaUHInfoRequest *packet = new EvaUHInfoRequest();
-	packet->setQQList(qqList);
+	packet->setTQQList(qqList);
 	send(packet);  // send method will delete sPacket
 	cmdSent = Buddy_Info;
-	timeSent = QDateTime::currentDateTime();
+	timeSent = TQDateTime::currentDateTime();
 	return true;
 }
 
@@ -615,7 +615,7 @@ void EvaUHManager::doTransferRequest(const unsigned int id, const unsigned int s
 	packet->setFileInfo(start, end);
 	send(packet);  // send method will delete sPacket
 	cmdSent = Buddy_File;
-	timeSent = QDateTime::currentDateTime();
+	timeSent = TQDateTime::currentDateTime();
 }
 
 void EvaUHManager::processBuddyInfoReply()
@@ -676,14 +676,14 @@ void EvaUHManager::processBuddyFileReply()
 					mProfileManager->fileFinished(packet->getQQ());
 					mProfileManager->saveProfile();
 					
-					QImage imgOn  = QImage(getFileName(packet->getQQ())).smoothScale(EvaMain::global->getFaceSize());
-					QImage imgOff = QImage(getFileName(packet->getQQ(), true)).smoothScale(EvaMain::global->getFaceSize());
+					TQImage imgOn  = TQImage(getFileName(packet->getQQ())).smoothScale(EvaMain::global->getFaceSize());
+					TQImage imgOff = TQImage(getFileName(packet->getQQ(), true)).smoothScale(EvaMain::global->getFaceSize());
 					imageOnList[packet->getQQ()]  = imgOn;
 					imageOffList[packet->getQQ()] = imgOff;
 					EvaUHReadyEvent *event = new EvaUHReadyEvent();
 					event->setQQ(packet->getQQ());
 					event->setImages(imgOn, imgOff);
-					QApplication::postEvent(mReceiver, event);
+					TQApplication::postEvent(mReceiver, event);
 					
 					delete mCurrentFile;
 					mCurrentFile = NULL;
@@ -715,7 +715,7 @@ void EvaUHManager::checkTimeout()
 		cmdSent = Buddy_Info;
 	}
 	
-	int last = timeSent.secsTo(QDateTime::currentDateTime());
+	int last = timeSent.secsTo(TQDateTime::currentDateTime());
 	if(last >= UH_TIME_OUT){
 		//printf("EvaUHManager::checkTimeout : %d\n", cmdSent);
 		switch(cmdSent){
@@ -762,26 +762,26 @@ void EvaUHManager::stop( )
 	mAskForStop = true;
 }
 
-QString EvaUHManager::getFileName(const unsigned int id, bool isGrayscale)
+TQString EvaUHManager::getFileName(const unsigned int id, bool isGrayscale)
 {
 	if(!mProfileManager) return "";
 	
-	QString strMd5 = mProfileManager->getStrMd5(id);
+	TQString strMd5 = mProfileManager->getStrMd5(id);
 	if(strMd5.isEmpty()) return strMd5;
 	if(isGrayscale)
 		strMd5 += "_off.bmp";
 	else
 		strMd5 += ".bmp";
-	QString fileName = mUHDir + "/" + strMd5;
-	QFile file(fileName);
+	TQString fileName = mUHDir + "/" + strMd5;
+	TQFile file(fileName);
 	if(!file.exists()) fileName = "";
 	return fileName;
 }
 
-QImage *EvaUHManager::getUHImage(const unsigned int id, bool isGrayscale)
+TQImage *EvaUHManager::getUHImage(const unsigned int id, bool isGrayscale)
 {
-	QImage * result;
-	QMap<unsigned int, QImage>::Iterator it;
+	TQImage * result;
+	TQMap<unsigned int, TQImage>::Iterator it;
 	if(isGrayscale){
 		it = imageOffList.find(id);
 		if(it == imageOffList.end())

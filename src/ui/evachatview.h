@@ -21,33 +21,33 @@
 #ifndef EVACHATVIEW_H
 #define EVACHATVIEW_H
 
-#include <khtmlview.h>
-#include <khtml_part.h>
+#include <tdehtmlview.h>
+#include <tdehtml_part.h>
 #include <kurl.h>
-#include <qdatetime.h>
-#include <qcolor.h>
+#include <ntqdatetime.h>
+#include <ntqcolor.h>
 
-class KPopupMenu;
+class TDEPopupMenu;
 class MenuPrivateData;
-//class KAction;
+//class TDEAction;
 
-class EvaChatView : public KHTMLPart
+class EvaChatView : public TDEHTMLPart
 {
 	Q_OBJECT
 public:
-	EvaChatView(QWidget* parent = 0, const char* name = 0);
+	EvaChatView(TQWidget* parent = 0, const char* name = 0);
 	virtual ~EvaChatView();
-	void append(QString & nick, QDateTime time, QColor nameColor, bool isNormal, 
-			QColor msgColor, Q_UINT8 size, 
-			bool underline, bool italic, bool bold, QString contents );
-	void updatePicture( const QString filename , const QString tmpFileName);
-	void showInfomation(const QString &info);
-	void showFileNotification(const QString &who, const QString &filename, const int size, 
+	void append(TQString & nick, TQDateTime time, TQColor nameColor, bool isNormal, 
+			TQColor msgColor, TQ_UINT8 size, 
+			bool underline, bool italic, bool bold, TQString contents );
+	void updatePicture( const TQString filename , const TQString tmpFileName);
+	void showInfomation(const TQString &info);
+	void showFileNotification(const TQString &who, const TQString &filename, const int size, 
 				const unsigned int session, const bool isSend = false);
-	void askResumeMode(const QString filename, const unsigned int session);
+	void askResumeMode(const TQString filename, const unsigned int session);
 	void showContents();
 signals:
-	void saveAsCustomSmiley(QString ); // full name with absolute path
+	void saveAsCustomSmiley(TQString ); // full name with absolute path
 	void fileTransferAcceptRequest(const unsigned int session);
 	void fileTransferSaveAsRequest(const unsigned int session);
 	void fileTransferCancelRequest(const unsigned int session);
@@ -56,25 +56,25 @@ protected:
 	virtual void startDrag();
 private:
 		
-	QString wrapFontAttributes(QColor color, Q_UINT8 size, 
-					bool underline, bool italic, bool bold, QString contents);
-	QString wrapNickName(QString &nick, QDateTime time, QColor color, bool isNormal);
+	TQString wrapFontAttributes(TQColor color, TQ_UINT8 size, 
+					bool underline, bool italic, bool bold, TQString contents);
+	TQString wrapNickName(TQString &nick, TQDateTime time, TQColor color, bool isNormal);
 	
-	KPopupMenu *menu;
+	TDEPopupMenu *menu;
 	MenuPrivateData *d;
-	KAction *copyAction;
-	QString buffer;
+	TDEAction *copyAction;
+	TQString buffer;
 	bool m_isScrollAtBottom;
-	void updateContents(const QString &contents);
-	static const QString protocolAccept;
-	static const QString protocolSaveAs;
-	static const QString protocolCancel;
-	static const QString protocolResume;
-	static const QString protocolNewOne;
+	void updateContents(const TQString &contents);
+	static const TQString protocolAccept;
+	static const TQString protocolSaveAs;
+	static const TQString protocolCancel;
+	static const TQString protocolResume;
+	static const TQString protocolNewOne;
 private slots:
 	void slotScrollToBottom();
 
-	void slotPopupMenu(const QString &url, const QPoint &point);
+	void slotPopupMenu(const TQString &url, const TQPoint &point);
 
 	void slotSelectionChanged();
 	void slotLinkClicked( const KURL & urls, const KParts::URLArgs &);

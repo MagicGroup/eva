@@ -27,18 +27,18 @@ class EvaDCOPViewInterface : virtual public DCOPObject
 	K_DCOP
 	k_dcop:
 
-	virtual int  addTab(QString scriptName, QString name, QString image, QString contents) = 0;
+	virtual int  addTab(TQString scriptName, TQString name, TQString image, TQString contents) = 0;
 	virtual bool removeTab( int id) = 0;
-	virtual void removeTabs(QString scriptName) = 0;
-	virtual bool updateTab(int id, QString contents) = 0;
-	virtual void addButton(QString scriptName, QString buttonName, QString image, QString tip) = 0;
-	virtual void removeButton(QString scriptName, QString name) = 0;
-	virtual void removeButtons(QString scriptName) = 0;
+	virtual void removeTabs(TQString scriptName) = 0;
+	virtual bool updateTab(int id, TQString contents) = 0;
+	virtual void addButton(TQString scriptName, TQString buttonName, TQString image, TQString tip) = 0;
+	virtual void removeButton(TQString scriptName, TQString name) = 0;
+	virtual void removeButtons(TQString scriptName) = 0;
 	virtual bool isTabExisted( int id ) = 0;
 	virtual void bringToFront( int id ) = 0;
 	virtual void openChatWindow(unsigned int id, bool isQun) = 0;
-	virtual void updateStatusBar( QString message) = 0;
-	virtual void openUrl(int id, QString url) = 0;
+	virtual void updateStatusBar( TQString message) = 0;
+	virtual void openUrl(int id, TQString url) = 0;
 };
 
 #endif // EVA_DCOP_VIEW_INTERFACE_H 

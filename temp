@@ -19,13 +19,13 @@
  ***************************************************************************/
 #include <vector>
 #include <stdlib.h>
-#include <qdatastream.h>
-#include <qtextstream.h>
-#include <qstringlist.h>
-#include <qfile.h>
-#include <qdir.h>
-#include <kconfig.h>
-#include <klocale.h>
+#include <ntqdatastream.h>
+#include <ntqtextstream.h>
+#include <ntqstringlist.h>
+#include <ntqfile.h>
+#include <ntqdir.h>
+#include <tdeconfig.h>
+#include <tdelocale.h>
 #include <kdebug.h>
 #include <sqlite3.h>
 int main(void)

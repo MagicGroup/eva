@@ -38,7 +38,7 @@ TmpQun &TmpQun::operator=(const TmpQun &rhs)
 	qunID = rhs.getQunID();
 	parentID = rhs.getParentID();
 	name = rhs.getName();
-	memberList = rhs.getMemberQQList();
+	memberList = rhs.getMemberTQQList();
 	return *this;
 }
 
@@ -82,7 +82,7 @@ Qun &Qun::operator=(const Qun &rhs)
 {
 	qunID = rhs.getQunID();
 	info = rhs.getDetails();
-	//numberList = rhs.getQQList();
+	//numberList = rhs.getTQQList();
 	memberList = rhs.getMembers();
 	memberArgs = rhs.getMemberArgs();
 	tmpQunList = rhs.getTmpQunList();
@@ -258,7 +258,7 @@ const  bool Qun::isAdmin( const unsigned int id)
 	std::list<FriendItem>::iterator iter;
 	for(iter = memberList.begin(); iter!= memberList.end(); ++iter){
 		if(iter->getQQ() == id){
-			if(iter->getQunAdminValue() & QUN_TYPE_ADMIN)
+			if(iter->getQunAdminValue() & TQUN_TYPE_ADMIN)
 				return true;
 			break;
 		}
@@ -377,12 +377,12 @@ void QunList::setOnlineMembers(const unsigned int id, const std::list<unsigned i
 	}
 }
 
-// void QunList::setQQList(const unsigned int id, const std::list<unsigned int> &list)
+// void QunList::setTQQList(const unsigned int id, const std::list<unsigned int> &list)
 // {
 // 	std::list<Qun>::iterator iter;
 // 	for(iter = qunList.begin(); iter!= qunList.end(); ++iter){
 // 		if(iter->getQunID() == id){
-// 			iter->setQQList(list);
+// 			iter->setTQQList(list);
 // 			return;
 // 		}
 // 	}

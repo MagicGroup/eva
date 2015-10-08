@@ -20,272 +20,272 @@
 
 #include "mainlistfontsettinguibase.h"
 
-#include <qvariant.h>
-#include <qpushbutton.h>
+#include <ntqvariant.h>
+#include <ntqpushbutton.h>
 #include <ktabwidget.h>
-#include <qgroupbox.h>
-#include <qlabel.h>
+#include <ntqgroupbox.h>
+#include <ntqlabel.h>
 #include <kcolorcombo.h>
-#include <qcheckbox.h>
-#include <qlayout.h>
-#include <klocale.h>
-//#include <qtooltip.h>
-//#include <qwhatsthis.h>
+#include <ntqcheckbox.h>
+#include <ntqlayout.h>
+#include <tdelocale.h>
+//#include <ntqtooltip.h>
+//#include <ntqwhatsthis.h>
 
 
-MainListFontSettingUIBase::MainListFontSettingUIBase( QWidget* parent, const char* name, WFlags fl )
-	: QWidget( parent, name, fl )
+MainListFontSettingUIBase::MainListFontSettingUIBase( TQWidget* parent, const char* name, WFlags fl )
+	: TQWidget( parent, name, fl )
 {
 	if ( !name )
 		setName( "MainListFontSettingUIBase" );
-	MainListFontSettingUIBaseLayout = new QGridLayout( this, 1, 1, 11, 6, "MainListFontSettingUIBaseLayout"); 
+	MainListFontSettingUIBaseLayout = new TQGridLayout( this, 1, 1, 11, 6, "MainListFontSettingUIBaseLayout"); 
 	
 	ktabMainListFont = new KTabWidget( this, "ktabMainListFont" );
 	ktabMainListFont->setCurrentPage( 0 );
 	
-	TabPage = new QWidget( ktabMainListFont, "TabPage" );
-	TabPageLayout = new QVBoxLayout( TabPage, 11, 9, "TabPageLayout"); 
+	TabPage = new TQWidget( ktabMainListFont, "TabPage" );
+	TabPageLayout = new TQVBoxLayout( TabPage, 11, 9, "TabPageLayout"); 
 	
-	gbBuddyNick = new QGroupBox( TabPage, "gbBuddyNick" );
-	gbBuddyNick->setColumnLayout(0, Qt::Vertical );
+	gbBuddyNick = new TQGroupBox( TabPage, "gbBuddyNick" );
+	gbBuddyNick->setColumnLayout(0, TQt::Vertical );
 	gbBuddyNick->layout()->setSpacing( 6 );
 	gbBuddyNick->layout()->setMargin( 11 );
-	gbBuddyNickLayout = new QVBoxLayout( gbBuddyNick->layout() );
-	gbBuddyNickLayout->setAlignment( Qt::AlignTop );
+	gbBuddyNickLayout = new TQVBoxLayout( gbBuddyNick->layout() );
+	gbBuddyNickLayout->setAlignment( TQt::AlignTop );
 	
-	layout1 = new QHBoxLayout( 0, 0, 6, "layout1"); 
+	layout1 = new TQHBoxLayout( 0, 0, 6, "layout1"); 
 
-	lblBuddyNickColor = new QLabel( gbBuddyNick, "lblBuddyNickColor" );
+	lblBuddyNickColor = new TQLabel( gbBuddyNick, "lblBuddyNickColor" );
 	layout1->addWidget( lblBuddyNickColor );
 	
 	kcbbBuddyNickColor = new KColorCombo( gbBuddyNick, "kcbbBuddyNickColor" );
 	layout1->addWidget( kcbbBuddyNickColor );
 	gbBuddyNickLayout->addLayout( layout1 );
 	
-	layout2 = new QHBoxLayout( 0, 0, 6, "layout2"); 
+	layout2 = new TQHBoxLayout( 0, 0, 6, "layout2"); 
 	
-	chbBuddyNickFontB = new QCheckBox( gbBuddyNick, "chbBuddyNickFontB" );
+	chbBuddyNickFontB = new TQCheckBox( gbBuddyNick, "chbBuddyNickFontB" );
 	layout2->addWidget( chbBuddyNickFontB );
 
-	chbBuddyNickFontU = new QCheckBox( gbBuddyNick, "chbBuddyNickFontU" );
+	chbBuddyNickFontU = new TQCheckBox( gbBuddyNick, "chbBuddyNickFontU" );
 	layout2->addWidget( chbBuddyNickFontU );
 	
-	chbBuddyNickFontI = new QCheckBox( gbBuddyNick, "chbBuddyNickFontI" );
+	chbBuddyNickFontI = new TQCheckBox( gbBuddyNick, "chbBuddyNickFontI" );
 	layout2->addWidget( chbBuddyNickFontI );
 	gbBuddyNickLayout->addLayout( layout2 );
 	TabPageLayout->addWidget( gbBuddyNick );
 	
-	gbBuddyFlash = new QGroupBox( TabPage, "gbBuddyFlash" );
-	gbBuddyFlash->setColumnLayout(0, Qt::Vertical );
+	gbBuddyFlash = new TQGroupBox( TabPage, "gbBuddyFlash" );
+	gbBuddyFlash->setColumnLayout(0, TQt::Vertical );
 	gbBuddyFlash->layout()->setSpacing( 6 );
 	gbBuddyFlash->layout()->setMargin( 11 );
-	gbBuddyFlashLayout = new QVBoxLayout( gbBuddyFlash->layout() );
-	gbBuddyFlashLayout->setAlignment( Qt::AlignTop );
+	gbBuddyFlashLayout = new TQVBoxLayout( gbBuddyFlash->layout() );
+	gbBuddyFlashLayout->setAlignment( TQt::AlignTop );
 	
-	layout3 = new QHBoxLayout( 0, 0, 6, "layout3"); 
+	layout3 = new TQHBoxLayout( 0, 0, 6, "layout3"); 
 	
-	lblBuddyFlashColor = new QLabel( gbBuddyFlash, "lblBuddyFlashColor" );
+	lblBuddyFlashColor = new TQLabel( gbBuddyFlash, "lblBuddyFlashColor" );
 	layout3->addWidget( lblBuddyFlashColor );
 	
 	kcbbBuddyFlashColor = new KColorCombo( gbBuddyFlash, "kcbbBuddyFlashColor" );
 	layout3->addWidget( kcbbBuddyFlashColor );
 	gbBuddyFlashLayout->addLayout( layout3 );
 	
-	layout4 = new QHBoxLayout( 0, 0, 6, "layout4"); 
+	layout4 = new TQHBoxLayout( 0, 0, 6, "layout4"); 
 	
-	chbBuddyFlashFontB = new QCheckBox( gbBuddyFlash, "chbBuddyFlashFontB" );
+	chbBuddyFlashFontB = new TQCheckBox( gbBuddyFlash, "chbBuddyFlashFontB" );
 	layout4->addWidget( chbBuddyFlashFontB );
 	
-	chbBuddyFlashFontU = new QCheckBox( gbBuddyFlash, "chbBuddyFlashFontU" );
+	chbBuddyFlashFontU = new TQCheckBox( gbBuddyFlash, "chbBuddyFlashFontU" );
 	layout4->addWidget( chbBuddyFlashFontU );
 
-	chbBuddyFlashFontI = new QCheckBox( gbBuddyFlash, "chbBuddyFlashFontI" );
+	chbBuddyFlashFontI = new TQCheckBox( gbBuddyFlash, "chbBuddyFlashFontI" );
 	layout4->addWidget( chbBuddyFlashFontI );
 	gbBuddyFlashLayout->addLayout( layout4 );
 	TabPageLayout->addWidget( gbBuddyFlash );
 	
-	gbBuddySignature = new QGroupBox( TabPage, "gbBuddySignature" );
-	gbBuddySignature->setColumnLayout(0, Qt::Vertical );
+	gbBuddySignature = new TQGroupBox( TabPage, "gbBuddySignature" );
+	gbBuddySignature->setColumnLayout(0, TQt::Vertical );
 	gbBuddySignature->layout()->setSpacing( 6 );
 	gbBuddySignature->layout()->setMargin( 11 );
-	gbBuddySignatureLayout = new QVBoxLayout( gbBuddySignature->layout() );
-	gbBuddySignatureLayout->setAlignment( Qt::AlignTop );
+	gbBuddySignatureLayout = new TQVBoxLayout( gbBuddySignature->layout() );
+	gbBuddySignatureLayout->setAlignment( TQt::AlignTop );
 	
-	layout5 = new QHBoxLayout( 0, 0, 6, "layout5"); 
+	layout5 = new TQHBoxLayout( 0, 0, 6, "layout5"); 
 	
-	lblBuddySigColor = new QLabel( gbBuddySignature, "lblBuddySigColor" );
+	lblBuddySigColor = new TQLabel( gbBuddySignature, "lblBuddySigColor" );
 	layout5->addWidget( lblBuddySigColor );
 
 	kcbbBuddySigColor = new KColorCombo( gbBuddySignature, "kcbbBuddySigColor" );
 	layout5->addWidget( kcbbBuddySigColor );
 	gbBuddySignatureLayout->addLayout( layout5 );
 	
-	layout6 = new QHBoxLayout( 0, 0, 6, "layout6"); 
+	layout6 = new TQHBoxLayout( 0, 0, 6, "layout6"); 
 	
-	chbBuddySigFontB = new QCheckBox( gbBuddySignature, "chbBuddySigFontB" );
+	chbBuddySigFontB = new TQCheckBox( gbBuddySignature, "chbBuddySigFontB" );
 	layout6->addWidget( chbBuddySigFontB );
 	
-	chbBuddySigFontU = new QCheckBox( gbBuddySignature, "chbBuddySigFontU" );
+	chbBuddySigFontU = new TQCheckBox( gbBuddySignature, "chbBuddySigFontU" );
 	layout6->addWidget( chbBuddySigFontU );
 	
-	chbBuddySigFontI = new QCheckBox( gbBuddySignature, "chbBuddySigFontI" );
+	chbBuddySigFontI = new TQCheckBox( gbBuddySignature, "chbBuddySigFontI" );
 	layout6->addWidget( chbBuddySigFontI );
 	gbBuddySignatureLayout->addLayout( layout6 );
 	TabPageLayout->addWidget( gbBuddySignature );
 	
 	ktabMainListFont->addTab(TabPage, i18n("Buddy Font"));
 
-	TabPage_2 = new QWidget( ktabMainListFont, "TabPage_2" );
-	TabPageLayout_2 = new QVBoxLayout( TabPage_2, 11, 9, "TabPageLayout_2"); 
+	TabPage_2 = new TQWidget( ktabMainListFont, "TabPage_2" );
+	TabPageLayout_2 = new TQVBoxLayout( TabPage_2, 11, 9, "TabPageLayout_2"); 
 
-	layout11 = new QVBoxLayout( 0, 0, 6, "layout11"); 
+	layout11 = new TQVBoxLayout( 0, 0, 6, "layout11"); 
 	
-	gbQunName = new QGroupBox( TabPage_2, "gbQunName" );
-	gbQunName->setColumnLayout(0, Qt::Vertical );
+	gbQunName = new TQGroupBox( TabPage_2, "gbQunName" );
+	gbQunName->setColumnLayout(0, TQt::Vertical );
 	gbQunName->layout()->setSpacing( 6 );
 	gbQunName->layout()->setMargin( 11 );
-	gbQunNameLayout = new QVBoxLayout( gbQunName->layout() );
-	gbQunNameLayout->setAlignment( Qt::AlignTop );
+	gbQunNameLayout = new TQVBoxLayout( gbQunName->layout() );
+	gbQunNameLayout->setAlignment( TQt::AlignTop );
 	
-	layout1_2 = new QHBoxLayout( 0, 0, 6, "layout1_2"); 
+	layout1_2 = new TQHBoxLayout( 0, 0, 6, "layout1_2"); 
 	
-	lblQunNameColor = new QLabel( gbQunName, "lblQunNameColor" );
+	lblQunNameColor = new TQLabel( gbQunName, "lblQunNameColor" );
 	layout1_2->addWidget( lblQunNameColor );
 	
 	kcbbQunNameColor = new KColorCombo( gbQunName, "kcbbQunNameColor" );
 	layout1_2->addWidget( kcbbQunNameColor );
 	gbQunNameLayout->addLayout( layout1_2 );
 	
-	layout2_2 = new QHBoxLayout( 0, 0, 6, "layout2_2"); 
+	layout2_2 = new TQHBoxLayout( 0, 0, 6, "layout2_2"); 
 	
-	chbQunNameFontB = new QCheckBox( gbQunName, "chbQunNameFontB" );
+	chbQunNameFontB = new TQCheckBox( gbQunName, "chbQunNameFontB" );
 	layout2_2->addWidget( chbQunNameFontB );
 	
-	chbQunNameFontU = new QCheckBox( gbQunName, "chbQunNameFontU" );
+	chbQunNameFontU = new TQCheckBox( gbQunName, "chbQunNameFontU" );
 	layout2_2->addWidget( chbQunNameFontU );
 	
-	chbQunNameFontI = new QCheckBox( gbQunName, "chbQunNameFontI" );
+	chbQunNameFontI = new TQCheckBox( gbQunName, "chbQunNameFontI" );
 	layout2_2->addWidget( chbQunNameFontI );
 	gbQunNameLayout->addLayout( layout2_2 );
 	layout11->addWidget( gbQunName );
 	
-	gbQunFlash = new QGroupBox( TabPage_2, "gbQunFlash" );
-	gbQunFlash->setColumnLayout(0, Qt::Vertical );
+	gbQunFlash = new TQGroupBox( TabPage_2, "gbQunFlash" );
+	gbQunFlash->setColumnLayout(0, TQt::Vertical );
 	gbQunFlash->layout()->setSpacing( 6 );
 	gbQunFlash->layout()->setMargin( 11 );
-	gbQunFlashLayout = new QVBoxLayout( gbQunFlash->layout() );
-	gbQunFlashLayout->setAlignment( Qt::AlignTop );
+	gbQunFlashLayout = new TQVBoxLayout( gbQunFlash->layout() );
+	gbQunFlashLayout->setAlignment( TQt::AlignTop );
 	
-	layout3_2 = new QHBoxLayout( 0, 0, 6, "layout3_2"); 
+	layout3_2 = new TQHBoxLayout( 0, 0, 6, "layout3_2"); 
 
-	lblQunFlashColor = new QLabel( gbQunFlash, "lblQunFlashColor" );
+	lblQunFlashColor = new TQLabel( gbQunFlash, "lblQunFlashColor" );
 	layout3_2->addWidget( lblQunFlashColor );
 	
 	kcbbQunFlashColor = new KColorCombo( gbQunFlash, "kcbbQunFlashColor" );
 	layout3_2->addWidget( kcbbQunFlashColor );
 	gbQunFlashLayout->addLayout( layout3_2 );
 	
-	layout4_2 = new QHBoxLayout( 0, 0, 6, "layout4_2"); 
+	layout4_2 = new TQHBoxLayout( 0, 0, 6, "layout4_2"); 
 	
-	chbQunFlashFontB = new QCheckBox( gbQunFlash, "chbQunFlashFontB" );
+	chbQunFlashFontB = new TQCheckBox( gbQunFlash, "chbQunFlashFontB" );
 	layout4_2->addWidget( chbQunFlashFontB );
 	
-	chbQunFlashFontU = new QCheckBox( gbQunFlash, "chbQunFlashFontU" );
+	chbQunFlashFontU = new TQCheckBox( gbQunFlash, "chbQunFlashFontU" );
 	layout4_2->addWidget( chbQunFlashFontU );
 	
-	chbQunFlashFontI = new QCheckBox( gbQunFlash, "chbQunFlashFontI" );
+	chbQunFlashFontI = new TQCheckBox( gbQunFlash, "chbQunFlashFontI" );
 	layout4_2->addWidget( chbQunFlashFontI );
 	gbQunFlashLayout->addLayout( layout4_2 );
 	layout11->addWidget( gbQunFlash );
 	TabPageLayout_2->addLayout( layout11 );
 	ktabMainListFont->addTab(TabPage_2, i18n("Qun Font"));
 	
-	TabPage_3 = new QWidget( ktabMainListFont, "TabPage_3" );
-	TabPageLayout_3 = new QVBoxLayout( TabPage_3, 11, 6, "TabPageLayout_3"); 
+	TabPage_3 = new TQWidget( ktabMainListFont, "TabPage_3" );
+	TabPageLayout_3 = new TQVBoxLayout( TabPage_3, 11, 6, "TabPageLayout_3"); 
 	
-	gbGroupName = new QGroupBox( TabPage_3, "gbGroupName" );
-	gbGroupName->setColumnLayout(0, Qt::Vertical );
+	gbGroupName = new TQGroupBox( TabPage_3, "gbGroupName" );
+	gbGroupName->setColumnLayout(0, TQt::Vertical );
 	gbGroupName->layout()->setSpacing( 6 );
 	gbGroupName->layout()->setMargin( 11 );
-	gbGroupNameLayout = new QVBoxLayout( gbGroupName->layout() );
-	gbGroupNameLayout->setAlignment( Qt::AlignTop );
+	gbGroupNameLayout = new TQVBoxLayout( gbGroupName->layout() );
+	gbGroupNameLayout->setAlignment( TQt::AlignTop );
 	
-	layout1_3 = new QHBoxLayout( 0, 0, 6, "layout1_3"); 
+	layout1_3 = new TQHBoxLayout( 0, 0, 6, "layout1_3"); 
 	
-	lblGroupNameColor = new QLabel( gbGroupName, "lblGroupNameColor" );
+	lblGroupNameColor = new TQLabel( gbGroupName, "lblGroupNameColor" );
 	layout1_3->addWidget( lblGroupNameColor );
 	
 	kcbbGroupNameColor = new KColorCombo( gbGroupName, "kcbbGroupNameColor" );
 	layout1_3->addWidget( kcbbGroupNameColor );
 	gbGroupNameLayout->addLayout( layout1_3 );
 	
-	layout2_3 = new QHBoxLayout( 0, 0, 6, "layout2_3"); 
+	layout2_3 = new TQHBoxLayout( 0, 0, 6, "layout2_3"); 
 	
-	chbGroupNameFontB = new QCheckBox( gbGroupName, "chbGroupNameFontB" );
+	chbGroupNameFontB = new TQCheckBox( gbGroupName, "chbGroupNameFontB" );
 	layout2_3->addWidget( chbGroupNameFontB );
 	
-	chbGroupNameFontU = new QCheckBox( gbGroupName, "chbGroupNameFontU" );
+	chbGroupNameFontU = new TQCheckBox( gbGroupName, "chbGroupNameFontU" );
 	layout2_3->addWidget( chbGroupNameFontU );
 	
-	chbGroupNameFontI = new QCheckBox( gbGroupName, "chbGroupNameFontI" );
+	chbGroupNameFontI = new TQCheckBox( gbGroupName, "chbGroupNameFontI" );
 	layout2_3->addWidget( chbGroupNameFontI );
 	gbGroupNameLayout->addLayout( layout2_3 );
 	TabPageLayout_3->addWidget( gbGroupName );
 	
-	gbGroupFlash = new QGroupBox( TabPage_3, "gbGroupFlash" );
-	gbGroupFlash->setColumnLayout(0, Qt::Vertical );
+	gbGroupFlash = new TQGroupBox( TabPage_3, "gbGroupFlash" );
+	gbGroupFlash->setColumnLayout(0, TQt::Vertical );
 	gbGroupFlash->layout()->setSpacing( 6 );
 	gbGroupFlash->layout()->setMargin( 11 );
-	gbGroupFlashLayout = new QVBoxLayout( gbGroupFlash->layout() );
-	gbGroupFlashLayout->setAlignment( Qt::AlignTop );
+	gbGroupFlashLayout = new TQVBoxLayout( gbGroupFlash->layout() );
+	gbGroupFlashLayout->setAlignment( TQt::AlignTop );
 	
-	layout3_3 = new QHBoxLayout( 0, 0, 6, "layout3_3"); 
+	layout3_3 = new TQHBoxLayout( 0, 0, 6, "layout3_3"); 
 	
-	lblGroupFlashColor = new QLabel( gbGroupFlash, "lblGroupFlashColor" );
+	lblGroupFlashColor = new TQLabel( gbGroupFlash, "lblGroupFlashColor" );
 	layout3_3->addWidget( lblGroupFlashColor );
 	
 	kcbbGroupFlashColor = new KColorCombo( gbGroupFlash, "kcbbGroupFlashColor" );
 	layout3_3->addWidget( kcbbGroupFlashColor );
 	gbGroupFlashLayout->addLayout( layout3_3 );
 	
-	layout4_3 = new QHBoxLayout( 0, 0, 6, "layout4_3"); 
+	layout4_3 = new TQHBoxLayout( 0, 0, 6, "layout4_3"); 
 	
-	chbGroupFlashFontB = new QCheckBox( gbGroupFlash, "chbGroupFlashFontB" );
+	chbGroupFlashFontB = new TQCheckBox( gbGroupFlash, "chbGroupFlashFontB" );
 	layout4_3->addWidget( chbGroupFlashFontB );
 	
-	chbGroupFlashFontU = new QCheckBox( gbGroupFlash, "chbGroupFlashFontU" );
+	chbGroupFlashFontU = new TQCheckBox( gbGroupFlash, "chbGroupFlashFontU" );
 	layout4_3->addWidget( chbGroupFlashFontU );
 	
-	chbGroupFlashFontI = new QCheckBox( gbGroupFlash, "chbGroupFlashFontI" );
+	chbGroupFlashFontI = new TQCheckBox( gbGroupFlash, "chbGroupFlashFontI" );
 	layout4_3->addWidget( chbGroupFlashFontI );
 	gbGroupFlashLayout->addLayout( layout4_3 );
 	TabPageLayout_3->addWidget( gbGroupFlash );
 	
-	gbGroupOnlineCount = new QGroupBox( TabPage_3, "gbGroupOnlineCount" );
-	gbGroupOnlineCount->setColumnLayout(0, Qt::Vertical );
+	gbGroupOnlineCount = new TQGroupBox( TabPage_3, "gbGroupOnlineCount" );
+	gbGroupOnlineCount->setColumnLayout(0, TQt::Vertical );
 	gbGroupOnlineCount->layout()->setSpacing( 6 );
 	gbGroupOnlineCount->layout()->setMargin( 11 );
-	gbGroupOnlineCountLayout = new QVBoxLayout( gbGroupOnlineCount->layout() );
-	gbGroupOnlineCountLayout->setAlignment( Qt::AlignTop );
+	gbGroupOnlineCountLayout = new TQVBoxLayout( gbGroupOnlineCount->layout() );
+	gbGroupOnlineCountLayout->setAlignment( TQt::AlignTop );
 	
-	layout5_2 = new QHBoxLayout( 0, 0, 6, "layout5_2"); 
+	layout5_2 = new TQHBoxLayout( 0, 0, 6, "layout5_2"); 
 	
-	lblGroupOnlineColor = new QLabel( gbGroupOnlineCount, "lblGroupOnlineColor" );
+	lblGroupOnlineColor = new TQLabel( gbGroupOnlineCount, "lblGroupOnlineColor" );
 	layout5_2->addWidget( lblGroupOnlineColor );
 	
 	kcbbGroupOnlineColor = new KColorCombo( gbGroupOnlineCount, "kcbbGroupOnlineColor" );
 	layout5_2->addWidget( kcbbGroupOnlineColor );
 	gbGroupOnlineCountLayout->addLayout( layout5_2 );
 	
-	layout6_2 = new QHBoxLayout( 0, 0, 6, "layout6_2"); 
+	layout6_2 = new TQHBoxLayout( 0, 0, 6, "layout6_2"); 
 
-	chbGroupOnlineFontB = new QCheckBox( gbGroupOnlineCount, "chbGroupOnlineFontB" );
+	chbGroupOnlineFontB = new TQCheckBox( gbGroupOnlineCount, "chbGroupOnlineFontB" );
 	layout6_2->addWidget( chbGroupOnlineFontB );
 	
-	chbGroupOnlineFontU = new QCheckBox( gbGroupOnlineCount, "chbGroupOnlineFontU" );
+	chbGroupOnlineFontU = new TQCheckBox( gbGroupOnlineCount, "chbGroupOnlineFontU" );
 	layout6_2->addWidget( chbGroupOnlineFontU );
 	
-	chbGroupOnlineFontI = new QCheckBox( gbGroupOnlineCount, "chbGroupOnlineFontI" );
+	chbGroupOnlineFontI = new TQCheckBox( gbGroupOnlineCount, "chbGroupOnlineFontI" );
 	layout6_2->addWidget( chbGroupOnlineFontI );
 	gbGroupOnlineCountLayout->addLayout( layout6_2 );
 	TabPageLayout_3->addWidget( gbGroupOnlineCount );
@@ -293,7 +293,7 @@ MainListFontSettingUIBase::MainListFontSettingUIBase( QWidget* parent, const cha
 
 	MainListFontSettingUIBaseLayout->addWidget( ktabMainListFont, 0, 0 );
 	languageChange();
-	resize( QSize(341, 345).expandedTo(minimumSizeHint()) );
+	resize( TQSize(341, 345).expandedTo(minimumSizeHint()) );
 	clearWState( WState_Polished );
 }
 
@@ -302,7 +302,7 @@ MainListFontSettingUIBase::MainListFontSettingUIBase( QWidget* parent, const cha
  */
 MainListFontSettingUIBase::~MainListFontSettingUIBase()
 {
-    // no need to delete child widgets, Qt does it all for us
+    // no need to delete child widgets, TQt does it all for us
 }
 
 /*
@@ -311,7 +311,7 @@ MainListFontSettingUIBase::~MainListFontSettingUIBase()
  */
 void MainListFontSettingUIBase::languageChange()
 {
-	setCaption( QString::null );
+	setCaption( TQString::null );
 	gbBuddyNick->setTitle( i18n("Nickname:" ) );
 	lblBuddyNickColor->setText( i18n("nickname color:" ) );
 	chbBuddyNickFontB->setText( i18n("bold" ) );

@@ -21,12 +21,12 @@
 #ifndef EVAMAIN_H
 #define EVAMAIN_H
 
-#include <qobject.h>
-#include <qdatetime.h>
-#include <qstringlist.h>
+#include <ntqobject.h>
+#include <ntqdatetime.h>
+#include <ntqstringlist.h>
 #include <inttypes.h>
-#include <qhostaddress.h>
-#include <qvaluelist.h>
+#include <ntqhostaddress.h>
+#include <ntqvaluelist.h>
 #include <dcopobject.h>
 
 #include "config.h"
@@ -34,8 +34,8 @@
 #include "evaidt.h"
 #include "evadcopactions.h"
 
-// FIXME: wanna integrate with kwallet? why not then?
-//#include <kwallet.h>
+// FIXME: wanna integrate with tdewallet? why not then?
+//#include <tdewallet.h>
 
 // Predefinitions
 
@@ -45,13 +45,13 @@
 
 
 // External classes?
-class KPopupMenu;
+class TDEPopupMenu;
 class KHelpMenu;
-class QTextCodec;
-class QTimer;
-//class KAboutData;
-//class KAboutApplication;
-class KGlobalAccel;
+class TQTextCodec;
+class TQTimer;
+//class TDEAboutData;
+//class TDEAboutApplication;
+class TDEGlobalAccel;
 
 class EvaUser;
 class EvaConnecter;
@@ -73,11 +73,11 @@ class EvaUHManager;
 class IdleTimeDetector;
 class EvaNotifyEvent;
 
-// FIXME: wanna integrate with kwallet? why not then?
+// FIXME: wanna integrate with tdewallet? why not then?
 //class Wallet;
 
 
-class EvaMain : public QObject, virtual public EvaDCOPActionsInterface
+class EvaMain : public TQObject, virtual public EvaDCOPActionsInterface
 {
 	Q_OBJECT
 
@@ -123,16 +123,16 @@ public:
 	void changeToOffline();
 	void changeToLeave();
 	void changeToInvisible();
-	void changeNick(QString nick);
-	void changeSignature( QString contents);
-	void sendToContact(unsigned int id, QString msg);
-	void sendToQun(unsigned int ext, QString msg);
-	void textReady(unsigned int id, QString text, bool isQun);
-	void imageReady(unsigned int id, QString path, bool isQun);
+	void changeNick(TQString nick);
+	void changeSignature( TQString contents);
+	void sendToContact(unsigned int id, TQString msg);
+	void sendToQun(unsigned int ext, TQString msg);
+	void textReady(unsigned int id, TQString text, bool isQun);
+	void imageReady(unsigned int id, TQString path, bool isQun);
 	void openAddFriendDialog(unsigned int id);
 
 protected:
-	virtual void customEvent( QCustomEvent * e );
+	virtual void customEvent( TQCustomEvent * e );
 	void dispatchEvaEvent( EvaNotifyEvent * e);
 	
 private:
@@ -145,11 +145,11 @@ private:
 	// initialize user customized leaving messages
 	void initUserLeaveMenu();
 
-	// QString path, for encoding converting
-	QTextCodec *codec;
+	// TQString path, for encoding converting
+	TQTextCodec *codec;
 
 	// every timer interval to get online friends' status
-	QTimer *onlineFriendTimer;
+	TQTimer *onlineFriendTimer;
 
 	// packetize QQ messages
 	EvaPacketManager *packetManager;
@@ -161,7 +161,7 @@ private:
 	IdleTimeDetector *idt;
 
 	// FIXME: do the following two need existing in the code?
-	//QString lastSentName;
+	//TQString lastSentName;
 	//int lastSentID;
 	
 	// for connection interruption detecting
@@ -171,7 +171,7 @@ private:
 	//bool loggedIn;
 
 	// one QQ server, choose random from config file
-	QHostAddress QQServer;
+	TQHostAddress TQQServer;
 
 	// guard against deleting one friend from more than one friend group
 	int deleteFromQQ;
@@ -183,20 +183,20 @@ private:
 	bool inIdleStatus;
 
 	// about window
-	//KAboutApplication *aboutEva;
+	//TDEAboutApplication *aboutEva;
 
 	// store user defined system settings such as user home diretory, message history etc.
 	EvaSetting *sysSetting;
 	
 	// system tray menu
-	KPopupMenu *sysMenu;
+	TDEPopupMenu *sysMenu;
 	KHelpMenu *m_helpMenu;
 
 	// user status setting menu, appeared both in main window and tray menu
-	KPopupMenu *statusMenu;
+	TDEPopupMenu *statusMenu;
 
 	// user status setting submenu, custumized leaving auto-reply messages
-	KPopupMenu *autoMenu;
+	TDEPopupMenu *autoMenu;
 
 	// login window, first one you will see
 	EvaLoginWindow *loginWin;
@@ -214,10 +214,10 @@ private:
 	bool isClientSet;
 
 	// accelerate key, maybe officially CTRL+ALT+Z
-	KGlobalAccel *accelKey;
+	TDEGlobalAccel *accelKey;
 
-	// FIXME: wanna integrate with kwallet? why not then?
-	//KWallet::Wallet *_wallet;
+	// FIXME: wanna integrate with tdewallet? why not then?
+	//TDEWallet::Wallet *_wallet;
 	
 	void loginOK();
 private slots:
@@ -243,11 +243,11 @@ private slots:
 	void slotDoLoginClick();
 	void slotServerBusy();
 	void slotSetupEvaClient();
-	void slotFetchQQServer();
-	void slotGotServer(QHostAddress addr);
+	void slotFetchTQQServer();
+	void slotGotServer(TQHostAddress addr);
 	//void slotLoginOK();
-	//void slotWrongPassword(QString msg);
-	void slotKickedOut(const QString msg);
+	//void slotWrongPassword(TQString msg);
+	void slotKickedOut(const TQString msg);
 	void slotOnlineReady();
 	void slotInvisibleReady();
 	void slotLeaveReady();
@@ -255,7 +255,7 @@ private slots:
 	void slotFriendStatusChanged(unsigned int);
 	//void slotFriendListReady();
 	//void slotSentMessageResult(bool); 
-	void slotTxtMessage(unsigned int sender, bool isNormal, QString message, QDateTime time, const char fontSize, 
+	void slotTxtMessage(unsigned int sender, bool isNormal, TQString message, TQDateTime time, const char fontSize, 
 			const bool u, const bool i, const bool b, 
 			const char blue, const char green, const char red); 
 	//void slotFriendGroupsReady();  
@@ -279,8 +279,8 @@ private slots:
 	void slotDoChangeUser();
 	
 	void slotGroupDeleted(const int);
-	//void slotGroupAdded(QString, int);
-	void slotGroupRenamed(QString, int);
+	//void slotGroupAdded(TQString, int);
+	void slotGroupRenamed(TQString, int);
 	void slotGroupChanged(const unsigned int, int);
 	
 	void slotRequestDetails(const unsigned int);
@@ -288,18 +288,18 @@ private slots:
 	void slotRequestChat(const unsigned int);
 	void slotRequestSendFile(const unsigned int);
 	void slotRequestHistory(const unsigned int);
-	void slotRequestQQShow(const unsigned int);
-	void slotRequestMyQQShow();
-	void slotQQShowReady(const unsigned int);
+	void slotRequestTQQShow(const unsigned int);
+	void slotRequestMyTQQShow();
+	void slotTQQShowReady(const unsigned int);
 	void slotRequestSearch();
 	
 	//void slotSystemMeBeenAdded(unsigned int);
-	//void slotSystemAddMeRequest(unsigned int, QString);
+	//void slotSystemAddMeRequest(unsigned int, TQString);
 	//void slotSystemAddRequestApproved(unsigned int);
-	//void slotSystemAddRequestRejected(unsigned int, QString);
+	//void slotSystemAddRequestRejected(unsigned int, TQString);
 	
 	//void slotRequestSystemMessage();
-	//void slotShowSystemMessage(const short, const uint8_t type, const unsigned int from, const unsigned int me, const QString message, const unsigned int internalQunID = 0);
+	//void slotShowSystemMessage(const short, const uint8_t type, const unsigned int from, const unsigned int me, const TQString message, const unsigned int internalQunID = 0);
 	void slotRequestSystemMessages();
 	
 	void slotRequestDelete(const unsigned int);
@@ -312,24 +312,24 @@ private slots:
 	
 	//void slotMyInfoReady();
 	
-	void slotQunInfomationReady(const unsigned int, const bool, QString);
+	void slotQunInfomationReady(const unsigned int, const bool, TQString);
 	
 	void slotRequestQunDetails(const unsigned int);
 	void slotRequestQunHistory(const unsigned int);
 	void slotRequestQunChat(const unsigned int);
-	void slotReceivedQunMessage( unsigned int, unsigned int, QString, QDateTime, const char, 
+	void slotReceivedQunMessage( unsigned int, unsigned int, TQString, TQDateTime, const char, 
 			const bool, const bool, const bool, const char, const char, const char);
-	void slotQunSystemMessageRequest(const unsigned int, QString);
+	void slotQunSystemMessageRequest(const unsigned int, TQString);
 	
-	void slotQunPictureReady(const unsigned int id, const QString fileName, const QString tmpFileName);
-	void slotRequestQunCardReady(const unsigned int id, const bool ok, const unsigned int qq, QString realName, const unsigned char gender, 
-					QString phone, QString email, QString memo, QString msg);
+	void slotQunPictureReady(const unsigned int id, const TQString fileName, const TQString tmpFileName);
+	void slotRequestQunCardReady(const unsigned int id, const bool ok, const unsigned int qq, TQString realName, const unsigned char gender, 
+					TQString phone, TQString email, TQString memo, TQString msg);
 	void slotDoQunExit(const unsigned int id);
-	void slotQunExitReply(const unsigned int, const bool, QString);
-	void slotQunCreateFailed(QString);
+	void slotQunExitReply(const unsigned int, const bool, TQString);
+	void slotQunCreateFailed(TQString);
 	void slotQunCreate();
 
-	void slotFriendSignatureChanged(const unsigned int qq, const QDateTime time, const QString signature);
+	void slotFriendSignatureChanged(const unsigned int qq, const TQDateTime time, const TQString signature);
 	void slotUpdateQunMessageSettings(const unsigned int id, const signed char type);
 	
 	void slotUserSettingChanged();
@@ -347,13 +347,13 @@ private slots:
 	void slotUserMemoChanged(const unsigned int id, const MemoItem &memo);
 	void slotModifyMemo(const unsigned int id );
 
-	void slotFileTransferSend(const unsigned int, const unsigned int, const QValueList<QString>,
-				const QValueList<unsigned int>, const unsigned char transferType);
-	void slotFileTransferAccept(const unsigned int, const unsigned int, const QString,
+	void slotFileTransferSend(const unsigned int, const unsigned int, const TQValueList<TQString>,
+				const TQValueList<unsigned int>, const unsigned char transferType);
+	void slotFileTransferAccept(const unsigned int, const unsigned int, const TQString,
 				const unsigned char transferType);
 	void slotFileTransferCancel(const unsigned int, const unsigned int);
 
-	void slotReceivedFileRequest(const unsigned int,  const unsigned int, const QString, const int, const unsigned char);
+	void slotReceivedFileRequest(const unsigned int,  const unsigned int, const TQString, const int, const unsigned char);
 	void slotReceivedFileAccepted(const unsigned int, const unsigned int, const unsigned int, const bool, const unsigned char);
 
 	void slotNotifyTransferStatus(const unsigned int, const unsigned int, const unsigned int, 
@@ -374,7 +374,7 @@ private slots:
 					const unsigned int, const unsigned short,  
 					const unsigned int, const unsigned short);
 	//void slotLoginVerification();
-	void slotBuddyAdded(const unsigned int id, const QString nick, const unsigned short face, const int group);
+	void slotBuddyAdded(const unsigned int id, const TQString nick, const unsigned short face, const int group);
 	void slotShowScriptManager();
 	
 	friend class EvaMainWindow;

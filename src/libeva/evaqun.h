@@ -17,8 +17,8 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef LIBEVAQUN_H
-#define LIBEVAQUN_H
+#ifndef LIBEVATQUN_H
+#define LIBEVATQUN_H
 
 #include "evadefines.h" 
 #include "evapacket.h"
@@ -146,7 +146,7 @@ public:
 	const QunInfo &getQunInfo() const { return info; }
 	const std::map<unsigned int, QunMember> &getMemberList() const { return memberList; }
 	const std::list<QunInfo> &getQunInfoList() const { return qunInfoList; }
-	const std::list<unsigned int> &getQQNumberList() const { return qunQQNumberList; }
+	const std::list<unsigned int> &getTQQNumberList() const { return qunTQQNumberList; }
 	const std::list<FriendItem> &getMemberInfoList() const { return memberInfoList; }
 	const unsigned char getJoinReply() const { return joinReply; }
 	
@@ -182,7 +182,7 @@ private:
 	/** internal ID of parent Qun, used for temporary Qun */
 	unsigned int parentQunID;
 	
-	/** error messages if replyCode is QQ_QUN_CMD_REPLY_OK */
+	/** error messages if replyCode is TQQ_QUN_CMD_REPLY_OK */
 	std::string errorMessage;
 	
 	unsigned char searchType;
@@ -195,7 +195,7 @@ private:
 	/// memebers of a Qun, only used for 
 	///	getting tmp Qun member list request
 	///	getting member online status of Qun request
-	std::list<unsigned int> qunQQNumberList;
+	std::list<unsigned int> qunTQQNumberList;
 	
 	/// used for getting Qun information request only
 	std::map<unsigned int,QunMember> memberList;
@@ -578,7 +578,7 @@ class QunCreatePacket : public QunPacket {
 public:
 	QunCreatePacket() {}
 	QunCreatePacket(const std::string &name, const unsigned short category, 
-			const unsigned char auth = QQ_QUN_JOIN_NEED_AUTH);
+			const unsigned char auth = TQQ_QUN_JOIN_NEED_AUTH);
 	QunCreatePacket(const QunCreatePacket &rhs);
 	
 	void setNotice(const std::string &notice) { qunNotice = notice; }

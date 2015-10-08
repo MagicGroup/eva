@@ -21,60 +21,60 @@
 #ifndef EVAUHMANAGER_H
 #define EVAUHMANAGER_H
 
-#include <qobject.h>
-#include <qthread.h>
-#include <qvaluelist.h>
-#include <qhostaddress.h>
-#include <qdatetime.h>
-#include <qmap.h>
-#include <qimage.h>
-#include <qevent.h>
-#include <qsize.h>
+#include <ntqobject.h>
+#include <ntqthread.h>
+#include <ntqvaluelist.h>
+#include <ntqhostaddress.h>
+#include <ntqdatetime.h>
+#include <ntqmap.h>
+#include <ntqimage.h>
+#include <ntqevent.h>
+#include <ntqsize.h>
 #include <list>
 #include "evaqtutil.h"
 
-class QSocketDevice;
-class QDns;
+class TQSocketDevice;
+class TQDns;
 class EvaUHPacket;
 class EvaUHFile;
 class EvaUHProfile;
 
-class EvaUHManager : public QObject, public QThread {
+class EvaUHManager : public TQObject, public TQThread {
 	Q_OBJECT
 public:
-	EvaUHManager(QObject *receiver, const QString &dir); // set the user head directory
+	EvaUHManager(TQObject *receiver, const TQString &dir); // set the user head directory
 	~EvaUHManager();
 	// the method will post UH event if profile loaded
-	void initiate(QSize size = QSize(16, 16));
-	void setQQList(const std::list<unsigned int> list) { mUHList = list; }
+	void initiate(TQSize size = TQSize(16, 16));
+	void setTQQList(const std::list<unsigned int> list) { mUHList = list; }
 	virtual void run();
 	void stop();
-	QString getFileName(const unsigned int id, bool isGrayscale = false); 
-	QImage *getUHImage(const unsigned int id, bool isGrayscale = false); 
-	QMap<unsigned int, QImage> getOnList() { return imageOnList; }
-	QMap<unsigned int, QImage> getOffList() { return imageOffList; }
+	TQString getFileName(const unsigned int id, bool isGrayscale = false); 
+	TQImage *getUHImage(const unsigned int id, bool isGrayscale = false); 
+	TQMap<unsigned int, TQImage> getOnList() { return imageOnList; }
+	TQMap<unsigned int, TQImage> getOffList() { return imageOffList; }
 private:
-	QObject *mReceiver;
+	TQObject *mReceiver;
 	enum COMMAND {No_CMD, All_Info, Buddy_Info, Buddy_File, All_Done};
 	COMMAND cmdSent;
-	QDateTime timeSent;
+	TQDateTime timeSent;
 	int m_retryCount;
 	unsigned int AllInfoGotCounter;
-	QString mUHDir;
-	QMap<unsigned int, QImage> imageOnList;
-	QMap<unsigned int, QImage> imageOffList;
+	TQString mUHDir;
+	TQMap<unsigned int, TQImage> imageOnList;
+	TQMap<unsigned int, TQImage> imageOffList;
 	
 	bool mAskForStop;
 	char mBuffer[65535];  // used as internal buffer
 	int bytesRead;
 	std::list<unsigned int> mUHList;
-	QSocketDevice *mSocket;
+	TQSocketDevice *mSocket;
 	
 	EvaUHProfile *mProfileManager;
 	EvaUHFile *mCurrentFile;
 	
-	QDns *mDns;
-	QValueList<QHostAddress> mHostAddresses;
+	TQDns *mDns;
+	TQValueList<TQHostAddress> mHostAddresses;
 	void doDnsRequest();
 	
 	void send(EvaUHPacket *packet);

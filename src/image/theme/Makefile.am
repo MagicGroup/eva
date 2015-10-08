@@ -3,7 +3,7 @@ theme_DATA = addfriend.png addgroup.png changeuser.png chat.png close.png \
 				delfriend.png delgroup.png detailslogo.png details.png downloadgroup.png \
 				downloadhistory.png evalogo.png eva.png eva.theme find.png font.png italic.png bold.png \
 				underline.png group.png history.png invisible.png leave.png login.mng logo.png \
-				msg.png na.png offline.png online.png open.png qq.png quickreply.png quit.png \
+				msg.png na.png offline.png online.png open.png qq.png tquickreply.png quit.png \
 				qun.png refreshbuddies.png refresh.png rename.png search.png settinglogo.png \
 				showall.png showonline.png smiley.png sysmsg.png sysoption.png syssetting.png \
 				uploadgroup.png uploadhistory.png creator.png admin.png time_moon.png time_star.png \

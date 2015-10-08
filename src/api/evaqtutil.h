@@ -18,21 +18,21 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
  
-#ifndef EVAQTUTIL_H 
-#define EVAQTUTIL_H
+#ifndef EVATQTUTIL_H 
+#define EVATQTUTIL_H
 
 #include "evafriendlist.h"
 #include "evaqunlist.h"
 #include "evahtmlparser.h"
 
 #include <string>
-#include <qobject.h>
-#include <qthread.h>
-#include <qpixmap.h>
-#include <qimage.h>
-#include <qsize.h>
-#include <qevent.h>
-#include <qmutex.h>
+#include <ntqobject.h>
+#include <ntqthread.h>
+#include <ntqpixmap.h>
+#include <ntqimage.h>
+#include <ntqsize.h>
+#include <ntqevent.h>
+#include <ntqmutex.h>
 
 #define EvaLoadGroupedUsersEvent  65535
 #define EvaLoadQunUsersEvent      65534
@@ -44,38 +44,38 @@
 #define EvaUserHeadReadyEvent     65528
 #define EvaEventNotify            65527
 
-const Q_UINT32 profileVersion = 0x000400;
+const TQ_UINT32 profileVersion = 0x000400;
 
-class QFile;
+class TQFile;
 
 // note that this static method is to filer those control chars out and change some printable funny chars into spaces
 class EvaTextFilter 
 {
 public:
-	static const QString filter(const QString &str);
+	static const TQString filter(const TQString &str);
 };
 
-class EvaSysEvent : public QCustomEvent
+class EvaSysEvent : public TQCustomEvent
 {
 public:
 	EvaSysEvent() : 
-		QCustomEvent(EvaLoadSysEvent){};
+		TQCustomEvent(EvaLoadSysEvent){};
 };
 
-class EvaScaleEvent : public QCustomEvent
+class EvaScaleEvent : public TQCustomEvent
 {
 public:
-	EvaScaleEvent(const QPixmap p) : 
-		QCustomEvent(EvaScaleImageEvent), pic(p) {}
-	QPixmap pixmap() { return pic; }
+	EvaScaleEvent(const TQPixmap p) : 
+		TQCustomEvent(EvaScaleImageEvent), pic(p) {}
+	TQPixmap pixmap() { return pic; }
 private:
-	QPixmap pic;
+	TQPixmap pic;
 };
 
-class EvaBuddyListEvent : public QCustomEvent
+class EvaBuddyListEvent : public TQCustomEvent
 {
 public:
-	EvaBuddyListEvent() : QCustomEvent(EvaLoadGroupedUsersEvent) {};
+	EvaBuddyListEvent() : TQCustomEvent(EvaLoadGroupedUsersEvent) {};
 	
 	void setGroupNames(const std::list<std::string>& names) { groupNames = names; }
 	void setDetails(const ContactInfo &info) { myInfo = info; }
@@ -98,20 +98,20 @@ private:
 	unsigned int mSigModiTime;
 };
 
-class EvaQunListEvent : public QCustomEvent
+class EvaQunListEvent : public TQCustomEvent
 {
 public:
-	EvaQunListEvent() : QCustomEvent(EvaLoadQunUsersEvent) {};
+	EvaQunListEvent() : TQCustomEvent(EvaLoadQunUsersEvent) {};
 	void setQunList( const QunList &l) { list = l; }
 	QunList getQunList() { return list; }
 private:
 	QunList list;
 };
 
-class EvaAskForCustomizedPicEvent : public QCustomEvent
+class EvaAskForCustomizedPicEvent : public TQCustomEvent
 {
 public:
-	EvaAskForCustomizedPicEvent() : QCustomEvent(EvaRequestCustomizedPicEvent) {};
+	EvaAskForCustomizedPicEvent() : TQCustomEvent(EvaRequestCustomizedPicEvent) {};
 	void setPicList( const std::list<CustomizedPic> &list) { picList = list; }
 	std::list<CustomizedPic> getPicList() { return picList; }
 	void setQunID(const unsigned int id) { qunID = id; }
@@ -121,10 +121,10 @@ private:
 	unsigned int qunID;
 };
 
-class EvaSendCustomizedPicEvent : public QCustomEvent
+class EvaSendCustomizedPicEvent : public TQCustomEvent
 {
 public:
-	EvaSendCustomizedPicEvent() : QCustomEvent(EvaSendPictureReadyEvent) {};
+	EvaSendCustomizedPicEvent() : TQCustomEvent(EvaSendPictureReadyEvent) {};
 	void setPicList( const std::list<OutCustomizedPic> &list) { picList = list; }
 	std::list<OutCustomizedPic> getPicList() { return picList; }
 	void setQunID(const unsigned int id) { qunID = id; }
@@ -134,108 +134,108 @@ private:
 	unsigned int qunID;
 };
 
-class EvaPicReadyEvent : public QCustomEvent
+class EvaPicReadyEvent : public TQCustomEvent
 {
 public:
-	EvaPicReadyEvent() : QCustomEvent(EvaPictureReadyEvent) {};
-	void setFileName( const QString &name) { fileName = name; }
-	QString getFileName() { return fileName; }
+	EvaPicReadyEvent() : TQCustomEvent(EvaPictureReadyEvent) {};
+	void setFileName( const TQString &name) { fileName = name; }
+	TQString getFileName() { return fileName; }
 	
-	void setTmpFileName( const QString &name) { tmpFileName = name; }
-	QString getTmpFileName() { return tmpFileName; }
+	void setTmpFileName( const TQString &name) { tmpFileName = name; }
+	TQString getTmpFileName() { return tmpFileName; }
 	
 	void setQunID(const unsigned int id) { qunID = id; }
 	const unsigned int getQunID() const { return qunID; }
 private:
 	unsigned int qunID;
-	QString fileName;
-	QString tmpFileName;
+	TQString fileName;
+	TQString tmpFileName;
 };
 
-class EvaUHReadyEvent : public QCustomEvent
+class EvaUHReadyEvent : public TQCustomEvent
 {
 public:
-	EvaUHReadyEvent() : QCustomEvent(EvaUserHeadReadyEvent) {};
+	EvaUHReadyEvent() : TQCustomEvent(EvaUserHeadReadyEvent) {};
 	
 	void setQQ( const unsigned int id) { mId = id; }
-	void setImages( const QImage on, const QImage off) { imgOn = on; imgOff = off; }
+	void setImages( const TQImage on, const TQImage off) { imgOn = on; imgOff = off; }
 	
 	const unsigned int getQQ() { return mId; }
-	const QImage getOnImage() const { return imgOn; }
-	const QImage getOffImage() const { return imgOff; }
+	const TQImage getOnImage() const { return imgOn; }
+	const TQImage getOffImage() const { return imgOff; }
 private:
 	unsigned int mId;
-	QImage imgOn;
-	QImage imgOff;
+	TQImage imgOn;
+	TQImage imgOff;
 };
 
 typedef unsigned int EPARAM;
 
-class EvaNotifyEvent : public QCustomEvent
+class EvaNotifyEvent : public TQCustomEvent
 {
 	public:
 		EvaNotifyEvent(int event) 
-				: QCustomEvent(EvaEventNotify),
+				: TQCustomEvent(EvaEventNotify),
 				m_id(event) 
 		{};
 		int m_id;
-		QString m_desc;
+		TQString m_desc;
 		EPARAM m_param;
 };
 
 class EvaContactManager;
-class EvaHelper : public QThread
+class EvaHelper : public TQThread
 {
 public:
 	enum Type{ LoadGroupedUsers, SaveGroupedUsers, LoadQunUsers, SaveQunUsers, LoadSys, ScaleImage };
-	void setCategory(const Type t, QObject *rec) { type = t; receiver = rec; }
+	void setCategory(const Type t, TQObject *rec) { type = t; receiver = rec; }
 	
 	// for loading grouped users list
-	void setLoadGroupedUsersArgs(QFile *file) ;
+	void setLoadGroupedUsersArgs(TQFile *file) ;
 	
 	// for saving grouped users list
-	void setSaveGroupedUsersArgs(QFile *file, std::list<std::string> myGroups, ContactInfo &info, FriendList &myList,
+	void setSaveGroupedUsersArgs(TQFile *file, std::list<std::string> myGroups, ContactInfo &info, FriendList &myList,
 					unsigned short extraInfo, std::string signature, unsigned int sigModiTime);
 	
 	// for loading Qun list
-	void setLoadQunListArgs(QFile *file);
+	void setLoadQunListArgs(TQFile *file);
 	
 	// for saving Qun list
-	void setSaveQunListArgs(QFile *file, QunList &list);
+	void setSaveQunListArgs(TQFile *file, QunList &list);
 	
 	// for image scaling
-	void setScaleArgs(const QPixmap &p, const QSize &s) { pic = p; size = s; }
+	void setScaleArgs(const TQPixmap &p, const TQSize &s) { pic = p; size = s; }
 	
 	// static method for generating customized smiley file into user's customCaches directory, should be the absolute path
-	static const QString generateCustomSmiley(const QString &source, const QString &destDir, const bool withThumbnail = false);
+	static const TQString generateCustomSmiley(const TQString &source, const TQString &destDir, const bool withThumbnail = false);
 	
 	// static method for calculating md5 of a file, should be the absolute path. note: char *md5 must be allocated before calling this method
-	static const bool getFileMD5(const QString &fileName, char *md5);
+	static const bool getFileMD5(const TQString &fileName, char *md5);
 	
 	// convert MD5 into string expression, all converted string are in upper case
-	static const QString md5ToString(const char *md5);
+	static const TQString md5ToString(const char *md5);
 	
 	// static method for copying source to dest directory, should be the absolute path
-	static const bool copyFile(const QString &source, const QString &dest);
+	static const bool copyFile(const TQString &source, const TQString &dest);
 	
 	// static method for renaming the source file to dest file name, should be the absolute path, note that: this method will delete source file
-	static const bool rename(const QString &source, const QString &dest);
+	static const bool rename(const TQString &source, const TQString &dest);
 
 	// starting the thread
 	virtual void run();
 private:
-	static QMutex mutex;
+	static TQMutex mutex;
 	Type type;
-	QObject *receiver;
+	TQObject *receiver;
 	
 	// for user loading/saving buddy list  use only
-	QFile *file;
+	TQFile *file;
 	
 	// for user saving only
 	std::list< std::string > groups;
 	ContactInfo myInfo;
 	FriendList list;
-	Q_UINT16 mExtraInfo;
+	TQ_UINT16 mExtraInfo;
 	std::string mSignature;
 	int mSigModiTime;
 	
@@ -244,8 +244,8 @@ private:
 	
 	
 	// for scale the image only
-	QPixmap pic;
-	QSize size;
+	TQPixmap pic;
+	TQSize size;
 
 	
 	void doGroupedUserLoading();
@@ -258,18 +258,18 @@ private:
 	friend class EvaContactManager;
 };
 
-// return QString
-#define GB2Unicode( gb_char ) (QTextCodec::codecForName("GB18030")->toUnicode( gb_char ))
+// return TQString
+#define GB2Unicode( gb_char ) (TQTextCodec::codecForName("GB18030")->toUnicode( gb_char ))
 // return char *
-#define Unicode2GB( qstring) (QTextCodec::codecForName("GB18030")->fromUnicode( qstring).data())
+#define Unicode2GB( qstring) (TQTextCodec::codecForName("GB18030")->fromUnicode( qstring).data())
 		
-class EvaQtUtils {
+class EvaTQtUtils {
 public:
-	static QRgb toGray(QRgb rgb);
+	static TQRgb toGray(TQRgb rgb);
 	// Warning: this can only be used in GUI thread
-	static QPixmap convertToGrayscale(const QPixmap &pm);
+	static TQPixmap convertToGrayscale(const TQPixmap &pm);
 	// This method is thread-safe method
-	static void convertToGrayscale (QImage *destImagePtr);
+	static void convertToGrayscale (TQImage *destImagePtr);
 };
 
 #endif

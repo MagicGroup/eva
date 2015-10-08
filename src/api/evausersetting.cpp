@@ -24,13 +24,14 @@
 #include "qmdcodec.h"
 #include <vector>
 #include <stdlib.h>
-#include <qdatastream.h>
-#include <qtextstream.h>
-#include <qstringlist.h>
-#include <qfile.h>
-#include <qdir.h>
-#include <kconfig.h>
-#include <klocale.h>
+#include <unistd.h>
+#include <ntqdatastream.h>
+#include <ntqtextstream.h>
+#include <ntqstringlist.h>
+#include <ntqfile.h>
+#include <ntqdir.h>
+#include <tdeconfig.h>
+#include <tdelocale.h>
 #include <kdebug.h>
 #include <sqlite3.h>
 
@@ -53,7 +54,7 @@ EvaUserSetting::EvaUserSetting(const int id)
 	if(!createDefaultDirs())
 		printf("error, cannot create user directory!\n");
 	
-	m_config = new KConfig(getEvaUserDir() + "/" + userConfigFileName);
+	m_config = new TDEConfig(getEvaUserDir() + "/" + userConfigFileName);
 	
 	m_NeedRepaint = true;
 }
@@ -66,12 +67,12 @@ EvaUserSetting::~EvaUserSetting()
 	}
 }
 
-void EvaUserSetting::loadMsgToSql(const QString fullName,const bool isQunMsg)
+void EvaUserSetting::loadMsgToSql(const TQString fullName,const bool isQunMsg)
 {
-	QFile file(fullName);
+	TQFile file(fullName);
 	if(!file.open(IO_ReadOnly))
 		return ;
-	QString fullNameSql = getEvaUserDir() + "/"+SqlFileName;
+	TQString fullNameSql = getEvaUserDir() + "/"+SqlFileName;
 	int result;
 	char * errmsg = NULL;
 	char **dbResult;
@@ -79,24 +80,24 @@ void EvaUserSetting::loadMsgToSql(const QString fullName,const bool isQunMsg)
 	sqlite3 *db=NULL;
 	result=sqlite3_open(fullNameSql.data(),&db);
 	if( result != SQLITE_OK ) return;
-	QString sql;
+	TQString sql;
 	sqlite3_exec( db,"begin transaction;",0,0,&errmsg);
 
-	Q_UINT32 r_buddy;
-	Q_UINT32 sender;
-	QString  sNick;
-	Q_UINT32 receiver;
-	QString  rNick;
-	Q_UINT8  type; // 0 auto reply,  1 normal
-	QString  message;
-	Q_UINT32  intTime;
-	QDateTime time;
-	Q_UINT8   fontSize;
-	Q_UINT8   flag; // start from right.  bit 0: u, bit 1: i, bit 2: b
-	Q_UINT8   blue;
-	Q_UINT8   green;
-	Q_UINT8   red;
-	QDataStream stream(&file);
+	TQ_UINT32 r_buddy;
+	TQ_UINT32 sender;
+	TQString  sNick;
+	TQ_UINT32 receiver;
+	TQString  rNick;
+	TQ_UINT8  type; // 0 auto reply,  1 normal
+	TQString  message;
+	TQ_UINT32  intTime;
+	TQDateTime time;
+	TQ_UINT8   fontSize;
+	TQ_UINT8   flag; // start from right.  bit 0: u, bit 1: i, bit 2: b
+	TQ_UINT8   blue;
+	TQ_UINT8   green;
+	TQ_UINT8   red;
+	TQDataStream stream(&file);
 	std::list<chatMessage>srclist;
 	while(!stream.atEnd()){
 		stream>>r_buddy;
@@ -127,7 +128,7 @@ void EvaUserSetting::loadMsgToSql(const QString fullName,const bool isQunMsg)
 	printf("load %s %i条\n",fullName.data(),i);
 	sqlite3_exec( db,"commit transaction;",0,0,&errmsg);
 	file.close();
-	QString newfile;
+	TQString newfile;
 	newfile=fullName+".old";
 	unlink(newfile.local8Bit().data());
 	rename(fullName.local8Bit().data(),newfile.local8Bit().data());
@@ -135,17 +136,17 @@ void EvaUserSetting::loadMsgToSql(const QString fullName,const bool isQunMsg)
 }
 
 
-const bool EvaUserSetting::saveBuddyList(QObject *receiver, std::list<std::string> groups, ContactInfo &myInfo, FriendList &list,
+const bool EvaUserSetting::saveBuddyList(TQObject *receiver, std::list<std::string> groups, ContactInfo &myInfo, FriendList &list,
 				unsigned short extraInfo, std::string sig, unsigned int sigTime)
 {
 	if(!isDirExisted(getEvaUserDir())){
-		QDir d;
+		TQDir d;
 		if(!d.mkdir(getEvaUserDir()))
 			return false;
 	}
 	
-	QString fullName = getEvaUserDir() + "/" + buddyListFileName;
-	QFile file(fullName);
+	TQString fullName = getEvaUserDir() + "/" + buddyListFileName;
+	TQFile file(fullName);
 	if(file.exists()) file.remove();
 	if(!file.open(IO_WriteOnly)){
 		return false;
@@ -156,20 +157,20 @@ const bool EvaUserSetting::saveBuddyList(QObject *receiver, std::list<std::strin
 	return true;
 }
 
-const bool EvaUserSetting::loadBuddyList( /*QObject * receiver*/)
+const bool EvaUserSetting::loadBuddyList( /*TQObject * receiver*/)
 {
 	if(!isDirExisted(getEvaUserDir())){
-		QDir d;
+		TQDir d;
 		if(!d.mkdir(getEvaUserDir()))
 			return false;
 }
 	//建立chat的新的库文件
 	sqlite3 *db=NULL;
 	int rc;
-	QString sql=NULL;
+	TQString sql=NULL;
 	char *errmsg = 0;
-	QString fullNameSql = getEvaUserDir() + "/"+SqlFileName;
-	QFile file1(fullNameSql);
+	TQString fullNameSql = getEvaUserDir() + "/"+SqlFileName;
+	TQFile file1(fullNameSql);
 	if(!file1.exists()){ 
 		file1.close();
 		printf("建立chat库文件\n");
@@ -192,8 +193,8 @@ const bool EvaUserSetting::loadBuddyList( /*QObject * receiver*/)
 		printf("create index sysmsg :%s\n",errmsg);
 	}
 
-	QString fullName = getEvaUserDir() + "/" + chatMsgFileName; //导入 chat.msg 到 sqlite3
-	QFile file(fullName);
+	TQString fullName = getEvaUserDir() + "/" + chatMsgFileName; //导入 chat.msg 到 sqlite3
+	TQFile file(fullName);
 	if(file.open(IO_ReadOnly)){ //chat.msg 可读
 		file.close();
 		loadMsgToSql(fullName,0);
@@ -219,15 +220,15 @@ const bool EvaUserSetting::loadBuddyList( /*QObject * receiver*/)
 	std::list<std::string> groupNames;
 	ContactInfo myInfo;
 	FriendList list;	
-	Q_UINT32 numGroups=0;
+	TQ_UINT32 numGroups=0;
 	MemoItem memo;
 
-	QDataStream stream(&file);
+	TQDataStream stream(&file);
 	
 	// check version first
 	char *flag = new char[3];
 	stream.readRawBytes(flag, 3);
-	Q_UINT32 version = 0;
+	TQ_UINT32 version = 0;
 	stream>>version;
 	if(!(flag[0]=='E' && flag[1]=='V' && flag[2]=='A' && version == profileVersion)){
 		file.close();
@@ -238,7 +239,7 @@ const bool EvaUserSetting::loadBuddyList( /*QObject * receiver*/)
 	delete []flag;
 	
 	// load my details first
-	Q_UINT32 size=0;
+	TQ_UINT32 size=0;
 	std::string item;
 	std::vector<std::string> strlist;
 	
@@ -252,7 +253,7 @@ const bool EvaUserSetting::loadBuddyList( /*QObject * receiver*/)
 	myInfo.setDetails(strlist);
 
 	// read my extra info
-	Q_UINT16 myExtraInfo;
+	TQ_UINT16 myExtraInfo;
 	stream>>myExtraInfo;
 	
 	// read signature & time
@@ -260,7 +261,7 @@ const bool EvaUserSetting::loadBuddyList( /*QObject * receiver*/)
 	stream>>str; 
 	signature = str;
 	
-	Q_UINT32 sigTime;
+	TQ_UINT32 sigTime;
 	stream>>sigTime;
 	
 	// read in how many groups
@@ -273,19 +274,19 @@ const bool EvaUserSetting::loadBuddyList( /*QObject * receiver*/)
 		groupNames.push_back(name);
 	}
 	
-	Q_UINT32 id;
-	Q_UINT16 face;
-	Q_UINT8  age;
-	Q_UINT8  gender;
+	TQ_UINT32 id;
+	TQ_UINT16 face;
+	TQ_UINT8  age;
+	TQ_UINT8  gender;
 	std::string nick;
-	Q_UINT8  extFlag;
-	Q_UINT8  commonFlag;
-	Q_UINT32 groupIndex;
-	Q_UINT16 extraInfo;
+	TQ_UINT8  extFlag;
+	TQ_UINT8  commonFlag;
+	TQ_UINT32 groupIndex;
+	TQ_UINT16 extraInfo;
 	std::string frdSig;
-	Q_UINT32 frdSigTime;
-	Q_UINT32 fontSize;
-	Q_UINT32 fontColor;
+	TQ_UINT32 frdSigTime;
+	TQ_UINT32 fontSize;
+	TQ_UINT32 fontColor;
 	
 	// read in all friends
 	while(!stream.atEnd()){
@@ -319,7 +320,7 @@ const bool EvaUserSetting::loadBuddyList( /*QObject * receiver*/)
 		stream>>str;memo.note = str;
 
 		stream>>fontSize>>fontColor;
-		QQFriend f(id, face);
+		TQQFriend f(id, face);
 		
 		f.setAge(age);
 		f.setGender(gender);
@@ -361,11 +362,11 @@ const bool EvaUserSetting::loadBuddyList( /*QObject * receiver*/)
 }
 
 //保存信息
-const bool EvaUserSetting::saveMessage(const int buddy, const int sender, QString sNick, 
-		const int receiver, QString rNick,
+const bool EvaUserSetting::saveMessage(const int buddy, const int sender, TQString sNick, 
+		const int receiver, TQString rNick,
 		const bool isNormal, 
-		const QString message, 
-		const QDateTime time, const char fontSize, 
+		const TQString message, 
+		const TQDateTime time, const char fontSize, 
 		const bool u, const bool i, const bool b, 
 		const char blue, const char green, const char red, const bool isQunMsg)
 {
@@ -373,14 +374,14 @@ const bool EvaUserSetting::saveMessage(const int buddy, const int sender, QStrin
 	int rc;
 	char *errmsg = 0;
 	if(!isDirExisted(getEvaUserDir())){
-		QDir d;
+		TQDir d;
 		if(!d.mkdir(getEvaUserDir()))
 			return false;
 	}	
-	QString fullNameSql = getEvaUserDir() + "/"+SqlFileName;
+	TQString fullNameSql = getEvaUserDir() + "/"+SqlFileName;
 	rc=sqlite3_open(fullNameSql.data(),&db);
-	Q_UINT8  s_flag = (u?1:0)|( (i?1:0)<<1 ) | ( (b?1:0)<<2 );
-	QString sql;
+	TQ_UINT8  s_flag = (u?1:0)|( (i?1:0)<<1 ) | ( (b?1:0)<<2 );
+	TQString sql;
 	sql.sprintf("insert into chat values (%d,%d,'%s', %d,'%s',%d, '%s', %d,%d, %d, %d,%d,%d,%d)",buddy,sender,sNick.utf8().data(),receiver,rNick.utf8().data(),isNormal,message.utf8().data(),time.toTime_t(),fontSize,s_flag,blue,green,red,isQunMsg);
 
 	sqlite3_exec( db , sql.utf8().data() , 0 , 0 , &errmsg );
@@ -389,23 +390,23 @@ const bool EvaUserSetting::saveMessage(const int buddy, const int sender, QStrin
 
 //获得历史信息
 std::list<EvaUserSetting::chatMessage> EvaUserSetting::getMessages( const int buddy, const int page,
-		const QDateTime starttime, const QDateTime endtime, const bool isQunMsg)
+		const TQDateTime starttime, const TQDateTime endtime, const bool isQunMsg)
 {
 	std::list<chatMessage>list;
 	if(!isDirExisted(getEvaUserDir())) return list;
-	QString fullNameSql = getEvaUserDir() + "/"+SqlFileName;
+	TQString fullNameSql = getEvaUserDir() + "/"+SqlFileName;
 	int result;
 	char * errmsg = NULL;
 	char **dbResult;
 	int nRow, nColumn,i;
 	chatMessage m;
 	sqlite3 *db=NULL;
-	QDateTime time;
+	TQDateTime time;
 	result=sqlite3_open(fullNameSql.data(),&db);
 	if( result == SQLITE_OK )
 	{
 		int j;
-		QString sql;
+		TQString sql;
 		if(starttime.toTime_t()==0) //starttime=0 获取全部记录
 			sql.sprintf("select * from chat where buddy=%d and isQunMsg=%d order by time desc limit %d offset %d",buddy,isQunMsg, pageSize,pageSize*page);   
 		else
@@ -417,11 +418,11 @@ std::list<EvaUserSetting::chatMessage> EvaUserSetting::getMessages( const int bu
 			{
 				j=i*nColumn;
 				m.sender=atol(dbResult[j+1]);
-				m.sNick = QString::fromLocal8Bit(dbResult[j+2]);
+				m.sNick = TQString::fromLocal8Bit(dbResult[j+2]);
 				m.receiver=atol(dbResult[j+3]);
-				m.rNick = QString::fromLocal8Bit(dbResult[j+4]);
+				m.rNick = TQString::fromLocal8Bit(dbResult[j+4]);
 				m.type=atoi(dbResult[j+5]); //isNormal 
-				m.message =QString::fromLocal8Bit(dbResult[j+6]);
+				m.message =TQString::fromLocal8Bit(dbResult[j+6]);
 				time.setTime_t(atol(dbResult[j+7]));
 				m.time = time;
 				m.fontSize=atoi(dbResult[j+8]); 
@@ -438,20 +439,20 @@ std::list<EvaUserSetting::chatMessage> EvaUserSetting::getMessages( const int bu
 }
 
 const bool EvaUserSetting::saveSysMessage(const short msgType, const unsigned char type, const int fromQQ, const int toQQ, 
-		const QString message, const int internalQunID, const unsigned int commander,
+		const TQString message, const int internalQunID, const unsigned int commander,
 		const unsigned char *code, const unsigned short codeLen,
 		const unsigned char *token, const unsigned short tokenLen)
 {
 	if(!isDirExisted(getEvaUserDir())){
-		QDir d;
+		TQDir d;
 		if(!d.mkdir(getEvaUserDir()))
 			return false;
 	}
-	QString sql,codea,tokena;
-	QString fullNameSql = getEvaUserDir() + "/"+SqlFileName;
-	codea=QString::fromUtf8((char *)(code),codeLen);
-	tokena=QString::fromUtf8((char *)(token),tokenLen);
-	sql.sprintf("insert into sysmsg values(%d,%d,%d,%d,%d,'%s',%d,%d,'%s','%s')",time(0),msgType,type,fromQQ,toQQ,message.utf8().data(),internalQunID,commander,codea.utf8().data(),QCodecs::base64Encode(tokena.local8Bit()).data());
+	TQString sql,codea,tokena;
+	TQString fullNameSql = getEvaUserDir() + "/"+SqlFileName;
+	codea=TQString::fromUtf8((char *)(code),codeLen);
+	tokena=TQString::fromUtf8((char *)(token),tokenLen);
+	sql.sprintf("insert into sysmsg values(%d,%d,%d,%d,%d,'%s',%d,%d,'%s','%s')",time(0),msgType,type,fromQQ,toQQ,message.utf8().data(),internalQunID,commander,codea.utf8().data(),TQCodecs::base64Encode(tokena.local8Bit()).data());
 	int result;
 	char * errmsg = NULL;
 	sqlite3 *db=NULL;
@@ -470,15 +471,15 @@ std::list<EvaUserSetting::sysMessage> EvaUserSetting::getSysMessages( const int 
 	int nRow, nColumn,i;
 	sysMessage m;
 	sqlite3 *db=NULL;
-	QDateTime time;
-	QString fullNameSql = getEvaUserDir() + "/"+SqlFileName;
+	TQDateTime time;
+	TQString fullNameSql = getEvaUserDir() + "/"+SqlFileName;
 	result=sqlite3_open(fullNameSql.data(),&db);
 	if( result == SQLITE_OK )
 	{
 		char **dbResult;
 		const	char *tmp;
 		int j;
-		QString sql;
+		TQString sql;
 		sql.sprintf("select * from sysmsg order by time desc limit %d offset %d", pageSize,pageSize*page);
 		result = sqlite3_get_table(db,sql.utf8().data(), &dbResult,&nRow, &nColumn, &errmsg);
 		if( SQLITE_OK == result )
@@ -490,9 +491,9 @@ std::list<EvaUserSetting::sysMessage> EvaUserSetting::getSysMessages( const int 
 				m.type = atoi(dbResult[j+2]);//type
 				m.from =atol(dbResult[j+3]);//fromQQ
 				m.to = atoi(dbResult[j+4]);//toQQ
-				m.message =QString::fromLocal8Bit(dbResult[j+9]); //message
-				QCString tmp1;
-				tmp1=QCodecs::base64Decode(m.message.local8Bit());
+				m.message =TQString::fromLocal8Bit(dbResult[j+9]); //message
+				TQCString tmp1;
+				tmp1=TQCodecs::base64Decode(m.message.local8Bit());
 				m.internalQunID = atoi(dbResult[j+6]);
 				m.commander=atoi(dbResult[j+7]); //message;
 				m.codeLen=strlen(dbResult[j+8]);
@@ -503,7 +504,7 @@ std::list<EvaUserSetting::sysMessage> EvaUserSetting::getSysMessages( const int 
 				if(m.token) delete []m.token;
 				m.token = new unsigned char[m.tokenLen];
 				memcpy(m.token,tmp1,m.tokenLen);
-				m.message =QString::fromLocal8Bit(dbResult[j+5]); //message
+				m.message =TQString::fromLocal8Bit(dbResult[j+5]); //message
 				list.push_back(m);
 			}
 		}
@@ -527,16 +528,16 @@ EvaUserSetting::sysMessage EvaUserSetting::getLastSysMessage()
 const bool EvaUserSetting::saveSettings()
 {
 	if(!isDirExisted(getEvaUserDir())){
-		QDir d;
+		TQDir d;
 		if(!d.mkdir(getEvaUserDir()))
 			return false;
 	}
 
-	KConfig *cfg = new KConfig(getEvaUserDir() + "/" + userConfigFileName);
+	TDEConfig *cfg = new TDEConfig(getEvaUserDir() + "/" + userConfigFileName);
 	
-	KConfigGroupSaver *groupSaver = new KConfigGroupSaver(cfg, "General");
-	cfg->writeEntry("DISPLAY_QQ_BROADCAST", showQQBroadcast);
-	cfg->writeEntry("DISPLAY_QQ_NEWS", m_ShowQQNews);
+	TDEConfigGroupSaver *groupSaver = new TDEConfigGroupSaver(cfg, "General");
+	cfg->writeEntry("DISPLAY_QQ_BROADCAST", showTQQBroadcast);
+	cfg->writeEntry("DISPLAY_QQ_NEWS", m_ShowTQQNews);
 	cfg->writeEntry("DISPLAY_TIP_MESSAGE_TIP_WINDOW", showMessageTipWindow);
 	cfg->writeEntry("DISPLAY_BUDDY_ONLINE_NOTIFY", showBudyOnlineNotifyWindow);
 	cfg->writeEntry("DISPLAY_ONLINE_BUDDIES", showOnlineUsers);
@@ -546,7 +547,7 @@ const bool EvaUserSetting::saveSettings()
 	cfg->writeEntry("SHOW_SIG_IN_SEPERATE_LINE", m_ShowSignatureInSeperateLine);
 	delete groupSaver;
 	
-	groupSaver = new KConfigGroupSaver(cfg, "Font");
+	groupSaver = new TDEConfigGroupSaver(cfg, "Font");
 	cfg->writeEntry("BUDDY_NAME_COLOR", m_BuddyNameColor);
 	cfg->writeEntry("BUDDY_NAME_FONT_B", m_BuddyNameFontB);
 	cfg->writeEntry("BUDDY_NAME_FONT_U", m_BuddyNameFontU);
@@ -563,15 +564,15 @@ const bool EvaUserSetting::saveSettings()
 	cfg->writeEntry("BUDDY_FLASH_FONT_I", m_BuddyFlashFontI);
 
 	// save Qun font settings
-	cfg->writeEntry("QUN_NAME_COLOR", m_QunNameColor);
-	cfg->writeEntry("QUN_NAME_FONT_B", m_QunNameFontB);
-	cfg->writeEntry("QUN_NAME_FONT_U", m_QunNameFontU);
-	cfg->writeEntry("QUN_NAME_FONT_I", m_QunNameFontI);
+	cfg->writeEntry("TQUN_NAME_COLOR", m_QunNameColor);
+	cfg->writeEntry("TQUN_NAME_FONT_B", m_QunNameFontB);
+	cfg->writeEntry("TQUN_NAME_FONT_U", m_QunNameFontU);
+	cfg->writeEntry("TQUN_NAME_FONT_I", m_QunNameFontI);
 
-	cfg->writeEntry("QUN_FLASH_COLOR", m_QunFlashColor);
-	cfg->writeEntry("QUN_FLASH_FONT_B", m_QunFlashFontB);
-	cfg->writeEntry("QUN_FLASH_FONT_U", m_QunFlashFontU);
-	cfg->writeEntry("QUN_FLASH_FONT_I", m_QunFlashFontI);
+	cfg->writeEntry("TQUN_FLASH_COLOR", m_QunFlashColor);
+	cfg->writeEntry("TQUN_FLASH_FONT_B", m_QunFlashFontB);
+	cfg->writeEntry("TQUN_FLASH_FONT_U", m_QunFlashFontU);
+	cfg->writeEntry("TQUN_FLASH_FONT_I", m_QunFlashFontI);
 
 	// save group font settings
 	cfg->writeEntry("GROUP_NAME_COLOR", m_GroupNameColor);
@@ -591,27 +592,27 @@ const bool EvaUserSetting::saveSettings()
 
 	delete groupSaver;
 	
-	groupSaver = new KConfigGroupSaver(cfg, "Theme");
+	groupSaver = new TDEConfigGroupSaver(cfg, "Theme");
 	cfg->writeEntry("THEME_DIR", themeDir);
 	cfg->writeEntry("SOUND_DIR", soundDir);
 	delete groupSaver;
 	
-	groupSaver = new KConfigGroupSaver(cfg, "Reply");
+	groupSaver = new TDEConfigGroupSaver(cfg, "Reply");
 	cfg->writeEntry("AUTO_REPLY_SELECTED_INDEX", autoSelectedIndex);
-	std::list<QString>::iterator iter;
-	QStringList strList;
+	std::list<TQString>::iterator iter;
+	TQStringList strList;
 	for(iter = autoList.begin(); iter!=autoList.end(); ++iter){
 		strList += (*iter);
 	}
 	cfg->writeEntry("AUTO_REPLY", strList, '\255');
 	strList.clear();
-	for(iter = quickList.begin(); iter!=quickList.end(); ++iter){
+	for(iter = tquickList.begin(); iter!=tquickList.end(); ++iter){
 		strList += (*iter);
 	}
 	cfg->writeEntry("QUICK_REPLY", strList, '\255');	
 	delete groupSaver;
 
-	groupSaver = new KConfigGroupSaver(cfg, "Others");
+	groupSaver = new TDEConfigGroupSaver(cfg, "Others");
 	cfg->writeEntry("FACE_SIZE", faceSize);
 	cfg->writeEntry("MESSAGE_PAGE_SIZE", pageSize);
 	cfg->writeEntry("MESSAGE_SHORTCUT", shortcut.toString());
@@ -620,34 +621,34 @@ const bool EvaUserSetting::saveSettings()
 	cfg->writeEntry("MAX_IDLE_TIME", idleMaxTime);
 	delete groupSaver;
 	
-	groupSaver = new KConfigGroupSaver(cfg, "Cached_ToBeAdded_Buddies");
+	groupSaver = new TDEConfigGroupSaver(cfg, "Cached_ToBeAdded_Buddies");
 	cfg->writeEntry("NUM_BUDDIES", m_CachedToBeAddedBuddy.size());
-	std::map<unsigned int, QString>::iterator itr;
+	std::map<unsigned int, TQString>::iterator itr;
 	int num = 0;
 	for(itr = m_CachedToBeAddedBuddy.begin(); itr!=m_CachedToBeAddedBuddy.end(); ++itr){
-		cfg->writeEntry(QString("QQ_%1").arg(num++), itr->second);
+		cfg->writeEntry(TQString("TQQ_%1").arg(num++), itr->second);
 	}	
 	delete groupSaver;
 
-	groupSaver = new KConfigGroupSaver(cfg, "Reject_Forever");
-	cfg->writeEntry("QQ_REJECT_LIST_SIZE", m_RejectForever.size());
+	groupSaver = new TDEConfigGroupSaver(cfg, "Reject_Forever");
+	cfg->writeEntry("TQQ_REJECT_LIST_SIZE", m_RejectForever.size());
 	std::list<unsigned int>::iterator rejectIter;
 	num = 0;
 	for(rejectIter = m_RejectForever.begin(); rejectIter!=m_RejectForever.end(); ++rejectIter){
-		cfg->writeEntry(QString("QQ_%1").arg(num++), (unsigned int)(*rejectIter));
+		cfg->writeEntry(TQString("TQQ_%1").arg(num++), (unsigned int)(*rejectIter));
 	}
 	delete groupSaver;
 
-	groupSaver = new KConfigGroupSaver(cfg, "Qun_Reject_Forever");
-	cfg->writeEntry("QUN_REJECT_LIST_SIZE", m_QunRejectForever.size());
+	groupSaver = new TDEConfigGroupSaver(cfg, "Qun_Reject_Forever");
+	cfg->writeEntry("TQUN_REJECT_LIST_SIZE", m_QunRejectForever.size());
 	std::map<unsigned int, std::list<unsigned int> >::iterator qunRejectIter;
 	num = 0;
 	for(qunRejectIter = m_QunRejectForever.begin(); qunRejectIter!=m_QunRejectForever.end(); ++qunRejectIter){
-		cfg->writeEntry(QString("Qun_%1").arg(num++), qunRejectIter->first);
-		cfg->writeEntry("QUN_REJECT_MEMBER_SIZE", (qunRejectIter->second).size());
+		cfg->writeEntry(TQString("Qun_%1").arg(num++), qunRejectIter->first);
+		cfg->writeEntry("TQUN_REJECT_MEMBER_SIZE", (qunRejectIter->second).size());
 		int memberCount = 0;
 		for(rejectIter = qunRejectIter->second.begin(); rejectIter!= qunRejectIter->second.end(); ++rejectIter){
-			cfg->writeEntry(QString("Qun_QQ_%1").arg(memberCount++), (unsigned int)(*rejectIter));
+			cfg->writeEntry(TQString("Qun_QQ_%1").arg(memberCount++), (unsigned int)(*rejectIter));
 		}
 	}
 	delete groupSaver;
@@ -663,19 +664,19 @@ const bool EvaUserSetting::loadSettings()
 		return false;
 	}
 	
-	QString fullName = getEvaUserDir() + "/" + userProfileFileName;
-	QDir d;
+	TQString fullName = getEvaUserDir() + "/" + userProfileFileName;
+	TQDir d;
 	if(d.exists(fullName)){
 		loadOldProfile();
-		QFile::remove(fullName);
+		TQFile::remove(fullName);
 		saveSettings();
 	}
 	
-	KConfig *cfg = new KConfig(getEvaUserDir() + "/" + userConfigFileName);
+	TDEConfig *cfg = new TDEConfig(getEvaUserDir() + "/" + userConfigFileName);
 	
-	KConfigGroupSaver *groupSaver = new KConfigGroupSaver(cfg, "General");
-	showQQBroadcast = cfg->readBoolEntry("DISPLAY_QQ_BROADCAST", true);
-	m_ShowQQNews = cfg->readBoolEntry("DISPLAY_QQ_NEWS", true);
+	TDEConfigGroupSaver *groupSaver = new TDEConfigGroupSaver(cfg, "General");
+	showTQQBroadcast = cfg->readBoolEntry("DISPLAY_QQ_BROADCAST", true);
+	m_ShowTQQNews = cfg->readBoolEntry("DISPLAY_QQ_NEWS", true);
 	showMessageTipWindow = cfg->readBoolEntry("DISPLAY_TIP_MESSAGE_TIP_WINDOW", true);
 	showBudyOnlineNotifyWindow = cfg->readBoolEntry("DISPLAY_BUDDY_ONLINE_NOTIFY", true);
 	showOnlineUsers = cfg->readBoolEntry("DISPLAY_ONLINE_BUDDIES", false);
@@ -685,110 +686,110 @@ const bool EvaUserSetting::loadSettings()
 	m_ShowSignatureInSeperateLine = cfg->readBoolEntry("SHOW_SIG_IN_SEPERATE_LINE", false);
 	delete groupSaver;
 	
-	groupSaver = new KConfigGroupSaver(cfg, "Font");
-	m_BuddyNameColor = cfg->readColorEntry("BUDDY_NAME_COLOR", &Qt::black);
+	groupSaver = new TDEConfigGroupSaver(cfg, "Font");
+	m_BuddyNameColor = cfg->readColorEntry("BUDDY_NAME_COLOR", &TQt::black);
 	m_BuddyNameFontB = cfg->readBoolEntry("BUDDY_NAME_FONT_B", false);
 	m_BuddyNameFontU = cfg->readBoolEntry("BUDDY_NAME_FONT_U", false);
 	m_BuddyNameFontI = cfg->readBoolEntry("BUDDY_NAME_FONT_I", false);
 
-	m_BuddySigColor = cfg->readColorEntry("BUDDY_SIGNATURE_COLOR", &Qt::gray);
+	m_BuddySigColor = cfg->readColorEntry("BUDDY_SIGNATURE_COLOR", &TQt::gray);
 	m_BuddySigFontB = cfg->readBoolEntry("BUDDY_SIGNATURE_FONT_B", false);
 	m_BuddySigFontU = cfg->readBoolEntry("BUDDY_SIGNATURE_FONT_U", false);
 	m_BuddySigFontI = cfg->readBoolEntry("BUDDY_SIGNATURE_FONT_I", false);
 
-	m_BuddyFlashColor = cfg->readColorEntry("BUDDY_FLASH_COLOR", &Qt::red);
+	m_BuddyFlashColor = cfg->readColorEntry("BUDDY_FLASH_COLOR", &TQt::red);
 	m_BuddyFlashFontB = cfg->readBoolEntry("BUDDY_FLASH_FONT_B", false);
 	m_BuddyFlashFontU = cfg->readBoolEntry("BUDDY_FLASH_FONT_U", false);
 	m_BuddyFlashFontI = cfg->readBoolEntry("BUDDY_FLASH_FONT_I", false);
 
-	m_QunNameColor = cfg->readColorEntry("QUN_NAME_COLOR", &Qt::black);
-	m_QunNameFontB = cfg->readBoolEntry("QUN_NAME_FONT_B", false);
-	m_QunNameFontU = cfg->readBoolEntry("QUN_NAME_FONT_U", false);
-	m_QunNameFontI = cfg->readBoolEntry("QUN_NAME_FONT_I", false);
+	m_QunNameColor = cfg->readColorEntry("TQUN_NAME_COLOR", &TQt::black);
+	m_QunNameFontB = cfg->readBoolEntry("TQUN_NAME_FONT_B", false);
+	m_QunNameFontU = cfg->readBoolEntry("TQUN_NAME_FONT_U", false);
+	m_QunNameFontI = cfg->readBoolEntry("TQUN_NAME_FONT_I", false);
 
-	m_QunFlashColor = cfg->readColorEntry("QUN_FLASH_COLOR", &Qt::red);
-	m_QunFlashFontB = cfg->readBoolEntry("QUN_FLASH_FONT_B", false);
-	m_QunFlashFontU = cfg->readBoolEntry("QUN_FLASH_FONT_U", false);
-	m_QunFlashFontI = cfg->readBoolEntry("QUN_FLASH_FONT_I", false);
+	m_QunFlashColor = cfg->readColorEntry("TQUN_FLASH_COLOR", &TQt::red);
+	m_QunFlashFontB = cfg->readBoolEntry("TQUN_FLASH_FONT_B", false);
+	m_QunFlashFontU = cfg->readBoolEntry("TQUN_FLASH_FONT_U", false);
+	m_QunFlashFontI = cfg->readBoolEntry("TQUN_FLASH_FONT_I", false);
 
-	m_GroupNameColor = cfg->readColorEntry("GROUP_NAME_COLOR", &Qt::black);
+	m_GroupNameColor = cfg->readColorEntry("GROUP_NAME_COLOR", &TQt::black);
 	m_GroupNameFontB = cfg->readBoolEntry("GROUP_NAME_FONT_B", false);
 	m_GroupNameFontU = cfg->readBoolEntry("GROUP_NAME_FONT_U", false);
 	m_GroupNameFontI = cfg->readBoolEntry("GROUP_NAME_FONT_I", false);
 
-	m_GroupCountColor = cfg->readColorEntry("GROUP_ONLINE_COUNT_COLOR", &Qt::blue);
+	m_GroupCountColor = cfg->readColorEntry("GROUP_ONLINE_COUNT_COLOR", &TQt::blue);
 	m_GroupOnlineCountFontB = cfg->readBoolEntry("GROUP_ONLINE_COUNT_FONT_B", false);
 	m_GroupOnlineCountFontU = cfg->readBoolEntry("GROUP_ONLINE_COUNT_FONT_U", false);
 	m_GroupOnlineCountFontI = cfg->readBoolEntry("GROUP_ONLINE_COUNT_FONT_I", false);
 
-	m_GroupFlashColor = cfg->readColorEntry("GROUP_FLASH_COLOR", &Qt::red);
+	m_GroupFlashColor = cfg->readColorEntry("GROUP_FLASH_COLOR", &TQt::red);
 	m_GroupFlashFontB = cfg->readBoolEntry("GROUP_FLASH_FONT_B", false);
 	m_GroupFlashFontU = cfg->readBoolEntry("GROUP_FLASH_FONT_U", false);
 	m_GroupFlashFontI = cfg->readBoolEntry("GROUP_FLASH_FONT_I", false);
 
 	delete groupSaver;
 	
-	groupSaver = new KConfigGroupSaver(cfg, "Theme");
+	groupSaver = new TDEConfigGroupSaver(cfg, "Theme");
 	themeDir = cfg->readEntry("THEME_DIR");
 	soundDir = cfg->readEntry("SOUND_DIR");
 	delete groupSaver;
 
 		
 	autoList.clear();
-	quickList.clear();
-	groupSaver = new KConfigGroupSaver(cfg, "Reply");
+	tquickList.clear();
+	groupSaver = new TDEConfigGroupSaver(cfg, "Reply");
 	autoSelectedIndex = cfg->readNumEntry("AUTO_REPLY_SELECTED_INDEX");
-	QStringList strList;
+	TQStringList strList;
 	strList = cfg->readListEntry("AUTO_REPLY", '\255');
 	if(strList.size()){
-		for(QStringList::Iterator iter = strList.begin(); iter != strList.end(); ++iter)
+		for(TQStringList::Iterator iter = strList.begin(); iter != strList.end(); ++iter)
 			autoList.push_back(*iter);
 	} else {
-		autoList.push_back(QString(i18n("Sorry, I am working.")));
-		autoList.push_back(QString(i18n("Having dinner now./fa")));
-		autoList.push_back(QString(i18n("I am not available now, sorry.")));	
+		autoList.push_back(TQString(i18n("Sorry, I am working.")));
+		autoList.push_back(TQString(i18n("Having dinner now./fa")));
+		autoList.push_back(TQString(i18n("I am not available now, sorry.")));	
 	}
 	
 	strList.clear();
 	strList = cfg->readListEntry("QUICK_REPLY", '\255');
 	if(strList.size()){
-		for(QStringList::Iterator iter = strList.begin(); iter != strList.end(); ++iter)
-			quickList.push_back(*iter);
+		for(TQStringList::Iterator iter = strList.begin(); iter != strList.end(); ++iter)
+			tquickList.push_back(*iter);
 	} else {
-		quickList.push_back(QString(i18n("Oh.")));
-		quickList.push_back(QString(i18n("OK, OK, I got you.")));
-		quickList.push_back(QString(i18n("/jy , really?")));	
+		tquickList.push_back(TQString(i18n("Oh.")));
+		tquickList.push_back(TQString(i18n("OK, OK, I got you.")));
+		tquickList.push_back(TQString(i18n("/jy , really?")));	
 	}
 	delete groupSaver;
 
-	groupSaver = new KConfigGroupSaver(cfg, "Others");
-	QSize size(16, 16);
+	groupSaver = new TDEConfigGroupSaver(cfg, "Others");
+	TQSize size(16, 16);
 	faceSize = cfg->readSizeEntry("FACE_SIZE", &size);
 	pageSize = cfg->readNumEntry("MESSAGE_PAGE_SIZE", 25);
-	QString shortkey = cfg->readEntry("MESSAGE_SHORTCUT") ;
+	TQString shortkey = cfg->readEntry("MESSAGE_SHORTCUT") ;
 	if(shortkey.isEmpty())
-		shortcut.init(Qt::CTRL + Qt::ALT + Qt::Key_Z);
+		shortcut.init(TQt::CTRL + TQt::ALT + TQt::Key_Z);
 	else{
 		if(!shortcut.init(shortkey))
-			shortcut.init(Qt::CTRL + Qt::ALT + Qt::Key_Z);
+			shortcut.init(TQt::CTRL + TQt::ALT + TQt::Key_Z);
 	}
-	QPoint p(600, 100); 
+	TQPoint p(600, 100); 
 	m_WinLeftTop = cfg->readPointEntry("WIN_GEOMETRY_POINT", &p);
-	QSize winSize(195, 376);
+	TQSize winSize(195, 376);
 	m_WinSize = cfg->readSizeEntry("WIN_GEOMETRY_SIZE", &winSize);
 	idleMaxTime = cfg->readNumEntry("MAX_IDLE_TIME", 5);
 	delete groupSaver;
 
 	m_CachedToBeAddedBuddy.clear();
-	groupSaver = new KConfigGroupSaver(cfg, "Cached_ToBeAdded_Buddies");
+	groupSaver = new TDEConfigGroupSaver(cfg, "Cached_ToBeAdded_Buddies");
 	int num = cfg->readNumEntry("NUM_BUDDIES", 0);
-	QString buddyInfo;
-	QStringList items;
+	TQString buddyInfo;
+	TQStringList items;
 	bool ok;
 	for(int i = 0; i< num; i++){
-		buddyInfo = cfg->readEntry(QString("QQ_%1").arg(i));
+		buddyInfo = cfg->readEntry(TQString("TQQ_%1").arg(i));
 		if(!buddyInfo.isEmpty()){
-			items = QStringList::split(",", buddyInfo);
+			items = TQStringList::split(",", buddyInfo);
 			unsigned int id = items[0].toUInt(&ok);
 			if(ok)
 				m_CachedToBeAddedBuddy[id] = buddyInfo;
@@ -797,11 +798,11 @@ const bool EvaUserSetting::loadSettings()
 	delete groupSaver;
 
 	m_RejectForever.clear();
-	groupSaver = new KConfigGroupSaver(cfg, "Reject_Forever");
-	num = cfg->readNumEntry("QQ_REJECT_LIST_SIZE", 0);
+	groupSaver = new TDEConfigGroupSaver(cfg, "Reject_Forever");
+	num = cfg->readNumEntry("TQQ_REJECT_LIST_SIZE", 0);
 	unsigned int id = 0;
 	for(int i = 0; i< num; i++){
-		id = cfg->readUnsignedNumEntry( QString("QQ_%1").arg(i));
+		id = cfg->readUnsignedNumEntry( TQString("TQQ_%1").arg(i));
 		printf("read id: %d\n", id);
 		if(id){
 			m_RejectForever.push_back(id);
@@ -812,14 +813,14 @@ const bool EvaUserSetting::loadSettings()
 	m_QunRejectForever.clear();
 	unsigned int tmpQun, tmpQQ;
 	int memberCount;
-	groupSaver = new KConfigGroupSaver(cfg, "Qun_Reject_Forever");
-	num = cfg->readNumEntry("QUN_REJECT_LIST_SIZE", 0);
+	groupSaver = new TDEConfigGroupSaver(cfg, "Qun_Reject_Forever");
+	num = cfg->readNumEntry("TQUN_REJECT_LIST_SIZE", 0);
 	for(int q = 0; q < num; q++){
-		tmpQun = cfg->readNumEntry(QString("Qun_%1").arg(q), 0);
-		memberCount = cfg->readNumEntry("QUN_REJECT_MEMBER_SIZE", 0);
+		tmpQun = cfg->readNumEntry(TQString("Qun_%1").arg(q), 0);
+		memberCount = cfg->readNumEntry("TQUN_REJECT_MEMBER_SIZE", 0);
 		std::list<unsigned int> members;
 		for(int i = 0; i < memberCount; i++){
-			tmpQQ = cfg->readNumEntry( QString("Qun_QQ_%1").arg(i), 0);
+			tmpQQ = cfg->readNumEntry( TQString("Qun_QQ_%1").arg(i), 0);
 			members.push_back(tmpQQ);
 		}
 		m_QunRejectForever[tmpQun] = members;
@@ -837,26 +838,26 @@ bool EvaUserSetting::loadOldProfile()
 		return false;
 	}
 	
-	QString fullName = getEvaUserDir() + "/" + userProfileFileName;
-	QDir d;
+	TQString fullName = getEvaUserDir() + "/" + userProfileFileName;
+	TQDir d;
 	if(!d.exists(fullName)){
 		loadDefaultSettings();
 		return true;
 	}
-	QFile file(fullName);
+	TQFile file(fullName);
 	if(!file.open(IO_ReadOnly)){
 		return false;
 	}
 	
 	autoList.clear();
-	quickList.clear();
+	tquickList.clear();
 	
-	QString line;
-	QStringList lineList;
-	QTextStream stream(&file);
+	TQString line;
+	TQStringList lineList;
+	TQTextStream stream(&file);
 	while(!stream.atEnd()){
 		line = stream.readLine().stripWhiteSpace();
-		lineList = QStringList::split(":", line);
+		lineList = TQStringList::split(":", line);
 		if(lineList.size() != 2)
 			continue;
 		
@@ -872,21 +873,21 @@ bool EvaUserSetting::loadOldProfile()
 		}
 		
 		if(lineList[0] ==  "FACE_SIZE"){
-			QStringList size = QStringList::split(",",lineList[1]);
+			TQStringList size = TQStringList::split(",",lineList[1]);
 			int width, height;
 			bool ok;
 			width = size[0].toInt(&ok);
 			if(!ok) width = 16;
 			height = size[1].toInt(&ok);
 			if(!ok) height = 16;
-			faceSize = QSize(width, height);
+			faceSize = TQSize(width, height);
 			continue;
 		}
 		if(lineList[0] ==  "DISPLAY_QQ_BROADCAST"){
 			if(lineList[1] == "false")
-				showQQBroadcast = false;
+				showTQQBroadcast = false;
 			else 
-				showQQBroadcast = true;
+				showTQQBroadcast = true;
 			continue;
 		}
 		if(lineList[0] ==  "DISPLAY_TIP_MESSAGE_TIP_WINDOW"){
@@ -919,7 +920,7 @@ bool EvaUserSetting::loadOldProfile()
 		}
 		if(lineList[0] ==  "MESSAGE_SHORTCUT"){
 			if(!shortcut.init(lineList[1]))
-				shortcut.init(Qt::CTRL + Qt::ALT + Qt::Key_Z);
+				shortcut.init(TQt::CTRL + TQt::ALT + TQt::Key_Z);
 			continue;
 		}
 		if(lineList[0] ==  "PLAY_SOUND"){
@@ -940,7 +941,7 @@ bool EvaUserSetting::loadOldProfile()
 			autoList.push_back(lineList[1]);
 		}		
 		if(lineList[0] == "QUICK_REPLY"){
-			quickList.push_back(lineList[1]);
+			tquickList.push_back(lineList[1]);
 		}
 	}
 	file.close();
@@ -949,14 +950,14 @@ bool EvaUserSetting::loadOldProfile()
 
 void EvaUserSetting::loadDefaultSettings()
 {
-	faceSize = QSize(16,16);
-	showQQBroadcast = true;
-	m_ShowQQNews = true;
+	faceSize = TQSize(16,16);
+	showTQQBroadcast = true;
+	m_ShowTQQNews = true;
 	showMessageTipWindow = true;
 	showBudyOnlineNotifyWindow = true;
 	showOnlineUsers = false;
 	isSendKeyEnter = false;
-	shortcut = KShortcut(Qt::CTRL + Qt::ALT + Qt::Key_Z);
+	shortcut = TDEShortcut(TQt::CTRL + TQt::ALT + TQt::Key_Z);
 	playSound = true;
 	pageSize = 25;
 	autoReply = true;
@@ -965,45 +966,45 @@ void EvaUserSetting::loadDefaultSettings()
 	autoSelectedIndex = 0;
 	idleMaxTime = 5;
 
-	m_BuddyNameColor = Qt::black;
+	m_BuddyNameColor = TQt::black;
 	m_BuddyNameFontB = m_BuddyNameFontU = m_BuddyNameFontI = false;
-	m_BuddySigColor = Qt::gray;
+	m_BuddySigColor = TQt::gray;
 	m_BuddySigFontB = m_BuddySigFontU = m_BuddySigFontI = false;
-	m_BuddyFlashColor = Qt::red;
+	m_BuddyFlashColor = TQt::red;
 	m_BuddyFlashFontB = m_BuddyFlashFontU = m_BuddyFlashFontI = false;
 
-	m_QunNameColor = Qt::black;
+	m_QunNameColor = TQt::black;
 	m_QunNameFontB = m_QunNameFontU = m_QunNameFontI = false;
-	m_QunFlashColor = Qt::red;
+	m_QunFlashColor = TQt::red;
 	m_QunFlashFontB = m_QunFlashFontU = m_QunFlashFontI = false;
 
-	m_GroupNameColor = Qt::black;
+	m_GroupNameColor = TQt::black;
 	m_GroupNameFontB = m_GroupNameFontU = m_GroupNameFontI = false;
-	m_GroupCountColor = Qt::blue;
+	m_GroupCountColor = TQt::blue;
 	m_GroupOnlineCountFontB = m_GroupOnlineCountFontU = m_GroupOnlineCountFontI = false;
-	m_GroupFlashColor = Qt::red;
+	m_GroupFlashColor = TQt::red;
 	m_GroupFlashFontB = m_GroupFlashFontU = m_GroupFlashFontI = false;
 
 	m_ShowSmileyInNickName = false;
 	m_ShowSignatureInSeperateLine = false;
 
 	if(!autoList.size()){
-		autoList.push_back(QString(i18n("Sorry, I am working.")));
-		autoList.push_back(QString(i18n("Having dinner now./fa")));
-		autoList.push_back(QString(i18n("I am not available now, sorry.")));
+		autoList.push_back(TQString(i18n("Sorry, I am working.")));
+		autoList.push_back(TQString(i18n("Having dinner now./fa")));
+		autoList.push_back(TQString(i18n("I am not available now, sorry.")));
 	}
 	
-	if(!quickList.size()){
-		quickList.push_back(QString(i18n("Oh.")));
-		quickList.push_back(QString(i18n("OK, OK, I got you.")));
-		quickList.push_back(QString(i18n("/jy , really?")));
+	if(!tquickList.size()){
+		tquickList.push_back(TQString(i18n("Oh.")));
+		tquickList.push_back(TQString(i18n("OK, OK, I got you.")));
+		tquickList.push_back(TQString(i18n("/jy , really?")));
 	}
 }
 
-const QString &EvaUserSetting::getSelectedAutoReply()
+const TQString &EvaUserSetting::getSelectedAutoReply()
 {
 	int index = 0;
-	std::list<QString>::iterator iter;
+	std::list<TQString>::iterator iter;
 	for(iter=autoList.begin(); iter!=autoList.end(); ++iter){
 		if(index == autoSelectedIndex) break;
 		index++;		
@@ -1011,71 +1012,71 @@ const QString &EvaUserSetting::getSelectedAutoReply()
 	return *iter;
 }
 
-const QString &EvaUserSetting::getQuickReplyMessageAt(const int index)
+const TQString &EvaUserSetting::getQuickReplyMessageAt(const int index)
 {
 	int i = 0;
-	std::list<QString>::iterator iter;
-	for(iter=quickList.begin(); iter!=quickList.end(); ++iter){
+	std::list<TQString>::iterator iter;
+	for(iter=tquickList.begin(); iter!=tquickList.end(); ++iter){
 		if(i == index) break;
 		i++;
 	}
 	return *iter;
 }
 
-void EvaUserSetting::addAutoReplyMessage(const QString &message)
+void EvaUserSetting::addAutoReplyMessage(const TQString &message)
 {
 	autoList.push_back(message);
 }
 
-void EvaUserSetting::addQuickReplyMessage(const QString &message)
+void EvaUserSetting::addQuickReplyMessage(const TQString &message)
 {
-	quickList.push_back(message);
+	tquickList.push_back(message);
 }
 
-const std::list<QString> &EvaUserSetting::getAutoReplyList()
+const std::list<TQString> &EvaUserSetting::getAutoReplyList()
 {
 	return autoList;
 }
 
-const std::list<QString> &EvaUserSetting::getQuickReplyList()
+const std::list<TQString> &EvaUserSetting::getQuickReplyList()
 {
-	return quickList;
+	return tquickList;
 }
 
-const QString EvaUserSetting::getUserHomeDir()
+const TQString EvaUserSetting::getUserHomeDir()
 {
-	return QDir::homeDirPath();
+	return TQDir::homeDirPath();
 }
 
-const QString EvaUserSetting::getEvaSettingDir()
+const TQString EvaUserSetting::getEvaSettingDir()
 {
 	return getUserHomeDir()+"/.eva";
 }
 
-const QString EvaUserSetting::getEvaUserDir()
+const TQString EvaUserSetting::getEvaUserDir()
 {
-	return getEvaSettingDir() + "/" + QString::number(qqNum);
+	return getEvaSettingDir() + "/" + TQString::number(qqNum);
 }
 	
-const bool EvaUserSetting::isDirExisted(const QString &dir)
+const bool EvaUserSetting::isDirExisted(const TQString &dir)
 {
-	QDir d;
+	TQDir d;
 	if (d.exists(dir))
 		return true;
 	else
 		return false;
 }
 
-const bool EvaUserSetting::saveQunList( QObject * receiver, QunList & list )
+const bool EvaUserSetting::saveQunList( TQObject * receiver, QunList & list )
 {
 	if(!isDirExisted(getEvaUserDir())){
-		QDir d;
+		TQDir d;
 		if(!d.mkdir(getEvaUserDir()))
 			return false;
 	}
 	
-	QString fullName = getEvaUserDir() + "/" + qunListFileName;
-	QFile file(fullName);
+	TQString fullName = getEvaUserDir() + "/" + qunListFileName;
+	TQFile file(fullName);
 	if(file.exists()) file.remove();
 	if(!file.open(IO_WriteOnly)){
 		return false;
@@ -1086,23 +1087,23 @@ const bool EvaUserSetting::saveQunList( QObject * receiver, QunList & list )
 	return true;
 }
 
-const bool EvaUserSetting::loadQunList( /*QObject * receiver*/ )
+const bool EvaUserSetting::loadQunList( /*TQObject * receiver*/ )
 {
 	if(!isDirExisted(getEvaUserDir()))
 		return false;
 	
-	QString fullName = getEvaUserDir() + "/" + qunListFileName;
-	QFile file(fullName);
+	TQString fullName = getEvaUserDir() + "/" + qunListFileName;
+	TQFile file(fullName);
 	if(!file.open(IO_ReadOnly)){
 		return false;
 	}
 	
-	QDataStream stream(&file);
+	TQDataStream stream(&file);
 
 	// check version first
 	char *flag = new char[3];
 	stream.readRawBytes(flag, 3);
-	Q_UINT32 version = 0;
+	TQ_UINT32 version = 0;
 	stream>>version;
 	if(!(flag[0]=='E' && flag[1]=='V' && flag[2]=='A' && version == profileVersion)){
 		file.close();
@@ -1114,25 +1115,25 @@ const bool EvaUserSetting::loadQunList( /*QObject * receiver*/ )
 	
 	QunList list;
 	
-	Q_UINT32 qunID;
-	Q_UINT32 extID;
-	Q_UINT8 type;
-	Q_UINT32 creator;
-	Q_UINT8 authType;
-	Q_UINT16 unknown1;
-	Q_UINT16 category;
-	Q_UINT32 versionID;
+	TQ_UINT32 qunID;
+	TQ_UINT32 extID;
+	TQ_UINT8 type;
+	TQ_UINT32 creator;
+	TQ_UINT8 authType;
+	TQ_UINT16 unknown1;
+	TQ_UINT16 category;
+	TQ_UINT32 versionID;
 	std::string name;
-	Q_UINT16 unknown2;
+	TQ_UINT16 unknown2;
 	std::string description;
 	std::string notice;
-	Q_UINT32 realNamesVersion;
+	TQ_UINT32 realNamesVersion;
 
-	Q_UINT32 fontSize;
-	Q_UINT32 fontColor;
+	TQ_UINT32 fontSize;
+	TQ_UINT32 fontColor;
 	
-	Q_UINT8 cardGender;
-	Q_UINT8 msgType;
+	TQ_UINT8 cardGender;
+	TQ_UINT8 msgType;
 	char *str = new char[1024];
 	memset(str, 0, 1024);
 	
@@ -1185,18 +1186,18 @@ const bool EvaUserSetting::loadQunList( /*QObject * receiver*/ )
 		
 		// load all members details
 		std::list<FriendItem> members;
-		Q_UINT16 size;
+		TQ_UINT16 size;
 		stream >> size;
 		for(int i=0; i< size; i++){
-			Q_UINT32 qqNum;
-			Q_UINT16 face;
-			Q_UINT8 age;
-			Q_UINT8 gender;
+			TQ_UINT32 qqNum;
+			TQ_UINT16 face;
+			TQ_UINT8 age;
+			TQ_UINT8 gender;
 			std::string nick;
-			Q_UINT8 extFlag;  
-			Q_UINT8 commonFlag;
-			Q_UINT16 qunGroupIndex;
-			Q_UINT16 qunAdminValue;
+			TQ_UINT8 extFlag;  
+			TQ_UINT8 commonFlag;
+			TQ_UINT16 qunGroupIndex;
+			TQ_UINT16 qunAdminValue;
 			std::string realName;   // added by henry
 			
 			stream>>qqNum>>face>>age>>gender>>str;
@@ -1237,7 +1238,7 @@ const bool EvaUserSetting::loadQunList( /*QObject * receiver*/ )
 
 bool EvaUserSetting::createDefaultDirs( )
 {
-	QDir d;
+	TQDir d;
 	if(!isDirExisted(getEvaUserDir())){
 		if(!d.mkdir(getEvaUserDir()))
 			return false;
@@ -1260,15 +1261,15 @@ bool EvaUserSetting::createDefaultDirs( )
 	return true;
 }
 
-bool EvaUserSetting::isVersionCorrect( const QString fileName )
+bool EvaUserSetting::isVersionCorrect( const TQString fileName )
 {
-	QFile file(fileName);
+	TQFile file(fileName);
 	if(!file.exists()) return false;
 	if(!file.open(IO_ReadOnly)){
 		return false;
 	}
-	Q_UINT32 version;
-	QDataStream stream(&file);
+	TQ_UINT32 version;
+	TQDataStream stream(&file);
 	char *flag = new char[3];
 	stream.readRawBytes(flag, 3);
 	stream>>version;
@@ -1284,7 +1285,7 @@ bool EvaUserSetting::isVersionCorrect( const QString fileName )
 
 void EvaUserSetting::saveToBeAddedBuddy( BuddyInfoCacheItem info )
 {
-	QString line = QString("%1,%2,%3,%4").arg(info.id).arg(info.nick).arg(info.face).arg(info.group);
+	TQString line = TQString("%1,%2,%3,%4").arg(info.id).arg(info.nick).arg(info.face).arg(info.group);
 	m_CachedToBeAddedBuddy[info.id] = line;
 	
 	saveSettings();
@@ -1295,7 +1296,7 @@ const BuddyInfoCacheItem EvaUserSetting::removeToBeAddedBuddy( const unsigned in
 	BuddyInfoCacheItem info = getToBeAddedBuddy(id);
 
 	/// remove this item
-	std::map<unsigned int, QString>::iterator iter;
+	std::map<unsigned int, TQString>::iterator iter;
 	iter = m_CachedToBeAddedBuddy.find(id);
 	if(iter == m_CachedToBeAddedBuddy.end())
 		return info;
@@ -1307,13 +1308,13 @@ const BuddyInfoCacheItem EvaUserSetting::removeToBeAddedBuddy( const unsigned in
 
 const BuddyInfoCacheItem EvaUserSetting::getToBeAddedBuddy( const unsigned int id )
 {
-	BuddyInfoCacheItem info(id, QString::number(id), 0, 0);
+	BuddyInfoCacheItem info(id, TQString::number(id), 0, 0);
 
-	std::map<unsigned int, QString>::iterator iter;
+	std::map<unsigned int, TQString>::iterator iter;
 	iter = m_CachedToBeAddedBuddy.find(id);
 	if(iter == m_CachedToBeAddedBuddy.end())
 		return info;
-	QStringList items = QStringList::split(",", iter->second);
+	TQStringList items = TQStringList::split(",", iter->second);
 	bool ok;
 	info.id = items[0].toUInt(&ok);
 	if( (!ok) || (info.id != id) ){
@@ -1428,14 +1429,14 @@ const bool EvaUserSetting::isInQunRejectForever( const unsigned int id, const un
 
 void EvaUserSetting::updateRecentContact( std::list<RecentContact>& list )
 {
-	QStringList s;
+	TQStringList s;
 	std::list<RecentContact>::iterator it;
-	QString c;
+	TQString c;
 	for(it = list.begin(); it!=list.end(); ++it){
-		c = (it->isQun)?"Qun_":"QQ_";
-		c += QString::number(it->id);
+		c = (it->isQun)?"Qun_":"TQQ_";
+		c += TQString::number(it->id);
 		c += "_";
-		c += QString::number(it->time);
+		c += TQString::number(it->time);
 		s.append(c);
 	}
 
@@ -1445,9 +1446,9 @@ void EvaUserSetting::updateRecentContact( std::list<RecentContact>& list )
 		return;
 	}
 
-	KConfig *cfg = new KConfig(getEvaUserDir() + "/" + userConfigFileName);
+	TDEConfig *cfg = new TDEConfig(getEvaUserDir() + "/" + userConfigFileName);
 	
-	KConfigGroupSaver *groupSaver = new KConfigGroupSaver(cfg, "Recent_Contacts");
+	TDEConfigGroupSaver *groupSaver = new TDEConfigGroupSaver(cfg, "Recent_Contacts");
 	cfg->writeEntry("RECENT_LIST", s, '\255');
 	delete groupSaver;
 	delete cfg;	
@@ -1455,17 +1456,17 @@ void EvaUserSetting::updateRecentContact( std::list<RecentContact>& list )
 
 std::list< RecentContact > EvaUserSetting::getRecentContacts( )
 {
-	KConfig *cfg = new KConfig(getEvaUserDir() + "/" + userConfigFileName);
+	TDEConfig *cfg = new TDEConfig(getEvaUserDir() + "/" + userConfigFileName);
 	
-	KConfigGroupSaver *groupSaver = new KConfigGroupSaver(cfg, "Recent_Contacts");
-	QStringList s = cfg->readListEntry( "RECENT_LIST", '\255');
+	TDEConfigGroupSaver *groupSaver = new TDEConfigGroupSaver(cfg, "Recent_Contacts");
+	TQStringList s = cfg->readListEntry( "RECENT_LIST", '\255');
 	std::list< RecentContact > list;
 	RecentContact contact;
 	printf("recent size: %d\n", s.size());
 	if(s.size()){
-		for(QStringList::Iterator iter = s.begin(); iter != s.end(); ++iter){
-			QString line = (*iter);
-			QStringList parts = QStringList::split("_", line);
+		for(TQStringList::Iterator iter = s.begin(); iter != s.end(); ++iter){
+			TQString line = (*iter);
+			TQStringList parts = TQStringList::split("_", line);
 			if(parts.size() != 3) continue;
 			
 			if(parts[0] == "QQ")
@@ -1490,9 +1491,9 @@ std::list< RecentContact > EvaUserSetting::getRecentContacts( )
 
 void EvaUserSetting::setRecentContactListSize( const int size )
 {
-	KConfig *cfg = new KConfig(getEvaUserDir() + "/" + userConfigFileName);
+	TDEConfig *cfg = new TDEConfig(getEvaUserDir() + "/" + userConfigFileName);
 	
-	KConfigGroupSaver *groupSaver = new KConfigGroupSaver(cfg, "Recent_Contacts");
+	TDEConfigGroupSaver *groupSaver = new TDEConfigGroupSaver(cfg, "Recent_Contacts");
 	cfg->writeEntry("RECENT_MAX_SIZE", size);
 	cfg->sync();
 	delete groupSaver;
@@ -1501,16 +1502,16 @@ void EvaUserSetting::setRecentContactListSize( const int size )
 
 const int EvaUserSetting::recentContactListSize( )
 {
-	KConfig *cfg = new KConfig(getEvaUserDir() + "/" + userConfigFileName);
+	TDEConfig *cfg = new TDEConfig(getEvaUserDir() + "/" + userConfigFileName);
 	
-	KConfigGroupSaver *groupSaver = new KConfigGroupSaver(cfg, "Recent_Contacts");
+	TDEConfigGroupSaver *groupSaver = new TDEConfigGroupSaver(cfg, "Recent_Contacts");
 	int size = cfg->readNumEntry("RECENT_MAX_SIZE", 10);
 	delete groupSaver;
 	delete cfg;
 	return size;
 }
 
-KConfig *EvaUserSetting::config( const QString &group )
+TDEConfig *EvaUserSetting::config( const TQString &group )
 {
 	//printf("EvaUserSetting::config: %s\n", group.local8Bit().data());
 	m_config->setGroup(group);

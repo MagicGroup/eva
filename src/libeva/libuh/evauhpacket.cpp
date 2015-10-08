@@ -34,7 +34,7 @@ unsigned short EvaUHPacket::seq_info      = 0;
 unsigned short EvaUHPacket::seq_transfer = 0;
 
 EvaUHPacket::EvaUHPacket(const unsigned char *buf, const int len)
-	: buffer(NULL), mBufferLen(len), mVersion(QQ_CLIENT_VERSION),
+	: buffer(NULL), mBufferLen(len), mVersion(TQQ_CLIENT_VERSION),
 	 mIsData(false), mNumPackets(1), mPacketNum(0)
 {
 	if(!buf) {
@@ -46,7 +46,7 @@ EvaUHPacket::EvaUHPacket(const unsigned char *buf, const int len)
 }
 
 EvaUHPacket::EvaUHPacket(const bool isInfo)
-	: buffer(NULL), mVersion(QQ_CLIENT_VERSION), mIsData(false), 
+	: buffer(NULL), mVersion(TQQ_CLIENT_VERSION), mIsData(false), 
 	mNumPackets(1), mPacketNum(0)
 {
 	mCommand = isInfo?UH_CMD_INFO:UH_CMD_TRANSFER;

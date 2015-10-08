@@ -17,125 +17,125 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#ifndef QUNDETAILSUI_H
-#define QUNDETAILSUI_H
+#ifndef TQUNDETAILSUI_H
+#define TQUNDETAILSUI_H
 
-#include <qvariant.h>
-#include <qwidget.h>
+#include <ntqvariant.h>
+#include <ntqwidget.h>
 
-class QVBoxLayout;
-class QHBoxLayout;
-class QGridLayout;
-class QSpacerItem;
-class QLabel;
-class QTabWidget;
-class QLineEdit;
-class QToolButton;
-class QGroupBox;
-class QTextEdit;
-class QButtonGroup;
-class QRadioButton;
-class QTable;
-class QPushButton;
-class QComboBox;
-class QFrame;
+class TQVBoxLayout;
+class TQHBoxLayout;
+class TQGridLayout;
+class TQSpacerItem;
+class TQLabel;
+class TQTabWidget;
+class TQLineEdit;
+class TQToolButton;
+class TQGroupBox;
+class TQTextEdit;
+class TQButtonGroup;
+class TQRadioButton;
+class TQTable;
+class TQPushButton;
+class TQComboBox;
+class TQFrame;
 
-class QunDetailsUI : public QWidget
+class QunDetailsUI : public TQWidget
 {
     Q_OBJECT
 
 public:
-    QunDetailsUI( QWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
+    QunDetailsUI( TQWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
     ~QunDetailsUI();
 
-    QLabel* lblLogo;
-    QTabWidget* tabWMain;
-    QWidget* tabDetails;
-    QLabel* lblID;
-    QLabel* lblCreator;
-    QLabel* lblName;
-    QLineEdit* leQunID;
-    QLineEdit* leCreator;
-    QLineEdit* leQunName;
-    QLabel* lblQunFace;
-    QLabel* lblCategory;
-    QToolButton* tbCategory;
-    QGroupBox* gbNotice;
-    QTextEdit* teNotice;
-    QGroupBox* gbDescription;
-    QTextEdit* teDescription;
-    QButtonGroup* bgAuthen;
-    QRadioButton* rbNoAuthenNeed;
-    QRadioButton* rbNeedAuthen;
-    QRadioButton* rbRejectAnyone;
-    QWidget* tabMember;
-    QTable* tblMembers;
-    QPushButton* pbSetMembers;
-    QPushButton* pbAddToMe;
-    QPushButton* pbDelMembers;
-    QPushButton* pbSetAdmin;
-    QPushButton* pbUnsetAdmin;
-    QPushButton* pbTransfer;
-    QWidget* tabSetting;
-    QButtonGroup* bgSettings;
-    QRadioButton* rbRecord_Show;
-    QRadioButton* rbPopupWindow;
-    QRadioButton* rbDisplayNumbers;
-    QRadioButton* rbRecord_only;
-    QRadioButton* rbRejectMsgs;
-    QWidget* TabCard;
-    QLabel* lblMyName;
-    QLabel* lblMyGender;
-    QLabel* lblMyPhone;
-    QLabel* lblMyEmail;
-    QLineEdit* leMyName;
-    QComboBox* cbbMyGender;
-    QLineEdit* leMyPhone;
-    QLineEdit* leMyEmail;
-    QFrame* line1;
-    QLabel* lblMyComment;
-    QTextEdit* teMyMemo;
-    QPushButton* pbUpdate;
-    QPushButton* pbClose;
+    TQLabel* lblLogo;
+    TQTabWidget* tabWMain;
+    TQWidget* tabDetails;
+    TQLabel* lblID;
+    TQLabel* lblCreator;
+    TQLabel* lblName;
+    TQLineEdit* leQunID;
+    TQLineEdit* leCreator;
+    TQLineEdit* leQunName;
+    TQLabel* lblQunFace;
+    TQLabel* lblCategory;
+    TQToolButton* tbCategory;
+    TQGroupBox* gbNotice;
+    TQTextEdit* teNotice;
+    TQGroupBox* gbDescription;
+    TQTextEdit* teDescription;
+    TQButtonGroup* bgAuthen;
+    TQRadioButton* rbNoAuthenNeed;
+    TQRadioButton* rbNeedAuthen;
+    TQRadioButton* rbRejectAnyone;
+    TQWidget* tabMember;
+    TQTable* tblMembers;
+    TQPushButton* pbSetMembers;
+    TQPushButton* pbAddToMe;
+    TQPushButton* pbDelMembers;
+    TQPushButton* pbSetAdmin;
+    TQPushButton* pbUnsetAdmin;
+    TQPushButton* pbTransfer;
+    TQWidget* tabSetting;
+    TQButtonGroup* bgSettings;
+    TQRadioButton* rbRecord_Show;
+    TQRadioButton* rbPopupWindow;
+    TQRadioButton* rbDisplayNumbers;
+    TQRadioButton* rbRecord_only;
+    TQRadioButton* rbRejectMsgs;
+    TQWidget* TabCard;
+    TQLabel* lblMyName;
+    TQLabel* lblMyGender;
+    TQLabel* lblMyPhone;
+    TQLabel* lblMyEmail;
+    TQLineEdit* leMyName;
+    TQComboBox* cbbMyGender;
+    TQLineEdit* leMyPhone;
+    TQLineEdit* leMyEmail;
+    TQFrame* line1;
+    TQLabel* lblMyComment;
+    TQTextEdit* teMyMemo;
+    TQPushButton* pbUpdate;
+    TQPushButton* pbClose;
 
 protected:
-    QVBoxLayout* QunDetailsUILayout;
-    QHBoxLayout* layout18;
-    QVBoxLayout* tabDetailsLayout;
-    QHBoxLayout* layout17;
-    QVBoxLayout* layout1;
-    QVBoxLayout* layout2;
-    QVBoxLayout* layout25;
-    QHBoxLayout* layout5;
-    QSpacerItem* spacer1;
-    QHBoxLayout* layout24;
-    QGridLayout* gbNoticeLayout;
-    QGridLayout* gbDescriptionLayout;
-    QVBoxLayout* bgAuthenLayout;
-    QGridLayout* tabMemberLayout;
-    QHBoxLayout* layout17_2;
-    QVBoxLayout* layout16;
-    QSpacerItem* spacer6;
-    QSpacerItem* spacer7;
-    QGridLayout* tabSettingLayout;
-    QVBoxLayout* bgSettingsLayout;
-    QVBoxLayout* TabCardLayout;
-    QHBoxLayout* layout19;
-    QVBoxLayout* layout11;
-    QVBoxLayout* layout18_2;
-    QHBoxLayout* layout17_3;
-    QSpacerItem* spacer4;
-    QHBoxLayout* layout20;
-    QSpacerItem* spacer5;
-    QHBoxLayout* layout21;
-    QVBoxLayout* layout15;
-    QSpacerItem* spacer3;
-    QHBoxLayout* layout9;
-    QSpacerItem* spacer2;
+    TQVBoxLayout* QunDetailsUILayout;
+    TQHBoxLayout* layout18;
+    TQVBoxLayout* tabDetailsLayout;
+    TQHBoxLayout* layout17;
+    TQVBoxLayout* layout1;
+    TQVBoxLayout* layout2;
+    TQVBoxLayout* layout25;
+    TQHBoxLayout* layout5;
+    TQSpacerItem* spacer1;
+    TQHBoxLayout* layout24;
+    TQGridLayout* gbNoticeLayout;
+    TQGridLayout* gbDescriptionLayout;
+    TQVBoxLayout* bgAuthenLayout;
+    TQGridLayout* tabMemberLayout;
+    TQHBoxLayout* layout17_2;
+    TQVBoxLayout* layout16;
+    TQSpacerItem* spacer6;
+    TQSpacerItem* spacer7;
+    TQGridLayout* tabSettingLayout;
+    TQVBoxLayout* bgSettingsLayout;
+    TQVBoxLayout* TabCardLayout;
+    TQHBoxLayout* layout19;
+    TQVBoxLayout* layout11;
+    TQVBoxLayout* layout18_2;
+    TQHBoxLayout* layout17_3;
+    TQSpacerItem* spacer4;
+    TQHBoxLayout* layout20;
+    TQSpacerItem* spacer5;
+    TQHBoxLayout* layout21;
+    TQVBoxLayout* layout15;
+    TQSpacerItem* spacer3;
+    TQHBoxLayout* layout9;
+    TQSpacerItem* spacer2;
 
 protected slots:
     virtual void languageChange();
 
 };
 
-#endif // QUNDETAILSUI_H
+#endif // TQUNDETAILSUI_H

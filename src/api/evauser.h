@@ -25,8 +25,8 @@
 #include "evaqunlist.h"
 #include "evadcopcontacts.h"
 #include "evausersetting.h"
-#include <qobject.h>
-#include <qstringlist.h>
+#include <ntqobject.h>
+#include <ntqstringlist.h>
 #include <cstring>
 #include <list>
 
@@ -79,9 +79,9 @@ public:
 
 class EvaUserSetting;
 class CustomEvent;
-class KConfig;
+class TDEConfig;
 
-class EvaUser : public QObject, virtual public EvaDCOPContactsInterface
+class EvaUser : public TQObject, virtual public EvaDCOPContactsInterface
 {
 	Q_OBJECT
 public:
@@ -137,7 +137,7 @@ public:
 	const std::string groupNameAtIndex(const int index);
 	
 	EvaUserSetting *getSetting() { return setting; }
-	KConfig *config(const QString &group);
+	TDEConfig *config(const TQString &group);
 	
 	const bool loadGroupedBuddyList();
 	const bool saveGroupedBuddyList();
@@ -152,11 +152,11 @@ public:
 	
 	void setExtraInfo( const unsigned long long info) { mExtraInfo = info; }
 	const unsigned long long getExtraInfo() const { return mExtraInfo; }
-	const bool hasSignature() { return mExtraInfo & QQ_EXTAR_INFO_SIGNATURE; }
-	const bool hasQQTang() { return mExtraInfo & QQ_EXTAR_INFO_TANG; }
-	const bool hasQQAlbum() { return mExtraInfo & QQ_EXTAR_INFO_ALBUM; }
-	const bool hasPalEntry() { return mExtraInfo & QQ_EXTAR_INFO_PAL; }
-	const bool hasUserHead() { return mExtraInfo & QQ_EXTAR_INFO_USER_HEAD; }
+	const bool hasSignature() { return mExtraInfo & TQQ_EXTAR_INFO_SIGNATURE; }
+	const bool hasTQQTang() { return mExtraInfo & TQQ_EXTAR_INFO_TANG; }
+	const bool hasTQQAlbum() { return mExtraInfo & TQQ_EXTAR_INFO_ALBUM; }
+	const bool hasPalEntry() { return mExtraInfo & TQQ_EXTAR_INFO_PAL; }
+	const bool hasUserHead() { return mExtraInfo & TQQ_EXTAR_INFO_USER_HEAD; }
 		
 	void setSignature(const std::string sig, const unsigned int time) { mSignature = sig;  mSignatureModifyTime = time; }
 	const std::string &getSignature() const { return mSignature; }
@@ -187,35 +187,35 @@ public:
 
 // DCOP calls
 	int numFriends();
-	QStringList friends();
+	TQStringList friends();
 	bool hasFriend(unsigned int id);
-	QString nickOf(unsigned int id);
-	QString faceOf(unsigned int id, bool isOff);
+	TQString nickOf(unsigned int id);
+	TQString faceOf(unsigned int id, bool isOff);
 	int genderOf(unsigned int id);
 	int levelOf(unsigned int id);
-	QString signatureOf(unsigned int id);
+	TQString signatureOf(unsigned int id);
 	int numGroups();
-	QString groupName(int index);
+	TQString groupName(int index);
 	int group(unsigned int id);
 	int numQuns();
-	QStringList Quns();
-	QString QunName(unsigned int ext);
-	QString QunNotice(unsigned int ext);
-	QString QunDescription(unsigned int ext);
+	TQStringList Quns();
+	TQString QunName(unsigned int ext);
+	TQString QunNotice(unsigned int ext);
+	TQString QunDescription(unsigned int ext);
 	int numQunMembers(unsigned int ext);
-	QStringList QunMembers(unsigned int ext);
-	QString QunMemberNick(unsigned int ext, unsigned int id);
-	QString QunMemberFace(unsigned int ext, unsigned int id, bool isOff);
+	TQStringList QunMembers(unsigned int ext);
+	TQString QunMemberNick(unsigned int ext, unsigned int id);
+	TQString QunMemberFace(unsigned int ext, unsigned int id, bool isOff);
 	unsigned int myQQ();
 	int onlineStatus(unsigned int id);
-	QString currentLoginIP();
-	QString lastLoginIP();
-	QString lastLoginTime(); // format in yyyy-MM-dd hh:mm:ss
+	TQString currentLoginIP();
+	TQString lastLoginIP();
+	TQString lastLoginTime(); // format in yyyy-MM-dd hh:mm:ss
 signals:
 	void loadGroupedBuddiesReady();
 	void loadQunListReady();
 protected:
-	virtual void customEvent( QCustomEvent * e );
+	virtual void customEvent( TQCustomEvent * e );
 private:
 	unsigned int qqNum;
 	char *md5Password;

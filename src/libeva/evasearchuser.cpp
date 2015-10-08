@@ -77,8 +77,8 @@ int OnlineUser::readData( unsigned char * buf )
 /*----------------------------------------------------------------------------------------------*/
 
 SearchUserPacket::SearchUserPacket( )
-	:OutPacket(QQ_CMD_SEARCH_USER, true),
-	searchType(QQ_SEARCH_ALL),
+	:OutPacket(TQQ_CMD_SEARCH_USER, true),
+	searchType(TQQ_SEARCH_ALL),
 	page("0"),
 	qqStr(""), nick(""), email(""),
 	matchEntireString(false)
@@ -128,12 +128,12 @@ int SearchUserPacket::putBody( unsigned char * buf )
 
 	buf[offset++] = searchType;
 	buf[offset++] = DIVIDER;
-	if(searchType == QQ_SEARCH_ALL) {
+	if(searchType == TQQ_SEARCH_ALL) {
 		memcpy(buf+offset, page.c_str(), page.length());
 		offset+=page.length();			
-	} else if(searchType == QQ_SEARCH_NICK || searchType == QQ_SEARCH_QQ) {
+	} else if(searchType == TQQ_SEARCH_NICK || searchType == TQQ_SEARCH_QQ) {
 						
-		if( searchType == QQ_SEARCH_QQ && qqStr.length()) {
+		if( searchType == TQQ_SEARCH_QQ && qqStr.length()) {
 			memcpy(buf+offset, qqStr.c_str(), qqStr.length());
 			offset+=qqStr.length();
 		} else{ 
@@ -142,7 +142,7 @@ int SearchUserPacket::putBody( unsigned char * buf )
 		
 		buf[offset++] = DIVIDER;
 		
-		if(searchType == QQ_SEARCH_NICK && nick.length()) {
+		if(searchType == TQQ_SEARCH_NICK && nick.length()) {
 			memcpy(buf+offset, nick.c_str(),  nick.length());
 			offset+= nick.length();
 			if(!matchEntireString)
@@ -197,7 +197,7 @@ SearchUserReplyPacket & SearchUserReplyPacket::operator =( const SearchUserReply
 
 void SearchUserReplyPacket::parseBody( )
 {
-	if( bodyLength == 0 || decryptedBuf[0] == NULL_FIELD && decryptedBuf[1] == QQ_SEARCH_ALL) {
+	if( bodyLength == 0 || decryptedBuf[0] == NULL_FIELD && decryptedBuf[1] == TQQ_SEARCH_ALL) {
 		finished = true;
 		return;
 	}
@@ -205,7 +205,7 @@ void SearchUserReplyPacket::parseBody( )
 	int offset=0;
 	users.clear();
 	offset += 4;// 4 unknown bytes, 00 01 00 00
-	if(  decryptedBuf[offset] == QQ_SEARCH_ALL && decryptedBuf[offset + 1] == DIVIDER) {
+	if(  decryptedBuf[offset] == TQQ_SEARCH_ALL && decryptedBuf[offset + 1] == DIVIDER) {
 		offset += 2;
 	}else{
 		OnlineUser user;

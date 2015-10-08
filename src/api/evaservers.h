@@ -20,13 +20,13 @@
 #ifndef EVASERVERS_H
 #define EVASERVERS_H
 
-#include <qobject.h>
-#include <qvaluelist.h>
-#include <qhostaddress.h>
+#include <ntqobject.h>
+#include <ntqvaluelist.h>
+#include <ntqhostaddress.h>
 
 
 
-class QTimer;
+class TQTimer;
 
 /**
 This class loads all Tencent's tcp and udp servers, and return a random server IP address
@@ -35,11 +35,11 @@ This class also involves some DNS operations.
 @author yunfan
 */
 
-class EvaServers : public QObject
+class EvaServers : public TQObject
 {
 	Q_OBJECT
 public:
-	EvaServers(QString &dataRoot);
+	EvaServers(TQString &dataRoot);
 	
 	virtual ~EvaServers();
 	/** used to resolving the IP address for Tencent server url */
@@ -51,24 +51,24 @@ public:
 	void resetDefaultIP() { m_bIsFirst = true; }
 signals:
 	/** emitted when IP is resovled or the default IP if timeout occurred */
-	void isReady(QHostAddress ip);
+	void isReady(TQHostAddress ip);
 private:
 	typedef struct serverItem{
 		int type;   
-		QString addr;
+		TQString addr;
 	} serverItem;
 	
 	enum { UDP, TCP, Addr_URL, Addr_IP};
 	
-	QString filename;
+	TQString filename;
 	bool gotIP;
 	bool isLoaded;
 	int fetchType;
 	bool m_StopDns;
-	QTimer *m_Timeout;
+	TQTimer *m_Timeout;
 	int m_CurrAddrIndex;
-	QValueList<serverItem> TCPServers;
-	QValueList<serverItem> UDPServers;
+	TQValueList<serverItem> TCPServers;
+	TQValueList<serverItem> UDPServers;
 	
 	bool m_bIsFirst;
 	

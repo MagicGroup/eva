@@ -21,17 +21,17 @@
 #ifndef EVAFTPACKET_H
 #define EVAFTPACKET_H
 
-#define QQ_FILE_AGENT_PACKET_TAG           0x04
-#define QQ_FILE_AGENT_PACKET_TAIL          0x03
+#define TQQ_FILE_AGENT_PACKET_TAG           0x04
+#define TQQ_FILE_AGENT_PACKET_TAIL          0x03
 
-#define QQ_FILE_AGENT_CMD_CREATE           0x0001
-#define QQ_FILE_AGENT_CMD_LOGIN            0x0002
-#define QQ_FILE_AGENT_CMD_TRANSFER         0x0003
-#define QQ_FILE_AGENT_CMD_READY            0x0005
-#define QQ_FILE_AGENT_CMD_START            0x0006
+#define TQQ_FILE_AGENT_CMD_CREATE           0x0001
+#define TQQ_FILE_AGENT_CMD_LOGIN            0x0002
+#define TQQ_FILE_AGENT_CMD_TRANSFER         0x0003
+#define TQQ_FILE_AGENT_CMD_READY            0x0005
+#define TQQ_FILE_AGENT_CMD_START            0x0006
 
-#define QQ_FILE_SYN_CMD_CREATE             0x0001
-#define QQ_FILE_SYN_CMD_REGISTER           0x0002
+#define TQQ_FILE_SYN_CMD_CREATE             0x0001
+#define TQQ_FILE_SYN_CMD_REGISTER           0x0002
 
 
 class EvaFTPacket {

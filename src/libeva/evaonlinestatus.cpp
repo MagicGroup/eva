@@ -42,7 +42,7 @@ public:
 	char unknown11;
 	char status;
 	short unknown13_14;
-	unsigned char unknownKey[QQ_KEY_LENGTH];
+	unsigned char unknownKey[TQQ_KEY_LENGTH];
 	
 	int numOfBytes;
 	
@@ -65,7 +65,7 @@ FriendStatus &FriendStatus::operator= (const FriendStatus& other)
 	unknown11 = other.unknown11;
 	status = other.status;
 	unknown13_14 = other.unknown13_14;
-	memcpy(unknownKey, other.unknownKey, QQ_KEY_LENGTH);
+	memcpy(unknownKey, other.unknownKey, TQQ_KEY_LENGTH);
 	
 	numOfBytes = other.numOfBytes;
 	return *this;
@@ -90,7 +90,7 @@ int FriendStatus::readData(unsigned char * buf)
 	status = buf[12];
 	memcpy(&tmp2, buf+13, 2);
 	unknown13_14 = ntohs(tmp2);
-	memcpy(unknownKey, buf+15, QQ_KEY_LENGTH);
+	memcpy(unknownKey, buf+15, TQQ_KEY_LENGTH);
 	numOfBytes = 31; // always 31 bytes31
 	return numOfBytes;
 }
@@ -112,7 +112,7 @@ FriendOnlineEntry::FriendOnlineEntry(const FriendOnlineEntry &rhs)
 	status->unknown11 = rhs.getUnknown2_11();
 	status->status = rhs.getStatus();
 	status->unknown13_14 = rhs.getUnknown3_13_14();
-	memcpy(status->unknownKey, rhs.getUnknownKey(), QQ_KEY_LENGTH);
+	memcpy(status->unknownKey, rhs.getUnknownKey(), TQQ_KEY_LENGTH);
 	
 	unknown31_32 = rhs.getUnknown4_31_32();
 	extFlag = rhs.getExtFlag();
@@ -161,7 +161,7 @@ FriendOnlineEntry & FriendOnlineEntry::operator=(const FriendOnlineEntry &rhs)
 	status->unknown11 = rhs.getUnknown2_11();
 	status->status = rhs.getStatus();
 	status->unknown13_14 = rhs.getUnknown3_13_14();
-	memcpy(status->unknownKey, rhs.getUnknownKey(), QQ_KEY_LENGTH);
+	memcpy(status->unknownKey, rhs.getUnknownKey(), TQQ_KEY_LENGTH);
 	
 	unknown31_32 = rhs.getUnknown4_31_32();
 	extFlag = rhs.getExtFlag();
@@ -176,13 +176,13 @@ FriendOnlineEntry & FriendOnlineEntry::operator=(const FriendOnlineEntry &rhs)
 /*  ======================================================= */
 
 GetOnlineFriendsPacket::GetOnlineFriendsPacket()
-	: OutPacket(QQ_CMD_GET_FRIEND_ONLINE, true),
-	  startPosition (QQ_FRIEND_ONLINE_LIST_POSITION_START)
+	: OutPacket(TQQ_CMD_GET_FRIEND_ONLINE, true),
+	  startPosition (TQQ_FRIEND_ONLINE_LIST_POSITION_START)
 {
 }
 
 GetOnlineFriendsPacket::GetOnlineFriendsPacket(const unsigned char position)
-	: OutPacket(QQ_CMD_GET_FRIEND_ONLINE, true),
+	: OutPacket(TQQ_CMD_GET_FRIEND_ONLINE, true),
 	  startPosition (position)
 {
 }
@@ -259,9 +259,9 @@ FriendChangeStatusPacket::FriendChangeStatusPacket(const FriendChangeStatusPacke
 	status->unknown11 = rhs.getUnknown2_11();
 	status->status = rhs.getStatus();
 	status->unknown13_14 = rhs.getUnknown3_13_14();
-	memcpy(status->unknownKey, rhs.getUnknownKey(), QQ_KEY_LENGTH);
+	memcpy(status->unknownKey, rhs.getUnknownKey(), TQQ_KEY_LENGTH);
 	
-	myQQNum = rhs.getMyQQ();
+	myTQQNum = rhs.getMyQQ();
 }
 
 FriendChangeStatusPacket::~FriendChangeStatusPacket()
@@ -281,9 +281,9 @@ FriendChangeStatusPacket &FriendChangeStatusPacket::operator=(const FriendChange
 	status->unknown11 = rhs.getUnknown2_11();
 	status->status = rhs.getStatus();
 	status->unknown13_14 = rhs.getUnknown3_13_14();
-	memcpy(status->unknownKey, rhs.getUnknownKey(), QQ_KEY_LENGTH);
+	memcpy(status->unknownKey, rhs.getUnknownKey(), TQQ_KEY_LENGTH);
 	
-	myQQNum = rhs.getMyQQ();
+	myTQQNum = rhs.getMyQQ();
         return *this;
 }
 
@@ -293,9 +293,9 @@ void FriendChangeStatusPacket::parseBody()
 	status->readData(decryptedBuf);
 	
 	// friendStatus read 31 bytes, but there still 4 bytes unknown, ignore them
-	memcpy(&myQQNum,decryptedBuf + 4 + 31, 4);
+	memcpy(&myTQQNum,decryptedBuf + 4 + 31, 4);
 	// this is not that useful, just means the message's receiver should hold this account
-	myQQNum = ntohl(myQQNum);
+	myTQQNum = ntohl(myTQQNum);
 }
 
 const unsigned int FriendChangeStatusPacket::getQQ() const  { return status->qqNum;}
@@ -311,14 +311,14 @@ const unsigned char * FriendChangeStatusPacket::getUnknownKey() const  { return 
 /*  ======================================================= */
 
 ChangeStatusPacket::ChangeStatusPacket() 
-	: OutPacket(QQ_CMD_CHANGE_STATUS, true) 
+	: OutPacket(TQQ_CMD_CHANGE_STATUS, true) 
 {
-	myStatus = QQ_FRIEND_STATUS_INVISIBLE;
+	myStatus = TQQ_FRIEND_STATUS_INVISIBLE;
 	miscStatus=0;
 }
 
 ChangeStatusPacket::ChangeStatusPacket(char status) 
-	: OutPacket(QQ_CMD_CHANGE_STATUS, true) 
+	: OutPacket(TQQ_CMD_CHANGE_STATUS, true) 
 {
 	myStatus = status;
 }
@@ -367,7 +367,7 @@ void ChangeStatusReplyPacket::parseBody()
 
 const bool ChangeStatusReplyPacket::isAccepted() const
 {
-	return ( replyCode == QQ_CHANGE_STATUS_REPLY_OK);
+	return ( replyCode == TQQ_CHANGE_STATUS_REPLY_OK);
 }
 
 ChangeStatusReplyPacket &ChangeStatusReplyPacket::operator=(const ChangeStatusReplyPacket &rhs)

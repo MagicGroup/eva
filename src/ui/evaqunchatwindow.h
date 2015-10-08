@@ -18,27 +18,27 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/ 
 
-#ifndef EVAQUNCHATWINDOW_H
-#define EVAQUNCHATWINDOW_H
+#ifndef EVATQUNCHATWINDOW_H
+#define EVATQUNCHATWINDOW_H
 
 #include "evaqunchatuibase.h"
 #include "evahtmlparser.h"
-#include <qdatetime.h>
-#include <qcolor.h>
+#include <ntqdatetime.h>
+#include <ntqcolor.h>
 #include <list> 
 
 class EvaImageResource;
-//class QQFriend;
+//class TQQFriend;
 class Qun;
 class CustomFaceSelector;
-class QTextCodec;
-class QKeyEvent;
+class TQTextCodec;
+class TQKeyEvent;
 class EvaFontSelecter;
-class QPopupMenu;
-class QTimer;
-class QShowEvent;
-class QCloseEvent;
-class QHideEvent;
+class TQPopupMenu;
+class TQTimer;
+class TQShowEvent;
+class TQCloseEvent;
+class TQHideEvent;
 class RegionGrabber;
 class EvaHistoryViewer;
 
@@ -46,51 +46,51 @@ class EvaQunChatWindow : public EvaQunChatUIBase
 {
 	Q_OBJECT
 public:
-	EvaQunChatWindow(Qun * qun, QWidget* parent = 0, const char* name = 0, WFlags fl = 0);
+	EvaQunChatWindow(Qun * qun, TQWidget* parent = 0, const char* name = 0, WFlags fl = 0);
 	~EvaQunChatWindow();
 	static void setupImages(EvaImageResource *res);
-	static void setQuickReplyMessages(const std::list<QString> &list);
+	static void setQuickReplyMessages(const std::list<TQString> &list);
 	void setQuickReplyMenu();
 	const unsigned int getQunID();
 	void showMessages();	
-	void appendText(const QString &txt);
+	void appendText(const TQString &txt);
 
 	static unsigned int myQQ;
-	static QString myName;
+	static TQString myName;
 	static bool isSentByEnter;
 	
-	void addToolButton( QString &scriptName, QString buttonName, QString &pixmap, QString &tip );
-	void removeToolButton( QString &scriptName, QString buttonName );
+	void addToolButton( TQString &scriptName, TQString buttonName, TQString &pixmap, TQString &tip );
+	void removeToolButton( TQString &scriptName, TQString buttonName );
 	void updateQunCountNumbers();
 public slots:
 	void graphicChanged();
-	void slotReceivedMessage(unsigned int qunID, unsigned int senderQQ, QString message, QDateTime time, const char size, 
+	void slotReceivedMessage(unsigned int qunID, unsigned int senderQQ, TQString message, TQDateTime time, const char size, 
 			const bool u, const bool i, const bool b, 
 			const char blue, const char green, const char red);
-	void slotAddMessage(unsigned int sender, QString sNick, unsigned int receiver, QString rNick, bool isNormal, QString message, 
-			QDateTime time, const char size=9, 
+	void slotAddMessage(unsigned int sender, TQString sNick, unsigned int receiver, TQString rNick, bool isNormal, TQString message, 
+			TQDateTime time, const char size=9, 
 			const bool u=false, const bool i=false, const bool b=false, 
 			const char blue=0, const char green=0, const char red=0);
-	void slotAddInformation(const QString &info);
+	void slotAddInformation(const TQString &info);
 	void slotSendResult(bool ok);
-	//void slotBuddyQQShowReady(const int id);
-	//void slotMyQQShowReady();
+	//void slotBuddyTQQShowReady(const int id);
+	//void slotMyTQQShowReady();
 	void slotDisplayMembers();
 	void slotUpdateOnlineMembers();
 	///////////////void slotUpdateOnlineMembers();
-	void slotPictureReady(const QString filename, const QString tmpFileName);
-	void sendImageError(const QString message);
+	void slotPictureReady(const TQString filename, const TQString tmpFileName);
+	void sendImageError(const TQString message);
 	void slotSendImageDone(const unsigned int sessionID, const unsigned int ip, const unsigned short port);
 
-	void slotAddImageToInputEdit(const QString &);
+	void slotAddImageToInputEdit(const TQString &);
 signals:
 	void requestQunDetails(const unsigned int );
-	void sendQunMessage(const unsigned int, QString &, const char , 
+	void sendQunMessage(const unsigned int, TQString &, const char , 
 			const bool, const bool, const bool, 
 			const char, const char, const char);
 	void requestHistory(const unsigned int );
-	//void requestBuddyQQShow(const int);
-	//void requestMyQQShow();
+	//void requestBuddyTQQShow(const int);
+	//void requestMyTQQShow();
 	void requestQunOnlineList(const unsigned int);
 	
 	void requestDetails(const unsigned int);
@@ -98,9 +98,9 @@ signals:
 	void requestQunRealNames(const unsigned int);
 	void reqeustChat(const unsigned int);
 protected:
-	virtual void showEvent( QShowEvent *e);
-	virtual void closeEvent( QCloseEvent *e);
-	virtual void hideEvent( QHideEvent *e);
+	virtual void showEvent( TQShowEvent *e);
+	virtual void closeEvent( TQCloseEvent *e);
+	virtual void hideEvent( TQHideEvent *e);
 private:
 	void initObjects();
 	void initInformation();
@@ -108,44 +108,44 @@ private:
 
 	
 	void displaySendingMessage();
-	QString getSenderName(const unsigned int qqNum);
+	TQString getSenderName(const unsigned int qqNum);
 	
-	const std::list<OutCustomizedPic> getSendFiles(const std::list<QString> &fileList);
+	const std::list<OutCustomizedPic> getSendFiles(const std::list<TQString> &fileList);
 	
 	CustomFaceSelector *smileyPopup;
 	static EvaImageResource *images;
-// 	static QString htmlHeader;
-// 	static QString htmlTail;
+// 	static TQString htmlHeader;
+// 	static TQString htmlTail;
 	
-	static std::list<QString> quickList;
+	static std::list<TQString> tquickList;
 	
 	EvaFontSelecter *fontSelecter;
-	QPopupMenu *sendKey;
-	QPopupMenu *quickMenu;
+	TQPopupMenu *sendKey;
+	TQPopupMenu *tquickMenu;
 	
 	Qun *mQun;
-	QTextCodec *codec;
+	TQTextCodec *codec;
 
-	QDateTime sendtime;
+	TQDateTime sendtime;
 	
-	QTimer *timer;
+	TQTimer *timer;
 	
-	QString sendingImageMsg;
+	TQString sendingImageMsg;
 	
 	RegionGrabber *grabber;
 	EvaHistoryViewer* viewer;
-	//std::list<QString> outPicList;
+	//std::list<TQString> outPicList;
 	unsigned int sessionID;
 	unsigned int ip;
 	unsigned short port;
 	
-	QMap<QString, QToolButton*> m_btnMap; // button name, button widget
-	QMap<QString, QString> m_scriptMap;   // button name, script name
+	TQMap<TQString, TQToolButton*> m_btnMap; // button name, button widget
+	TQMap<TQString, TQString> m_scriptMap;   // button name, script name
 private slots:
 	void slotSmileySelected(int);
 	void slotManageCustomSmileys();
-// 	void slotMailClick(const QString &, const QString &);
-// 	void slotURLClick(const QString &);
+// 	void slotMailClick(const TQString &, const TQString &);
+// 	void slotURLClick(const TQString &);
 	
 	//void slotTbBuddyClick();
 	void slotTbQunDetailsClick();
@@ -166,9 +166,9 @@ private slots:
 	//void slotTbShowBuddyClick();
 	//void slotTbShowMeClick();
 	
-	void slotInputKeyPress(QKeyEvent *e);
+	void slotInputKeyPress(TQKeyEvent *e);
 	
-	void slotFontChanged(QColor, int);
+	void slotFontChanged(TQColor, int);
 	
 	void setEnterSend();
 	void setCtrlEnterSend();
@@ -179,12 +179,12 @@ private slots:
 	void slotRequestQunMembers();
 	
 	
-	void slotRegionGrabbed( const QPixmap & );
+	void slotRegionGrabbed( const TQPixmap & );
 	
 	void slotRequestQunCard(const unsigned int id);
 	void slotRequestQunRealNames();
 
-	void slotSaveAsCustomSmiley(QString);
+	void slotSaveAsCustomSmiley(TQString);
 	void slotAddCustomSmileyReady( bool );
 	void slotCustomSmileyChanged();
 	

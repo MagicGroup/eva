@@ -23,26 +23,26 @@
 
 #include "evautil.h"
 #include <list>
-#include <qobject.h>
+#include <ntqobject.h>
 
 typedef struct CustomizedPic{
 	unsigned char type;  // should be 33, 34, 36, 37, ..     0 means error
-	QString  fileName;
-	QString  shortCutName;
+	TQString  fileName;
+	TQString  shortCutName;
 	bool     isExisted;
 	int      occurredIndex;
-	//Q_UINT8  sessionID[4];
-	Q_UINT32 sessionID;
-	Q_UINT32 ip;
-	Q_UINT16 port;
-	Q_UINT8  fileAgentKey[16];
-	QString  tmpFileName;
+	//TQ_UINT8  sessionID[4];
+	TQ_UINT32 sessionID;
+	TQ_UINT32 ip;
+	TQ_UINT16 port;
+	TQ_UINT8  fileAgentKey[16];
+	TQString  tmpFileName;
 } CustomizedPic;
 
 typedef struct OutCustomizedPic{
 	unsigned int imageLength;
 	unsigned char md5[16];
-	QString fileName;
+	TQString fileName;
 } OutCustomizedPic;
 
 class EvaHtmlParser 
@@ -50,31 +50,31 @@ class EvaHtmlParser
 public:
 	EvaHtmlParser(){}
 	~EvaHtmlParser(){};
-	std::list<CustomizedPic> convertToHtml(QString &txt, bool isURLOn = true, bool isAbsImgPath = false,
+	std::list<CustomizedPic> convertToHtml(TQString &txt, bool isURLOn = true, bool isAbsImgPath = false,
 						bool useRealFileName = false);
-	const int convertToPlainTxt(QString &html, QString &sendFileNameBase);
-	void convertToPlainTxt(QString &html, const unsigned int agentSessionID, 
+	const int convertToPlainTxt(TQString &html, TQString &sendFileNameBase);
+	void convertToPlainTxt(TQString &html, const unsigned int agentSessionID, 
 					const unsigned int agentIP, const unsigned short agentPort );
-	std::list<QString> getCustomImages(const QString html);
-	void parseToAbsPath(QString &html, const QString absPath);
-	void setAbsImagePath(const QString &path,const QString &cachePath = QString::null) 
+	std::list<TQString> getCustomImages(const TQString html);
+	void parseToAbsPath(TQString &html, const TQString absPath);
+	void setAbsImagePath(const TQString &path,const TQString &cachePath = TQString::null) 
 				{ absImagePath = path; absCustomCachesPath = cachePath;}
-	const QString getAbsImagePath() const { return absImagePath; }
+	const TQString getAbsImagePath() const { return absImagePath; }
 private:
-	QString absImagePath;
-	QString absCustomCachesPath;
+	TQString absImagePath;
+	TQString absCustomCachesPath;
 	static unsigned int tmpNum;
 	
 	std::list< CustomizedPic > picList;
-	std::list<CustomizedPic> convertCustomizedPictures(QString &text, bool useRealFileName = false);
-	QString processPic32( const QString &src, CustomizedPic * args);
-	QString processPic33( const QString &src, CustomizedPic *args);
-	QString processPic34( const QString &src );
-	QString processPic36( const QString &src, CustomizedPic *args);
-	QString processPic37( const QString &src );
+	std::list<CustomizedPic> convertCustomizedPictures(TQString &text, bool useRealFileName = false);
+	TQString processPic32( const TQString &src, CustomizedPic * args);
+	TQString processPic33( const TQString &src, CustomizedPic *args);
+	TQString processPic34( const TQString &src );
+	TQString processPic36( const TQString &src, CustomizedPic *args);
+	TQString processPic37( const TQString &src );
 	
-	QString generateSendFormat(QString &src, const unsigned int agentSessionID, const unsigned int agentIP, const unsigned short agentPort );
-	QString generateSendFormat32(const QString sendFileNameBase, const QString &fileName, const int imgNo);
+	TQString generateSendFormat(TQString &src, const unsigned int agentSessionID, const unsigned int agentIP, const unsigned short agentPort );
+	TQString generateSendFormat32(const TQString sendFileNameBase, const TQString &fileName, const int imgNo);
 	//EvaUtil util;
 };
 

@@ -18,12 +18,12 @@
    RFC 1321 "MD5 Message-Digest Algorithm" Copyright (C) 1991-1992.
    RSA Data Security, Inc. Created 1991. All rights reserved.
 
-   The QMD5 class is based on a C++ implementation of
+   The TQMD5 class is based on a C++ implementation of
    "RSA Data Security, Inc. MD5 Message-Digest Algorithm" by
    Mordechai T. Abzug,	Copyright (c) 1995.  This implementation
    passes the test-suite as defined in RFC 1321.
 
-   The encoding and decoding utilities in QCodecs with the exception of
+   The encoding and decoding utilities in TQCodecs with the exception of
    quoted-printable are based on the java implementation in HTTPClient
    package by Ronald Tschalär Copyright (C) 1996-1999.
 
@@ -38,24 +38,24 @@
 
 #include "qmdcodec.h"
 
-#define QMD5_S11 7
-#define QMD5_S12 12
-#define QMD5_S13 17
-#define QMD5_S14 22
-#define QMD5_S21 5
-#define QMD5_S22 9
-#define QMD5_S23 14
-#define QMD5_S24 20
-#define QMD5_S31 4
-#define QMD5_S32 11
-#define QMD5_S33 16
-#define QMD5_S34 23
-#define QMD5_S41 6
-#define QMD5_S42 10
-#define QMD5_S43 15
-#define QMD5_S44 21
+#define TQMD5_S11 7
+#define TQMD5_S12 12
+#define TQMD5_S13 17
+#define TQMD5_S14 22
+#define TQMD5_S21 5
+#define TQMD5_S22 9
+#define TQMD5_S23 14
+#define TQMD5_S24 20
+#define TQMD5_S31 4
+#define TQMD5_S32 11
+#define TQMD5_S33 16
+#define TQMD5_S34 23
+#define TQMD5_S41 6
+#define TQMD5_S42 10
+#define TQMD5_S43 15
+#define TQMD5_S44 21
 
-const char QCodecs::Base64EncMap[64] =
+const char TQCodecs::Base64EncMap[64] =
 {
   0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48,
   0x49, 0x4A, 0x4B, 0x4C, 0x4D, 0x4E, 0x4F, 0x50,
@@ -67,7 +67,7 @@ const char QCodecs::Base64EncMap[64] =
   0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x2B, 0x2F
 };
 
-const char QCodecs::Base64DecMap[128] =
+const char TQCodecs::Base64DecMap[128] =
 {
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -87,7 +87,7 @@ const char QCodecs::Base64DecMap[128] =
   0x31, 0x32, 0x33, 0x00, 0x00, 0x00, 0x00, 0x00
 };
 
-const char QCodecs::UUEncMap[64] =
+const char TQCodecs::UUEncMap[64] =
 {
   0x60, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27,
   0x28, 0x29, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E, 0x2F,
@@ -99,7 +99,7 @@ const char QCodecs::UUEncMap[64] =
   0x58, 0x59, 0x5A, 0x5B, 0x5C, 0x5D, 0x5E, 0x5F
 };
 
-const char QCodecs::UUDecMap[128] =
+const char TQCodecs::UUDecMap[128] =
 {
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -119,16 +119,16 @@ const char QCodecs::UUDecMap[128] =
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 };
 
-const char QCodecs::hexChars[16] =
+const char TQCodecs::hexChars[16] =
 {
   '0', '1', '2', '3', '4', '5', '6', '7',
   '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
 };
 
-const unsigned int QCodecs::maxQPLineLength = 70;
+const unsigned int TQCodecs::maxTQPLineLength = 70;
 
 
-/******************************** QCodecs ********************************/
+/******************************** TQCodecs ********************************/
 // strchr(3) for broken systems.
 static int rikFindChar(register const char * _s, const char c)
 {
@@ -145,24 +145,24 @@ static int rikFindChar(register const char * _s, const char c)
   return s - _s;
 }
 
-QCString QCodecs::quotedPrintableEncode(const QByteArray& in, bool useCRLF)
+TQCString TQCodecs::quotedPrintableEncode(const TQByteArray& in, bool useCRLF)
 {
-  QByteArray out;
+  TQByteArray out;
   quotedPrintableEncode (in, out, useCRLF);
-  return QCString (out.data(), out.size()+1);
+  return TQCString (out.data(), out.size()+1);
 }
 
-QCString QCodecs::quotedPrintableEncode(const QCString& str, bool useCRLF)
+TQCString TQCodecs::quotedPrintableEncode(const TQCString& str, bool useCRLF)
 {
   if (str.isEmpty())
     return "";
 
-  QByteArray in (str.length());
+  TQByteArray in (str.length());
   memcpy (in.data(), str.data(), str.length());
   return quotedPrintableEncode(in, useCRLF);
 }
 
-void QCodecs::quotedPrintableEncode(const QByteArray& in, QByteArray& out, bool useCRLF)
+void TQCodecs::quotedPrintableEncode(const TQByteArray& in, TQByteArray& out, bool useCRLF)
 {
   out.resize (0);
   if (in.isEmpty())
@@ -260,7 +260,7 @@ void QCodecs::quotedPrintableEncode(const QByteArray& in, QByteArray& out, bool 
 
     // If we're approaching the maximum line length, do a soft line break.
 
-    if ((lineLength > maxQPLineLength) && (i < end))
+    if ((lineLength > maxTQPLineLength) && (i < end))
     {
       if (useCRLF) {
         *cursor++ = '=';
@@ -278,24 +278,24 @@ void QCodecs::quotedPrintableEncode(const QByteArray& in, QByteArray& out, bool 
   out.truncate(cursor - out.data());
 }
 
-QCString QCodecs::quotedPrintableDecode(const QByteArray & in)
+TQCString TQCodecs::quotedPrintableDecode(const TQByteArray & in)
 {
-  QByteArray out;
+  TQByteArray out;
   quotedPrintableDecode (in, out);
-  return QCString (out.data(), out.size()+1);
+  return TQCString (out.data(), out.size()+1);
 }
 
-QCString QCodecs::quotedPrintableDecode(const QCString & str)
+TQCString TQCodecs::quotedPrintableDecode(const TQCString & str)
 {
   if (str.isEmpty())
     return "";
 
-  QByteArray in (str.length());
+  TQByteArray in (str.length());
   memcpy (in.data(), str.data(), str.length());
   return quotedPrintableDecode (in);
 }
 
-void QCodecs::quotedPrintableDecode(const QByteArray& in, QByteArray& out)
+void TQCodecs::quotedPrintableDecode(const TQByteArray& in, TQByteArray& out)
 {
   // clear out the output buffer
   out.resize (0);
@@ -353,24 +353,24 @@ void QCodecs::quotedPrintableDecode(const QByteArray& in, QByteArray& out)
   out.truncate(cursor - out.data());
 }
 
-QCString QCodecs::base64Encode( const QCString& str, bool insertLFs )
+TQCString TQCodecs::base64Encode( const TQCString& str, bool insertLFs )
 {
     if ( str.isEmpty() )
         return "";
 
-    QByteArray in (str.length());
+    TQByteArray in (str.length());
     memcpy( in.data(), str.data(), str.length() );
     return base64Encode( in, insertLFs );
 }
 
-QCString QCodecs::base64Encode( const QByteArray& in, bool insertLFs )
+TQCString TQCodecs::base64Encode( const TQByteArray& in, bool insertLFs )
 {
-    QByteArray out;
+    TQByteArray out;
     base64Encode( in, out, insertLFs );
-    return QCString( out.data(), out.size()+1 );
+    return TQCString( out.data(), out.size()+1 );
 }
 
-void QCodecs::base64Encode( const QByteArray& in, QByteArray& out,
+void TQCodecs::base64Encode( const TQByteArray& in, TQByteArray& out,
                             bool insertLFs )
 {
     // clear out the output buffer
@@ -442,24 +442,24 @@ void QCodecs::base64Encode( const QByteArray& in, QByteArray& out,
     }
 }
 
-QCString QCodecs::base64Decode( const QCString& str )
+TQCString TQCodecs::base64Decode( const TQCString& str )
 {
     if ( str.isEmpty() )
         return "";
 
-    QByteArray in( str.length() );
+    TQByteArray in( str.length() );
     memcpy( in.data(), str.data(), str.length() );
     return base64Decode( in );
 }
 
-QCString QCodecs::base64Decode( const QByteArray& in )
+TQCString TQCodecs::base64Decode( const TQByteArray& in )
 {
-    QByteArray out;
+    TQByteArray out;
     base64Decode( in, out );
-    return QCString( out.data(), out.size()+1 );
+    return TQCString( out.data(), out.size()+1 );
 }
 
-void QCodecs::base64Decode( const QByteArray& in, QByteArray& out )
+void TQCodecs::base64Decode( const TQByteArray& in, TQByteArray& out )
 {
     out.resize(0);
     if ( in.isEmpty() )
@@ -544,25 +544,25 @@ void QCodecs::base64Decode( const QByteArray& in, QByteArray& out )
       out.resize(len);
 }
 
-QCString QCodecs::uuencode( const QCString& str )
+TQCString TQCodecs::uuencode( const TQCString& str )
 {
     if ( str.isEmpty() )
         return "";
 
-    QByteArray in;
+    TQByteArray in;
     in.resize( str.length() );
     memcpy( in.data(), str.data(), str.length() );
     return uuencode( in );
 }
 
-QCString QCodecs::uuencode( const QByteArray& in )
+TQCString TQCodecs::uuencode( const TQByteArray& in )
 {
-    QByteArray out;
+    TQByteArray out;
     uuencode( in, out );
-    return QCString( out.data(), out.size()+1 );
+    return TQCString( out.data(), out.size()+1 );
 }
 
-void QCodecs::uuencode( const QByteArray& in, QByteArray& out )
+void TQCodecs::uuencode( const TQByteArray& in, TQByteArray& out )
 {
     out.resize( 0 );
     if( in.isEmpty() )
@@ -641,25 +641,25 @@ void QCodecs::uuencode( const QByteArray& in, QByteArray& out )
         out.resize( 0 );
 }
 
-QCString QCodecs::uudecode( const QCString& str )
+TQCString TQCodecs::uudecode( const TQCString& str )
 {
     if ( str.isEmpty() )
         return "";
 
-    QByteArray in;
+    TQByteArray in;
     in.resize( str.length() );
     memcpy( in.data(), str.data(), str.length() );
     return uudecode( in );
 }
 
-QCString QCodecs::uudecode( const QByteArray& in )
+TQCString TQCodecs::uudecode( const TQByteArray& in )
 {
-    QByteArray out;
+    TQByteArray out;
     uudecode( in, out );
-    return QCString( out.data(), out.size()+1 );
+    return TQCString( out.data(), out.size()+1 );
 }
 
-void QCodecs::uudecode( const QByteArray& in, QByteArray& out )
+void TQCodecs::uudecode( const TQByteArray& in, TQByteArray& out )
 {
     out.resize( 0 );
     if( in.isEmpty() )
@@ -754,59 +754,59 @@ void QCodecs::uudecode( const QByteArray& in, QByteArray& out )
         out.resize( didx );
 }
 
-/******************************** QMD5 ********************************/
-QMD5::QMD5()
+/******************************** TQMD5 ********************************/
+TQMD5::TQMD5()
 {
     init();
 }
 
-QMD5::QMD5(const char *in, int len)
+TQMD5::TQMD5(const char *in, int len)
 {
     init();
     update(in, len);
 }
 
-QMD5::QMD5(const QByteArray& in)
+TQMD5::TQMD5(const TQByteArray& in)
 {
     init();
     update( in );
 }
 
-QMD5::QMD5(const QCString& in)
+TQMD5::TQMD5(const TQCString& in)
 {
     init();
     update( in );
 }
 
-void QMD5::update(const QByteArray& in)
+void TQMD5::update(const TQByteArray& in)
 {
     update(in.data(), int(in.size()));
 }
 
-void QMD5::update(const QCString& in)
+void TQMD5::update(const TQCString& in)
 {
     update(in.data(), int(in.length()));
 }
 
-void QMD5::update(const unsigned char* in, int len)
+void TQMD5::update(const unsigned char* in, int len)
 {
     if (len < 0)
-        len = qstrlen(reinterpret_cast<const char*>(in));
+        len = tqstrlen(reinterpret_cast<const char*>(in));
 
     if (!len)
         return;
 
     if (m_finalized) {
-        qWarning("QMD5::update called after state was finalized!");
+        tqWarning("TQMD5::update called after state was finalized!");
         return;
     }
 
-    Q_UINT32 in_index;
-    Q_UINT32 buffer_index;
-    Q_UINT32 buffer_space;
-    Q_UINT32 in_length = static_cast<Q_UINT32>( len );
+    TQ_UINT32 in_index;
+    TQ_UINT32 buffer_index;
+    TQ_UINT32 buffer_space;
+    TQ_UINT32 in_length = static_cast<TQ_UINT32>( len );
 
-    buffer_index = static_cast<Q_UINT32>((m_count[0] >> 3) & 0x3F);
+    buffer_index = static_cast<TQ_UINT32>((m_count[0] >> 3) & 0x3F);
 
     if (  (m_count[0] += (in_length << 3))<(in_length << 3) )
         m_count[1]++;
@@ -831,7 +831,7 @@ void QMD5::update(const unsigned char* in, int len)
     memcpy(m_buffer+buffer_index, in+in_index, in_length-in_index);
 }
 
-bool QMD5::update(QIODevice& file)
+bool TQMD5::update(TQIODevice& file)
 {
     char buffer[1024];
     int len;
@@ -842,12 +842,12 @@ bool QMD5::update(QIODevice& file)
     return file.atEnd();
 }
 
-void QMD5::finalize ()
+void TQMD5::finalize ()
 {
     if (m_finalized) return;
 
-    Q_UINT8 bits[8];
-    Q_UINT32 index, padLen;
+    TQ_UINT8 bits[8];
+    TQ_UINT32 index, padLen;
     static unsigned char PADDING[64]=
     {
         0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -860,7 +860,7 @@ void QMD5::finalize ()
     //memcpy( bits, m_count, 8 );
 
     // Pad out to 56 mod 64.
-    index = static_cast<Q_UINT32>((m_count[0] >> 3) & 0x3f);
+    index = static_cast<TQ_UINT32>((m_count[0] >> 3) & 0x3f);
     padLen = (index < 56) ? (56 - index) : (120 - index);
     update (reinterpret_cast<const char*>(PADDING), padLen);
 
@@ -878,34 +878,34 @@ void QMD5::finalize ()
 }
 
 
-bool QMD5::verify( const QMD5::Digest& digest)
+bool TQMD5::verify( const TQMD5::Digest& digest)
 {
     finalize();
-    return (0 == memcmp(rawDigest(), digest, sizeof(QMD5::Digest)));
+    return (0 == memcmp(rawDigest(), digest, sizeof(TQMD5::Digest)));
 }
 
-bool QMD5::verify( const QCString& hexdigest)
+bool TQMD5::verify( const TQCString& hexdigest)
 {
     finalize();
     return (0 == strcmp(hexDigest().data(), hexdigest));
 }
 
-const QMD5::Digest& QMD5::rawDigest()
+const TQMD5::Digest& TQMD5::rawDigest()
 {
     finalize();
     return m_digest;
 }
 
-void QMD5::rawDigest( QMD5::Digest& bin )
+void TQMD5::rawDigest( TQMD5::Digest& bin )
 {
     finalize();
     memcpy( bin, m_digest, 16 );
 }
 
 
-QCString QMD5::hexDigest()
+TQCString TQMD5::hexDigest()
 {
-    QCString s(33);
+    TQCString s(33);
 
     finalize();
     sprintf(s.data(), "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
@@ -916,7 +916,7 @@ QCString QMD5::hexDigest()
     return s;
 }
 
-void QMD5::hexDigest(QCString& s)
+void TQMD5::hexDigest(TQCString& s)
 {
     finalize();
     s.resize(33);
@@ -926,23 +926,23 @@ void QMD5::hexDigest(QCString& s)
             m_digest[12], m_digest[13], m_digest[14], m_digest[15]);
 }
 
-QCString QMD5::base64Digest()
+TQCString TQMD5::base64Digest()
 {
-    QByteArray ba(16);
+    TQByteArray ba(16);
 
     finalize();
     memcpy(ba.data(), m_digest, 16);
-    return QCodecs::base64Encode(ba);
+    return TQCodecs::base64Encode(ba);
 }
 
 
-void QMD5::init()
+void TQMD5::init()
 {
     d = 0;
     reset();
 }
 
-void QMD5::reset()
+void TQMD5::reset()
 {
     m_finalized = false;
 
@@ -958,10 +958,10 @@ void QMD5::reset()
     memset ( m_digest, 0, sizeof(*m_digest));
 }
 
-void QMD5::transform( const unsigned char block[64] )
+void TQMD5::transform( const unsigned char block[64] )
 {
 
-    Q_UINT32 a = m_state[0], b = m_state[1], c = m_state[2], d = m_state[3], x[16];
+    TQ_UINT32 a = m_state[0], b = m_state[1], c = m_state[2], d = m_state[3], x[16];
 
     decode (x, block, 64);
     //memcpy( x, block, 64 );
@@ -969,76 +969,76 @@ void QMD5::transform( const unsigned char block[64] )
     Q_ASSERT(!m_finalized);  // not just a user error, since the method is private
 
     /* Round 1 */
-    FF (a, b, c, d, x[ 0], QMD5_S11, 0xd76aa478); /* 1 */
-    FF (d, a, b, c, x[ 1], QMD5_S12, 0xe8c7b756); /* 2 */
-    FF (c, d, a, b, x[ 2], QMD5_S13, 0x242070db); /* 3 */
-    FF (b, c, d, a, x[ 3], QMD5_S14, 0xc1bdceee); /* 4 */
-    FF (a, b, c, d, x[ 4], QMD5_S11, 0xf57c0faf); /* 5 */
-    FF (d, a, b, c, x[ 5], QMD5_S12, 0x4787c62a); /* 6 */
-    FF (c, d, a, b, x[ 6], QMD5_S13, 0xa8304613); /* 7 */
-    FF (b, c, d, a, x[ 7], QMD5_S14, 0xfd469501); /* 8 */
-    FF (a, b, c, d, x[ 8], QMD5_S11, 0x698098d8); /* 9 */
-    FF (d, a, b, c, x[ 9], QMD5_S12, 0x8b44f7af); /* 10 */
-    FF (c, d, a, b, x[10], QMD5_S13, 0xffff5bb1); /* 11 */
-    FF (b, c, d, a, x[11], QMD5_S14, 0x895cd7be); /* 12 */
-    FF (a, b, c, d, x[12], QMD5_S11, 0x6b901122); /* 13 */
-    FF (d, a, b, c, x[13], QMD5_S12, 0xfd987193); /* 14 */
-    FF (c, d, a, b, x[14], QMD5_S13, 0xa679438e); /* 15 */
-    FF (b, c, d, a, x[15], QMD5_S14, 0x49b40821); /* 16 */
+    FF (a, b, c, d, x[ 0], TQMD5_S11, 0xd76aa478); /* 1 */
+    FF (d, a, b, c, x[ 1], TQMD5_S12, 0xe8c7b756); /* 2 */
+    FF (c, d, a, b, x[ 2], TQMD5_S13, 0x242070db); /* 3 */
+    FF (b, c, d, a, x[ 3], TQMD5_S14, 0xc1bdceee); /* 4 */
+    FF (a, b, c, d, x[ 4], TQMD5_S11, 0xf57c0faf); /* 5 */
+    FF (d, a, b, c, x[ 5], TQMD5_S12, 0x4787c62a); /* 6 */
+    FF (c, d, a, b, x[ 6], TQMD5_S13, 0xa8304613); /* 7 */
+    FF (b, c, d, a, x[ 7], TQMD5_S14, 0xfd469501); /* 8 */
+    FF (a, b, c, d, x[ 8], TQMD5_S11, 0x698098d8); /* 9 */
+    FF (d, a, b, c, x[ 9], TQMD5_S12, 0x8b44f7af); /* 10 */
+    FF (c, d, a, b, x[10], TQMD5_S13, 0xffff5bb1); /* 11 */
+    FF (b, c, d, a, x[11], TQMD5_S14, 0x895cd7be); /* 12 */
+    FF (a, b, c, d, x[12], TQMD5_S11, 0x6b901122); /* 13 */
+    FF (d, a, b, c, x[13], TQMD5_S12, 0xfd987193); /* 14 */
+    FF (c, d, a, b, x[14], TQMD5_S13, 0xa679438e); /* 15 */
+    FF (b, c, d, a, x[15], TQMD5_S14, 0x49b40821); /* 16 */
 
     /* Round 2 */
-    GG (a, b, c, d, x[ 1], QMD5_S21, 0xf61e2562); /* 17 */
-    GG (d, a, b, c, x[ 6], QMD5_S22, 0xc040b340); /* 18 */
-    GG (c, d, a, b, x[11], QMD5_S23, 0x265e5a51); /* 19 */
-    GG (b, c, d, a, x[ 0], QMD5_S24, 0xe9b6c7aa); /* 20 */
-    GG (a, b, c, d, x[ 5], QMD5_S21, 0xd62f105d); /* 21 */
-    GG (d, a, b, c, x[10], QMD5_S22,  0x2441453); /* 22 */
-    GG (c, d, a, b, x[15], QMD5_S23, 0xd8a1e681); /* 23 */
-    GG (b, c, d, a, x[ 4], QMD5_S24, 0xe7d3fbc8); /* 24 */
-    GG (a, b, c, d, x[ 9], QMD5_S21, 0x21e1cde6); /* 25 */
-    GG (d, a, b, c, x[14], QMD5_S22, 0xc33707d6); /* 26 */
-    GG (c, d, a, b, x[ 3], QMD5_S23, 0xf4d50d87); /* 27 */
-    GG (b, c, d, a, x[ 8], QMD5_S24, 0x455a14ed); /* 28 */
-    GG (a, b, c, d, x[13], QMD5_S21, 0xa9e3e905); /* 29 */
-    GG (d, a, b, c, x[ 2], QMD5_S22, 0xfcefa3f8); /* 30 */
-    GG (c, d, a, b, x[ 7], QMD5_S23, 0x676f02d9); /* 31 */
-    GG (b, c, d, a, x[12], QMD5_S24, 0x8d2a4c8a); /* 32 */
+    GG (a, b, c, d, x[ 1], TQMD5_S21, 0xf61e2562); /* 17 */
+    GG (d, a, b, c, x[ 6], TQMD5_S22, 0xc040b340); /* 18 */
+    GG (c, d, a, b, x[11], TQMD5_S23, 0x265e5a51); /* 19 */
+    GG (b, c, d, a, x[ 0], TQMD5_S24, 0xe9b6c7aa); /* 20 */
+    GG (a, b, c, d, x[ 5], TQMD5_S21, 0xd62f105d); /* 21 */
+    GG (d, a, b, c, x[10], TQMD5_S22,  0x2441453); /* 22 */
+    GG (c, d, a, b, x[15], TQMD5_S23, 0xd8a1e681); /* 23 */
+    GG (b, c, d, a, x[ 4], TQMD5_S24, 0xe7d3fbc8); /* 24 */
+    GG (a, b, c, d, x[ 9], TQMD5_S21, 0x21e1cde6); /* 25 */
+    GG (d, a, b, c, x[14], TQMD5_S22, 0xc33707d6); /* 26 */
+    GG (c, d, a, b, x[ 3], TQMD5_S23, 0xf4d50d87); /* 27 */
+    GG (b, c, d, a, x[ 8], TQMD5_S24, 0x455a14ed); /* 28 */
+    GG (a, b, c, d, x[13], TQMD5_S21, 0xa9e3e905); /* 29 */
+    GG (d, a, b, c, x[ 2], TQMD5_S22, 0xfcefa3f8); /* 30 */
+    GG (c, d, a, b, x[ 7], TQMD5_S23, 0x676f02d9); /* 31 */
+    GG (b, c, d, a, x[12], TQMD5_S24, 0x8d2a4c8a); /* 32 */
 
     /* Round 3 */
-    HH (a, b, c, d, x[ 5], QMD5_S31, 0xfffa3942); /* 33 */
-    HH (d, a, b, c, x[ 8], QMD5_S32, 0x8771f681); /* 34 */
-    HH (c, d, a, b, x[11], QMD5_S33, 0x6d9d6122); /* 35 */
-    HH (b, c, d, a, x[14], QMD5_S34, 0xfde5380c); /* 36 */
-    HH (a, b, c, d, x[ 1], QMD5_S31, 0xa4beea44); /* 37 */
-    HH (d, a, b, c, x[ 4], QMD5_S32, 0x4bdecfa9); /* 38 */
-    HH (c, d, a, b, x[ 7], QMD5_S33, 0xf6bb4b60); /* 39 */
-    HH (b, c, d, a, x[10], QMD5_S34, 0xbebfbc70); /* 40 */
-    HH (a, b, c, d, x[13], QMD5_S31, 0x289b7ec6); /* 41 */
-    HH (d, a, b, c, x[ 0], QMD5_S32, 0xeaa127fa); /* 42 */
-    HH (c, d, a, b, x[ 3], QMD5_S33, 0xd4ef3085); /* 43 */
-    HH (b, c, d, a, x[ 6], QMD5_S34,  0x4881d05); /* 44 */
-    HH (a, b, c, d, x[ 9], QMD5_S31, 0xd9d4d039); /* 45 */
-    HH (d, a, b, c, x[12], QMD5_S32, 0xe6db99e5); /* 46 */
-    HH (c, d, a, b, x[15], QMD5_S33, 0x1fa27cf8); /* 47 */
-    HH (b, c, d, a, x[ 2], QMD5_S34, 0xc4ac5665); /* 48 */
+    HH (a, b, c, d, x[ 5], TQMD5_S31, 0xfffa3942); /* 33 */
+    HH (d, a, b, c, x[ 8], TQMD5_S32, 0x8771f681); /* 34 */
+    HH (c, d, a, b, x[11], TQMD5_S33, 0x6d9d6122); /* 35 */
+    HH (b, c, d, a, x[14], TQMD5_S34, 0xfde5380c); /* 36 */
+    HH (a, b, c, d, x[ 1], TQMD5_S31, 0xa4beea44); /* 37 */
+    HH (d, a, b, c, x[ 4], TQMD5_S32, 0x4bdecfa9); /* 38 */
+    HH (c, d, a, b, x[ 7], TQMD5_S33, 0xf6bb4b60); /* 39 */
+    HH (b, c, d, a, x[10], TQMD5_S34, 0xbebfbc70); /* 40 */
+    HH (a, b, c, d, x[13], TQMD5_S31, 0x289b7ec6); /* 41 */
+    HH (d, a, b, c, x[ 0], TQMD5_S32, 0xeaa127fa); /* 42 */
+    HH (c, d, a, b, x[ 3], TQMD5_S33, 0xd4ef3085); /* 43 */
+    HH (b, c, d, a, x[ 6], TQMD5_S34,  0x4881d05); /* 44 */
+    HH (a, b, c, d, x[ 9], TQMD5_S31, 0xd9d4d039); /* 45 */
+    HH (d, a, b, c, x[12], TQMD5_S32, 0xe6db99e5); /* 46 */
+    HH (c, d, a, b, x[15], TQMD5_S33, 0x1fa27cf8); /* 47 */
+    HH (b, c, d, a, x[ 2], TQMD5_S34, 0xc4ac5665); /* 48 */
 
     /* Round 4 */
-    II (a, b, c, d, x[ 0], QMD5_S41, 0xf4292244); /* 49 */
-    II (d, a, b, c, x[ 7], QMD5_S42, 0x432aff97); /* 50 */
-    II (c, d, a, b, x[14], QMD5_S43, 0xab9423a7); /* 51 */
-    II (b, c, d, a, x[ 5], QMD5_S44, 0xfc93a039); /* 52 */
-    II (a, b, c, d, x[12], QMD5_S41, 0x655b59c3); /* 53 */
-    II (d, a, b, c, x[ 3], QMD5_S42, 0x8f0ccc92); /* 54 */
-    II (c, d, a, b, x[10], QMD5_S43, 0xffeff47d); /* 55 */
-    II (b, c, d, a, x[ 1], QMD5_S44, 0x85845dd1); /* 56 */
-    II (a, b, c, d, x[ 8], QMD5_S41, 0x6fa87e4f); /* 57 */
-    II (d, a, b, c, x[15], QMD5_S42, 0xfe2ce6e0); /* 58 */
-    II (c, d, a, b, x[ 6], QMD5_S43, 0xa3014314); /* 59 */
-    II (b, c, d, a, x[13], QMD5_S44, 0x4e0811a1); /* 60 */
-    II (a, b, c, d, x[ 4], QMD5_S41, 0xf7537e82); /* 61 */
-    II (d, a, b, c, x[11], QMD5_S42, 0xbd3af235); /* 62 */
-    II (c, d, a, b, x[ 2], QMD5_S43, 0x2ad7d2bb); /* 63 */
-    II (b, c, d, a, x[ 9], QMD5_S44, 0xeb86d391); /* 64 */
+    II (a, b, c, d, x[ 0], TQMD5_S41, 0xf4292244); /* 49 */
+    II (d, a, b, c, x[ 7], TQMD5_S42, 0x432aff97); /* 50 */
+    II (c, d, a, b, x[14], TQMD5_S43, 0xab9423a7); /* 51 */
+    II (b, c, d, a, x[ 5], TQMD5_S44, 0xfc93a039); /* 52 */
+    II (a, b, c, d, x[12], TQMD5_S41, 0x655b59c3); /* 53 */
+    II (d, a, b, c, x[ 3], TQMD5_S42, 0x8f0ccc92); /* 54 */
+    II (c, d, a, b, x[10], TQMD5_S43, 0xffeff47d); /* 55 */
+    II (b, c, d, a, x[ 1], TQMD5_S44, 0x85845dd1); /* 56 */
+    II (a, b, c, d, x[ 8], TQMD5_S41, 0x6fa87e4f); /* 57 */
+    II (d, a, b, c, x[15], TQMD5_S42, 0xfe2ce6e0); /* 58 */
+    II (c, d, a, b, x[ 6], TQMD5_S43, 0xa3014314); /* 59 */
+    II (b, c, d, a, x[13], TQMD5_S44, 0x4e0811a1); /* 60 */
+    II (a, b, c, d, x[ 4], TQMD5_S41, 0xf7537e82); /* 61 */
+    II (d, a, b, c, x[11], TQMD5_S42, 0xbd3af235); /* 62 */
+    II (c, d, a, b, x[ 2], TQMD5_S43, 0x2ad7d2bb); /* 63 */
+    II (b, c, d, a, x[ 9], TQMD5_S44, 0xeb86d391); /* 64 */
 
     m_state[0] += a;
     m_state[1] += b;
@@ -1048,90 +1048,90 @@ void QMD5::transform( const unsigned char block[64] )
     memset ( static_cast<void *>(x), 0, sizeof(x) );
 }
 
-inline Q_UINT32 QMD5::rotate_left (Q_UINT32 x, Q_UINT32 n)
+inline TQ_UINT32 TQMD5::rotate_left (TQ_UINT32 x, TQ_UINT32 n)
 {
     return (x << n) | (x >> (32-n))  ;
 }
 
-inline Q_UINT32 QMD5::F (Q_UINT32 x, Q_UINT32 y, Q_UINT32 z)
+inline TQ_UINT32 TQMD5::F (TQ_UINT32 x, TQ_UINT32 y, TQ_UINT32 z)
 {
     return (x & y) | (~x & z);
 }
 
-inline Q_UINT32 QMD5::G (Q_UINT32 x, Q_UINT32 y, Q_UINT32 z)
+inline TQ_UINT32 TQMD5::G (TQ_UINT32 x, TQ_UINT32 y, TQ_UINT32 z)
 {
     return (x & z) | (y & ~z);
 }
 
-inline Q_UINT32 QMD5::H (Q_UINT32 x, Q_UINT32 y, Q_UINT32 z)
+inline TQ_UINT32 TQMD5::H (TQ_UINT32 x, TQ_UINT32 y, TQ_UINT32 z)
 {
     return x ^ y ^ z;
 }
 
-inline Q_UINT32 QMD5::I (Q_UINT32 x, Q_UINT32 y, Q_UINT32 z)
+inline TQ_UINT32 TQMD5::I (TQ_UINT32 x, TQ_UINT32 y, TQ_UINT32 z)
 {
     return y ^ (x | ~z);
 }
 
-void QMD5::FF ( Q_UINT32& a, Q_UINT32 b, Q_UINT32 c, Q_UINT32 d,
-                       Q_UINT32 x, Q_UINT32  s, Q_UINT32 ac )
+void TQMD5::FF ( TQ_UINT32& a, TQ_UINT32 b, TQ_UINT32 c, TQ_UINT32 d,
+                       TQ_UINT32 x, TQ_UINT32  s, TQ_UINT32 ac )
 {
     a += F(b, c, d) + x + ac;
     a = rotate_left (a, s) +b;
 }
 
-void QMD5::GG ( Q_UINT32& a, Q_UINT32 b, Q_UINT32 c, Q_UINT32 d,
-                 Q_UINT32 x, Q_UINT32 s, Q_UINT32 ac)
+void TQMD5::GG ( TQ_UINT32& a, TQ_UINT32 b, TQ_UINT32 c, TQ_UINT32 d,
+                 TQ_UINT32 x, TQ_UINT32 s, TQ_UINT32 ac)
 {
     a += G(b, c, d) + x + ac;
     a = rotate_left (a, s) +b;
 }
 
-void QMD5::HH ( Q_UINT32& a, Q_UINT32 b, Q_UINT32 c, Q_UINT32 d,
-                 Q_UINT32 x, Q_UINT32 s, Q_UINT32 ac )
+void TQMD5::HH ( TQ_UINT32& a, TQ_UINT32 b, TQ_UINT32 c, TQ_UINT32 d,
+                 TQ_UINT32 x, TQ_UINT32 s, TQ_UINT32 ac )
 {
     a += H(b, c, d) + x + ac;
     a = rotate_left (a, s) +b;
 }
 
-void QMD5::II ( Q_UINT32& a, Q_UINT32 b, Q_UINT32 c, Q_UINT32 d,
-                 Q_UINT32 x, Q_UINT32 s, Q_UINT32 ac )
+void TQMD5::II ( TQ_UINT32& a, TQ_UINT32 b, TQ_UINT32 c, TQ_UINT32 d,
+                 TQ_UINT32 x, TQ_UINT32 s, TQ_UINT32 ac )
 {
     a += I(b, c, d) + x + ac;
     a = rotate_left (a, s) +b;
 }
 
 
-void QMD5::encode ( unsigned char* output, Q_UINT32 *in, Q_UINT32 len )
+void TQMD5::encode ( unsigned char* output, TQ_UINT32 *in, TQ_UINT32 len )
 {
 #if !defined(WORDS_BIGENDIAN)
     memcpy(output, in, len);
 
 #else
-    Q_UINT32 i, j;
+    TQ_UINT32 i, j;
     for (i = 0, j = 0; j < len; i++, j += 4)
     {
-        output[j]   = static_cast<Q_UINT8>((in[i] & 0xff));
-        output[j+1] = static_cast<Q_UINT8>(((in[i] >> 8) & 0xff));
-        output[j+2] = static_cast<Q_UINT8>(((in[i] >> 16) & 0xff));
-        output[j+3] = static_cast<Q_UINT8>(((in[i] >> 24) & 0xff));
+        output[j]   = static_cast<TQ_UINT8>((in[i] & 0xff));
+        output[j+1] = static_cast<TQ_UINT8>(((in[i] >> 8) & 0xff));
+        output[j+2] = static_cast<TQ_UINT8>(((in[i] >> 16) & 0xff));
+        output[j+3] = static_cast<TQ_UINT8>(((in[i] >> 24) & 0xff));
     }
 #endif
 }
 
-// Decodes in (Q_UINT8) into output (Q_UINT32). Assumes len is a
+// Decodes in (TQ_UINT8) into output (TQ_UINT32). Assumes len is a
 // multiple of 4.
-void QMD5::decode (Q_UINT32 *output, const unsigned char* in, Q_UINT32 len)
+void TQMD5::decode (TQ_UINT32 *output, const unsigned char* in, TQ_UINT32 len)
 {
 #if !defined(WORDS_BIGENDIAN)
     memcpy(output, in, len);
 
 #else
-    Q_UINT32 i, j;
+    TQ_UINT32 i, j;
     for (i = 0, j = 0; j < len; i++, j += 4)
-        output[i] = static_cast<Q_UINT32>(in[j]) |
-                    (static_cast<Q_UINT32>(in[j+1]) << 8)  |
-                    (static_cast<Q_UINT32>(in[j+2]) << 16) |
-                    (static_cast<Q_UINT32>(in[j+3]) << 24);
+        output[i] = static_cast<TQ_UINT32>(in[j]) |
+                    (static_cast<TQ_UINT32>(in[j+1]) << 8)  |
+                    (static_cast<TQ_UINT32>(in[j+2]) << 16) |
+                    (static_cast<TQ_UINT32>(in[j+3]) << 24);
 #endif
 }

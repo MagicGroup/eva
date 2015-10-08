@@ -22,8 +22,8 @@
 #define EVA_DCOP_CONTACTS_INTERFACE_H
 
 #include <dcopobject.h>
-#include <qstring.h>
-#include <qstringlist.h>
+#include <ntqstring.h>
+#include <ntqstringlist.h>
 
 class EvaDCOPContactsInterface : virtual public DCOPObject
 {
@@ -31,30 +31,30 @@ class EvaDCOPContactsInterface : virtual public DCOPObject
 	k_dcop:
 
 	virtual int numFriends() = 0;
-	virtual QStringList friends() = 0;
+	virtual TQStringList friends() = 0;
 	virtual bool hasFriend(unsigned int id) = 0;
-	virtual QString nickOf(unsigned int id) = 0;
-	virtual QString faceOf(unsigned int id, bool isOff) = 0;
+	virtual TQString nickOf(unsigned int id) = 0;
+	virtual TQString faceOf(unsigned int id, bool isOff) = 0;
 	virtual int genderOf(unsigned int id) = 0;
 	virtual int levelOf(unsigned int id) = 0;
-	virtual QString signatureOf(unsigned int) = 0;
+	virtual TQString signatureOf(unsigned int) = 0;
 	virtual int numGroups() = 0;
-	virtual QString groupName(int index) = 0;
+	virtual TQString groupName(int index) = 0;
 	virtual int group(unsigned int id) = 0;
 	virtual int numQuns() = 0;
-	virtual QStringList Quns() = 0;
-	virtual QString QunName(unsigned int ext) = 0;
-	virtual QString QunNotice(unsigned int ext) = 0;
-	virtual QString QunDescription(unsigned int ext) = 0;
+	virtual TQStringList Quns() = 0;
+	virtual TQString QunName(unsigned int ext) = 0;
+	virtual TQString QunNotice(unsigned int ext) = 0;
+	virtual TQString QunDescription(unsigned int ext) = 0;
 	virtual int numQunMembers(unsigned int ext) = 0;
-	virtual QStringList QunMembers(unsigned int ext) = 0;
-	virtual QString QunMemberNick(unsigned int ext, unsigned int id) = 0;
-	virtual QString QunMemberFace(unsigned int ext, unsigned int id, bool isOff) = 0;
+	virtual TQStringList QunMembers(unsigned int ext) = 0;
+	virtual TQString QunMemberNick(unsigned int ext, unsigned int id) = 0;
+	virtual TQString QunMemberFace(unsigned int ext, unsigned int id, bool isOff) = 0;
 	virtual unsigned int myQQ() = 0;
 	virtual int onlineStatus(unsigned int id) = 0;
-	virtual QString currentLoginIP() = 0;
-	virtual QString lastLoginIP() = 0;
-	virtual QString lastLoginTime() = 0; // format in yyyy-MM-dd hh:mm:ss
+	virtual TQString currentLoginIP() = 0;
+	virtual TQString lastLoginIP() = 0;
+	virtual TQString lastLoginTime() = 0; // format in yyyy-MM-dd hh:mm:ss
 };
 
 #endif // EVA_DCOP_CONTACTS_INTERFACE_H

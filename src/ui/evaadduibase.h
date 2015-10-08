@@ -21,64 +21,64 @@
 #ifndef EVAADDUIBASE_H
 #define EVAADDUIBASE_H
 
-#include <qvariant.h>
-#include <qwidget.h>
+#include <ntqvariant.h>
+#include <ntqwidget.h>
 
 
-class QVBoxLayout;
-class QHBoxLayout;
-class QGridLayout;
-class QSpacerItem;
-class QLabel;
-class QFrame;
-class QToolButton;
-class QComboBox;
-class QLineEdit;
-class QCheckBox;
-class QPushButton;
+class TQVBoxLayout;
+class TQHBoxLayout;
+class TQGridLayout;
+class TQSpacerItem;
+class TQLabel;
+class TQFrame;
+class TQToolButton;
+class TQComboBox;
+class TQLineEdit;
+class TQCheckBox;
+class TQPushButton;
 
-class EvaAddUIBase : public QWidget
+class EvaAddUIBase : public TQWidget
 {
     Q_OBJECT
 
 public:
-    EvaAddUIBase( QWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
+    EvaAddUIBase( TQWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
     ~EvaAddUIBase();
 
-    QLabel* lblTip;
-    QFrame* frame3;
-    QLabel* lblTopic;
-    QToolButton* tbtnFace;
-    QLabel* lblGroup;
-    QComboBox* cbbGroups;
-    QFrame* fraVeriGraphic;
-    QLabel* lblVeriCode;
-    QLineEdit* leCode;
-    QLabel* lblCodeGraphic;
-    QToolButton* btnRefreshCode;
-    QFrame* fraQuestion;
-    QLabel* lblQuestion;
-    QLabel* lblAnswer;
-    QLabel* lblQuesContents;
-    QLineEdit* leAnswer;
-    QLineEdit* leMessage;
-    QCheckBox* chbReverse;
-    QPushButton* btnOk;
-    QPushButton* btnCancel;
+    TQLabel* lblTip;
+    TQFrame* frame3;
+    TQLabel* lblTopic;
+    TQToolButton* tbtnFace;
+    TQLabel* lblGroup;
+    TQComboBox* cbbGroups;
+    TQFrame* fraVeriGraphic;
+    TQLabel* lblVeriCode;
+    TQLineEdit* leCode;
+    TQLabel* lblCodeGraphic;
+    TQToolButton* btnRefreshCode;
+    TQFrame* fraQuestion;
+    TQLabel* lblQuestion;
+    TQLabel* lblAnswer;
+    TQLabel* lblQuesContents;
+    TQLineEdit* leAnswer;
+    TQLineEdit* leMessage;
+    TQCheckBox* chbReverse;
+    TQPushButton* btnOk;
+    TQPushButton* btnCancel;
 
 protected:
-    QVBoxLayout* EvaAddUIBaseLayout;
-    QVBoxLayout* frame3Layout;
-    QHBoxLayout* layout17;
-    QHBoxLayout* layout13;
-    QSpacerItem* spacer1;
-    QGridLayout* fraVeriGraphicLayout;
-    QHBoxLayout* layout14;
-    QHBoxLayout* fraQuestionLayout;
-    QVBoxLayout* layout12;
-    QVBoxLayout* layout13_2;
-    QHBoxLayout* layout13_3;
-    QSpacerItem* spacer2;
+    TQVBoxLayout* EvaAddUIBaseLayout;
+    TQVBoxLayout* frame3Layout;
+    TQHBoxLayout* layout17;
+    TQHBoxLayout* layout13;
+    TQSpacerItem* spacer1;
+    TQGridLayout* fraVeriGraphicLayout;
+    TQHBoxLayout* layout14;
+    TQHBoxLayout* fraQuestionLayout;
+    TQVBoxLayout* layout12;
+    TQVBoxLayout* layout13_2;
+    TQHBoxLayout* layout13_3;
+    TQSpacerItem* spacer2;
 
 protected slots:
     virtual void languageChange();

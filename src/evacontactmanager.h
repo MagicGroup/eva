@@ -60,7 +60,7 @@ class EvaGetLevelReplyPacket;
  * 
  */
 
-class EvaContactManager// : public QObject
+class EvaContactManager// : public TQObject
 {
 public:
 	EvaContactManager();
@@ -124,7 +124,7 @@ private:
 
 	ContactInfo m_ContactInfo; //!< used for fetching contact information
 	
-	void notifyEvent(int eId, const QString &msg = QString::null, EPARAM param = 0);
+	void notifyEvent(int eId, const TQString &msg = TQString::null, EPARAM param = 0);
 	
 	// we should ensure the word consistency used in Eva
 	// later on, we will change FriendList to Contacts or ContactList

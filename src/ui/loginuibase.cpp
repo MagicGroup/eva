@@ -20,163 +20,163 @@
 
 #include "loginuibase.h"
 
-#include <qvariant.h>
-#include <qpushbutton.h>
-#include <qtoolbutton.h>
-#include <qgroupbox.h>
-#include <qlabel.h>
-#include <qcombobox.h>
-#include <qlineedit.h>
-#include <qcheckbox.h>
-#include <qframe.h>
-#include <qlayout.h>
-#include <qtooltip.h>
-#include <qwhatsthis.h>
-#include <klocale.h>
+#include <ntqvariant.h>
+#include <ntqpushbutton.h>
+#include <ntqtoolbutton.h>
+#include <ntqgroupbox.h>
+#include <ntqlabel.h>
+#include <ntqcombobox.h>
+#include <ntqlineedit.h>
+#include <ntqcheckbox.h>
+#include <ntqframe.h>
+#include <ntqlayout.h>
+#include <ntqtooltip.h>
+#include <ntqwhatsthis.h>
+#include <tdelocale.h>
 
-LoginUIBase::LoginUIBase( QWidget* parent, const char* name, bool modal, WFlags fl )
-    : QDialog( parent, name, modal, fl )
+LoginUIBase::LoginUIBase( TQWidget* parent, const char* name, bool modal, WFlags fl )
+    : TQDialog( parent, name, modal, fl )
 {
     if ( !name )
 	setName( "frmLogin" );
-    setSizePolicy( QSizePolicy( (QSizePolicy::SizeType)5, (QSizePolicy::SizeType)5, 0, 0, sizePolicy().hasHeightForWidth() ) );
+    setSizePolicy( TQSizePolicy( (TQSizePolicy::SizeType)5, (TQSizePolicy::SizeType)5, 0, 0, sizePolicy().hasHeightForWidth() ) );
     setSizeGripEnabled( FALSE );
 
-    cancelBtn = new QPushButton( this, "cancelBtn" );
-    cancelBtn->setGeometry( QRect( 210, 170, 70, 23 ) );
+    cancelBtn = new TQPushButton( this, "cancelBtn" );
+    cancelBtn->setGeometry( TQRect( 210, 170, 70, 23 ) );
 
-    tbNetSetup = new QToolButton( this, "tbNetSetup" );
-    tbNetSetup->setGeometry( QRect( 9, 170, 51, 23 ) );
-    tbNetSetup->setCursor( QCursor( 13 ) );
+    tbNetSetup = new TQToolButton( this, "tbNetSetup" );
+    tbNetSetup->setGeometry( TQRect( 9, 170, 51, 23 ) );
+    tbNetSetup->setCursor( TQCursor( 13 ) );
     tbNetSetup->setToggleButton( TRUE );
     tbNetSetup->setAutoRepeat( TRUE );
     tbNetSetup->setAutoRaise( TRUE );
 
-    groupBox1 = new QGroupBox( this, "groupBox1" );
-    groupBox1->setGeometry( QRect( 21, 51, 250, 115 ) );
-    groupBox1->setColumnLayout(0, Qt::Vertical );
+    groupBox1 = new TQGroupBox( this, "groupBox1" );
+    groupBox1->setGeometry( TQRect( 21, 51, 250, 115 ) );
+    groupBox1->setColumnLayout(0, TQt::Vertical );
     groupBox1->layout()->setSpacing( 6 );
     groupBox1->layout()->setMargin( 11 );
-    groupBox1Layout = new QGridLayout( groupBox1->layout() );
-    groupBox1Layout->setAlignment( Qt::AlignTop );
+    groupBox1Layout = new TQGridLayout( groupBox1->layout() );
+    groupBox1Layout->setAlignment( TQt::AlignTop );
 
-    layout14 = new QHBoxLayout( 0, 0, 6, "layout14"); 
-    spacer3 = new QSpacerItem( 21, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
+    layout14 = new TQHBoxLayout( 0, 0, 6, "layout14"); 
+    spacer3 = new TQSpacerItem( 21, 20, TQSizePolicy::Expanding, TQSizePolicy::Minimum );
     layout14->addItem( spacer3 );
 
-    layout9 = new QVBoxLayout( 0, 0, 6, "layout9"); 
+    layout9 = new TQVBoxLayout( 0, 0, 6, "layout9"); 
 
-    layout8 = new QHBoxLayout( 0, 0, 6, "layout8"); 
+    layout8 = new TQHBoxLayout( 0, 0, 6, "layout8"); 
 
-    layout7 = new QVBoxLayout( 0, 0, 6, "layout7"); 
+    layout7 = new TQVBoxLayout( 0, 0, 6, "layout7"); 
 
-    textLabel1 = new QLabel( groupBox1, "textLabel1" );
+    textLabel1 = new TQLabel( groupBox1, "textLabel1" );
     layout7->addWidget( textLabel1 );
 
-    textLabel2 = new QLabel( groupBox1, "textLabel2" );
+    textLabel2 = new TQLabel( groupBox1, "textLabel2" );
     layout7->addWidget( textLabel2 );
     layout8->addLayout( layout7 );
 
-    layout6 = new QVBoxLayout( 0, 0, 6, "layout6"); 
+    layout6 = new TQVBoxLayout( 0, 0, 6, "layout6"); 
 
-    cbQQ = new QComboBox( FALSE, groupBox1, "cbQQ" );
+    cbQQ = new TQComboBox( FALSE, groupBox1, "cbQQ" );
     cbQQ->setEditable( TRUE );
     layout6->addWidget( cbQQ );
 
-    lePwd = new QLineEdit( groupBox1, "lePwd" );
-    lePwd->setEchoMode( QLineEdit::Password );
+    lePwd = new TQLineEdit( groupBox1, "lePwd" );
+    lePwd->setEchoMode( TQLineEdit::Password );
     layout6->addWidget( lePwd );
     layout8->addLayout( layout6 );
     layout9->addLayout( layout8 );
 
-    layout1 = new QHBoxLayout( 0, 0, 6, "layout1"); 
-    spacer1 = new QSpacerItem( 41, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
+    layout1 = new TQHBoxLayout( 0, 0, 6, "layout1"); 
+    spacer1 = new TQSpacerItem( 41, 20, TQSizePolicy::Expanding, TQSizePolicy::Minimum );
     layout1->addItem( spacer1 );
 
-    chbRecordPwd = new QCheckBox( groupBox1, "chbRecordPwd" );
+    chbRecordPwd = new TQCheckBox( groupBox1, "chbRecordPwd" );
     layout1->addWidget( chbRecordPwd );
 
-    chbLoginMode = new QCheckBox( groupBox1, "chbLoginMode" );
+    chbLoginMode = new TQCheckBox( groupBox1, "chbLoginMode" );
     layout1->addWidget( chbLoginMode );
     layout9->addLayout( layout1 );
     layout14->addLayout( layout9 );
-    spacer2 = new QSpacerItem( 20, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
+    spacer2 = new TQSpacerItem( 20, 20, TQSizePolicy::Expanding, TQSizePolicy::Minimum );
     layout14->addItem( spacer2 );
 
     groupBox1Layout->addLayout( layout14, 0, 0 );
 
-    line1 = new QFrame( this, "line1" );
-    line1->setGeometry( QRect( 31, 204, 200, 16 ) );
-    line1->setFrameShape( QFrame::HLine );
-    line1->setFrameShadow( QFrame::Sunken );
-    line1->setFrameShape( QFrame::HLine );
+    line1 = new TQFrame( this, "line1" );
+    line1->setGeometry( TQRect( 31, 204, 200, 16 ) );
+    line1->setFrameShape( TQFrame::HLine );
+    line1->setFrameShadow( TQFrame::Sunken );
+    line1->setFrameShape( TQFrame::HLine );
 
-    lblType = new QLabel( this, "lblType" );
-    lblType->setGeometry(QRect(20, 220, 106, 23));
+    lblType = new TQLabel( this, "lblType" );
+    lblType->setGeometry(TQRect(20, 220, 106, 23));
 
-    cbbLoginType = new QComboBox( FALSE, this, "cbbLoginType" );
-    cbbLoginType->setGeometry(QRect(130, 220, 100, 23));
+    cbbLoginType = new TQComboBox( FALSE, this, "cbbLoginType" );
+    cbbLoginType->setGeometry(TQRect(130, 220, 100, 23));
 
-    loginBtn = new QPushButton( this, "loginBtn" );
-    loginBtn->setGeometry( QRect( 127, 170, 61, 23 ) );
+    loginBtn = new TQPushButton( this, "loginBtn" );
+    loginBtn->setGeometry( TQRect( 127, 170, 61, 23 ) );
     loginBtn->setDefault(true);
 
-    fraNetSetup = new QFrame( this, "fraNetSetup" );
-    fraNetSetup->setGeometry( QRect( 1, 252, 290, 76 ) );
-    fraNetSetup->setFrameShape( QFrame::StyledPanel );
-    fraNetSetup->setFrameShadow( QFrame::Raised );
-    fraNetSetupLayout = new QGridLayout( fraNetSetup, 1, 1, 11, 6, "fraNetSetupLayout"); 
+    fraNetSetup = new TQFrame( this, "fraNetSetup" );
+    fraNetSetup->setGeometry( TQRect( 1, 252, 290, 76 ) );
+    fraNetSetup->setFrameShape( TQFrame::StyledPanel );
+    fraNetSetup->setFrameShadow( TQFrame::Raised );
+    fraNetSetupLayout = new TQGridLayout( fraNetSetup, 1, 1, 11, 6, "fraNetSetupLayout"); 
 
-    layout13 = new QVBoxLayout( 0, 0, 6, "layout13"); 
+    layout13 = new TQVBoxLayout( 0, 0, 6, "layout13"); 
 
-    layout12 = new QHBoxLayout( 0, 0, 6, "layout12"); 
+    layout12 = new TQHBoxLayout( 0, 0, 6, "layout12"); 
 
-    tlProxyServer = new QLabel( fraNetSetup, "tlProxyServer" );
+    tlProxyServer = new TQLabel( fraNetSetup, "tlProxyServer" );
     layout12->addWidget( tlProxyServer );
 
-    leIP = new QLineEdit( fraNetSetup, "leIP" );
-    leIP->setMaximumSize( QSize( 130, 32767 ) );
+    leIP = new TQLineEdit( fraNetSetup, "leIP" );
+    leIP->setMaximumSize( TQSize( 130, 32767 ) );
     layout12->addWidget( leIP );
 
-    tlProxyPort = new QLabel( fraNetSetup, "tlProxyPort" );
-    tlProxyPort->setSizePolicy( QSizePolicy( (QSizePolicy::SizeType)1, (QSizePolicy::SizeType)1, 0, 0, tlProxyPort->sizePolicy().hasHeightForWidth() ) );
+    tlProxyPort = new TQLabel( fraNetSetup, "tlProxyPort" );
+    tlProxyPort->setSizePolicy( TQSizePolicy( (TQSizePolicy::SizeType)1, (TQSizePolicy::SizeType)1, 0, 0, tlProxyPort->sizePolicy().hasHeightForWidth() ) );
     layout12->addWidget( tlProxyPort );
 
-    lePort = new QLineEdit( fraNetSetup, "lePort" );
-    lePort->setSizePolicy( QSizePolicy( (QSizePolicy::SizeType)7, (QSizePolicy::SizeType)5, 0, 0, lePort->sizePolicy().hasHeightForWidth() ) );
-    lePort->setMaximumSize( QSize( 35, 32767 ) );
+    lePort = new TQLineEdit( fraNetSetup, "lePort" );
+    lePort->setSizePolicy( TQSizePolicy( (TQSizePolicy::SizeType)7, (TQSizePolicy::SizeType)5, 0, 0, lePort->sizePolicy().hasHeightForWidth() ) );
+    lePort->setMaximumSize( TQSize( 35, 32767 ) );
     layout12->addWidget( lePort );
     layout13->addLayout( layout12 );
 
-    layout11 = new QHBoxLayout( 0, 0, 6, "layout11"); 
+    layout11 = new TQHBoxLayout( 0, 0, 6, "layout11"); 
 
-    tlUserName = new QLabel( fraNetSetup, "tlUserName" );
-    tlUserName->setSizePolicy( QSizePolicy( (QSizePolicy::SizeType)1, (QSizePolicy::SizeType)1, 0, 0, tlUserName->sizePolicy().hasHeightForWidth() ) );
+    tlUserName = new TQLabel( fraNetSetup, "tlUserName" );
+    tlUserName->setSizePolicy( TQSizePolicy( (TQSizePolicy::SizeType)1, (TQSizePolicy::SizeType)1, 0, 0, tlUserName->sizePolicy().hasHeightForWidth() ) );
     layout11->addWidget( tlUserName );
 
-    leUserName = new QLineEdit( fraNetSetup, "leUserName" );
-    leUserName->setMaximumSize( QSize( 75, 32767 ) );
+    leUserName = new TQLineEdit( fraNetSetup, "leUserName" );
+    leUserName->setMaximumSize( TQSize( 75, 32767 ) );
     layout11->addWidget( leUserName );
 
-    tlPassword = new QLabel( fraNetSetup, "tlPassword" );
-    tlPassword->setSizePolicy( QSizePolicy( (QSizePolicy::SizeType)1, (QSizePolicy::SizeType)1, 0, 0, tlPassword->sizePolicy().hasHeightForWidth() ) );
+    tlPassword = new TQLabel( fraNetSetup, "tlPassword" );
+    tlPassword->setSizePolicy( TQSizePolicy( (TQSizePolicy::SizeType)1, (TQSizePolicy::SizeType)1, 0, 0, tlPassword->sizePolicy().hasHeightForWidth() ) );
     layout11->addWidget( tlPassword );
 
-    lePassword = new QLineEdit( fraNetSetup, "lePassword" );
-    lePassword->setMaximumSize( QSize( 75, 32767 ) );
-    lePassword->setEchoMode( QLineEdit::Password );
+    lePassword = new TQLineEdit( fraNetSetup, "lePassword" );
+    lePassword->setMaximumSize( TQSize( 75, 32767 ) );
+    lePassword->setEchoMode( TQLineEdit::Password );
     layout11->addWidget( lePassword );
     layout13->addLayout( layout11 );
 
     fraNetSetupLayout->addLayout( layout13, 0, 0 );
 
-    lblLogo = new QLabel( this, "lblLogo" );
-    lblLogo->setGeometry( QRect( 0, 0, 292, 47 ) );
-    lblLogo->setSizePolicy( QSizePolicy( (QSizePolicy::SizeType)0, (QSizePolicy::SizeType)0, 0, 0, lblLogo->sizePolicy().hasHeightForWidth() ) );
-    lblLogo->setMaximumSize( QSize( 345, 32767 ) );
+    lblLogo = new TQLabel( this, "lblLogo" );
+    lblLogo->setGeometry( TQRect( 0, 0, 292, 47 ) );
+    lblLogo->setSizePolicy( TQSizePolicy( (TQSizePolicy::SizeType)0, (TQSizePolicy::SizeType)0, 0, 0, lblLogo->sizePolicy().hasHeightForWidth() ) );
+    lblLogo->setMaximumSize( TQSize( 345, 32767 ) );
     lblLogo->setScaledContents( TRUE );
     languageChange();
-    resize( QSize(292, 333).expandedTo(minimumSizeHint()) );
+    resize( TQSize(292, 333).expandedTo(minimumSizeHint()) );
     clearWState( WState_Polished );
 
     // signals and slots connections
@@ -213,12 +213,12 @@ void LoginUIBase::languageChange()
 
 void LoginUIBase::loginClickSlot()
 {
-    qWarning( "LoginUIBase::loginClickSlot(): Not implemented yet" );
+    tqWarning( "LoginUIBase::loginClickSlot(): Not implemented yet" );
 }
 
 void LoginUIBase::cancelClickSlot()
 {
-    qWarning( "LoginUIBase::cancelClickSlot(): Not implemented yet" );
+    tqWarning( "LoginUIBase::cancelClickSlot(): Not implemented yet" );
 }
 
 

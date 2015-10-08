@@ -20,59 +20,59 @@
 
 #ifndef EVANOTIFYUIBASE_H
 #define EVANOTIFYUIBASE_H
-#include <qvariant.h>
-#include <qwidget.h>
+#include <ntqvariant.h>
+#include <ntqwidget.h>
 
-class QVBoxLayout;
-class QHBoxLayout;
-class QGridLayout;
-class QSpacerItem;
-class QGroupBox;
-class QLabel;
-class QToolButton;
-class QWidgetStack;
-class QTextEdit;
-class QPushButton;
+class TQVBoxLayout;
+class TQHBoxLayout;
+class TQGridLayout;
+class TQSpacerItem;
+class TQGroupBox;
+class TQLabel;
+class TQToolButton;
+class TQWidgetStack;
+class TQTextEdit;
+class TQPushButton;
 
-class EvaNotifyUIBase : public QWidget
+class EvaNotifyUIBase : public TQWidget
 {
     Q_OBJECT
 public:
-	EvaNotifyUIBase( QWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
+	EvaNotifyUIBase( TQWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
 	~EvaNotifyUIBase();
 	
-	QGroupBox* gbFrom;
-	QLabel* textLabel1;
-	QLabel* tlQQ;
-	QLabel* textLabel2;
-	QLabel* tlNick;
-	QLabel* textLabel3;
-	QToolButton* tbDetails;
-	QGroupBox* gbMain;
-	QWidgetStack* wsMain;
-	QWidget* WStackPage;
-	QLabel* tlP0Tip;
-	QWidget* WStackPage_2;
-	QLabel* tlP1Tip;
-	QTextEdit* teP1Msg;
-	QPushButton* pbApprove;
-	QPushButton* pbReject;
-	QPushButton* pbAdd;
-	QPushButton* pbClose;
+	TQGroupBox* gbFrom;
+	TQLabel* textLabel1;
+	TQLabel* tlQQ;
+	TQLabel* textLabel2;
+	TQLabel* tlNick;
+	TQLabel* textLabel3;
+	TQToolButton* tbDetails;
+	TQGroupBox* gbMain;
+	TQWidgetStack* wsMain;
+	TQWidget* WStackPage;
+	TQLabel* tlP0Tip;
+	TQWidget* WStackPage_2;
+	TQLabel* tlP1Tip;
+	TQTextEdit* teP1Msg;
+	TQPushButton* pbApprove;
+	TQPushButton* pbReject;
+	TQPushButton* pbAdd;
+	TQPushButton* pbClose;
 
 protected:
-	QGridLayout* EvaNotifyUIBaseLayout;
-	QVBoxLayout* layout62;
-	QGridLayout* gbFromLayout;
-	QHBoxLayout* layout49;
-	QSpacerItem* spacer14;
-	QSpacerItem* spacer13;
-	QGridLayout* gbMainLayout;
-	QGridLayout* WStackPageLayout;
-	QGridLayout* WStackPageLayout_2;
-	QHBoxLayout* layout54;
-	QHBoxLayout* layout52;
-	QSpacerItem* spacer15;
+	TQGridLayout* EvaNotifyUIBaseLayout;
+	TQVBoxLayout* layout62;
+	TQGridLayout* gbFromLayout;
+	TQHBoxLayout* layout49;
+	TQSpacerItem* spacer14;
+	TQSpacerItem* spacer13;
+	TQGridLayout* gbMainLayout;
+	TQGridLayout* WStackPageLayout;
+	TQGridLayout* WStackPageLayout_2;
+	TQHBoxLayout* layout54;
+	TQHBoxLayout* layout52;
+	TQSpacerItem* spacer15;
 
 protected slots:
 	virtual void languageChange();

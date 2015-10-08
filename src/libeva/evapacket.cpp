@@ -116,24 +116,24 @@ const int Packet::hashCode()
 void Packet::setSessionKey(const unsigned char *skey)
 {
 	if(!sessionKey)
-		sessionKey = new unsigned char[QQ_KEY_LENGTH];
-	memcpy(sessionKey, skey, QQ_KEY_LENGTH);
+		sessionKey = new unsigned char[TQQ_KEY_LENGTH];
+	memcpy(sessionKey, skey, TQQ_KEY_LENGTH);
 	//fprintf(stderr,"session key set!\n");
 }
 
 void Packet::setPasswordKey(const unsigned char* pkey)
 {
 	if(!passwordKey) 
-		passwordKey = new unsigned char[QQ_KEY_LENGTH];
-	memcpy(passwordKey, pkey, QQ_KEY_LENGTH);
+		passwordKey = new unsigned char[TQQ_KEY_LENGTH];
+	memcpy(passwordKey, pkey, TQQ_KEY_LENGTH);
 	//fprintf(stderr, "password key set!\n");
 }
 
 void Packet::setFileSessionKey(const unsigned char* fskey)
 {
 	if(!fileSessionKey) 
-		fileSessionKey = new unsigned char[QQ_KEY_LENGTH];
-	memcpy(fileSessionKey, fskey, QQ_KEY_LENGTH);
+		fileSessionKey = new unsigned char[TQQ_KEY_LENGTH];
+	memcpy(fileSessionKey, fskey, TQQ_KEY_LENGTH);
 	//fprintf(stderr, "file session key set!\n");
 }
 
@@ -158,7 +158,7 @@ void Packet::setClientKey(const unsigned char *ckey, const int length)
 void Packet::setFileAgentKey(const unsigned char *key)
 {
 	if(!fileAgentKey)
-		fileAgentKey = new unsigned char[QQ_KEY_LENGTH];
+		fileAgentKey = new unsigned char[TQQ_KEY_LENGTH];
 	memcpy(fileAgentKey, key, 16);
 //	fprintf(stderr, "file agent key set!\n");
 // 	for(int i=0; i<16; i++){
@@ -222,7 +222,7 @@ void Packet::clearAllKeys()
 short OutPacket::startSequenceNum = 5;   // could be any random number
 
 OutPacket::OutPacket(const short command, const bool needAck) :
-	Packet(QQ_CLIENT_VERSION, command, ((startSequenceNum++)%0xffff))
+	Packet(TQQ_CLIENT_VERSION, command, ((startSequenceNum++)%0xffff))
 {
 	this->mNeedAck = needAck;
 	resendCount = 10;
@@ -250,7 +250,7 @@ bool OutPacket::fill(unsigned char *buf, int *len)
 	
 	memcpy(buf+headerLen, encrypted, encryptedLen);
 	
-	buf[ headerLen + encryptedLen ] = QQ_PACKET_TAIL;
+	buf[ headerLen + encryptedLen ] = TQQ_PACKET_TAIL;
 	(*len) = headerLen + encryptedLen + 1;
 	
 	if(!isUDP()) { 
@@ -284,7 +284,7 @@ int OutPacket::putHead(unsigned char *buf)
 		buf[0]=buf[1]=0;
 		pos+=2;
 	}
-	buf[pos++]=(unsigned char)QQ_PACKET_TAG;
+	buf[pos++]=(unsigned char)TQQ_PACKET_TAG;
 	
 	short tmp = htons(version);
 	memcpy(buf+pos, &tmp, 2);
@@ -309,15 +309,15 @@ void OutPacket::encryptBody(unsigned char *b, int length,
                             unsigned char *body, int *bodyLen) 
 {
 	switch(command){
-	case QQ_CMD_SERVER_DETECT:
-	case QQ_CMD_REQUEST_LOGIN_TOKEN:
-	case QQ_CMD_LOGIN:
+	case TQQ_CMD_SERVER_DETECT:
+	case TQQ_CMD_REQUEST_LOGIN_TOKEN:
+	case TQQ_CMD_LOGIN:
 		*bodyLen = length;
 		memcpy(body, b, length);
 		break;
-	case QQ_CMD_REQUEST_LOGIN_TOKEN_EX:{
-		memcpy(body, QQ_Client_Key, 16);
-		EvaCrypt::encrypt(b, length, (unsigned char*)(QQ_Client_Key), body+16, bodyLen);
+	case TQQ_CMD_REQUEST_LOGIN_TOKEN_EX:{
+		memcpy(body, TQQ_Client_Key, 16);
+		EvaCrypt::encrypt(b, length, (unsigned char*)(TQQ_Client_Key), body+16, bodyLen);
 		(*bodyLen) +=16;
 		}
 		break;
@@ -347,7 +347,7 @@ InPacket::InPacket( unsigned char *buf, int len)
 	bodyLength(0)
 {
 	decryptedBuf = (unsigned char*)malloc(MAX_PACKET_SIZE * sizeof(unsigned char));
-	decryptBody(buf, len - QQ_TAIL_LENGTH);
+	decryptBody(buf, len - TQQ_TAIL_LENGTH);
 }
 
 InPacket::InPacket(const InPacket &rhs)
@@ -383,7 +383,7 @@ void InPacket::decryptBody(unsigned char * buf, int len)
 	unsigned char * passwordKey = getPasswordKey();
 	unsigned char * sessionKey = getSessionKey();
 	
-/*	if(command == QQ_CMD_REQUEST_LOGIN_TOKEN ){
+/*	if(command == TQQ_CMD_REQUEST_LOGIN_TOKEN ){
 		memcpy(decryptedBuf, buf, len);
 		bodyLength = len;
 		return;
@@ -394,13 +394,13 @@ void InPacket::decryptBody(unsigned char * buf, int len)
 		bodyLength = 0;
 		return;
 	}
-	if((command != QQ_CMD_LOGIN) && (sessionKey == NULL)) {     
+	if((command != TQQ_CMD_LOGIN) && (sessionKey == NULL)) {     
 		fprintf(stderr, "InPacket->decryptBody: session key not set yet, set decrypted length to 0\n");
 		command = -1;
 		bodyLength = 0;
 		return;
 	} 
-	if(command == QQ_CMD_LOGIN) {
+	if(command == TQQ_CMD_LOGIN) {
 		ret = EvaCrypt::decrypt(buf, len, passwordKey, decryptedBuf, &bodyLength);
 		if(ret == 0){
 			bodyLength = MAX_PACKET_SIZE;
@@ -427,19 +427,19 @@ void InPacket::decryptBody(unsigned char * buf, int len)
 */
 
 	switch(command){		
-	case QQ_CMD_REQUEST_LOGIN_TOKEN:
+	case TQQ_CMD_REQUEST_LOGIN_TOKEN:
 		memcpy(decryptedBuf, buf, len);
 		bodyLength = len;
 		ret = 1;
 		break;
-	case QQ_CMD_SERVER_DETECT:
-	case QQ_CMD_REQUEST_LOGIN_TOKEN_EX:
-		ret = EvaCrypt::decrypt(buf, len, (unsigned char *)(QQ_Client_Key), decryptedBuf, &bodyLength);
+	case TQQ_CMD_SERVER_DETECT:
+	case TQQ_CMD_REQUEST_LOGIN_TOKEN_EX:
+		ret = EvaCrypt::decrypt(buf, len, (unsigned char *)(TQQ_Client_Key), decryptedBuf, &bodyLength);
 		if(ret == 0){
 			fprintf(stderr, "InPacket->decryptBody: cannot decryt reply packet( command: 0x%2x\n", command);
 		}
 		break;
-	case QQ_CMD_LOGIN:
+	case TQQ_CMD_LOGIN:
 		if(passwordKey == NULL) {
 			fprintf(stderr, "InPacket->decryptBody: password key not set yet, set decrypted length to 0\n");
 			command = -1;

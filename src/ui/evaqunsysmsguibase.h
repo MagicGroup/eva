@@ -18,64 +18,64 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#ifndef EVAQUNSYSMSGUIBASE_H
-#define EVAQUNSYSMSGUIBASE_H
+#ifndef EVATQUNSYSMSGUIBASE_H
+#define EVATQUNSYSMSGUIBASE_H
 
-#include <qvariant.h>
-#include <qwidget.h>
+#include <ntqvariant.h>
+#include <ntqwidget.h>
 
-class QVBoxLayout;
-class QHBoxLayout;
-class QGridLayout;
-class QSpacerItem;
-class QFrame;
-class QToolButton;
-class QLabel;
-class QButtonGroup;
-class QRadioButton;
-class QLineEdit;
-class QCheckBox;
-class QPushButton;
+class TQVBoxLayout;
+class TQHBoxLayout;
+class TQGridLayout;
+class TQSpacerItem;
+class TQFrame;
+class TQToolButton;
+class TQLabel;
+class TQButtonGroup;
+class TQRadioButton;
+class TQLineEdit;
+class TQCheckBox;
+class TQPushButton;
 
-class EvaQunSysMsgUIBase : public QWidget
+class EvaQunSysMsgUIBase : public TQWidget
 {
     Q_OBJECT
 
 public:
-    EvaQunSysMsgUIBase( QWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
+    EvaQunSysMsgUIBase( TQWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
     ~EvaQunSysMsgUIBase();
 
-    QFrame* fraMain;
-    QToolButton* tbQQ;
-    QLabel* lblAction;
-    QToolButton* tbQun;
-    QLabel* lblMessage;
-    QButtonGroup* bgActions;
-    QRadioButton* rbtnAccept;
-    QRadioButton* rbtnReject;
-    QFrame* fraMessage;
-    QLineEdit* leMessage;
-    QCheckBox* chbRejectForever;
-    QPushButton* btnOk;
-    QPushButton* btnClose;
+    TQFrame* fraMain;
+    TQToolButton* tbQQ;
+    TQLabel* lblAction;
+    TQToolButton* tbQun;
+    TQLabel* lblMessage;
+    TQButtonGroup* bgActions;
+    TQRadioButton* rbtnAccept;
+    TQRadioButton* rbtnReject;
+    TQFrame* fraMessage;
+    TQLineEdit* leMessage;
+    TQCheckBox* chbRejectForever;
+    TQPushButton* btnOk;
+    TQPushButton* btnClose;
 
 protected:
-    QGridLayout* EvaQunSysMsgUIBaseLayout;
-    QVBoxLayout* layout12;
-    QVBoxLayout* fraMainLayout;
-    QVBoxLayout* layout6;
-    QHBoxLayout* layout5;
-    QSpacerItem* spacer3;
-    QVBoxLayout* bgActionsLayout;
-    QHBoxLayout* layout1;
-    QSpacerItem* spacer1;
-    QVBoxLayout* fraMessageLayout;
-    QHBoxLayout* layout10;
-    QSpacerItem* spacer2;
+    TQGridLayout* EvaQunSysMsgUIBaseLayout;
+    TQVBoxLayout* layout12;
+    TQVBoxLayout* fraMainLayout;
+    TQVBoxLayout* layout6;
+    TQHBoxLayout* layout5;
+    TQSpacerItem* spacer3;
+    TQVBoxLayout* bgActionsLayout;
+    TQHBoxLayout* layout1;
+    TQSpacerItem* spacer1;
+    TQVBoxLayout* fraMessageLayout;
+    TQHBoxLayout* layout10;
+    TQSpacerItem* spacer2;
 
 protected slots:
     virtual void languageChange();
 
 };
 
-#endif // EVAQUNSYSMSGUIBASE_H
+#endif // EVATQUNSYSMSGUIBASE_H

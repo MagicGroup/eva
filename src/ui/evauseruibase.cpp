@@ -20,18 +20,18 @@
  
 #include "evauseruibase.h"
 
-#include <qvariant.h>
-#include <qpushbutton.h>
-#include <qlabel.h>
-#include <qtabwidget.h>
-#include <qwidget.h>
-#include <qlayout.h>
-#include <qtooltip.h>
-#include <qwhatsthis.h>
-#include <qtextedit.h>
-#include <qlineedit.h>
-#include <qcheckbox.h>
-#include <klocale.h>
+#include <ntqvariant.h>
+#include <ntqpushbutton.h>
+#include <ntqlabel.h>
+#include <ntqtabwidget.h>
+#include <ntqwidget.h>
+#include <ntqlayout.h>
+#include <ntqtooltip.h>
+#include <ntqwhatsthis.h>
+#include <ntqtextedit.h>
+#include <ntqlineedit.h>
+#include <ntqcheckbox.h>
+#include <tdelocale.h>
 
 /*
  *  Constructs a EvaUserUIBase as a child of 'parent', with the
@@ -40,73 +40,73 @@
  *  The dialog will by default be modeless, unless you set 'modal' to
  *  TRUE to construct a modal dialog.
  */
-EvaUserUIBase::EvaUserUIBase( QWidget* parent, const char* name, bool modal, WFlags fl )
-    : QDialog( parent, name, modal, fl )
+EvaUserUIBase::EvaUserUIBase( TQWidget* parent, const char* name, bool modal, WFlags fl )
+    : TQDialog( parent, name, modal, fl )
 {
     if ( !name )
 	setName( "EvaUserUIBase" );
-    setMinimumSize( QSize( 512, 360 ) );
-    setMaximumSize( QSize( 512, 360 ) );
+    setMinimumSize( TQSize( 512, 360 ) );
+    setMaximumSize( TQSize( 512, 360 ) );
 
-    pbUpdate = new QPushButton( this, "pbUpdate" );
-    pbUpdate->setGeometry( QRect( 330, 330, 69, 24 ) );
+    pbUpdate = new TQPushButton( this, "pbUpdate" );
+    pbUpdate->setGeometry( TQRect( 330, 330, 69, 24 ) );
 
-    pbClose = new QPushButton( this, "pbClose" );
-    pbClose->setGeometry( QRect( 430, 330, 69, 24 ) );
+    pbClose = new TQPushButton( this, "pbClose" );
+    pbClose->setGeometry( TQRect( 430, 330, 69, 24 ) );
 
-    lblText = new QLabel( this, "lblText" );
-    lblText->setGeometry( QRect( 10, 330, 200, 19 ) );
+    lblText = new TQLabel( this, "lblText" );
+    lblText->setGeometry( TQRect( 10, 330, 200, 19 ) );
 
-    twTabMain = new QTabWidget( this, "twTabMain" );
-    twTabMain->setGeometry( QRect( 5, 5, 501, 320 ) );
+    twTabMain = new TQTabWidget( this, "twTabMain" );
+    twTabMain->setGeometry( TQRect( 5, 5, 501, 320 ) );
     twTabMain->setMargin( 10 );
 
-    svMain = new QScrollView( twTabMain, "svMain" );
+    svMain = new TQScrollView( twTabMain, "svMain" );
     svMain->setStaticBackground ( TRUE );
-    svMain->setHScrollBarMode(QScrollView::AlwaysOff);
-    svMain->setFrameShape(QFrame::NoFrame);
+    svMain->setHScrollBarMode(TQScrollView::AlwaysOff);
+    svMain->setFrameShape(TQFrame::NoFrame);
     
     qwUserInfo = new EvaUserInfoWidget( svMain, "qwUserInfo");
     svMain->addChild( qwUserInfo );
     
-    twTabMain->insertTab( svMain, QString("") );
+    twTabMain->insertTab( svMain, TQString("") );
    
-    //QQShow Widget For TabWidget
-    tabQQShow = new QWidget( twTabMain, "tabQQShow" );
+    //TQQShow Widget For TabWidget
+    tabTQQShow = new TQWidget( twTabMain, "tabTQQShow" );
     ///////////////////////////////////////////////////////////////////////
-    //lblQQShowBar = new QLabel( tabQQShow, "lblQQShowBar" );
-    //lblQQShowBar->setGeometry( QRect( 0, 10, 480, 16 ) );
+    //lblTQQShowBar = new TQLabel( tabTQQShow, "lblTQQShowBar" );
+    //lblTQQShowBar->setGeometry( TQRect( 0, 10, 480, 16 ) );
     
-    QWidget* privateLayoutWidget = new QWidget( tabQQShow, "layout13" );
-    privateLayoutWidget->setGeometry( QRect( 10, -15, 350, 290 ) );
-    layout13 = new QGridLayout( privateLayoutWidget, 1, 1, 11, 6, "layout13"); 
+    TQWidget* privateLayoutWidget = new TQWidget( tabTQQShow, "layout13" );
+    privateLayoutWidget->setGeometry( TQRect( 10, -15, 350, 290 ) );
+    layout13 = new TQGridLayout( privateLayoutWidget, 1, 1, 11, 6, "layout13"); 
 
-    lblQQShow = new QLabel( privateLayoutWidget, "lblQQShow" );
-    lblQQShow->setMinimumSize( QSize( 147, 233 ) );
-    lblQQShow->setMaximumSize( QSize( 147, 233 ) );
-    lblQQShow->setFrameShape( QLabel::Box );
-    lblQQShow->setPaletteBackgroundColor( QColor( 255, 255, 255 ) );
-    lblQQShow->setScaledContents( FALSE );
-    lblQQShow->setAlignment( int( QLabel::AlignCenter ) );
+    lblTQQShow = new TQLabel( privateLayoutWidget, "lblTQQShow" );
+    lblTQQShow->setMinimumSize( TQSize( 147, 233 ) );
+    lblTQQShow->setMaximumSize( TQSize( 147, 233 ) );
+    lblTQQShow->setFrameShape( TQLabel::Box );
+    lblTQQShow->setPaletteBackgroundColor( TQColor( 255, 255, 255 ) );
+    lblTQQShow->setScaledContents( FALSE );
+    lblTQQShow->setAlignment( int( TQLabel::AlignCenter ) );
 
-    layout13->addWidget( lblQQShow, 0, 0 );
-    spacer6 = new QSpacerItem( 23, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
+    layout13->addWidget( lblTQQShow, 0, 0 );
+    spacer6 = new TQSpacerItem( 23, 20, TQSizePolicy::Expanding, TQSizePolicy::Minimum );
     layout13->addItem( spacer6, 0, 1 );
 
-    layout12 = new QGridLayout( 0, 1, 1, 0, 6, "layout12"); 
-    spacer5 = new QSpacerItem( 20, 80, QSizePolicy::Minimum, QSizePolicy::Expanding );
+    layout12 = new TQGridLayout( 0, 1, 1, 0, 6, "layout12"); 
+    spacer5 = new TQSpacerItem( 20, 80, TQSizePolicy::Minimum, TQSizePolicy::Expanding );
     layout12->addItem( spacer5, 4, 0 );
-    spacer7 = new QSpacerItem( 20, 42, QSizePolicy::Minimum, QSizePolicy::Expanding );
+    spacer7 = new TQSpacerItem( 20, 42, TQSizePolicy::Minimum, TQSizePolicy::Expanding );
     layout12->addItem( spacer7, 6, 0 );
-    spacer8 = new QSpacerItem( 20, 20, QSizePolicy::Minimum, QSizePolicy::Expanding );
+    spacer8 = new TQSpacerItem( 20, 20, TQSizePolicy::Minimum, TQSizePolicy::Expanding );
     layout12->addItem( spacer8, 0, 0 );
 
-    tbtnAlbum = new QToolButton( privateLayoutWidget, "tbtnAlbum" );
-    tbtnAlbum->setPaletteForegroundColor( QColor( 0, 0, 255 ) );
-    tbtnAlbum->setCursor( QCursor( 13 ) );
+    tbtnAlbum = new TQToolButton( privateLayoutWidget, "tbtnAlbum" );
+    tbtnAlbum->setPaletteForegroundColor( TQColor( 0, 0, 255 ) );
+    tbtnAlbum->setCursor( TQCursor( 13 ) );
     tbtnAlbum->setAutoRaise( TRUE );
     tbtnAlbum->setUsesTextLabel( TRUE );
-    tbtnAlbum->setTextPosition( QToolButton::BesideIcon );
+    tbtnAlbum->setTextPosition( TQToolButton::BesideIcon );
 
     layout12->addWidget( tbtnAlbum, 2, 0 );
 
@@ -114,148 +114,148 @@ EvaUserUIBase::EvaUserUIBase( QWidget* parent, const char* name, bool modal, WFl
 
     layout12->addWidget( kpbUpdateShow, 5, 0 );
 
-    tbtnShop = new QToolButton( privateLayoutWidget, "tbtnShop" );
-    tbtnShop->setPaletteForegroundColor( QColor( 0, 0, 255 ) );
-    tbtnShop->setCursor( QCursor( 13 ) );
+    tbtnShop = new TQToolButton( privateLayoutWidget, "tbtnShop" );
+    tbtnShop->setPaletteForegroundColor( TQColor( 0, 0, 255 ) );
+    tbtnShop->setCursor( TQCursor( 13 ) );
     tbtnShop->setAutoRaise( TRUE );
     tbtnShop->setUsesTextLabel( TRUE );
-    tbtnShop->setTextPosition( QToolButton::BesideIcon );
+    tbtnShop->setTextPosition( TQToolButton::BesideIcon );
 
 
     layout12->addWidget( tbtnShop, 1, 0 );
 
     layout13->addLayout( layout12, 0, 2 );
-    twTabMain->insertTab( tabQQShow, QString("") );
+    twTabMain->insertTab( tabTQQShow, TQString("") );
     ///////////////////////////////////////////////////////////////////////
     //Memo Widget
-    TabMemo = new QWidget( twTabMain, "TabMemo" );
-    TabMemoLayout = new QGridLayout( TabMemo, 1, 1, 11, 6, "TabMemoLayout"); 
-    spacer30 = new QSpacerItem( 20, 21, QSizePolicy::Minimum, QSizePolicy::Expanding );
+    TabMemo = new TQWidget( twTabMain, "TabMemo" );
+    TabMemoLayout = new TQGridLayout( TabMemo, 1, 1, 11, 6, "TabMemoLayout"); 
+    spacer30 = new TQSpacerItem( 20, 21, TQSizePolicy::Minimum, TQSizePolicy::Expanding );
     TabMemoLayout->addItem( spacer30, 1, 0 );
-    spacer29 = new QSpacerItem( 91, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
+    spacer29 = new TQSpacerItem( 91, 20, TQSizePolicy::Expanding, TQSizePolicy::Minimum );
     TabMemoLayout->addItem( spacer29, 0, 1 );
 
-    layout117 = new QVBoxLayout( 0, 0, 6, "layout117"); 
+    layout117 = new TQVBoxLayout( 0, 0, 6, "layout117"); 
 
-    layout100 = new QHBoxLayout( 0, 0, 6, "layout100"); 
+    layout100 = new TQHBoxLayout( 0, 0, 6, "layout100"); 
 
-    layout97 = new QVBoxLayout( 0, 0, 6, "layout97"); 
+    layout97 = new TQVBoxLayout( 0, 0, 6, "layout97"); 
 
-    lblMemoName = new QLabel( TabMemo, "lblMemoName" );
+    lblMemoName = new TQLabel( TabMemo, "lblMemoName" );
     layout97->addWidget( lblMemoName );
 
-    lblMemoMobile = new QLabel( TabMemo, "lblMemoMobile" );
+    lblMemoMobile = new TQLabel( TabMemo, "lblMemoMobile" );
     layout97->addWidget( lblMemoMobile );
 
-    lblMemoAddress = new QLabel( TabMemo, "lblMemoAddress" );
+    lblMemoAddress = new TQLabel( TabMemo, "lblMemoAddress" );
     layout97->addWidget( lblMemoAddress );
 
-    lblMemoEmail = new QLabel( TabMemo, "lblMemoEmail" );
+    lblMemoEmail = new TQLabel( TabMemo, "lblMemoEmail" );
     layout97->addWidget( lblMemoEmail );
     layout100->addLayout( layout97 );
 
-    layout99 = new QVBoxLayout( 0, 0, 6, "layout99"); 
+    layout99 = new TQVBoxLayout( 0, 0, 6, "layout99"); 
 
-    layout98 = new QHBoxLayout( 0, 0, 6, "layout98"); 
+    layout98 = new TQHBoxLayout( 0, 0, 6, "layout98"); 
 
-    layout80 = new QVBoxLayout( 0, 0, 6, "layout80"); 
+    layout80 = new TQVBoxLayout( 0, 0, 6, "layout80"); 
 
-    leMemoName = new QLineEdit( TabMemo, "leMemoName" );
-    leMemoName->setFrameShape( QLineEdit::Box );
-    leMemoName->setFrameShadow( QLineEdit::Plain );
+    leMemoName = new TQLineEdit( TabMemo, "leMemoName" );
+    leMemoName->setFrameShape( TQLineEdit::Box );
+    leMemoName->setFrameShadow( TQLineEdit::Plain );
     leMemoName->setLineWidth( 1 );
     layout80->addWidget( leMemoName );
 
-    leMemoMobile = new QLineEdit( TabMemo, "leMemoMobile" );
-    leMemoMobile->setFrameShape( QLineEdit::Box );
-    leMemoMobile->setFrameShadow( QLineEdit::Plain );
+    leMemoMobile = new TQLineEdit( TabMemo, "leMemoMobile" );
+    leMemoMobile->setFrameShape( TQLineEdit::Box );
+    leMemoMobile->setFrameShadow( TQLineEdit::Plain );
     leMemoMobile->setLineWidth( 1 );
     layout80->addWidget( leMemoMobile );
     layout98->addLayout( layout80 );
 
-    layout81 = new QVBoxLayout( 0, 0, 6, "layout81"); 
+    layout81 = new TQVBoxLayout( 0, 0, 6, "layout81"); 
 
-    lblMemoTelephone = new QLabel( TabMemo, "lblMemoTelephone" );
+    lblMemoTelephone = new TQLabel( TabMemo, "lblMemoTelephone" );
     layout81->addWidget( lblMemoTelephone );
 
-    lblMemoZipCode = new QLabel( TabMemo, "lblMemoZipCode" );
+    lblMemoZipCode = new TQLabel( TabMemo, "lblMemoZipCode" );
     layout81->addWidget( lblMemoZipCode );
     layout98->addLayout( layout81 );
 
-    layout82 = new QVBoxLayout( 0, 0, 6, "layout82"); 
+    layout82 = new TQVBoxLayout( 0, 0, 6, "layout82"); 
 
-    leMemoTelephone = new QLineEdit( TabMemo, "leMemoTelephone" );
-    leMemoTelephone->setFrameShape( QLineEdit::Box );
-    leMemoTelephone->setFrameShadow( QLineEdit::Plain );
+    leMemoTelephone = new TQLineEdit( TabMemo, "leMemoTelephone" );
+    leMemoTelephone->setFrameShape( TQLineEdit::Box );
+    leMemoTelephone->setFrameShadow( TQLineEdit::Plain );
     leMemoTelephone->setLineWidth( 1 );
     layout82->addWidget( leMemoTelephone );
 
-    leMemoZipCode = new QLineEdit( TabMemo, "leMemoZipCode" );
-    leMemoZipCode->setFrameShape( QLineEdit::Box );
-    leMemoZipCode->setFrameShadow( QLineEdit::Plain );
+    leMemoZipCode = new TQLineEdit( TabMemo, "leMemoZipCode" );
+    leMemoZipCode->setFrameShape( TQLineEdit::Box );
+    leMemoZipCode->setFrameShadow( TQLineEdit::Plain );
     leMemoZipCode->setLineWidth( 1 );
     layout82->addWidget( leMemoZipCode );
     layout98->addLayout( layout82 );
     layout99->addLayout( layout98 );
 
-    layout86 = new QVBoxLayout( 0, 0, 6, "layout86"); 
+    layout86 = new TQVBoxLayout( 0, 0, 6, "layout86"); 
 
-    leMemoAddress = new QLineEdit( TabMemo, "leMemoAddress" );
-    leMemoAddress->setFrameShape( QLineEdit::Box );
-    leMemoAddress->setFrameShadow( QLineEdit::Plain );
+    leMemoAddress = new TQLineEdit( TabMemo, "leMemoAddress" );
+    leMemoAddress->setFrameShape( TQLineEdit::Box );
+    leMemoAddress->setFrameShadow( TQLineEdit::Plain );
     leMemoAddress->setLineWidth( 1 );
     layout86->addWidget( leMemoAddress );
 
-    leMemoEmail = new QLineEdit( TabMemo, "leMemoEmail" );
-    leMemoEmail->setFrameShape( QLineEdit::Box );
-    leMemoEmail->setFrameShadow( QLineEdit::Plain );
+    leMemoEmail = new TQLineEdit( TabMemo, "leMemoEmail" );
+    leMemoEmail->setFrameShape( TQLineEdit::Box );
+    leMemoEmail->setFrameShadow( TQLineEdit::Plain );
     leMemoEmail->setLineWidth( 1 );
     layout86->addWidget( leMemoEmail );
     layout99->addLayout( layout86 );
     layout100->addLayout( layout99 );
     layout117->addLayout( layout100 );
 
-    layout112 = new QHBoxLayout( 0, 0, 6, "layout112"); 
+    layout112 = new TQHBoxLayout( 0, 0, 6, "layout112"); 
 
-    layout111 = new QVBoxLayout( 0, 0, 6, "layout111"); 
+    layout111 = new TQVBoxLayout( 0, 0, 6, "layout111"); 
 
-    lblMemoNote = new QLabel( TabMemo, "lblMemoNote" );
+    lblMemoNote = new TQLabel( TabMemo, "lblMemoNote" );
     layout111->addWidget( lblMemoNote );
-    spacer32 = new QSpacerItem( 20, 20, QSizePolicy::Minimum, QSizePolicy::Expanding );
+    spacer32 = new TQSpacerItem( 20, 20, TQSizePolicy::Minimum, TQSizePolicy::Expanding );
     layout111->addItem( spacer32 );
     layout112->addLayout( layout111 );
 
-    teMemoNote = new QTextEdit( TabMemo, "teMemoNote" );
-    teMemoNote->setMinimumSize( QSize( 0, 50 ) );
-    teMemoNote->setMaximumSize( QSize( 32767, 50 ) );
-    teMemoNote->setFrameShape( QTextEdit::Box );
-    teMemoNote->setFrameShadow( QTextEdit::Plain );
+    teMemoNote = new TQTextEdit( TabMemo, "teMemoNote" );
+    teMemoNote->setMinimumSize( TQSize( 0, 50 ) );
+    teMemoNote->setMaximumSize( TQSize( 32767, 50 ) );
+    teMemoNote->setFrameShape( TQTextEdit::Box );
+    teMemoNote->setFrameShadow( TQTextEdit::Plain );
     teMemoNote->setLineWidth( 1 );
     layout112->addWidget( teMemoNote );
     layout117->addLayout( layout112 );
-    spacer38 = new QSpacerItem( 20, 21, QSizePolicy::Minimum, QSizePolicy::Expanding );
+    spacer38 = new TQSpacerItem( 20, 21, TQSizePolicy::Minimum, TQSizePolicy::Expanding );
     layout117->addItem( spacer38 );
 
-    layout116 = new QHBoxLayout( 0, 0, 6, "layout116"); 
-    spacer34 = new QSpacerItem( 40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
+    layout116 = new TQHBoxLayout( 0, 0, 6, "layout116"); 
+    spacer34 = new TQSpacerItem( 40, 20, TQSizePolicy::Expanding, TQSizePolicy::Minimum );
     layout116->addItem( spacer34 );
 
-    chbAutoUploadMemo = new QCheckBox( TabMemo, "chbAutoUploadMemo" );
+    chbAutoUploadMemo = new TQCheckBox( TabMemo, "chbAutoUploadMemo" );
     layout116->addWidget( chbAutoUploadMemo );
-    spacer33 = new QSpacerItem( 61, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
+    spacer33 = new TQSpacerItem( 61, 20, TQSizePolicy::Expanding, TQSizePolicy::Minimum );
     layout116->addItem( spacer33 );
 
-    pbDownloadMemo = new QPushButton( TabMemo, "pbDownloadMemo" );
+    pbDownloadMemo = new TQPushButton( TabMemo, "pbDownloadMemo" );
     layout116->addWidget( pbDownloadMemo );
     layout117->addLayout( layout116 );
 
     TabMemoLayout->addLayout( layout117, 0, 0 );
-    twTabMain->insertTab( TabMemo, QString("") );
+    twTabMain->insertTab( TabMemo, TQString("") );
 
     //////////////////////////////////////////////////////////////////////
     
     languageChange();
-    resize( QSize(512, 345).expandedTo(minimumSizeHint()) );
+    resize( TQSize(512, 345).expandedTo(minimumSizeHint()) );
     clearWState( WState_Polished );
 }
 
@@ -264,7 +264,7 @@ EvaUserUIBase::EvaUserUIBase( QWidget* parent, const char* name, bool modal, WFl
  */
 EvaUserUIBase::~EvaUserUIBase()
 {
-    // no need to delete child widgets, Qt does it all for us
+    // no need to delete child widgets, TQt does it all for us
 }
 
 /*
@@ -278,15 +278,15 @@ void EvaUserUIBase::languageChange()
     pbClose->setText( i18n( "Close" ) );
     lblText->setText( "<p align=\"center\"><font color=\"#00557f\"><b>" + i18n("Enjoy Eva, Enjoy Open Source!") + "</b></font></p>" );
     
-    //lblQQShowBar->setText( i18n( " QQ Show Bar" ) );
-    lblQQShow->setText( i18n( "QQ Show" ) );
+    //lblTQQShowBar->setText( i18n( " QQ Show Bar" ) );
+    lblTQQShow->setText( i18n( "QQ Show" ) );
     //tbtnHome->setTextLabel( i18n( "QQ home" ) );
     tbtnAlbum->setTextLabel( i18n( "check QQ Show album" ) );
     kpbUpdateShow->setText( i18n( "Update QQ Show" ) );
     tbtnShop->setTextLabel( i18n( "go to QQ Show shop" ) );
 
     twTabMain->changeTab( svMain, i18n( "User Info" ) );
-    twTabMain->changeTab( tabQQShow, i18n( "QQShow" ) );
+    twTabMain->changeTab( tabTQQShow, i18n( "TQQShow" ) );
     
     lblMemoName->setText( i18n( "Name:" ) );
     lblMemoMobile->setText( i18n( "Mobile:" ) );

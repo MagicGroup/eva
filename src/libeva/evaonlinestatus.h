@@ -121,13 +121,13 @@ public:
 	const unsigned char *getUnknownKey() const;
 	
 	// this is not that useful, just means the message's receiver should hold this account
-	const unsigned int getMyQQ() const { return myQQNum;}
+	const unsigned int getMyQQ() const { return myTQQNum;}
 	FriendChangeStatusPacket &operator=(const FriendChangeStatusPacket &rhs);
 protected:
 	void parseBody();
 private:
 	FriendStatus *status;
-	unsigned int myQQNum;
+	unsigned int myTQQNum;
 
 };
 

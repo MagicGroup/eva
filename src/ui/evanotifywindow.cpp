@@ -19,26 +19,26 @@
  ***************************************************************************/
 #include "evanotifywindow.h"
 
-#include <qlabel.h>
-#include <qpushbutton.h>
-#include <qwidgetstack.h>
-#include <qgroupbox.h>
-#include <qtoolbutton.h>
-#include <qtextedit.h>
-#include <qtimer.h>
-#include <klocale.h>
+#include <ntqlabel.h>
+#include <ntqpushbutton.h>
+#include <ntqwidgetstack.h>
+#include <ntqgroupbox.h>
+#include <ntqtoolbutton.h>
+#include <ntqtextedit.h>
+#include <ntqtimer.h>
+#include <tdelocale.h>
   
-EvaNotifyWindow::EvaNotifyWindow(QWidget* parent , const char* name, WFlags fl)
+EvaNotifyWindow::EvaNotifyWindow(TQWidget* parent , const char* name, WFlags fl)
 	: EvaNotifyUIBase(parent, name, fl)
 {
 	needAuth = false;
 	isQun = false;
 	mInternalQunID = 0;
-	QObject::connect( tbDetails, SIGNAL( clicked() ), this, SLOT( slotTbDetailsClicked() ) );
-	QObject::connect( pbApprove, SIGNAL( clicked() ), this, SLOT( slotPbApproveClicked() ) );
-	QObject::connect( pbReject, SIGNAL( clicked() ), this, SLOT( slotPbRejectClicked() ) );
-	QObject::connect( pbAdd, SIGNAL( clicked() ), this, SLOT( slotPbAddClicked() ) );
-	QObject::connect( pbClose, SIGNAL( clicked() ), this, SLOT( close() ) );
+	TQObject::connect( tbDetails, SIGNAL( clicked() ), this, SLOT( slotTbDetailsClicked() ) );
+	TQObject::connect( pbApprove, SIGNAL( clicked() ), this, SLOT( slotPbApproveClicked() ) );
+	TQObject::connect( pbReject, SIGNAL( clicked() ), this, SLOT( slotPbRejectClicked() ) );
+	TQObject::connect( pbAdd, SIGNAL( clicked() ), this, SLOT( slotPbAddClicked() ) );
+	TQObject::connect( pbClose, SIGNAL( clicked() ), this, SLOT( close() ) );
 }
 
 EvaNotifyWindow::~EvaNotifyWindow()
@@ -102,10 +102,10 @@ void EvaNotifyWindow::slotAddBuddySentToServer(bool ok)
 void EvaNotifyWindow::slotMeBeenAdded(int from)
 {
 	gbMain->setTitle(i18n("Contents"));
-	tlQQ->setText(QString::number(from));
+	tlQQ->setText(TQString::number(from));
 	tlNick->setText(tlQQ->text());
     
-	QString msg = QString(i18n("You are added by %1")).arg(from);
+	TQString msg = TQString(i18n("You are added by %1")).arg(from);
 	tlP0Tip->setText(msg);
 	wsMain->raiseWidget(0);
 	pbApprove->setEnabled(false);
@@ -114,13 +114,13 @@ void EvaNotifyWindow::slotMeBeenAdded(int from)
 	pbClose->setEnabled(true);
 }
 
-void EvaNotifyWindow::slotAddMeRequest(int from, QString message)
+void EvaNotifyWindow::slotAddMeRequest(int from, TQString message)
 {
 	gbMain->setTitle(i18n("Contents"));
-	tlQQ->setText(QString::number(from));
+	tlQQ->setText(TQString::number(from));
 	tlNick->setText(tlQQ->text());
 
-	QString msg = QString(i18n("%1 is waiting for your approve.")).arg(from);
+	TQString msg = TQString(i18n("%1 is waiting for your approve.")).arg(from);
 	if(!message.stripWhiteSpace().isEmpty()){
 		msg+= i18n("\nAdditional message")+": " + message;
 	}
@@ -135,10 +135,10 @@ void EvaNotifyWindow::slotAddMeRequest(int from, QString message)
 void EvaNotifyWindow::slotAddRequestApproved(int from)
 {
 	gbMain->setTitle(i18n("Contents"));
-	tlQQ->setText(QString::number(from));
+	tlQQ->setText(TQString::number(from));
 	tlNick->setText(tlQQ->text());
 
-	QString msg =  QString(i18n("You'v been approved by \"%1\"")).arg(from);
+	TQString msg =  TQString(i18n("You'v been approved by \"%1\"")).arg(from);
 	tlP0Tip->setText(msg);
 	wsMain->raiseWidget(0);
 	pbApprove->setEnabled(false);
@@ -147,13 +147,13 @@ void EvaNotifyWindow::slotAddRequestApproved(int from)
 	pbClose->setEnabled(true);
 }
 
-void EvaNotifyWindow::slotAddRequestRejected(int from, QString message)
+void EvaNotifyWindow::slotAddRequestRejected(int from, TQString message)
 {
 	gbMain->setTitle(i18n("Contents"));
-	tlQQ->setText(QString::number(from));
+	tlQQ->setText(TQString::number(from));
 	tlNick->setText(tlQQ->text());
 
-	QString msg = QString(i18n("Your Request has been rejected by %1").arg(from));
+	TQString msg = TQString(i18n("Your Request has been rejected by %1").arg(from));
 	if(!message.stripWhiteSpace().isEmpty()){
 		msg+= i18n("\nAdditional message")+": " + message;
 	}	
@@ -165,13 +165,13 @@ void EvaNotifyWindow::slotAddRequestRejected(int from, QString message)
 	pbClose->setEnabled(true);
 }
 
-void EvaNotifyWindow::slotOtherNotification(int from, QString message)
+void EvaNotifyWindow::slotOtherNotification(int from, TQString message)
 {
 	gbMain->setTitle(i18n("Contents"));
-	tlQQ->setText(QString::number(from));
+	tlQQ->setText(TQString::number(from));
 	tlNick->setText(tlQQ->text());
 
-	QString msg = QString(i18n("Received message from %1").arg(from));
+	TQString msg = TQString(i18n("Received message from %1").arg(from));
 	if(!message.stripWhiteSpace().isEmpty()){
 		msg+= "\n" + message;
 	}	
@@ -188,7 +188,7 @@ void EvaNotifyWindow::slotPbAddClicked()
 	int from = tlQQ->text().toInt();
 	
 	gbMain->setTitle(i18n("Add Buddy"));
-	tlP0Tip->setText(QString(i18n("adding buddy %1, please wait...").arg(from)));
+	tlP0Tip->setText(TQString(i18n("adding buddy %1, please wait...").arg(from)));
 	wsMain->raiseWidget(0);
 	pbApprove->setEnabled(false);
 	pbReject->setEnabled(false);
@@ -253,26 +253,26 @@ void EvaNotifyWindow::slotTbDetailsClicked()
 
 void EvaNotifyWindow::slotAddBuddy( int id)
 {
-	tlQQ->setText(QString::number(id));
+	tlQQ->setText(TQString::number(id));
 	gbMain->setTitle(i18n("Add Buddy"));
-	tlP0Tip->setText(QString(i18n("Do you want to add \"%1\" into your list?")).arg(id));
+	tlP0Tip->setText(TQString(i18n("Do you want to add \"%1\" into your list?")).arg(id));
 	wsMain->raiseWidget(0);
 	pbApprove->setEnabled(false);
 	pbReject->setEnabled(false);
 	pbAdd->setEnabled(true);
 	pbClose->setEnabled(true);
-	QTimer::singleShot(10, this, SLOT(slotPbAddClicked()));
+	TQTimer::singleShot(10, this, SLOT(slotPbAddClicked()));
 }
 
 void EvaNotifyWindow::slotQunCreated( const int from, const int extQunID, const int internalQunID )
 {
 	mInternalQunID = internalQunID;
 	gbMain->setTitle(i18n("Contents"));
-	tlQQ->setText(QString::number(from));
-	QString tip = i18n("Qun") + "(" + i18n("created") + ")";
+	tlQQ->setText(TQString::number(from));
+	TQString tip = i18n("Qun") + "(" + i18n("created") + ")";
 	tlNick->setText(tip);
 	
-	QString msg =  QString(i18n("Qun \"%1\" has been created.")).arg(extQunID);
+	TQString msg =  TQString(i18n("Qun \"%1\" has been created.")).arg(extQunID);
 	tlP0Tip->setText(msg);
 	wsMain->raiseWidget(0);
 	pbApprove->setEnabled(false);
@@ -286,11 +286,11 @@ void EvaNotifyWindow::slotQunAdded( const int from, const int extQunID, const in
 	mInternalQunID = internalQunID;
 	isQun = true;
 	gbMain->setTitle(i18n("Contents"));
-	tlQQ->setText(QString::number(from));
-	QString tip = i18n("Qun") + "(" + i18n("joined") + ")";
+	tlQQ->setText(TQString::number(from));
+	TQString tip = i18n("Qun") + "(" + i18n("joined") + ")";
 	tlNick->setText(tip);
 	
-	QString msg =  QString(i18n("You'v joined Qun \"%1\".")).arg(extQunID);
+	TQString msg =  TQString(i18n("You'v joined Qun \"%1\".")).arg(extQunID);
 	tlP0Tip->setText(msg);
 	wsMain->raiseWidget(0);
 	pbApprove->setEnabled(false);
@@ -304,11 +304,11 @@ void EvaNotifyWindow::slotQunRemoved( const int from, const int extQunID, const 
 	mInternalQunID = internalQunID;
 	isQun = true;
 	gbMain->setTitle(i18n("Contents"));
-	tlQQ->setText(QString::number(from));
-	QString tip = i18n("Qun") + "(" + i18n("removed") + ")";
+	tlQQ->setText(TQString::number(from));
+	TQString tip = i18n("Qun") + "(" + i18n("removed") + ")";
 	tlNick->setText(tip);
 
-	QString msg =  QString(i18n("You have been removed out from Qun \"%1\".")).arg(extQunID);
+	TQString msg =  TQString(i18n("You have been removed out from Qun \"%1\".")).arg(extQunID);
 	tlP0Tip->setText(msg);
 	wsMain->raiseWidget(0);
 	pbApprove->setEnabled(false);
@@ -317,15 +317,15 @@ void EvaNotifyWindow::slotQunRemoved( const int from, const int extQunID, const 
 	pbClose->setEnabled(true);
 }
 
-void EvaNotifyWindow::slotQunJoinRequest( const int from, const int extQunID, QString message, const int internalQunID )
+void EvaNotifyWindow::slotQunJoinRequest( const int from, const int extQunID, TQString message, const int internalQunID )
 {
 	mInternalQunID = internalQunID;
 	gbMain->setTitle(i18n("Contents"));
-	tlQQ->setText(QString::number(from));
-	QString tip = i18n("Qun") + "(" + i18n("request") + ")";
+	tlQQ->setText(TQString::number(from));
+	TQString tip = i18n("Qun") + "(" + i18n("request") + ")";
 	tlNick->setText(tip);
 
-	QString msg = QString(i18n("%1 is willing to join Qun \"%2\".")).arg(from).arg(extQunID);
+	TQString msg = TQString(i18n("%1 is willing to join Qun \"%2\".")).arg(from).arg(extQunID);
 	if(!message.stripWhiteSpace().isEmpty()){
 		msg+= i18n("\nAdditional message")+": " + message;
 	}
@@ -337,16 +337,16 @@ void EvaNotifyWindow::slotQunJoinRequest( const int from, const int extQunID, QS
 	pbClose->setEnabled(true);
 }
 
-void EvaNotifyWindow::slotQunRequestApproved( const int from, const int extQunID, QString message , const int internalQunID)
+void EvaNotifyWindow::slotQunRequestApproved( const int from, const int extQunID, TQString message , const int internalQunID)
 {
 	mInternalQunID = internalQunID;
 	isQun = true;
 	gbMain->setTitle(i18n("Contents"));
-	tlQQ->setText(QString::number(from));
-	QString tip = i18n("Qun") + "(" + i18n("approved") + ")";
+	tlQQ->setText(TQString::number(from));
+	TQString tip = i18n("Qun") + "(" + i18n("approved") + ")";
 	tlNick->setText(tip);
 	
-	QString msg =  QString(i18n("You'v been approved by creator \"%1\" of Qun \"%2\".")).arg(from).arg(extQunID) + "\n" + message;
+	TQString msg =  TQString(i18n("You'v been approved by creator \"%1\" of Qun \"%2\".")).arg(from).arg(extQunID) + "\n" + message;
 	tlP0Tip->setText(msg);
 	wsMain->raiseWidget(0);
 	pbApprove->setEnabled(false);
@@ -355,16 +355,16 @@ void EvaNotifyWindow::slotQunRequestApproved( const int from, const int extQunID
 	pbClose->setEnabled(true);
 }
 
-void EvaNotifyWindow::slotQunRequestRejected( const int from, const int extQunID, QString message , const int internalQunID)
+void EvaNotifyWindow::slotQunRequestRejected( const int from, const int extQunID, TQString message , const int internalQunID)
 {
 	mInternalQunID = internalQunID;
 	isQun = true;
 	gbMain->setTitle(i18n("Contents"));
-	tlQQ->setText(QString::number(from));
-	QString tip = i18n("Qun") + "(" + i18n("rejected") + ")";
+	tlQQ->setText(TQString::number(from));
+	TQString tip = i18n("Qun") + "(" + i18n("rejected") + ")";
 	tlNick->setText(tip);
 
-	QString msg = QString(i18n("Your Request has been rejected by \"%1\" of Qun \"%2\".").arg(from)).arg(extQunID);
+	TQString msg = TQString(i18n("Your Request has been rejected by \"%1\" of Qun \"%2\".").arg(from)).arg(extQunID);
 	if(!message.stripWhiteSpace().isEmpty()){
 		msg+= i18n("\nAdditional message")+": " + message;
 	}	

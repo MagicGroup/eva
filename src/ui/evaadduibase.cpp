@@ -20,136 +20,136 @@
 
 #include "evaadduibase.h"
 
-#include <qvariant.h>
-#include <qpushbutton.h>
-#include <qlabel.h>
-#include <qframe.h>
-#include <qtoolbutton.h>
-#include <qcombobox.h>
-#include <qlineedit.h>
-#include <qcheckbox.h>
-#include <qlayout.h>
-#include <qtooltip.h>
-#include <klocale.h>
+#include <ntqvariant.h>
+#include <ntqpushbutton.h>
+#include <ntqlabel.h>
+#include <ntqframe.h>
+#include <ntqtoolbutton.h>
+#include <ntqcombobox.h>
+#include <ntqlineedit.h>
+#include <ntqcheckbox.h>
+#include <ntqlayout.h>
+#include <ntqtooltip.h>
+#include <tdelocale.h>
 
 /*
  *  Constructs a EvaAddUIBase as a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'.
  */
-EvaAddUIBase::EvaAddUIBase( QWidget* parent, const char* name, WFlags fl )
-    : QWidget( parent, name, fl )
+EvaAddUIBase::EvaAddUIBase( TQWidget* parent, const char* name, WFlags fl )
+    : TQWidget( parent, name, fl )
 {
     if ( !name )
 	setName( "EvaAddUIBase" );
-    EvaAddUIBaseLayout = new QVBoxLayout( this, 11, 6, "EvaAddUIBaseLayout"); 
+    EvaAddUIBaseLayout = new TQVBoxLayout( this, 11, 6, "EvaAddUIBaseLayout"); 
 
-    lblTip = new QLabel( this, "lblTip" );
-    lblTip->setSizePolicy( QSizePolicy( (QSizePolicy::SizeType)5, (QSizePolicy::SizeType)1, 0, 0, lblTip->sizePolicy().hasHeightForWidth() ) );
+    lblTip = new TQLabel( this, "lblTip" );
+    lblTip->setSizePolicy( TQSizePolicy( (TQSizePolicy::SizeType)5, (TQSizePolicy::SizeType)1, 0, 0, lblTip->sizePolicy().hasHeightForWidth() ) );
     EvaAddUIBaseLayout->addWidget( lblTip );
 
-    frame3 = new QFrame( this, "frame3" );
-    frame3->setSizePolicy( QSizePolicy( (QSizePolicy::SizeType)5, (QSizePolicy::SizeType)7, 0, 0, frame3->sizePolicy().hasHeightForWidth() ) );
-    frame3->setPaletteBackgroundColor( QColor( 234, 247, 255 ) );
-    frame3->setFrameShape( QFrame::StyledPanel );
-    frame3->setFrameShadow( QFrame::Raised );
-    frame3Layout = new QVBoxLayout( frame3, 11, 6, "frame3Layout"); 
+    frame3 = new TQFrame( this, "frame3" );
+    frame3->setSizePolicy( TQSizePolicy( (TQSizePolicy::SizeType)5, (TQSizePolicy::SizeType)7, 0, 0, frame3->sizePolicy().hasHeightForWidth() ) );
+    frame3->setPaletteBackgroundColor( TQColor( 234, 247, 255 ) );
+    frame3->setFrameShape( TQFrame::StyledPanel );
+    frame3->setFrameShadow( TQFrame::Raised );
+    frame3Layout = new TQVBoxLayout( frame3, 11, 6, "frame3Layout"); 
 
-    layout17 = new QHBoxLayout( 0, 0, 6, "layout17"); 
+    layout17 = new TQHBoxLayout( 0, 0, 6, "layout17"); 
 
-    lblTopic = new QLabel( frame3, "lblTopic" );
-    lblTopic->setSizePolicy( QSizePolicy( (QSizePolicy::SizeType)7, (QSizePolicy::SizeType)1, 0, 0, lblTopic->sizePolicy().hasHeightForWidth() ) );
+    lblTopic = new TQLabel( frame3, "lblTopic" );
+    lblTopic->setSizePolicy( TQSizePolicy( (TQSizePolicy::SizeType)7, (TQSizePolicy::SizeType)1, 0, 0, lblTopic->sizePolicy().hasHeightForWidth() ) );
     layout17->addWidget( lblTopic );
 
-    tbtnFace = new QToolButton( frame3, "tbtnFace" );
-    tbtnFace->setSizePolicy( QSizePolicy( (QSizePolicy::SizeType)1, (QSizePolicy::SizeType)1, 0, 0, tbtnFace->sizePolicy().hasHeightForWidth() ) );
+    tbtnFace = new TQToolButton( frame3, "tbtnFace" );
+    tbtnFace->setSizePolicy( TQSizePolicy( (TQSizePolicy::SizeType)1, (TQSizePolicy::SizeType)1, 0, 0, tbtnFace->sizePolicy().hasHeightForWidth() ) );
     tbtnFace->setUsesBigPixmap( TRUE );
     tbtnFace->setAutoRaise( TRUE );
     layout17->addWidget( tbtnFace );
     frame3Layout->addLayout( layout17 );
 
-    layout13 = new QHBoxLayout( 0, 0, 6, "layout13"); 
+    layout13 = new TQHBoxLayout( 0, 0, 6, "layout13"); 
 
-    lblGroup = new QLabel( frame3, "lblGroup" );
+    lblGroup = new TQLabel( frame3, "lblGroup" );
     layout13->addWidget( lblGroup );
 
-    cbbGroups = new QComboBox( FALSE, frame3, "cbbGroups" );
+    cbbGroups = new TQComboBox( FALSE, frame3, "cbbGroups" );
     layout13->addWidget( cbbGroups );
-    spacer1 = new QSpacerItem( 177, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
+    spacer1 = new TQSpacerItem( 177, 20, TQSizePolicy::Expanding, TQSizePolicy::Minimum );
     layout13->addItem( spacer1 );
     frame3Layout->addLayout( layout13 );
 
-    fraVeriGraphic = new QFrame( frame3, "fraVeriGraphic" );
-    fraVeriGraphic->setFrameShape( QFrame::NoFrame );
-    fraVeriGraphic->setFrameShadow( QFrame::Plain );
-    fraVeriGraphicLayout = new QGridLayout( fraVeriGraphic, 1, 1, 0, 0, "fraVeriGraphicLayout"); 
+    fraVeriGraphic = new TQFrame( frame3, "fraVeriGraphic" );
+    fraVeriGraphic->setFrameShape( TQFrame::NoFrame );
+    fraVeriGraphic->setFrameShadow( TQFrame::Plain );
+    fraVeriGraphicLayout = new TQGridLayout( fraVeriGraphic, 1, 1, 0, 0, "fraVeriGraphicLayout"); 
 
-    layout14 = new QHBoxLayout( 0, 0, 6, "layout14"); 
+    layout14 = new TQHBoxLayout( 0, 0, 6, "layout14"); 
 
-    lblVeriCode = new QLabel( fraVeriGraphic, "lblVeriCode" );
+    lblVeriCode = new TQLabel( fraVeriGraphic, "lblVeriCode" );
     layout14->addWidget( lblVeriCode );
 
-    leCode = new QLineEdit( fraVeriGraphic, "leCode" );
+    leCode = new TQLineEdit( fraVeriGraphic, "leCode" );
     layout14->addWidget( leCode );
 
-    lblCodeGraphic = new QLabel( fraVeriGraphic, "lblCodeGraphic" );
+    lblCodeGraphic = new TQLabel( fraVeriGraphic, "lblCodeGraphic" );
     layout14->addWidget( lblCodeGraphic );
 
-    btnRefreshCode = new QToolButton( fraVeriGraphic, "btnRefreshCode" );
+    btnRefreshCode = new TQToolButton( fraVeriGraphic, "btnRefreshCode" );
     btnRefreshCode->setAutoRaise( TRUE );
     layout14->addWidget( btnRefreshCode );
 
     fraVeriGraphicLayout->addLayout( layout14, 0, 0 );
     frame3Layout->addWidget( fraVeriGraphic );
 
-    fraQuestion = new QFrame( frame3, "fraQuestion" );
-    fraQuestion->setFrameShape( QFrame::NoFrame );
-    fraQuestion->setFrameShadow( QFrame::Plain );
-    fraQuestionLayout = new QHBoxLayout( fraQuestion, 0, 0, "fraQuestionLayout"); 
+    fraQuestion = new TQFrame( frame3, "fraQuestion" );
+    fraQuestion->setFrameShape( TQFrame::NoFrame );
+    fraQuestion->setFrameShadow( TQFrame::Plain );
+    fraQuestionLayout = new TQHBoxLayout( fraQuestion, 0, 0, "fraQuestionLayout"); 
 
-    layout12 = new QVBoxLayout( 0, 0, 6, "layout12"); 
+    layout12 = new TQVBoxLayout( 0, 0, 6, "layout12"); 
 
-    lblQuestion = new QLabel( fraQuestion, "lblQuestion" );
+    lblQuestion = new TQLabel( fraQuestion, "lblQuestion" );
     layout12->addWidget( lblQuestion );
 
-    lblAnswer = new QLabel( fraQuestion, "lblAnswer" );
-    lblAnswer->setSizePolicy( QSizePolicy( (QSizePolicy::SizeType)5, (QSizePolicy::SizeType)5, 0, 0, lblAnswer->sizePolicy().hasHeightForWidth() ) );
+    lblAnswer = new TQLabel( fraQuestion, "lblAnswer" );
+    lblAnswer->setSizePolicy( TQSizePolicy( (TQSizePolicy::SizeType)5, (TQSizePolicy::SizeType)5, 0, 0, lblAnswer->sizePolicy().hasHeightForWidth() ) );
     layout12->addWidget( lblAnswer );
     fraQuestionLayout->addLayout( layout12 );
 
-    layout13_2 = new QVBoxLayout( 0, 0, 6, "layout13_2"); 
+    layout13_2 = new TQVBoxLayout( 0, 0, 6, "layout13_2"); 
 
-    lblQuesContents = new QLabel( fraQuestion, "lblQuesContents" );
-    lblQuesContents->setSizePolicy( QSizePolicy( (QSizePolicy::SizeType)5, (QSizePolicy::SizeType)4, 0, 0, lblQuesContents->sizePolicy().hasHeightForWidth() ) );
-    lblQuesContents->setAlignment( int( QLabel::WordBreak | QLabel::AlignVCenter | QLabel::AlignLeft ) );
+    lblQuesContents = new TQLabel( fraQuestion, "lblQuesContents" );
+    lblQuesContents->setSizePolicy( TQSizePolicy( (TQSizePolicy::SizeType)5, (TQSizePolicy::SizeType)4, 0, 0, lblQuesContents->sizePolicy().hasHeightForWidth() ) );
+    lblQuesContents->setAlignment( int( TQLabel::WordBreak | TQLabel::AlignVCenter | TQLabel::AlignLeft ) );
     layout13_2->addWidget( lblQuesContents );
 
-    leAnswer = new QLineEdit( fraQuestion, "leAnswer" );
+    leAnswer = new TQLineEdit( fraQuestion, "leAnswer" );
     layout13_2->addWidget( leAnswer );
     fraQuestionLayout->addLayout( layout13_2 );
     frame3Layout->addWidget( fraQuestion );
 
-    leMessage = new QLineEdit( frame3, "leMessage" );
-    leMessage->setSizePolicy( QSizePolicy( (QSizePolicy::SizeType)7, (QSizePolicy::SizeType)7, 0, 0, leMessage->sizePolicy().hasHeightForWidth() ) );
+    leMessage = new TQLineEdit( frame3, "leMessage" );
+    leMessage->setSizePolicy( TQSizePolicy( (TQSizePolicy::SizeType)7, (TQSizePolicy::SizeType)7, 0, 0, leMessage->sizePolicy().hasHeightForWidth() ) );
     leMessage->setMaxLength( 255 );
-    leMessage->setAlignment( int( QLineEdit::AlignAuto ) );
+    leMessage->setAlignment( int( TQLineEdit::AlignAuto ) );
     frame3Layout->addWidget( leMessage );
     EvaAddUIBaseLayout->addWidget( frame3 );
 
-    layout13_3 = new QHBoxLayout( 0, 10, 6, "layout13_3"); 
+    layout13_3 = new TQHBoxLayout( 0, 10, 6, "layout13_3"); 
 
-    chbReverse = new QCheckBox( this, "chbReverse" );
+    chbReverse = new TQCheckBox( this, "chbReverse" );
     layout13_3->addWidget( chbReverse );
-    spacer2 = new QSpacerItem( 31, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
+    spacer2 = new TQSpacerItem( 31, 20, TQSizePolicy::Expanding, TQSizePolicy::Minimum );
     layout13_3->addItem( spacer2 );
 
-    btnOk = new QPushButton( this, "btnOk" );
+    btnOk = new TQPushButton( this, "btnOk" );
     layout13_3->addWidget( btnOk );
 
-    btnCancel = new QPushButton( this, "btnCancel" );
+    btnCancel = new TQPushButton( this, "btnCancel" );
     layout13_3->addWidget( btnCancel );
     EvaAddUIBaseLayout->addLayout( layout13_3 );
     languageChange();
-    resize( QSize(430, 280).expandedTo(minimumSizeHint()) );
+    resize( TQSize(430, 280).expandedTo(minimumSizeHint()) );
     clearWState( WState_Polished );
 }
 
@@ -158,7 +158,7 @@ EvaAddUIBase::EvaAddUIBase( QWidget* parent, const char* name, WFlags fl )
  */
 EvaAddUIBase::~EvaAddUIBase()
 {
-    // no need to delete child widgets, Qt does it all for us
+    // no need to delete child widgets, TQt does it all for us
 }
 
 /*
@@ -180,8 +180,8 @@ void EvaAddUIBase::languageChange()
     //lblQuesContents->setText( i18n( "-" ) );
     chbReverse->setText( i18n( "allow reverse adding" ) );
     btnOk->setText( i18n( "&OK" ) );
-    btnOk->setAccel( QKeySequence( tr( "Alt+O" ) ) );
+    btnOk->setAccel( TQKeySequence( tr( "Alt+O" ) ) );
     btnCancel->setText( i18n( "&Cancel" ) );
-    btnCancel->setAccel( QKeySequence( tr( "Alt+C" ) ) );
+    btnCancel->setAccel( TQKeySequence( tr( "Alt+C" ) ) );
 }
 

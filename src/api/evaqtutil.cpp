@@ -22,19 +22,19 @@
 #include "evautil.h"
 #include "evausersetting.h"
 #include "evamemo.h"
-#include <qtextstream.h>
-#include <qimage.h>
-#include <qdir.h>
-#include <qfile.h>
-#include <qfileinfo.h>
-#include <qapplication.h>
+#include <ntqtextstream.h>
+#include <ntqimage.h>
+#include <ntqdir.h>
+#include <ntqfile.h>
+#include <ntqfileinfo.h>
+#include <ntqapplication.h>
 #include <cstring>
 
-const QString EvaTextFilter::filter( const QString & source )
+const TQString EvaTextFilter::filter( const TQString & source )
 {
-	QChar ch;
-	QString result;
-	QTextStream stream(&result, IO_WriteOnly);
+	TQChar ch;
+	TQString result;
+	TQTextStream stream(&result, IO_WriteOnly);
 	for(uint i=0; i< source.length(); i++){
 		ch = source.at(i);
 		if(ch.isPrint())
@@ -45,7 +45,7 @@ const QString EvaTextFilter::filter( const QString & source )
  
 /* ***********************************************************/
 
-QMutex EvaHelper::mutex;
+TQMutex EvaHelper::mutex;
 void EvaHelper::run()
 {
 	mutex.lock();
@@ -76,13 +76,13 @@ void EvaHelper::doSysLoading( )
 
 void EvaHelper::doImageScaling( )
 {
-	QImage img(pic.convertToImage().smoothScale(size));
+	TQImage img(pic.convertToImage().smoothScale(size));
 	pic = img;
 	EvaScaleEvent *event = new EvaScaleEvent(pic);
-	QApplication::postEvent(receiver, event);
+	TQApplication::postEvent(receiver, event);
 }
 
-void EvaHelper::setLoadGroupedUsersArgs( QFile * file )
+void EvaHelper::setLoadGroupedUsersArgs( TQFile * file )
 {
 	this->file = file;
 }
@@ -95,16 +95,16 @@ void EvaHelper::doGroupedUserLoading( )
 	ContactInfo myInfo;
 	FriendList list;
 	
-	Q_UINT32 numGroups=0;
+	TQ_UINT32 numGroups=0;
 
 	MemoItem memo;
 
-	QDataStream stream(file);
+	TQDataStream stream(file);
 	
 	// check version first
 	char *flag = new char[3];
 	stream.readRawBytes(flag, 3);
-	Q_UINT32 version = 0;
+	TQ_UINT32 version = 0;
 	stream>>version;
 	if(!(flag[0]=='E' && flag[1]=='V' && flag[2]=='A' && version == profileVersion)){
 		file->close();
@@ -115,7 +115,7 @@ void EvaHelper::doGroupedUserLoading( )
 	delete []flag;
 	
 	// load my details first
-	Q_UINT32 size=0;
+	TQ_UINT32 size=0;
 	std::string item;
 	std::vector<std::string> strlist;
 	
@@ -129,7 +129,7 @@ void EvaHelper::doGroupedUserLoading( )
 	myInfo.setDetails(strlist);
 
 	// read my extra info
-	Q_UINT16 myExtraInfo;
+	TQ_UINT16 myExtraInfo;
 	stream>>myExtraInfo;
 	
 	// read signature & time
@@ -137,7 +137,7 @@ void EvaHelper::doGroupedUserLoading( )
 	stream>>str; 
 	signature = str;
 	
-	Q_UINT32 sigTime;
+	TQ_UINT32 sigTime;
 	stream>>sigTime;
 	
 	// read in how many groups
@@ -150,19 +150,19 @@ void EvaHelper::doGroupedUserLoading( )
 		groupNames.push_back(name);
 	}
 	
-	Q_UINT32 id;
-	Q_UINT16 face;
-	Q_UINT8  age;
-	Q_UINT8  gender;
+	TQ_UINT32 id;
+	TQ_UINT16 face;
+	TQ_UINT8  age;
+	TQ_UINT8  gender;
 	std::string nick;
-	Q_UINT8  extFlag;
-	Q_UINT8  commonFlag;
-	Q_UINT32 groupIndex;
-	Q_UINT16 extraInfo;
+	TQ_UINT8  extFlag;
+	TQ_UINT8  commonFlag;
+	TQ_UINT32 groupIndex;
+	TQ_UINT16 extraInfo;
 	std::string frdSig;
-	Q_UINT32 frdSigTime;
-	Q_UINT32 fontSize;
-	Q_UINT32 fontColor;
+	TQ_UINT32 frdSigTime;
+	TQ_UINT32 fontSize;
+	TQ_UINT32 fontColor;
 	
 	// read in all friends
 	while(!stream.atEnd()){
@@ -196,7 +196,7 @@ void EvaHelper::doGroupedUserLoading( )
 		stream>>str;memo.note = str;
 
 		stream>>fontSize>>fontColor;
-		QQFriend f(id, face);
+		TQQFriend f(id, face);
 		
 		f.setAge(age);
 		f.setGender(gender);
@@ -223,10 +223,10 @@ void EvaHelper::doGroupedUserLoading( )
 	event->setFriendList(list);
 	event->setExtraInfo(myExtraInfo);
 	event->setSignature(signature, sigTime);
-	QApplication::postEvent(receiver, event);
+	TQApplication::postEvent(receiver, event);
 }
 
-void EvaHelper::setSaveGroupedUsersArgs( QFile * file, std::list<std::string> myGroups, ContactInfo &info, FriendList &myList,
+void EvaHelper::setSaveGroupedUsersArgs( TQFile * file, std::list<std::string> myGroups, ContactInfo &info, FriendList &myList,
 					unsigned short extraInfo, std::string signature, unsigned int sigModiTime)
 {
 	this->file = file;
@@ -242,7 +242,7 @@ void EvaHelper::doGroupedUserSaving()
 {
 	if(type != SaveGroupedUsers) return;
 	if(!file->isOpen()) return;
-	QDataStream stream(file);
+	TQDataStream stream(file);
 
 	
 	// save Eva flag and Version
@@ -252,7 +252,7 @@ void EvaHelper::doGroupedUserSaving()
 	std::string detailItem;
 	
 	// save my info first
-	Q_UINT32 myCount = myInfo.count();
+	TQ_UINT32 myCount = myInfo.count();
 	stream<<myCount;
 	for(int i=0; i<(int)myCount; i++){
 		detailItem = myInfo.at(i);
@@ -268,29 +268,29 @@ void EvaHelper::doGroupedUserSaving()
 	// save group names
 	std::list<std::string>::iterator itr;
 	// save the number of customized groups (including buddy list)
-	Q_UINT32 size = groups.size();
+	TQ_UINT32 size = groups.size();
 	stream<<size;
 	for(itr=groups.begin(); itr!=groups.end(); ++itr){
 		stream<<itr->c_str();
 	}
 	
-	std::list<QQFriend> flist = list.getAllFriends();
-	std::list<QQFriend>::iterator iter;
-	Q_UINT32 id;
-	Q_UINT16  face;
-	Q_UINT8  age;
-	Q_UINT8  gender;
+	std::list<TQQFriend> flist = list.getAllFriends();
+	std::list<TQQFriend>::iterator iter;
+	TQ_UINT32 id;
+	TQ_UINT16  face;
+	TQ_UINT8  age;
+	TQ_UINT8  gender;
 	std::string nick;
-	Q_UINT8  extFlag;
-	Q_UINT8  commonFlag;
-	Q_UINT32 groupIndex;
-	Q_UINT16 bExtraInfo;
+	TQ_UINT8  extFlag;
+	TQ_UINT8  commonFlag;
+	TQ_UINT32 groupIndex;
+	TQ_UINT16 bExtraInfo;
 	std::string signature;
-	Q_UINT32 sigModiTime;
+	TQ_UINT32 sigModiTime;
 	ContactInfo userDetails;
 	MemoItem memo;
-	Q_UINT32 fontSize;
-	Q_UINT32 fontColor;
+	TQ_UINT32 fontSize;
+	TQ_UINT32 fontColor;
 	
 	// save all buddy details
 	for(iter = flist.begin(); iter!= flist.end(); ++iter){
@@ -309,7 +309,7 @@ void EvaHelper::doGroupedUserSaving()
 		
 		stream<<id<<face<<age<<gender<<nick.c_str()<<extFlag<<commonFlag<<groupIndex<<bExtraInfo<<signature.c_str()<<sigModiTime;
 				
-		Q_UINT32 count = userDetails.count();
+		TQ_UINT32 count = userDetails.count();
 		stream<<count;
 		for(int i=0; i<(int)count; i++){
 			detailItem = userDetails.at(i);
@@ -327,7 +327,7 @@ void EvaHelper::doGroupedUserSaving()
 	file->close();
 }
 
-void EvaHelper::setSaveQunListArgs( QFile * file, QunList & list )
+void EvaHelper::setSaveQunListArgs( TQFile * file, QunList & list )
 {
 	this->file = file;
 	qunList = list;
@@ -337,7 +337,7 @@ void EvaHelper::doQunUserSaving( )
 {
 	if(type != SaveQunUsers) return;
 	if(!file->isOpen()) return;
-	QDataStream stream(file);
+	TQDataStream stream(file);
 	
 	// save Eva flag and Version
 	stream.writeRawBytes("EVA", 3);
@@ -354,36 +354,36 @@ void EvaHelper::doQunUserSaving( )
 		// save qun info
 		info = qunIter->getDetails();
 		
-		Q_UINT32 qunID = qunIter->getQunID();
-		Q_UINT32 extID = info.getExtID();
-		Q_UINT8 type = info.getType();
-		Q_UINT32 creator = info.getCreator();
-		Q_UINT8 authType = info.getAuthType();
-		Q_UINT16 unknown1 = info.getUnknown1();
-		Q_UINT16 category = info.getCategory();
-		Q_UINT32 versionID = info.getVersionID();
+		TQ_UINT32 qunID = qunIter->getQunID();
+		TQ_UINT32 extID = info.getExtID();
+		TQ_UINT8 type = info.getType();
+		TQ_UINT32 creator = info.getCreator();
+		TQ_UINT8 authType = info.getAuthType();
+		TQ_UINT16 unknown1 = info.getUnknown1();
+		TQ_UINT16 category = info.getCategory();
+		TQ_UINT32 versionID = info.getVersionID();
 		std::string name = info.getName();
-		Q_UINT16 unknown2 = info.getUnknown2();
+		TQ_UINT16 unknown2 = info.getUnknown2();
 		std::string description = info.getDescription();
 		std::string notice = info.getNotice();
 		
 		stream<<qunID<<extID<<type<<creator<<authType<<unknown1<<category<<
 			versionID<<name.c_str()<<unknown2<<description.c_str()<<notice.c_str();
 		
-		Q_UINT32 fontSize = qunIter->getChatFontSize();
-		Q_UINT32 fontColor = qunIter->getChatFontColor();
+		TQ_UINT32 fontSize = qunIter->getChatFontSize();
+		TQ_UINT32 fontColor = qunIter->getChatFontColor();
 		stream << fontSize << fontColor;
 
 		// save message type
-		Q_UINT8 msgType = qunIter->getMessageType();
+		TQ_UINT8 msgType = qunIter->getMessageType();
 		stream<<msgType;
 
-		Q_UINT32 nameVersion = qunIter->getRealNamesVersion();
+		TQ_UINT32 nameVersion = qunIter->getRealNamesVersion();
 		stream<< nameVersion;
 
 		// save my qun card
 		name = qunIter->getCardName();
-		Q_UINT8 gender = qunIter->getCardGender();
+		TQ_UINT8 gender = qunIter->getCardGender();
 		std::string phone = qunIter->getCardPhone();
 		std::string email = qunIter->getCardEmail();
 		std::string memo = qunIter->getCardMemo();
@@ -391,18 +391,18 @@ void EvaHelper::doQunUserSaving( )
 		
 		// save all members
 		memberList = qunIter->getMembers();
-		Q_UINT16 size = memberList.size();
+		TQ_UINT16 size = memberList.size();
 		stream<<size;
 		for(memberIter=memberList.begin(); memberIter!=memberList.end(); ++memberIter){
-			Q_UINT32 qqNum = memberIter->getQQ();
-			Q_UINT16 face = memberIter->getFace();
-			Q_UINT8 age = memberIter->getAge();
-			Q_UINT8 gender = memberIter->getGender();
+			TQ_UINT32 qqNum = memberIter->getQQ();
+			TQ_UINT16 face = memberIter->getFace();
+			TQ_UINT8 age = memberIter->getAge();
+			TQ_UINT8 gender = memberIter->getGender();
 			std::string nick = memberIter->getNick();
-			Q_UINT8 extFlag = memberIter->getExtFlag();  
-			Q_UINT8 commonFlag = memberIter->getCommonFlag();
-			Q_UINT16 qunGroupIndex = memberIter->getQunGroupIndex();
-			Q_UINT16 qunAdminValue = memberIter->getQunAdminValue();
+			TQ_UINT8 extFlag = memberIter->getExtFlag();  
+			TQ_UINT8 commonFlag = memberIter->getCommonFlag();
+			TQ_UINT16 qunGroupIndex = memberIter->getQunGroupIndex();
+			TQ_UINT16 qunAdminValue = memberIter->getQunAdminValue();
 			// added by henry
 			std::string realName = memberIter->getQunRealName();
 			stream<<qqNum<<face<<age<<gender<<nick.c_str()<<extFlag<<commonFlag<<qunGroupIndex<<qunAdminValue<<realName.c_str();
@@ -413,7 +413,7 @@ void EvaHelper::doQunUserSaving( )
 	file->close();
 }
 
-void EvaHelper::setLoadQunListArgs( QFile * file )
+void EvaHelper::setLoadQunListArgs( TQFile * file )
 {
 	this->file = file;
 }
@@ -423,14 +423,14 @@ void EvaHelper::doQunUserLoading( )
 	if(type != LoadQunUsers) return;
 	if(!file->isOpen()) return;
 	
-	QDataStream stream(file);
+	TQDataStream stream(file);
 
 	///FIXME we should do version checking/saving in a seperate method, which 
 	/// could benifit buddy list save/load as well, I am just too lazy :)
 	// check version first
 	char *flag = new char[3];
 	stream.readRawBytes(flag, 3);
-	Q_UINT32 version = 0;
+	TQ_UINT32 version = 0;
 	stream>>version;
 	if(!(flag[0]=='E' && flag[1]=='V' && flag[2]=='A' && version == profileVersion)){
 		file->close();
@@ -442,25 +442,25 @@ void EvaHelper::doQunUserLoading( )
 	
 	QunList list;
 	
-	Q_UINT32 qunID;
-	Q_UINT32 extID;
-	Q_UINT8 type;
-	Q_UINT32 creator;
-	Q_UINT8 authType;
-	Q_UINT16 unknown1;
-	Q_UINT16 category;
-	Q_UINT32 versionID;
+	TQ_UINT32 qunID;
+	TQ_UINT32 extID;
+	TQ_UINT8 type;
+	TQ_UINT32 creator;
+	TQ_UINT8 authType;
+	TQ_UINT16 unknown1;
+	TQ_UINT16 category;
+	TQ_UINT32 versionID;
 	std::string name;
-	Q_UINT16 unknown2;
+	TQ_UINT16 unknown2;
 	std::string description;
 	std::string notice;
-	Q_UINT32 realNamesVersion;
+	TQ_UINT32 realNamesVersion;
 
-	Q_UINT32 fontSize;
-	Q_UINT32 fontColor;
+	TQ_UINT32 fontSize;
+	TQ_UINT32 fontColor;
 	
-	Q_UINT8 cardGender;
-	Q_UINT8 msgType;
+	TQ_UINT8 cardGender;
+	TQ_UINT8 msgType;
 	char *str = new char[1024];
 	memset(str, 0, 1024);
 	
@@ -513,18 +513,18 @@ void EvaHelper::doQunUserLoading( )
 		
 		// load all members details
 		std::list<FriendItem> members;
-		Q_UINT16 size;
+		TQ_UINT16 size;
 		stream >> size;
 		for(int i=0; i< size; i++){
-			Q_UINT32 qqNum;
-			Q_UINT16 face;
-			Q_UINT8 age;
-			Q_UINT8 gender;
+			TQ_UINT32 qqNum;
+			TQ_UINT16 face;
+			TQ_UINT8 age;
+			TQ_UINT8 gender;
 			std::string nick;
-			Q_UINT8 extFlag;  
-			Q_UINT8 commonFlag;
-			Q_UINT16 qunGroupIndex;
-			Q_UINT16 qunAdminValue;
+			TQ_UINT8 extFlag;  
+			TQ_UINT8 commonFlag;
+			TQ_UINT16 qunGroupIndex;
+			TQ_UINT16 qunAdminValue;
 			std::string realName;   // added by henry
 			
 			stream>>qqNum>>face>>age>>gender>>str;
@@ -551,17 +551,17 @@ void EvaHelper::doQunUserLoading( )
 	file->close();
 	EvaQunListEvent *event = new EvaQunListEvent();
 	event->setQunList(list);
-	QApplication::postEvent(receiver, event);
+	TQApplication::postEvent(receiver, event);
 }
 
-const QString EvaHelper::generateCustomSmiley( const QString & source, const QString &destDir, const bool withThumbnail)
+const TQString EvaHelper::generateCustomSmiley( const TQString & source, const TQString &destDir, const bool withThumbnail)
 {
-	QString fileName = source;
-	QString imageName = fileName.right(fileName.length() - fileName.findRev("/") -1);
-	QString destExt = imageName.right(imageName.length() - (imageName.findRev(".")+1));
+	TQString fileName = source;
+	TQString imageName = fileName.right(fileName.length() - fileName.findRev("/") -1);
+	TQString destExt = imageName.right(imageName.length() - (imageName.findRev(".")+1));
 	
 	if(destExt == "png" || destExt == "PNG"){
-		QPixmap srcImage;
+		TQPixmap srcImage;
 		if(!srcImage.load(fileName)){
 			printf("EvaHelper: cannot load png image\n");
 			return "";
@@ -578,7 +578,7 @@ const QString EvaHelper::generateCustomSmiley( const QString & source, const QSt
 		delete md5;
 		return "";
 	}
-	QString strMD5 = md5ToString(md5);
+	TQString strMD5 = md5ToString(md5);
 	
 	if(destExt == "png" || destExt == "PNG"){
 		destExt = "JPG";
@@ -594,14 +594,14 @@ const QString EvaHelper::generateCustomSmiley( const QString & source, const QSt
 	}
 	delete md5;
 	if(withThumbnail){
-		QImage srcpix;
+		TQImage srcpix;
 
 		if(!srcpix.load(fileName)){
 			printf("EvaHelper: cannot load image\n");
 			return "";
 		}
-		QImage thumbpix = srcpix.smoothScale(20, 20);
-		QString destname = destDir + "/" + strMD5 + "fixed.bmp";
+		TQImage thumbpix = srcpix.smoothScale(20, 20);
+		TQString destname = destDir + "/" + strMD5 + "fixed.bmp";
 		if(!thumbpix.save(destname, "BMP")){
 			printf("EvaHelper: convert to thumbnail BMP format failed\n");
 			return "";
@@ -610,15 +610,15 @@ const QString EvaHelper::generateCustomSmiley( const QString & source, const QSt
 	return strMD5 +"." + destExt;
 }
 
-const bool EvaHelper::getFileMD5( const QString & fileName, char *md5)
+const bool EvaHelper::getFileMD5( const TQString & fileName, char *md5)
 {
 	if(!md5) return false;
-	QFileInfo info(fileName);
+	TQFileInfo info(fileName);
 	if(!info.exists()) return false;
 	
 	unsigned int len = info.size();
 	char *buf = new char[len];
-	QFile file(fileName);
+	TQFile file(fileName);
 	if(!file.open(IO_ReadOnly)){
 		printf("EvaHelper:image dose not exists!");
 		delete buf;
@@ -635,12 +635,12 @@ const bool EvaHelper::getFileMD5( const QString & fileName, char *md5)
 	return true;
 }
 
-const QString EvaHelper::md5ToString(const char *md5)
+const TQString EvaHelper::md5ToString(const char *md5)
 {
 	if(!md5) return "";
-	QString strMd5;
+	TQString strMd5;
 	for(int i=0; i<16; i++){
-		QString tmp = QString::number((unsigned char)(md5[i]), 16);
+		TQString tmp = TQString::number((unsigned char)(md5[i]), 16);
 		if(tmp.length()==1)
 			tmp = "0" + tmp;
 		strMd5+=tmp.upper();
@@ -648,13 +648,13 @@ const QString EvaHelper::md5ToString(const char *md5)
 	return strMd5;
 }
 
-const bool EvaHelper::copyFile( const QString & source, const QString & dest )
+const bool EvaHelper::copyFile( const TQString & source, const TQString & dest )
 {
-	QFileInfo info(source);
+	TQFileInfo info(source);
 	if(!info.exists()) return false;
 	unsigned int len = info.size();
 	char *buf = new char[len];
-	QFile file(source);
+	TQFile file(source);
 	if(!file.open(IO_ReadOnly)){
 		printf("EvaHelper:image dose not exists!");
 		delete buf;
@@ -667,7 +667,7 @@ const bool EvaHelper::copyFile( const QString & source, const QString & dest )
 		return false;
 	}
 	
-	QFile destFile(dest);
+	TQFile destFile(dest);
 	if(!destFile.exists()){
 		if(!destFile.open(IO_WriteOnly | IO_Raw)){
 			printf("EvaHelper:cannot copy image file!\n");
@@ -687,9 +687,9 @@ const bool EvaHelper::copyFile( const QString & source, const QString & dest )
 	return true;
 }
 
-const bool EvaHelper::rename( const QString & source, const QString & dest )
+const bool EvaHelper::rename( const TQString & source, const TQString & dest )
 {
-	QDir destFile(source);
+	TQDir destFile(source);
 	if(!destFile.exists(source)){
 		printf("EvaHelper: rename file failed\n");
 		return false;
@@ -702,28 +702,28 @@ const bool EvaHelper::rename( const QString & source, const QString & dest )
 
 /**=================================================================================================*/
 
-QRgb EvaQtUtils::toGray(QRgb rgb)
+TQRgb EvaTQtUtils::toGray(TQRgb rgb)
 {
-	int gray = (212671 * qRed (rgb) + 715160 * qGreen (rgb) + 72169 * qBlue (rgb)) / 1000000;
-	return qRgba (gray, gray, gray, qAlpha (rgb));
+	int gray = (212671 * tqRed (rgb) + 715160 * tqGreen (rgb) + 72169 * tqBlue (rgb)) / 1000000;
+	return tqRgba (gray, gray, gray, tqAlpha (rgb));
 }
 
-QPixmap EvaQtUtils::convertToGrayscale(const QPixmap &pm)
+TQPixmap EvaTQtUtils::convertToGrayscale(const TQPixmap &pm)
 {
-	QImage image = QImage();
+	TQImage image = TQImage();
 	if (!pm.isNull ())
 		image = pm.convertToImage ();
 	convertToGrayscale (&image);
-	QPixmap destPixmap;
+	TQPixmap destPixmap;
 	destPixmap.convertFromImage(image,
-				Qt::ColorOnly/*always display depth*/ |
-				Qt::DiffuseDither/*hi quality dither*/ |
-				Qt::ThresholdAlphaDither/*no dither alpha*/ |
-				Qt::PreferDither/*(dither even if <256 colours)*/);
+				TQt::ColorOnly/*always display depth*/ |
+				TQt::DiffuseDither/*hi quality dither*/ |
+				TQt::ThresholdAlphaDither/*no dither alpha*/ |
+				TQt::PreferDither/*(dither even if <256 colours)*/);
 	return destPixmap;
 }
 
-void EvaQtUtils::convertToGrayscale (QImage *destImagePtr)
+void EvaTQtUtils::convertToGrayscale (TQImage *destImagePtr)
 {
     if (destImagePtr->depth () > 8)
     {

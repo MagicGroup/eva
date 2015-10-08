@@ -20,10 +20,10 @@
 
 
 #include "evamain.h"
-#include <kapplication.h>
-#include <kaboutdata.h>
-#include <kcmdlineargs.h>
-#include <klocale.h>
+#include <tdeapplication.h>
+#include <tdeaboutdata.h>
+#include <tdecmdlineargs.h>
+#include <tdelocale.h>
 
 #ifdef HAVE_CONFIG_H
  #include "config.h"
@@ -34,7 +34,7 @@ static const char description[] =
 
 static const char version[] = VERSION; // update the version number in configure.in.in and re-generate the configure script;
 
-static KCmdLineOptions options[] =
+static TDECmdLineOptions options[] =
 {
 	{ "last", I18N_NOOP("Using the last saved settings to login."), 0},
 	{ "u", 0, 0},
@@ -49,16 +49,16 @@ static KCmdLineOptions options[] =
 	{ "ppw <proxy password>", I18N_NOOP("Proxy password if required."), 0},
 	{ "hide", I18N_NOOP("Select login mode to invisible."), 0},
 	{ "remember", I18N_NOOP("Save password and proxy settings."), 0},
-	KCmdLineLastOption
+	TDECmdLineLastOption
 };
 
 int main(int argc, char **argv)
 {
-	KAboutData about("eva", 
+	TDEAboutData about("eva", 
 				I18N_NOOP("Eva"), 
 				version,
 				description,
-				 KAboutData::License_GPL, 
+				 TDEAboutData::License_GPL, 
 				I18N_NOOP("(c) 2004-2008, yunfan"), 
 				"yunfan_zg@163.com", 
 				"http://www.sourceforge.net/projects/evaq", 
@@ -82,18 +82,18 @@ int main(int argc, char **argv)
 	about.addCredit( I18N_NOOP("zsyddl"), I18N_NOOP("earlier user details window designer"), "morrowren@sina.com" );
 	about.addCredit( I18N_NOOP("swear"), I18N_NOOP("forum maintainer"), "inzaghi1230@hotmail.com");
 
-	KCmdLineArgs::init(argc, argv, &about);
-	KCmdLineArgs::addCmdLineOptions( options );
-	KApplication app;
+	TDECmdLineArgs::init(argc, argv, &about);
+	TDECmdLineArgs::addCmdLineOptions( options );
+	TDEApplication app;
 	EvaMain *mainWin = 0;
 
-        //KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
+        //TDECmdLineArgs *args = TDECmdLineArgs::parsedArgs();
 
         /// @todo do something with the command line args here
 
         mainWin = new EvaMain();
 
-	QObject::connect(&app, SIGNAL(lastWindowClosed()), &app, SLOT(quit()));
+	TQObject::connect(&app, SIGNAL(lastWindowClosed()), &app, SLOT(quit()));
        // args->clear();
 
     	// mainWin has WDestructiveClose flag by default, so it will delete itself.

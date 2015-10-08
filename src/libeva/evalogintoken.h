@@ -71,7 +71,7 @@ private:
  */
 class RequestLoginTokenExPacket : public OutPacket{
 public:
-	RequestLoginTokenExPacket(const unsigned char type = QQ_LOGIN_TOKEN_REQUEST);
+	RequestLoginTokenExPacket(const unsigned char type = TQQ_LOGIN_TOKEN_REQUEST);
 	RequestLoginTokenExPacket(const RequestLoginTokenExPacket & rhs);
 	virtual ~RequestLoginTokenExPacket();
 
@@ -146,8 +146,8 @@ public:
 
 	const unsigned int getRedirectIP() const { return m_IP; }
 	const unsigned short getReplyCode() const { return m_ReplyCode; }
-	const bool isServerReady() const { return m_ReplyCode == QQ_CMD_SERVER_DETECT_REPLY_OK; }
-	const bool needRedirect() const { return m_ReplyCode == QQ_CMD_SERVER_DETECT_REPLY_REDIRECT; }
+	const bool isServerReady() const { return m_ReplyCode == TQQ_CMD_SERVER_DETECT_REPLY_OK; }
+	const bool needRedirect() const { return m_ReplyCode == TQQ_CMD_SERVER_DETECT_REPLY_REDIRECT; }
 protected:
 	virtual void parseBody();
 private:

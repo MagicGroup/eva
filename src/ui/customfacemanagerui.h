@@ -10,71 +10,71 @@
 #ifndef CUSTOMFACEMANAGERUI_H
 #define CUSTOMFACEMANAGERUI_H
 
-#include <qvariant.h>
-#include <qpixmap.h>
-#include <qwidget.h>
+#include <ntqvariant.h>
+#include <ntqpixmap.h>
+#include <ntqwidget.h>
 
-class QVBoxLayout;
-class QHBoxLayout;
-class QGridLayout;
-class QSpacerItem;
-class QFrame;
-class QToolButton;
-class QListView;
-class QListViewItem;
-class QTable;
-class QPushButton;
-class QLabel;
+class TQVBoxLayout;
+class TQHBoxLayout;
+class TQGridLayout;
+class TQSpacerItem;
+class TQFrame;
+class TQToolButton;
+class TQListView;
+class TQListViewItem;
+class TQTable;
+class TQPushButton;
+class TQLabel;
 
-class CustomFaceManagerUI : public QWidget
+class CustomFaceManagerUI : public TQWidget
 {
     Q_OBJECT
 
 public:
-    CustomFaceManagerUI( QWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
+    CustomFaceManagerUI( TQWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
     ~CustomFaceManagerUI();
 
-    QFrame* frame7;
-    QToolButton* tbtnImport;
-    QToolButton* tbtnExport;
-    QToolButton* tbtnAddGroup;
-    QToolButton* tbtnEditGroup;
-    QToolButton* tbtnRemoveGroup;
-    QFrame* frame6;
-    QListView* lvGroups;
-    QFrame* frmMain;
-    QTable* tblFaceList;
-    QPushButton* btnAdd;
-    QPushButton* btnRemove;
-    QPushButton* btnEdit;
-    QPushButton* btnUp;
-    QPushButton* btnDown;
-    QPushButton* btnMoveTo;
-    QLabel* lblPreview;
-    QPushButton* btnOK;
-    QPushButton* btnCancel;
+    TQFrame* frame7;
+    TQToolButton* tbtnImport;
+    TQToolButton* tbtnExport;
+    TQToolButton* tbtnAddGroup;
+    TQToolButton* tbtnEditGroup;
+    TQToolButton* tbtnRemoveGroup;
+    TQFrame* frame6;
+    TQListView* lvGroups;
+    TQFrame* frmMain;
+    TQTable* tblFaceList;
+    TQPushButton* btnAdd;
+    TQPushButton* btnRemove;
+    TQPushButton* btnEdit;
+    TQPushButton* btnUp;
+    TQPushButton* btnDown;
+    TQPushButton* btnMoveTo;
+    TQLabel* lblPreview;
+    TQPushButton* btnOK;
+    TQPushButton* btnCancel;
 
 protected:
-    QGridLayout* CustomFaceManagerUILayout;
-    QVBoxLayout* layout9;
-    QGridLayout* frame7Layout;
-    QHBoxLayout* layout1;
-    QHBoxLayout* layout7;
-    QGridLayout* frame6Layout;
-    QGridLayout* frmMainLayout;
-    QHBoxLayout* layout6;
-    QVBoxLayout* layout5;
-    QSpacerItem* spacer1;
-    QHBoxLayout* layout8;
-    QSpacerItem* spacer2;
+    TQGridLayout* CustomFaceManagerUILayout;
+    TQVBoxLayout* layout9;
+    TQGridLayout* frame7Layout;
+    TQHBoxLayout* layout1;
+    TQHBoxLayout* layout7;
+    TQGridLayout* frame6Layout;
+    TQGridLayout* frmMainLayout;
+    TQHBoxLayout* layout6;
+    TQVBoxLayout* layout5;
+    TQSpacerItem* spacer1;
+    TQHBoxLayout* layout8;
+    TQSpacerItem* spacer2;
 
 protected slots:
     virtual void languageChange();
 
 private:
-    QPixmap image0;
-    QPixmap image1;
-    QPixmap image2;
+    TQPixmap image0;
+    TQPixmap image1;
+    TQPixmap image2;
 
 };
 

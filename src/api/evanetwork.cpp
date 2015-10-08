@@ -21,31 +21,31 @@
 #include "evanetwork.h"
 #include "evasocket.h"
 
-EvaNetwork::EvaNetwork(const QHostAddress &host, const short port, const Type type)
+EvaNetwork::EvaNetwork(const TQHostAddress &host, const short port, const Type type)
  	:socket(NULL)
 {
 	this->type = type;
 	switch(type){
 	case UDP:
 		socket = new EvaSocket(host, port);  // default is UDP
-		QObject::connect(socket, SIGNAL(isReady()), this, SIGNAL(isReady()));
-		QObject::connect(socket, SIGNAL(writeReady()), SIGNAL(writeReady()));
-		QObject::connect(socket, SIGNAL(receivedData(int)), this, SIGNAL(dataComming(int)));
-		QObject::connect(socket, SIGNAL(exceptionEvent(int)), this, SLOT(processProxyEvent(int)));
+		TQObject::connect(socket, SIGNAL(isReady()), this, SIGNAL(isReady()));
+		TQObject::connect(socket, SIGNAL(writeReady()), SIGNAL(writeReady()));
+		TQObject::connect(socket, SIGNAL(receivedData(int)), this, SIGNAL(dataComming(int)));
+		TQObject::connect(socket, SIGNAL(exceptionEvent(int)), this, SLOT(processProxyEvent(int)));
 		break;
 	case TCP:
 		socket = new EvaSocket(host, port, EvaSocket::TCP);
-		QObject::connect(socket, SIGNAL(isReady()), this, SIGNAL(isReady()));
-		QObject::connect(socket, SIGNAL(writeReady()), SIGNAL(writeReady()));
-		QObject::connect(socket, SIGNAL(receivedData(int)), this, SIGNAL(dataComming(int)));
-		QObject::connect(socket, SIGNAL(exceptionEvent(int)), this, SLOT(processProxyEvent(int)));
+		TQObject::connect(socket, SIGNAL(isReady()), this, SIGNAL(isReady()));
+		TQObject::connect(socket, SIGNAL(writeReady()), SIGNAL(writeReady()));
+		TQObject::connect(socket, SIGNAL(receivedData(int)), this, SIGNAL(dataComming(int)));
+		TQObject::connect(socket, SIGNAL(exceptionEvent(int)), this, SLOT(processProxyEvent(int)));
 		break;
 	case HTTP_Proxy:
 		socket = new EvaHttpProxy(host, port);
-		QObject::connect(socket, SIGNAL(proxyWriteReady()), SIGNAL(writeReady()));
-		QObject::connect(socket, SIGNAL(proxyEvent(int)), this, SLOT(processProxyEvent(int)));
-		QObject::connect(socket, SIGNAL(dataArrived(int)), this, SIGNAL(dataComming(int)));
-		QObject::connect(socket, SIGNAL(socketException(int)), this, SIGNAL(exceptionEvent(int)));
+		TQObject::connect(socket, SIGNAL(proxyWriteReady()), SIGNAL(writeReady()));
+		TQObject::connect(socket, SIGNAL(proxyEvent(int)), this, SLOT(processProxyEvent(int)));
+		TQObject::connect(socket, SIGNAL(dataArrived(int)), this, SIGNAL(dataComming(int)));
+		TQObject::connect(socket, SIGNAL(socketException(int)), this, SIGNAL(exceptionEvent(int)));
 		break;
 	default:
 		socket = new EvaSocket(host, port);  // default is UDP
@@ -58,12 +58,12 @@ EvaNetwork::~EvaNetwork()
 	if(socket) delete socket;
 }
  
-void EvaNetwork::setServer(const QHostAddress &address, const short port)
+void EvaNetwork::setServer(const TQHostAddress &address, const short port)
 {
 	socket->setHost(address, port);	
 }
 
-const QHostAddress &EvaNetwork::getHostAddress() const
+const TQHostAddress &EvaNetwork::getHostAddress() const
 {
 	return socket->getHostAddress();
 }
@@ -73,19 +73,19 @@ const short EvaNetwork::getHostPort() const
 	return socket->getHostPort();
 }
 
-void EvaNetwork::setDestinationServer(const QString &server, const short port) // for Http Proxy only;
+void EvaNetwork::setDestinationServer(const TQString &server, const short port) // for Http Proxy only;
 {
 	if(type != HTTP_Proxy) return;
 	
 	((EvaHttpProxy*)(socket))->setDestinationServer(server, port);
 }
 
-void EvaNetwork::setAuthParameter(const QString &username, const QString &password)
+void EvaNetwork::setAuthParameter(const TQString &username, const TQString &password)
 {
  	 ((EvaHttpProxy*)(socket))->setAuthParameter(username, password);
 }
 
-void EvaNetwork::setAuthParameter(const QCString &param)
+void EvaNetwork::setAuthParameter(const TQCString &param)
 {
 	((EvaHttpProxy*)(socket))->setBase64AuthParam(param);
 }
@@ -155,10 +155,10 @@ void EvaNetwork::close( )
 	socket->closeConnection();
 }
 
-const QHostAddress EvaNetwork::getSocketIp( )
+const TQHostAddress EvaNetwork::getSocketIp( )
 {
 	if(socket) return socket->getSocketAddress();
-	return QHostAddress();
+	return TQHostAddress();
 }
 
 const unsigned int EvaNetwork::getSocketPort( )

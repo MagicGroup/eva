@@ -20,43 +20,43 @@
 
 #include "evasysbroadcastwindow.h"
 
-#include <qlabel.h>
-#include <qpushbutton.h>
-#include <qstringlist.h>
+#include <ntqlabel.h>
+#include <ntqpushbutton.h>
+#include <ntqstringlist.h>
 
-#include <qdesktopwidget.h>
+#include <ntqdesktopwidget.h>
 
 #include <kapp.h>
 #include <kurllabel.h>
-#include <kapplication.h>
-#include <klocale.h>
+#include <tdeapplication.h>
+#include <tdelocale.h>
 
 EvaSysBroadcastWindow::EvaSysBroadcastWindow( )
 	: EvaSysBroadcastUIBase()
 {
-	QObject::connect(btnDetails, SIGNAL(clicked()), SLOT(slotOpenURL()));
-	QObject::connect(btnClose, SIGNAL(clicked()), SLOT(close()));
-	QObject::connect(kurllblUrl, SIGNAL(leftClickedURL()), SLOT(slotOpenURL()));
+	TQObject::connect(btnDetails, SIGNAL(clicked()), SLOT(slotOpenURL()));
+	TQObject::connect(btnClose, SIGNAL(clicked()), SLOT(close()));
+	TQObject::connect(kurllblUrl, SIGNAL(leftClickedURL()), SLOT(slotOpenURL()));
 
 	//adjustSize();
-	//resize( QSize(315, 157).expandedTo(minimumSizeHint()) );
+	//resize( TQSize(315, 157).expandedTo(minimumSizeHint()) );
 }
 
 void EvaSysBroadcastWindow::slotOpenURL()
 {
-	QStringList args;
+	TQStringList args;
 	args<<"exec"<< m_URL;
 	kapp->tdeinitExec("kfmclient",args);
 
 	close();
 }
 
-void EvaSysBroadcastWindow::closeEvent( QCloseEvent *)
+void EvaSysBroadcastWindow::closeEvent( TQCloseEvent *)
 {
 	deleteLater();
 }
 
-void EvaSysBroadcastWindow::setMessage( const QString & msg )
+void EvaSysBroadcastWindow::setMessage( const TQString & msg )
 {
 	int index = msg.findRev( '\x0a');
 	m_Contents = msg.left( index );
@@ -70,7 +70,7 @@ void EvaSysBroadcastWindow::setMessage( const QString & msg )
 	moveToRightBottom( );
 }
 
-void EvaSysBroadcastWindow::setNews( const QString & title, const QString & brief, const QString & url )
+void EvaSysBroadcastWindow::setNews( const TQString & title, const TQString & brief, const TQString & url )
 {
 	setCaption(i18n("System News"));
 	lblTitle->setText( title);
@@ -90,8 +90,8 @@ void EvaSysBroadcastWindow::setNews( const QString & title, const QString & brie
 
 void EvaSysBroadcastWindow::moveToRightBottom( )
 {
-	QDesktopWidget *desktop = KApplication::desktop();
-	QRect scr = desktop->screenGeometry();
+	TQDesktopWidget *desktop = TDEApplication::desktop();
+	TQRect scr = desktop->screenGeometry();
 	setGeometry(scr.right()- width(), scr.bottom() - height(), width(), height());	
 }
 

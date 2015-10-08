@@ -21,100 +21,100 @@
 #ifndef EVAUSERUIBASE_H
 #define EVAUSERUIBASE_H
 
-#include <qvariant.h>
-#include <qdialog.h>
-#include <qscrollview.h>
-#include <qtoolbutton.h>
+#include <ntqvariant.h>
+#include <ntqdialog.h>
+#include <ntqscrollview.h>
+#include <ntqtoolbutton.h>
 
 #include <kpushbutton.h>
 
 #include "evauserinfowidget.h"
 
-class QVBoxLayout;
-class QHBoxLayout;
-class QGridLayout;
-class QSpacerItem;
-class QPushButton;
-class QLabel;
-class QTabWidget;
-class QWidget;
-class QPushButton;
-class QLineEdit;
-class QTextEdit;
-class QCheckBox;
+class TQVBoxLayout;
+class TQHBoxLayout;
+class TQGridLayout;
+class TQSpacerItem;
+class TQPushButton;
+class TQLabel;
+class TQTabWidget;
+class TQWidget;
+class TQPushButton;
+class TQLineEdit;
+class TQTextEdit;
+class TQCheckBox;
 
-class EvaUserUIBase : public QDialog
+class EvaUserUIBase : public TQDialog
 {
     Q_OBJECT
 
 public:
-    EvaUserUIBase( QWidget* parent = 0, const char* name = 0, bool modal = FALSE, WFlags fl = 0 );
+    EvaUserUIBase( TQWidget* parent = 0, const char* name = 0, bool modal = FALSE, WFlags fl = 0 );
     ~EvaUserUIBase();
 
-    QPushButton* pbUpdate;
-    QPushButton* pbClose;
-    QLabel* lblText;
-    QTabWidget* twTabMain;
+    TQPushButton* pbUpdate;
+    TQPushButton* pbClose;
+    TQLabel* lblText;
+    TQTabWidget* twTabMain;
     
-    QWidget* tabQQShow;
-   // QLabel* lblQQShowBar;   
-    QLabel* lblQQShow;
-    //QToolButton* tbtnHome;
-    QToolButton* tbtnAlbum;
+    TQWidget* tabTQQShow;
+   // TQLabel* lblTQQShowBar;   
+    TQLabel* lblTQQShow;
+    //TQToolButton* tbtnHome;
+    TQToolButton* tbtnAlbum;
     KPushButton* kpbUpdateShow;
-    QToolButton* tbtnShop;
+    TQToolButton* tbtnShop;
 
     //UserInfo ScrollView 
-    QScrollView* svMain;
+    TQScrollView* svMain;
     EvaUserInfoWidget* qwUserInfo;
     
     //Memo
-    QWidget* TabMemo;
-    QLabel* lblMemoName;
-    QLabel* lblMemoMobile;
-    QLabel* lblMemoAddress;
-    QLabel* lblMemoEmail;
-    QLineEdit* leMemoName;
-    QLineEdit* leMemoMobile;
-    QLabel* lblMemoTelephone;
-    QLabel* lblMemoZipCode;
-    QLineEdit* leMemoTelephone;
-    QLineEdit* leMemoZipCode;
-    QLineEdit* leMemoAddress;
-    QLineEdit* leMemoEmail;
-    QLabel* lblMemoNote;
-    QTextEdit* teMemoNote;
-    QCheckBox* chbAutoUploadMemo;
-    QPushButton* pbDownloadMemo;
+    TQWidget* TabMemo;
+    TQLabel* lblMemoName;
+    TQLabel* lblMemoMobile;
+    TQLabel* lblMemoAddress;
+    TQLabel* lblMemoEmail;
+    TQLineEdit* leMemoName;
+    TQLineEdit* leMemoMobile;
+    TQLabel* lblMemoTelephone;
+    TQLabel* lblMemoZipCode;
+    TQLineEdit* leMemoTelephone;
+    TQLineEdit* leMemoZipCode;
+    TQLineEdit* leMemoAddress;
+    TQLineEdit* leMemoEmail;
+    TQLabel* lblMemoNote;
+    TQTextEdit* teMemoNote;
+    TQCheckBox* chbAutoUploadMemo;
+    TQPushButton* pbDownloadMemo;
 
 
 protected:
-    QGridLayout* layout13;
-    QSpacerItem* spacer6;
-    QGridLayout* layout12;
-    QSpacerItem* spacer5;
-    QSpacerItem* spacer7;
-    QSpacerItem* spacer8;
+    TQGridLayout* layout13;
+    TQSpacerItem* spacer6;
+    TQGridLayout* layout12;
+    TQSpacerItem* spacer5;
+    TQSpacerItem* spacer7;
+    TQSpacerItem* spacer8;
     
-    QGridLayout* TabMemoLayout;
-    QSpacerItem* spacer30;
-    QSpacerItem* spacer29;
-    QVBoxLayout* layout117;
-    QSpacerItem* spacer38;
-    QHBoxLayout* layout100;
-    QVBoxLayout* layout97;
-    QVBoxLayout* layout99;
-    QHBoxLayout* layout98;
-    QVBoxLayout* layout80;
-    QVBoxLayout* layout81;
-    QVBoxLayout* layout82;
-    QVBoxLayout* layout86;
-    QHBoxLayout* layout112;
-    QVBoxLayout* layout111;
-    QSpacerItem* spacer32;
-    QHBoxLayout* layout116;
-    QSpacerItem* spacer34;
-    QSpacerItem* spacer33;
+    TQGridLayout* TabMemoLayout;
+    TQSpacerItem* spacer30;
+    TQSpacerItem* spacer29;
+    TQVBoxLayout* layout117;
+    TQSpacerItem* spacer38;
+    TQHBoxLayout* layout100;
+    TQVBoxLayout* layout97;
+    TQVBoxLayout* layout99;
+    TQHBoxLayout* layout98;
+    TQVBoxLayout* layout80;
+    TQVBoxLayout* layout81;
+    TQVBoxLayout* layout82;
+    TQVBoxLayout* layout86;
+    TQHBoxLayout* layout112;
+    TQVBoxLayout* layout111;
+    TQSpacerItem* spacer32;
+    TQHBoxLayout* layout116;
+    TQSpacerItem* spacer34;
+    TQSpacerItem* spacer33;
 
 
 protected slots:

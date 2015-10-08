@@ -20,23 +20,23 @@
 
 
 #include "qundetailswindow.h"
-#include <qlineedit.h>
-#include <qtextedit.h>
-#include <qcombobox.h>
-#include <qpushbutton.h>
-#include <qradiobutton.h>
-//#include <qiconset.h>
-#include <qpixmap.h>
-#include <qlabel.h>
-#include <qtabwidget.h>
-#include <qbuttongroup.h>
-#include <qtable.h>
-#include <qimage.h>
-#include <qtextcodec.h>
-#include <qevent.h>
-#include <qpoint.h>
-#include <qtoolbutton.h>
-#include <qmessagebox.h>
+#include <ntqlineedit.h>
+#include <ntqtextedit.h>
+#include <ntqcombobox.h>
+#include <ntqpushbutton.h>
+#include <ntqradiobutton.h>
+//#include <ntqiconset.h>
+#include <ntqpixmap.h>
+#include <ntqlabel.h>
+#include <ntqtabwidget.h>
+#include <ntqbuttongroup.h>
+#include <ntqtable.h>
+#include <ntqimage.h>
+#include <ntqtextcodec.h>
+#include <ntqevent.h>
+#include <ntqpoint.h>
+#include <ntqtoolbutton.h>
+#include <ntqmessagebox.h>
 #include "evaqunlist.h"
 #include "evamain.h"
 #include "evaresource.h"
@@ -46,14 +46,14 @@
 #include "quncategorypicker.h"
 #include "evacontactmanager.h"
 
-#include <kmessagebox.h>
-#include <klocale.h>
+#include <tdemessagebox.h>
+#include <tdelocale.h>
 
 
-// QunDetailsWindow::QunDetailsWindow(QWidget* parent, const char* name, WFlags fl)
+// QunDetailsWindow::QunDetailsWindow(TQWidget* parent, const char* name, WFlags fl)
 // 	: QunDetailsUI(parent,name,fl), m_CardId(0)
 // {
-// 	codec = QTextCodec::codecForName("GB18030");
+// 	codec = TQTextCodec::codecForName("GB18030");
 // 	initTable( );
 // 	slotLoadMembers();
 // }
@@ -63,11 +63,11 @@ QunDetailsWindow::~QunDetailsWindow()
 	delete mQun;
 }
 
-QunDetailsWindow::QunDetailsWindow( Qun * qun, const bool isInList, QWidget * parent, const char * name, WFlags fl )
+QunDetailsWindow::QunDetailsWindow( Qun * qun, const bool isInList, TQWidget * parent, const char * name, WFlags fl )
 	: QunDetailsUI(parent,name,fl), mQun(qun), m_IsInList(isInList), m_CardId(0)
 {
 	mQun = new Qun(*qun);
-	codec = QTextCodec::codecForName("GB18030");
+	codec = TQTextCodec::codecForName("GB18030");
 	initInformation();
 	if(isInList){
 		initTable( );
@@ -75,12 +75,12 @@ QunDetailsWindow::QunDetailsWindow( Qun * qun, const bool isInList, QWidget * pa
 	
 		picker = new EvaQunMemberPicker(0, "qunpicker", WStyle_Customize | WStyle_NoBorder | 
 									WStyle_StaysOnTop |  WStyle_Tool| WX11BypassWM, mQun);
-		picker->resize(QSize(240,frameGeometry().height()));
-		QObject::connect(picker, SIGNAL(memberClicked(const unsigned int, const bool)), 
+		picker->resize(TQSize(240,frameGeometry().height()));
+		TQObject::connect(picker, SIGNAL(memberClicked(const unsigned int, const bool)), 
 					SLOT(slotPickerMemberClicked(const unsigned int, const bool)));
-		QObject::connect(this, SIGNAL(removeMember(const unsigned int)), picker, SLOT(slotSetMemberOff(const unsigned int)));
+		TQObject::connect(this, SIGNAL(removeMember(const unsigned int)), picker, SLOT(slotSetMemberOff(const unsigned int)));
 
-		QObject::connect(pbUpdate, SIGNAL(clicked()), SLOT(slotUpdateClicked()));
+		TQObject::connect(pbUpdate, SIGNAL(clicked()), SLOT(slotUpdateClicked()));
 	} else {
 		picker = 0;
 		setWidgetEnabledForInformation(false);
@@ -90,7 +90,7 @@ QunDetailsWindow::QunDetailsWindow( Qun * qun, const bool isInList, QWidget * pa
 		pbUpdate->setEnabled(false);
 	}
 
-	QObject::connect(pbClose, SIGNAL(clicked()), SLOT(slotClose()));
+	TQObject::connect(pbClose, SIGNAL(clicked()), SLOT(slotClose()));
 }
 
 void QunDetailsWindow::initInformation( )
@@ -98,25 +98,25 @@ void QunDetailsWindow::initInformation( )
 	if(!mQun) return;
 	
 	QunInfo info = mQun->getDetails();
-	QString title, name;
+	TQString title, name;
 	if(info.getExtID() == 0){
-		name = QString::number(mQun->getQunID());
+		name = TQString::number(mQun->getQunID());
 	}else
 		name = codec->toUnicode(mQun->getDetails().getName().c_str());
-	title = i18n("Qun") + QString(" - %1").arg(name);
+	title = i18n("Qun") + TQString(" - %1").arg(name);
 	setCaption(title);
-	//QIconSet face;
-	setIcon(*(EvaMain::images->getIcon("QUN")));
-	lblLogo->setPixmap(*(EvaMain::images->getIcon("QUN_LOGO")));
+	//TQIconSet face;
+	setIcon(*(EvaMain::images->getIcon("TQUN")));
+	lblLogo->setPixmap(*(EvaMain::images->getIcon("TQUN_LOGO")));
 	
-	lblQunFace->setPixmap(*(EvaMain::images->getIcon("QUN")));
+	lblQunFace->setPixmap(*(EvaMain::images->getIcon("TQUN")));
 	if(info.getExtID() == 0){
 		leQunName->setText( name);
 		return;
 	}
 	
-	QString notice = codec->toUnicode(mQun->getDetails().getNotice().c_str());
-	QString description = codec->toUnicode(mQun->getDetails().getDescription().c_str());
+	TQString notice = codec->toUnicode(mQun->getDetails().getNotice().c_str());
+	TQString description = codec->toUnicode(mQun->getDetails().getDescription().c_str());
 	
 	if(mQun->getDetails().getCreator() == EvaMain::user->getQQ() ||
 			(mQun->isAdmin(EvaMain::user->getQQ())) ){
@@ -125,7 +125,7 @@ void QunDetailsWindow::initInformation( )
 		teDescription->setEnabled(true);
 		bgAuthen->setEnabled(true);
 		tbCategory->setEnabled(true);
-		QObject::connect(tbCategory, SIGNAL(clicked()), SLOT(slotCategoryClicked()));
+		TQObject::connect(tbCategory, SIGNAL(clicked()), SLOT(slotCategoryClicked()));
 	}else{
 		leQunName->setEnabled(false);
 		teNotice->setEnabled(false);
@@ -135,26 +135,26 @@ void QunDetailsWindow::initInformation( )
 	}
 	
 	
-	leQunID->setText( QString::number(mQun->getDetails().getExtID()));
-	leCreator->setText( QString::number(mQun->getDetails().getCreator()));
+	leQunID->setText( TQString::number(mQun->getDetails().getExtID()));
+	leCreator->setText( TQString::number(mQun->getDetails().getCreator()));
 	leQunName->setText( name);
 	
 	category = mQun->getDetails().getCategory();
 	QunCategory qunCate;
-	QString cateDescription = qunCate.getDescription(category);
+	TQString cateDescription = qunCate.getDescription(category);
 	tbCategory->setText(cateDescription);
 	
 	teNotice->setText(notice);
 	teDescription->setText(description);
 	
 	switch(mQun->getDetails().getAuthType()){
-	case QQ_QUN_NO_AUTH:
+	case TQQ_QUN_NO_AUTH:
 		rbNoAuthenNeed->setChecked(true);
 		break;
-	case QQ_QUN_NEED_AUTH:
+	case TQQ_QUN_NEED_AUTH:
 		rbNeedAuthen->setChecked(true);
 		break;
-	case QQ_QUN_NO_ADD:
+	case TQQ_QUN_NO_ADD:
 		rbRejectAnyone->setChecked(true);
 		break;
 	}
@@ -178,10 +178,10 @@ void QunDetailsWindow::initInformation( )
 		rbRecord_Show->setChecked(true);
 	}
 	
-	QString realName = codec->toUnicode(mQun->getCardName().c_str());
-	QString phone = codec->toUnicode(mQun->getCardPhone().c_str());
-	QString email = codec->toUnicode(mQun->getCardEmail().c_str());
-	QString memo = codec->toUnicode(mQun->getCardMemo().c_str());
+	TQString realName = codec->toUnicode(mQun->getCardName().c_str());
+	TQString phone = codec->toUnicode(mQun->getCardPhone().c_str());
+	TQString email = codec->toUnicode(mQun->getCardEmail().c_str());
+	TQString memo = codec->toUnicode(mQun->getCardMemo().c_str());
 	
 	leMyName->setText(realName);
 	cbbMyGender->setCurrentItem(mQun->getCardGender());
@@ -219,7 +219,7 @@ void QunDetailsWindow::slotUpdateClicked( )
 void QunDetailsWindow::slotModifyInfo( )
 {
 	if(leQunName->text().stripWhiteSpace().isEmpty()){
-		QMessageBox::information(this, i18n("Eva Modify Qun Inforamtion"), 
+		TQMessageBox::information(this, i18n("Eva Modify Qun Inforamtion"), 
 					i18n("Qun name cannot be empty."));
 		leQunName->setFocus();
 		return;
@@ -236,9 +236,9 @@ void QunDetailsWindow::slotModifyInfo( )
 		auth = 0x03;
 	
 	//unsigned short cate = mQun->getDetails().getCategory();
-	QString name = leQunName->text();
-	QString notice = teNotice->text();
-	QString description = teDescription->text();
+	TQString name = leQunName->text();
+	TQString notice = teNotice->text();
+	TQString description = teDescription->text();
 	setWidgetEnabledForInformation(false);
 	pbUpdate->setEnabled(false);
 	emit requestModifyQunInfo(id, auth, category, name, notice, description);
@@ -253,24 +253,24 @@ void QunDetailsWindow::setWidgetEnabledForInformation( bool enabled )
 	tbCategory->setEnabled(enabled);
 }
 
-void QunDetailsWindow::slotModifyQunInfo(const unsigned int id, bool ok , QString msg)
+void QunDetailsWindow::slotModifyQunInfo(const unsigned int id, bool ok , TQString msg)
 {
 	if(id != mQun->getQunID()) return;
 	setWidgetEnabledForInformation(true);
 	GetContactManager()->fetchQunDetails( mQun->getQunID());
-	QString title = i18n("Eva Modify Qun Inforamtion");
+	TQString title = i18n("Eva Modify Qun Inforamtion");
 	if(ok){
-		QMessageBox::information(this, title, i18n("Modify Qun information sucessfully."));
+		TQMessageBox::information(this, title, i18n("Modify Qun information sucessfully."));
 		return;
 	} else {
-		QMessageBox::information(this, title, msg);
+		TQMessageBox::information(this, title, msg);
 	}
 }
 
-void QunDetailsWindow::slotQunInfomationReady(const unsigned int id, const bool ok, QString msg)
+void QunDetailsWindow::slotQunInfomationReady(const unsigned int id, const bool ok, TQString msg)
 {
 	if(!ok){
-		QMessageBox::information( this, i18n("Qun Details"), msg);
+		TQMessageBox::information( this, i18n("Qun Details"), msg);
 		return;
 	}
 	
@@ -278,27 +278,27 @@ void QunDetailsWindow::slotQunInfomationReady(const unsigned int id, const bool 
 
 	mQun = EvaMain::user->getQunList()->getQun(id);
 	
-	QString name = codec->toUnicode(mQun->getDetails().getName().c_str());
-	QString title = i18n("Qun") + QString(" - %1").arg(name);
+	TQString name = codec->toUnicode(mQun->getDetails().getName().c_str());
+	TQString title = i18n("Qun") + TQString(" - %1").arg(name);
 	setCaption(title);
 	
-	QString notice = codec->toUnicode(mQun->getDetails().getNotice().c_str());
-	QString description = codec->toUnicode(mQun->getDetails().getDescription().c_str());
+	TQString notice = codec->toUnicode(mQun->getDetails().getNotice().c_str());
+	TQString description = codec->toUnicode(mQun->getDetails().getDescription().c_str());
 	
-	leQunID->setText( QString::number(mQun->getDetails().getExtID()));
-	leCreator->setText( QString::number(mQun->getDetails().getCreator()));
+	leQunID->setText( TQString::number(mQun->getDetails().getExtID()));
+	leCreator->setText( TQString::number(mQun->getDetails().getCreator()));
 	leQunName->setText( name);
 	teNotice->setText(notice);
 	teDescription->setText(description);
 	
 	switch(mQun->getDetails().getAuthType()){
-	case QQ_QUN_NO_AUTH:
+	case TQQ_QUN_NO_AUTH:
 		rbNoAuthenNeed->setChecked(true);
 		break;
-	case QQ_QUN_NEED_AUTH:
+	case TQQ_QUN_NEED_AUTH:
 		rbNeedAuthen->setChecked(true);
 		break;
-	case QQ_QUN_NO_ADD:
+	case TQQ_QUN_NO_ADD:
 		rbRejectAnyone->setChecked(true);
 		break;
 	}
@@ -313,31 +313,31 @@ void QunDetailsWindow::slotModifyQunCard( )
 		emit requestQunCard(mQun->getQunID(), m_CardId);
 		return;
 	}
-	QString name = leMyName->text();
+	TQString name = leMyName->text();
 	unsigned char gender = (unsigned char)(cbbMyGender->currentItem());
-	QString phone = leMyPhone->text();
-	QString email = leMyEmail->text();
-	QString memo = teMyMemo->text();
+	TQString phone = leMyPhone->text();
+	TQString email = leMyEmail->text();
+	TQString memo = teMyMemo->text();
 	
-	QString title = i18n("Modify Qun Card");
-	QString content = i18n("Your input is too long.");
+	TQString title = i18n("Modify Qun Card");
+	TQString content = i18n("Your input is too long.");
 	if(strlen(name.ascii()) > 255){
-		QMessageBox::information(this, title, content);
+		TQMessageBox::information(this, title, content);
 		leMyName->setFocus();
 		return;	
 	}
 	if(strlen(phone.ascii()) > 255){
-		QMessageBox::information(this, title, content);
+		TQMessageBox::information(this, title, content);
 		leMyPhone->setFocus();
 		return;	
 	}
 	if(strlen(email.ascii()) > 255){
-		QMessageBox::information(this, title, content);
+		TQMessageBox::information(this, title, content);
 		leMyEmail->setFocus();
 		return;	
 	}
 	if(strlen(memo.ascii()) > 255){
-		QMessageBox::information(this, title, content);
+		TQMessageBox::information(this, title, content);
 		teMyMemo->setFocus();
 		return;
 	}
@@ -346,19 +346,19 @@ void QunDetailsWindow::slotModifyQunCard( )
 	emit requestModifyQunCard(mQun->getQunID(), EvaMain::user->getQQ(), name, gender, phone, email, memo);
 }
 
-void QunDetailsWindow::slotModifyQunCardReply( const unsigned int id, const bool ok, const unsigned int /*qqID*/, QString msg)
+void QunDetailsWindow::slotModifyQunCardReply( const unsigned int id, const bool ok, const unsigned int /*qqID*/, TQString msg)
 {
 	if(ok && id != mQun->getQunID()) return;
 	pbUpdate->setEnabled(true);
-	QString title = i18n("Modify Qun Card");
+	TQString title = i18n("Modify Qun Card");
 	if(ok){
-		QMessageBox::information(this, title, i18n("Modify Qun Card sucessfully."));
+		TQMessageBox::information(this, title, i18n("Modify Qun Card sucessfully."));
 		
-		QString name = leMyName->text();
+		TQString name = leMyName->text();
 		unsigned char gender = (unsigned char)(cbbMyGender->currentItem());
-		QString phone = leMyPhone->text();
-		QString email = leMyEmail->text();
-		QString memo = teMyMemo->text();
+		TQString phone = leMyPhone->text();
+		TQString email = leMyEmail->text();
+		TQString memo = teMyMemo->text();
 		
 		std::string stdName = codec->fromUnicode(name).data();
 		std::string stdPhone = codec->fromUnicode(phone).data();
@@ -367,7 +367,7 @@ void QunDetailsWindow::slotModifyQunCardReply( const unsigned int id, const bool
 		EvaMain::user->getQunList()->setMyQunCardInfo(id, stdName, gender, stdPhone, stdEmail, stdMemo);
 		return;
 	} else {
-		QMessageBox::information(0, title, msg);
+		TQMessageBox::information(0, title, msg);
 	}	
 }
 
@@ -384,7 +384,7 @@ void QunDetailsWindow::slotLoadMembers( )
 	std::list<FriendItem> list = mQun->getMembers();
 	unsigned short face;
 	unsigned int id;
-	QString nick;
+	TQString nick;
 	
 	tblMembers->setNumRows(list.size());
 	for(iter = list.begin(); iter!=list.end(); iter++){
@@ -393,23 +393,23 @@ void QunDetailsWindow::slotLoadMembers( )
 		nick = EvaTextFilter::filter(codec->toUnicode(iter->getQunRealName().c_str())); 
 		if(nick.isEmpty())
 			nick = EvaTextFilter::filter(codec->toUnicode(iter->getNick().c_str()));
-		QPixmap *typePic = NULL;
+		TQPixmap *typePic = NULL;
 		if(iter->isAdmin())
-			typePic = EvaMain::images->getIcon("QUN_ADMIN");
+			typePic = EvaMain::images->getIcon("TQUN_ADMIN");
 		if(iter->isShareHolder())
-			typePic = EvaMain::images->getIcon("QUN_SHAREHOLDER");
+			typePic = EvaMain::images->getIcon("TQUN_SHAREHOLDER");
 		if(mQun->getDetails().getCreator() == id)
-			typePic = EvaMain::images->getIcon("QUN_CREATOR");
+			typePic = EvaMain::images->getIcon("TQUN_CREATOR");
 		
 		if(typePic)
 			tblMembers->setPixmap(i,0, *typePic);
-		QPixmap *bmpFace = EvaMain::images->getFace(EvaMain::images->getFaceFileIndex(face));
+		TQPixmap *bmpFace = EvaMain::images->getFace(EvaMain::images->getFaceFileIndex(face));
 		
 		if(bmpFace){
-			QImage img(bmpFace->convertToImage().smoothScale(16, 16));
-			tblMembers->setPixmap(i, 1, QPixmap(img));
+			TQImage img(bmpFace->convertToImage().smoothScale(16, 16));
+			tblMembers->setPixmap(i, 1, TQPixmap(img));
 		}
-		tblMembers->setText(i,1,QString::number(id));
+		tblMembers->setText(i,1,TQString::number(id));
 		tblMembers->setText(i,2,nick);
 		tblMembers->setText(i,3, iter->isBoy()?i18n("Male"):i18n("Female"));
 
@@ -419,7 +419,7 @@ void QunDetailsWindow::slotLoadMembers( )
 
 void QunDetailsWindow::initTable( )
 {
-	QHeader *vheader = tblMembers->verticalHeader();
+	TQHeader *vheader = tblMembers->verticalHeader();
 	vheader->hide();
 	tblMembers->setLeftMargin(0);
 	tblMembers->setNumRows( 0 );
@@ -432,10 +432,10 @@ void QunDetailsWindow::initTable( )
 	tblMembers->horizontalHeader()->setLabel( 1, i18n( "QQ" ) );
 	tblMembers->horizontalHeader()->setLabel( 2, i18n( "Nick" ) );
 	tblMembers->horizontalHeader()->setLabel( 3, i18n( "Gender" ) );
-	tblMembers->setSelectionMode( QTable::SingleRow );
-	tblMembers->setFocusStyle( QTable::FollowStyle );
+	tblMembers->setSelectionMode( TQTable::SingleRow );
+	tblMembers->setFocusStyle( TQTable::FollowStyle );
 	tblMembers->setReadOnly( true );
-	QObject::connect(tblMembers, SIGNAL(clicked(int,int,int,const QPoint&)), SLOT(slotTableClicked(int,int,int,const QPoint&)));
+	TQObject::connect(tblMembers, SIGNAL(clicked(int,int,int,const TQPoint&)), SLOT(slotTableClicked(int,int,int,const TQPoint&)));
 
 	unsigned int myid = EvaMain::user->getQQ();
 	if( mQun->isAdmin( myid) || mQun->getDetails().getCreator() == myid){
@@ -452,17 +452,17 @@ void QunDetailsWindow::initTable( )
 	pbUnsetAdmin->setEnabled(false);
 	pbTransfer->setEnabled(false);
 	
-	QObject::connect(pbSetMembers, SIGNAL(clicked()), SLOT(slotSetMembersClicked()));
-	QObject::connect(pbAddToMe, SIGNAL(clicked()), SLOT(slotAddToMeClicked()));
-	QObject::connect(pbDelMembers, SIGNAL(clicked()), SLOT(slotDelMembersClicked()));
-	QObject::connect(pbSetAdmin, SIGNAL(clicked()), SLOT(slotSetAdminClicked()));
-	QObject::connect(pbUnsetAdmin, SIGNAL(clicked()), SLOT(slotUnsetAdminClicked()));
-	QObject::connect(pbTransfer, SIGNAL(clicked()), SLOT(slotTransferClicked()));
+	TQObject::connect(pbSetMembers, SIGNAL(clicked()), SLOT(slotSetMembersClicked()));
+	TQObject::connect(pbAddToMe, SIGNAL(clicked()), SLOT(slotAddToMeClicked()));
+	TQObject::connect(pbDelMembers, SIGNAL(clicked()), SLOT(slotDelMembersClicked()));
+	TQObject::connect(pbSetAdmin, SIGNAL(clicked()), SLOT(slotSetAdminClicked()));
+	TQObject::connect(pbUnsetAdmin, SIGNAL(clicked()), SLOT(slotUnsetAdminClicked()));
+	TQObject::connect(pbTransfer, SIGNAL(clicked()), SLOT(slotTransferClicked()));
 }
 
-void QunDetailsWindow::slotTableClicked( int row, int /*col*/, int /*button*/, const QPoint & /*mousePos*/ )
+void QunDetailsWindow::slotTableClicked( int row, int /*col*/, int /*button*/, const TQPoint & /*mousePos*/ )
 {
-	QString num = tblMembers->text(row, 1);
+	TQString num = tblMembers->text(row, 1);
 	bool ok;
 	unsigned int id = num.toUInt(&ok);
 	
@@ -498,7 +498,7 @@ void QunDetailsWindow::slotTableClicked( int row, int /*col*/, int /*button*/, c
 		pbTransfer->setEnabled(false);
 		if( myID == mQun->getDetails().getCreator()){
 			if(id != myID){ // selected other member
-				if(item->getQunAdminValue() & QUN_TYPE_ADMIN ){
+				if(item->getQunAdminValue() & TQUN_TYPE_ADMIN ){
 					pbSetAdmin->setEnabled(false);
 					pbUnsetAdmin->setEnabled(true);
 				} else {
@@ -531,7 +531,7 @@ void QunDetailsWindow::slotSetMembersClicked()
 
 void QunDetailsWindow::slotAddToMeClicked()
 {
-	QString num = tblMembers->text(tblMembers->currentRow(), 1);
+	TQString num = tblMembers->text(tblMembers->currentRow(), 1);
 	bool ok;
 	int id = num.toInt(&ok);
 	if(ok){
@@ -545,7 +545,7 @@ void QunDetailsWindow::slotAddToMeClicked()
 void QunDetailsWindow::slotDelMembersClicked()
 {
 	int row = tblMembers->currentRow();
-	QString txt = tblMembers->text(row, 1);
+	TQString txt = tblMembers->text(row, 1);
 	bool ok;
 	unsigned int id = txt.toUInt(&ok);
 	if(!ok) return;
@@ -554,13 +554,13 @@ void QunDetailsWindow::slotDelMembersClicked()
 	
 	tblMembers->removeRow(row);
 	tblMembers->selectRow(0);
-	slotTableClicked(0, 1, 0, QPoint(0,0));
+	slotTableClicked(0, 1, 0, TQPoint(0,0));
 	emit removeMember(id);
 }
 
 void QunDetailsWindow::slotSetAdminClicked()
 {
-	QString num = tblMembers->text(tblMembers->currentRow(), 1);
+	TQString num = tblMembers->text(tblMembers->currentRow(), 1);
 	bool ok;
 	int id = num.toInt(&ok);
 	if(ok){
@@ -571,7 +571,7 @@ void QunDetailsWindow::slotSetAdminClicked()
 
 void QunDetailsWindow::slotUnsetAdminClicked()
 {
-	QString num = tblMembers->text(tblMembers->currentRow(), 1);
+	TQString num = tblMembers->text(tblMembers->currentRow(), 1);
 	bool ok;
 	int id = num.toInt(&ok);
 	if(ok){
@@ -582,7 +582,7 @@ void QunDetailsWindow::slotUnsetAdminClicked()
 
 void QunDetailsWindow::slotTransferClicked()
 {
-	QString num = tblMembers->text(tblMembers->currentRow(), 1);
+	TQString num = tblMembers->text(tblMembers->currentRow(), 1);
 	bool ok;
 	int id = num.toInt(&ok);
 	if(ok){
@@ -591,35 +591,35 @@ void QunDetailsWindow::slotTransferClicked()
 	}	
 }
 
-void QunDetailsWindow::slotSetAdmin(const unsigned int id, const bool ok,  const unsigned int qq, const bool isSetAdmin, QString msg)
+void QunDetailsWindow::slotSetAdmin(const unsigned int id, const bool ok,  const unsigned int qq, const bool isSetAdmin, TQString msg)
 {
 	if(ok && id != mQun->getQunID()) return;
-	QString title = i18n("Qun Administrator Setting");
-	QString message;
+	TQString title = i18n("Qun Administrator Setting");
+	TQString message;
 	
 	if(isSetAdmin)
-		message = QString(i18n("Set \"%1\" as Qun administrator sucessfully.")).arg(qq);
+		message = TQString(i18n("Set \"%1\" as Qun administrator sucessfully.")).arg(qq);
 	else
-		message = QString(i18n("Unset \"%1\" as Qun administrator sucessfully.")).arg(qq);
+		message = TQString(i18n("Unset \"%1\" as Qun administrator sucessfully.")).arg(qq);
 
 	if(ok){
-		QMessageBox::information(this, title, message);
+		TQMessageBox::information(this, title, message);
 		//slotClose( );
 	} else {
-		QMessageBox::information(this, title, msg);
+		TQMessageBox::information(this, title, msg);
 	}
 }
 
-void QunDetailsWindow::slotTransferQun( const unsigned int id, const bool ok, const unsigned int qq, QString msg )
+void QunDetailsWindow::slotTransferQun( const unsigned int id, const bool ok, const unsigned int qq, TQString msg )
 {
 	if(ok && id != mQun->getQunID()) return;
-	QString title = i18n("Qun Transfer");
+	TQString title = i18n("Qun Transfer");
 
 	if(ok){
-		QMessageBox::information(this, title, QString(i18n("Transfer Qun to \"%1\" sucessfully.")).arg(qq));
+		TQMessageBox::information(this, title, TQString(i18n("Transfer Qun to \"%1\" sucessfully.")).arg(qq));
 		//slotClose( );
 	} else {
-		QMessageBox::information(this, title, msg);
+		TQMessageBox::information(this, title, msg);
 	}	
 }
 
@@ -628,7 +628,7 @@ void QunDetailsWindow::slotClose( )
 	close();
 }
 
-void QunDetailsWindow::closeEvent( QCloseEvent * event)
+void QunDetailsWindow::closeEvent( TQCloseEvent * event)
 {
 	if(picker)
 		delete picker;
@@ -637,7 +637,7 @@ void QunDetailsWindow::closeEvent( QCloseEvent * event)
 	deleteLater();
 }
 
-void QunDetailsWindow::moveEvent( QMoveEvent * event )
+void QunDetailsWindow::moveEvent( TQMoveEvent * event )
 {
 	if(picker)
 		picker->move(x() + frameGeometry().width(), y());
@@ -649,9 +649,9 @@ void QunDetailsWindow::slotPickerMemberClicked( const unsigned int id, const boo
 	int row;
 	unsigned int qq;
 	bool ok;
-	QString txt;
+	TQString txt;
 	if(isChecked){
-		const QQFriend * frd = (EvaMain::user->getFriendList()).getFriend(id);
+		const TQQFriend * frd = (EvaMain::user->getFriendList()).getFriend(id);
 		if(!frd) return;
 		//if(mQun->hasMember(frd->getQQ())) return;
 		for(row=0; row<tblMembers->numRows(); row++){
@@ -662,25 +662,25 @@ void QunDetailsWindow::slotPickerMemberClicked( const unsigned int id, const boo
 		}
 		
 		unsigned short face;
-		QString nick;
+		TQString nick;
 		face = frd->getFace();
 		nick = codec->toUnicode(frd->getNick().c_str());
 		
 		row = tblMembers->numRows(); // note: the index is start from 0
 		tblMembers->setNumRows(tblMembers->numRows() + 1);
 		
-		QPixmap *bmpFace = EvaMain::images->getFace(EvaMain::images->getFaceFileIndex(face));
+		TQPixmap *bmpFace = EvaMain::images->getFace(EvaMain::images->getFaceFileIndex(face));
 		
 		if(bmpFace){
-			QImage img(bmpFace->convertToImage().smoothScale(16, 16));
-			tblMembers->setPixmap(row, 1, QPixmap(img));
+			TQImage img(bmpFace->convertToImage().smoothScale(16, 16));
+			tblMembers->setPixmap(row, 1, TQPixmap(img));
 		}
-		tblMembers->setText(row,1,QString::number(id));
+		tblMembers->setText(row,1,TQString::number(id));
 		tblMembers->setText(row,2,nick);
 		tblMembers->setText(row,3, frd->isBoy()?i18n("Male"):i18n("Female"));
 	}else {
 		bool ok;
-		QString txt;
+		TQString txt;
 		unsigned int qq;
 		for(row = 0; row < tblMembers->numRows(); row ++){
 			txt = tblMembers->text(row, 1);
@@ -706,7 +706,7 @@ void QunDetailsWindow::slotModifyMembers( )
 	}
 	
 	bool ok;
-	QString txt;
+	TQString txt;
 	unsigned int qq;
 	for(int row = 0; row < tblMembers->numRows(); row ++){
 		txt = tblMembers->text(row, 1);
@@ -742,22 +742,22 @@ void QunDetailsWindow::slotModifyMembers( )
 	}
 }
 
-void QunDetailsWindow::slotModifyQunMembers( const unsigned int id, const bool ok, QString msg)
+void QunDetailsWindow::slotModifyQunMembers( const unsigned int id, const bool ok, TQString msg)
 {
 	if(ok && id != mQun->getQunID()) return;
-	QString title = i18n("Qun Modify Members");
+	TQString title = i18n("Qun Modify Members");
 	numModifications--;
 	if(ok){
 		if(numModifications > 0) return;
-		QMessageBox::information(this, title, QString(i18n("Modify Qun members successfully.")));
+		TQMessageBox::information(this, title, TQString(i18n("Modify Qun members successfully.")));
 		//slotClose( );
 	} else {
-		QMessageBox::information(this, title, msg);
+		TQMessageBox::information(this, title, msg);
 	}
 }
 
-void QunDetailsWindow::slotReceivedQunCard( const unsigned int id, const bool ok, const unsigned int qq, QString realName, const unsigned char gender, 
-						QString phone, QString email, QString memo, QString msg )
+void QunDetailsWindow::slotReceivedQunCard( const unsigned int id, const bool ok, const unsigned int qq, TQString realName, const unsigned char gender, 
+						TQString phone, TQString email, TQString memo, TQString msg )
 {	
 	if(id != mQun->getQunID()) return;
 	m_CardId = qq;
@@ -779,7 +779,7 @@ void QunDetailsWindow::slotReceivedQunCard( const unsigned int id, const bool ok
 		teMyMemo->setText(memo);
 		teMyMemo->setReadOnly(true);
 	}else {
-		leMyName->setText(QString::number(qq));
+		leMyName->setText(TQString::number(qq));
 		leMyName->setReadOnly(true);
 		teMyMemo->setText(msg);
 		teMyMemo->setReadOnly(true);
@@ -793,7 +793,7 @@ void QunDetailsWindow::slotCategoryClicked( )
 {
 	QunCategoryPicker *picker = new QunCategoryPicker(this, "categoryPicker",WStyle_Customize | WStyle_Dialog |
 										 WStyle_DialogBorder|WDestructiveClose);
-	QObject::connect(picker, SIGNAL(selectCategoryCode(const unsigned short )), SLOT(slotCategorySelected(const unsigned short )));
+	TQObject::connect(picker, SIGNAL(selectCategoryCode(const unsigned short )), SLOT(slotCategorySelected(const unsigned short )));
 	picker->show();
 }
 
@@ -801,7 +801,7 @@ void QunDetailsWindow::slotCategorySelected( const unsigned short code)
 {
 	category = code;
 	QunCategory qunCate;
-	QString cateDescription = qunCate.getDescription(category);
+	TQString cateDescription = qunCate.getDescription(category);
 	tbCategory->setText(cateDescription);
 }
 
@@ -826,7 +826,7 @@ void QunDetailsWindow::slotUpdateMessageSetting( )
 		type = Qun::Reject;
 	
 	emit requestUpdateQunMessageSettings(mQun->getQunID(), type);
-	QMessageBox::information(this, i18n("Qun Setting"), QString(i18n("Message setting updated successfully.")));
+	TQMessageBox::information(this, i18n("Qun Setting"), TQString(i18n("Message setting updated successfully.")));
 }
 
 

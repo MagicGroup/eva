@@ -37,13 +37,13 @@ public:
 	OutPacket *copy(){return new EvaAddFriendExPacket(*this);}
 	EvaAddFriendExPacket &operator=( const EvaAddFriendExPacket &rhs );
 	
-	void setAddQQ(const int id ) { m_AddQQNum = id; }
-	const int getAddQQ() const { return m_AddQQNum; }
+	void setAddQQ(const int id ) { m_AddTQQNum = id; }
+	const int getAddQQ() const { return m_AddTQQNum; }
 	
 protected:
 	virtual int putBody(unsigned char* buf);
 private:
-	int m_AddQQNum;
+	int m_AddTQQNum;
 };
 
 class EvaAddFriendExReplyPacket : public InPacket
@@ -57,24 +57,24 @@ public:
 	InPacket *copy() { return new EvaAddFriendExReplyPacket(*this); }
 	EvaAddFriendExReplyPacket &operator=(const EvaAddFriendExReplyPacket &rhs);
 	
-	const unsigned int getAddQQ() const { return m_AddQQNum; }
+	const unsigned int getAddQQ() const { return m_AddTQQNum; }
 	const unsigned char getReplyCode() const { return m_ReplyCode; }
 	const unsigned char getAuthStatus() const { return m_AuthStatus; }
 	
-	void setAddQQ( const unsigned int id ) { m_AddQQNum = id; }
+	void setAddQQ( const unsigned int id ) { m_AddTQQNum = id; }
 	void setAuthStatus( const unsigned char authStatus ) { m_AuthStatus = authStatus; }
 	void setReplyCode( const unsigned char replyCode ) { m_ReplyCode = replyCode; }
 		
 protected:
 	virtual void parseBody();
 private:
-	// QQ_ADD_FRIEND_EX_ADDING_POSSIBLE or QQ_ADD_FRIEND_EX_ALREADY_IN_LIST
+	// TQQ_ADD_FRIEND_EX_ADDING_POSSIBLE or TQQ_ADD_FRIEND_EX_ALREADY_IN_LIST
 	unsigned char m_ReplyCode;
 
-	//one of QQ_AUTH_NO_AUTH, QQ_AUTH_NEED_AUTH, QQ_AUTH_NO_ADD and QQ_AUTH_HAS_QUESTION
+	//one of TQQ_AUTH_NO_AUTH, TQQ_AUTH_NEED_AUTH, TQQ_AUTH_NO_ADD and TQQ_AUTH_HAS_QUESTION
 	unsigned char m_AuthStatus;
 
-	unsigned int m_AddQQNum;
+	unsigned int m_AddTQQNum;
 };
 
 
@@ -96,8 +96,8 @@ public:
 	const std::string getMessage() const { return m_Message; }
 	void setMessage(const std::string &msg) { m_Message = msg; }
 	
-	const unsigned int getAddQQ() const { return m_AddQQNum; }
-	void setAddQQ(const unsigned int id) { m_AddQQNum = id; }
+	const unsigned int getAddQQ() const { return m_AddTQQNum; }
+	void setAddQQ(const unsigned int id) { m_AddTQQNum = id; }
 	
 	const unsigned int getDestGroup() const { return m_DestGroup; }
 	void setDestGroup(const unsigned int destGroup) { m_DestGroup = destGroup; }
@@ -123,7 +123,7 @@ private:
 	unsigned char m_AuthStatus;// 0x00: no auth, 0x02: need auth, 0x10: add with question codes
 	unsigned int m_DestGroup;
 	bool m_AllowAddReverse;
-	unsigned int m_AddQQNum;
+	unsigned int m_AddTQQNum;
 	unsigned short m_AuthCodeLen;
 	unsigned char *m_AuthCode; 
 	unsigned short m_QuestionCodeLen;
@@ -149,8 +149,8 @@ public:
 	const unsigned char getAuthStatus() const { return m_AuthStatus; }
 	void setAuthStatus( const unsigned char authStatus ) { m_AuthStatus = authStatus; }
 		
-	const unsigned int getAddQQ() const { return m_AddQQNum; }
-	void setAddQQ( const unsigned int qq ) { m_AddQQNum = qq; }
+	const unsigned int getAddQQ() const { return m_AddTQQNum; }
+	void setAddQQ( const unsigned int qq ) { m_AddTQQNum = qq; }
 	
 	const bool isAddSuccessful() const { return m_ReplyCode == 0x00; }
 	
@@ -159,7 +159,7 @@ protected:
 private:
 	unsigned char m_AuthStatus;
 	unsigned char m_ReplyCode;
-	unsigned int m_AddQQNum;
+	unsigned int m_AddTQQNum;
 	
 };
 
@@ -260,8 +260,8 @@ public:
 	OutPacket *copy(){return new EvaAddFriendAuthQuestionPacket(*this);}
 	EvaAddFriendAuthQuestionPacket &operator=( const EvaAddFriendAuthQuestionPacket &rhs );
 	
-	void setAddQQ(const unsigned int id ) { m_AddQQNum = id; }
-	const unsigned int getAddQQ() const { return m_AddQQNum; }
+	void setAddQQ(const unsigned int id ) { m_AddTQQNum = id; }
+	const unsigned int getAddQQ() const { return m_AddTQQNum; }
 
 	void setAnswer( std::string const &msg) { m_Answer = msg; }
 	const std::string & getAnswer() const { return m_Answer; }
@@ -273,7 +273,7 @@ public:
 protected:
 	virtual int putBody(unsigned char* buf);
 private:
-	unsigned int m_AddQQNum;
+	unsigned int m_AddTQQNum;
 	unsigned char m_AuthStatus; // 0x01: get my quest & answer, 0x02: set question, 0x03: request buddy's question, 0x04: verify the answer
 
 	std::string m_Question;

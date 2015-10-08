@@ -20,125 +20,125 @@
 
 #include "evaaddqunuibase.h"
 
-#include <qvariant.h>
-#include <qpushbutton.h>
-#include <qtoolbutton.h>
-#include <qlabel.h>
-#include <qframe.h>
-#include <qlineedit.h>
-#include <qgroupbox.h>
-#include <qlayout.h>
-#include <qtooltip.h>
+#include <ntqvariant.h>
+#include <ntqpushbutton.h>
+#include <ntqtoolbutton.h>
+#include <ntqlabel.h>
+#include <ntqframe.h>
+#include <ntqlineedit.h>
+#include <ntqgroupbox.h>
+#include <ntqlayout.h>
+#include <ntqtooltip.h>
 
-#include <klocale.h>
+#include <tdelocale.h>
 
 /*
  *  Constructs a EvaAddQunUIBase as a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'.
  */
-EvaAddQunUIBase::EvaAddQunUIBase( QWidget* parent, const char* name, WFlags fl )
-    : QWidget( parent, name, fl )
+EvaAddQunUIBase::EvaAddQunUIBase( TQWidget* parent, const char* name, WFlags fl )
+    : TQWidget( parent, name, fl )
 {
     if ( !name )
 	setName( "EvaAddQunUIBase" );
-    EvaAddQunUIBaseLayout = new QGridLayout( this, 1, 1, 10, 6, "EvaAddQunUIBaseLayout"); 
+    EvaAddQunUIBaseLayout = new TQGridLayout( this, 1, 1, 10, 6, "EvaAddQunUIBaseLayout"); 
 
-    layout21 = new QVBoxLayout( 0, 0, 6, "layout21"); 
+    layout21 = new TQVBoxLayout( 0, 0, 6, "layout21"); 
 
-    layout15 = new QHBoxLayout( 0, 0, 6, "layout15"); 
+    layout15 = new TQHBoxLayout( 0, 0, 6, "layout15"); 
 
-    tbQunDetails = new QToolButton( this, "tbQunDetails" );
-    tbQunDetails->setSizePolicy( QSizePolicy( (QSizePolicy::SizeType)1, (QSizePolicy::SizeType)1, 0, 0, tbQunDetails->sizePolicy().hasHeightForWidth() ) );
+    tbQunDetails = new TQToolButton( this, "tbQunDetails" );
+    tbQunDetails->setSizePolicy( TQSizePolicy( (TQSizePolicy::SizeType)1, (TQSizePolicy::SizeType)1, 0, 0, tbQunDetails->sizePolicy().hasHeightForWidth() ) );
     tbQunDetails->setUsesBigPixmap( TRUE );
     tbQunDetails->setAutoRaise( TRUE );
     layout15->addWidget( tbQunDetails );
 
-    layout1 = new QVBoxLayout( 0, 0, 6, "layout1"); 
+    layout1 = new TQVBoxLayout( 0, 0, 6, "layout1"); 
 
-    lblQunIDTag = new QLabel( this, "lblQunIDTag" );
+    lblQunIDTag = new TQLabel( this, "lblQunIDTag" );
     layout1->addWidget( lblQunIDTag );
 
-    lblCreatorTag = new QLabel( this, "lblCreatorTag" );
+    lblCreatorTag = new TQLabel( this, "lblCreatorTag" );
     layout1->addWidget( lblCreatorTag );
     layout15->addLayout( layout1 );
 
-    layout2 = new QVBoxLayout( 0, 0, 6, "layout2"); 
+    layout2 = new TQVBoxLayout( 0, 0, 6, "layout2"); 
 
-    lblQunExtID = new QLabel( this, "lblQunExtID" );
+    lblQunExtID = new TQLabel( this, "lblQunExtID" );
     layout2->addWidget( lblQunExtID );
 
-    lblCreator = new QLabel( this, "lblCreator" );
+    lblCreator = new TQLabel( this, "lblCreator" );
     layout2->addWidget( lblCreator );
     layout15->addLayout( layout2 );
 
-    layout14 = new QVBoxLayout( 0, 0, 6, "layout14"); 
+    layout14 = new TQVBoxLayout( 0, 0, 6, "layout14"); 
 
-    layout13 = new QHBoxLayout( 0, 0, 6, "layout13"); 
+    layout13 = new TQHBoxLayout( 0, 0, 6, "layout13"); 
 
-    lblQunNameTag = new QLabel( this, "lblQunNameTag" );
+    lblQunNameTag = new TQLabel( this, "lblQunNameTag" );
     layout13->addWidget( lblQunNameTag );
 
-    lblQunName = new QLabel( this, "lblQunName" );
+    lblQunName = new TQLabel( this, "lblQunName" );
     layout13->addWidget( lblQunName );
-    spacer3 = new QSpacerItem( 31, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
+    spacer3 = new TQSpacerItem( 31, 20, TQSizePolicy::Expanding, TQSizePolicy::Minimum );
     layout13->addItem( spacer3 );
     layout14->addLayout( layout13 );
 
-    layout4 = new QHBoxLayout( 0, 0, 6, "layout4"); 
+    layout4 = new TQHBoxLayout( 0, 0, 6, "layout4"); 
 
-    tbCreatorDetails = new QToolButton( this, "tbCreatorDetails" );
-    tbCreatorDetails->setPaletteForegroundColor( QColor( 41, 90, 197 ) );
+    tbCreatorDetails = new TQToolButton( this, "tbCreatorDetails" );
+    tbCreatorDetails->setPaletteForegroundColor( TQColor( 41, 90, 197 ) );
     tbCreatorDetails->setAutoRaise( TRUE );
     layout4->addWidget( tbCreatorDetails );
-    spacer1 = new QSpacerItem( 20, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
+    spacer1 = new TQSpacerItem( 20, 20, TQSizePolicy::Expanding, TQSizePolicy::Minimum );
     layout4->addItem( spacer1 );
     layout14->addLayout( layout4 );
     layout15->addLayout( layout14 );
     layout21->addLayout( layout15 );
 
-    fraAuthContents = new QFrame( this, "fraAuthContents" );
-    fraAuthContents->setPaletteBackgroundColor( QColor( 234, 247, 255 ) );
-    fraAuthContents->setFrameShape( QFrame::StyledPanel );
-    fraAuthContents->setFrameShadow( QFrame::Raised );
-    fraAuthContentsLayout = new QVBoxLayout( fraAuthContents, 11, 6, "fraAuthContentsLayout"); 
+    fraAuthContents = new TQFrame( this, "fraAuthContents" );
+    fraAuthContents->setPaletteBackgroundColor( TQColor( 234, 247, 255 ) );
+    fraAuthContents->setFrameShape( TQFrame::StyledPanel );
+    fraAuthContents->setFrameShadow( TQFrame::Raised );
+    fraAuthContentsLayout = new TQVBoxLayout( fraAuthContents, 11, 6, "fraAuthContentsLayout"); 
 
-    layout20 = new QVBoxLayout( 0, 0, 6, "layout20"); 
+    layout20 = new TQVBoxLayout( 0, 0, 6, "layout20"); 
 
-    lblDescription = new QLabel( fraAuthContents, "lblDescription" );
-    lblDescription->setAlignment( int( QLabel::WordBreak | QLabel::AlignVCenter ) );
+    lblDescription = new TQLabel( fraAuthContents, "lblDescription" );
+    lblDescription->setAlignment( int( TQLabel::WordBreak | TQLabel::AlignVCenter ) );
     layout20->addWidget( lblDescription );
 
-    fraAuthGraphic = new QFrame( fraAuthContents, "fraAuthGraphic" );
-    fraAuthGraphic->setFrameShape( QFrame::StyledPanel );
-    fraAuthGraphic->setFrameShadow( QFrame::Raised );
-    fraAuthGraphicLayout = new QVBoxLayout( fraAuthGraphic, 11, 6, "fraAuthGraphicLayout"); 
+    fraAuthGraphic = new TQFrame( fraAuthContents, "fraAuthGraphic" );
+    fraAuthGraphic->setFrameShape( TQFrame::StyledPanel );
+    fraAuthGraphic->setFrameShadow( TQFrame::Raised );
+    fraAuthGraphicLayout = new TQVBoxLayout( fraAuthGraphic, 11, 6, "fraAuthGraphicLayout"); 
 
-    layout19 = new QVBoxLayout( 0, 0, 6, "layout19"); 
+    layout19 = new TQVBoxLayout( 0, 0, 6, "layout19"); 
 
-    layout18 = new QHBoxLayout( 0, 0, 6, "layout18"); 
+    layout18 = new TQHBoxLayout( 0, 0, 6, "layout18"); 
 
-    lblCode = new QLabel( fraAuthGraphic, "lblCode" );
+    lblCode = new TQLabel( fraAuthGraphic, "lblCode" );
     layout18->addWidget( lblCode );
 
-    leCode = new QLineEdit( fraAuthGraphic, "leCode" );
+    leCode = new TQLineEdit( fraAuthGraphic, "leCode" );
     layout18->addWidget( leCode );
-    spacer4 = new QSpacerItem( 31, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
+    spacer4 = new TQSpacerItem( 31, 20, TQSizePolicy::Expanding, TQSizePolicy::Minimum );
     layout18->addItem( spacer4 );
     layout19->addLayout( layout18 );
 
-    layout17 = new QHBoxLayout( 0, 0, 6, "layout17"); 
+    layout17 = new TQHBoxLayout( 0, 0, 6, "layout17"); 
 
-    lblTip = new QLabel( fraAuthGraphic, "lblTip" );
+    lblTip = new TQLabel( fraAuthGraphic, "lblTip" );
     layout17->addWidget( lblTip );
 
-    lblGraphic = new QLabel( fraAuthGraphic, "lblGraphic" );
+    lblGraphic = new TQLabel( fraAuthGraphic, "lblGraphic" );
     layout17->addWidget( lblGraphic );
 
-    tbRefresh = new QToolButton( fraAuthGraphic, "tbRefresh" );
-    tbRefresh->setPaletteForegroundColor( QColor( 41, 90, 197 ) );
+    tbRefresh = new TQToolButton( fraAuthGraphic, "tbRefresh" );
+    tbRefresh->setPaletteForegroundColor( TQColor( 41, 90, 197 ) );
     tbRefresh->setAutoRaise( TRUE );
     layout17->addWidget( tbRefresh );
-    spacer5 = new QSpacerItem( 21, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
+    spacer5 = new TQSpacerItem( 21, 20, TQSizePolicy::Expanding, TQSizePolicy::Minimum );
     layout17->addItem( spacer5 );
     layout19->addLayout( layout17 );
     fraAuthGraphicLayout->addLayout( layout19 );
@@ -146,31 +146,31 @@ EvaAddQunUIBase::EvaAddQunUIBase( QWidget* parent, const char* name, WFlags fl )
     fraAuthContentsLayout->addLayout( layout20 );
     layout21->addWidget( fraAuthContents );
 
-    gbMessage = new QGroupBox( this, "gbMessage" );
-    gbMessage->setColumnLayout(0, Qt::Vertical );
+    gbMessage = new TQGroupBox( this, "gbMessage" );
+    gbMessage->setColumnLayout(0, TQt::Vertical );
     gbMessage->layout()->setSpacing( 6 );
     gbMessage->layout()->setMargin( 11 );
-    gbMessageLayout = new QVBoxLayout( gbMessage->layout() );
-    gbMessageLayout->setAlignment( Qt::AlignTop );
+    gbMessageLayout = new TQVBoxLayout( gbMessage->layout() );
+    gbMessageLayout->setAlignment( TQt::AlignTop );
 
-    leMessage = new QLineEdit( gbMessage, "leMessage" );
+    leMessage = new TQLineEdit( gbMessage, "leMessage" );
     gbMessageLayout->addWidget( leMessage );
     layout21->addWidget( gbMessage );
 
-    layout11 = new QHBoxLayout( 0, 10, 6, "layout11"); 
-    spacer2 = new QSpacerItem( 61, 20, QSizePolicy::Expanding, QSizePolicy::Minimum );
+    layout11 = new TQHBoxLayout( 0, 10, 6, "layout11"); 
+    spacer2 = new TQSpacerItem( 61, 20, TQSizePolicy::Expanding, TQSizePolicy::Minimum );
     layout11->addItem( spacer2 );
 
-    btnSend = new QPushButton( this, "btnSend" );
+    btnSend = new TQPushButton( this, "btnSend" );
     layout11->addWidget( btnSend );
 
-    btnCancel = new QPushButton( this, "btnCancel" );
+    btnCancel = new TQPushButton( this, "btnCancel" );
     layout11->addWidget( btnCancel );
     layout21->addLayout( layout11 );
 
     EvaAddQunUIBaseLayout->addLayout( layout21, 0, 0 );
     languageChange();
-    resize( QSize(357, 334).expandedTo(minimumSizeHint()) );
+    resize( TQSize(357, 334).expandedTo(minimumSizeHint()) );
     clearWState( WState_Polished );
 }
 
@@ -179,7 +179,7 @@ EvaAddQunUIBase::EvaAddQunUIBase( QWidget* parent, const char* name, WFlags fl )
  */
 EvaAddQunUIBase::~EvaAddQunUIBase()
 {
-    // no need to delete child widgets, Qt does it all for us
+    // no need to delete child widgets, TQt does it all for us
 }
 
 /*
@@ -204,8 +204,8 @@ void EvaAddQunUIBase::languageChange()
     tbRefresh->setText( i18n( "Refresh" ) );
     gbMessage->setTitle( i18n( "Authentication needed, please leave a message" ) );
     btnSend->setText( i18n( "&Send" ) );
-    btnSend->setAccel( QKeySequence( tr( "Alt+S" ) ) );
+    btnSend->setAccel( TQKeySequence( tr( "Alt+S" ) ) );
     btnCancel->setText( i18n( "&Cancel" ) );
-    btnCancel->setAccel( QKeySequence( tr( "Alt+C" ) ) );
+    btnCancel->setAccel( TQKeySequence( tr( "Alt+C" ) ) );
 }
 

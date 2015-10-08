@@ -37,8 +37,8 @@
 #include "evauhmanager.h"
 #include "regiongrabber.h"
 #include "filetrans/evafilemanager.h"
-#include <qtextcodec.h>
-#include <klocale.h>
+#include <ntqtextcodec.h>
+#include <tdelocale.h>
 
 enum EVA_NOTIFY
 {
@@ -66,7 +66,7 @@ enum EVA_NOTIFY
 	E_Count
 };
 
-static QString s_ENotify[E_Count] =
+static TQString s_ENotify[E_Count] =
 {
 	I18N_NOOP("Something error"),
 	I18N_NOOP("Server connected"),

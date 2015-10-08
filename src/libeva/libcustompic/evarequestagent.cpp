@@ -29,7 +29,7 @@
 #include <cstring>
 
 EvaRequestAgentPacket::EvaRequestAgentPacket( const unsigned char *token, const unsigned short length)
-	: EvaPicOutPacket(QQ_05_CMD_REQUEST_AGENT, false)
+	: EvaPicOutPacket(TQQ_05_CMD_REQUEST_AGENT, false)
 {
 	tokenLength = length;
 	cryptPosition = 14 + tokenLength;

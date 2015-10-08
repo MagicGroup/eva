@@ -20,41 +20,41 @@
 #ifndef EVADISPLAYWIDGET_H
 #define EVADISPLAYWIDGET_H
 
-#include <qwidget.h>
-#include <qframe.h>
-#include <qwidgetstack.h>
+#include <ntqwidget.h>
+#include <ntqframe.h>
+#include <ntqwidgetstack.h>
 #include "evamainwindow.h"
 
-class QLabel;
+class TQLabel;
 class KProgress;
-class QSpacerItem;
-class QVBoxLayout;
-class QGridLayout;
-class QWidgetStack;
+class TQSpacerItem;
+class TQVBoxLayout;
+class TQGridLayout;
+class TQWidgetStack;
 class EvaTabWidget;
 
-class EvaLoginPageFrame : public QFrame
+class EvaLoginPageFrame : public TQFrame
 {
 	Q_OBJECT
 public:
-	EvaLoginPageFrame(QWidget* parent = 0, const char* name = 0, WFlags fl = 0);
+	EvaLoginPageFrame(TQWidget* parent = 0, const char* name = 0, WFlags fl = 0);
 	virtual ~EvaLoginPageFrame();
 
 	void setTotalSteps(int max);
-	void update(int value, const QString &msg);
+	void update(int value, const TQString &msg);
 private:
-	QLabel* lblDesc;
+	TQLabel* lblDesc;
 	KProgress* kpgProgress;
-	QVBoxLayout* layout1;
-	QSpacerItem* spacer1;
-	QSpacerItem* spacer2;
+	TQVBoxLayout* layout1;
+	TQSpacerItem* spacer1;
+	TQSpacerItem* spacer2;
 };
 
-class EvaDisplayWidget : public QWidgetStack
+class EvaDisplayWidget : public TQWidgetStack
 {
 	Q_OBJECT
 public:
-	EvaDisplayWidget(QWidget* parent = 0, const char* name = 0, WFlags fl = 0);
+	EvaDisplayWidget(TQWidget* parent = 0, const char* name = 0, WFlags fl = 0);
 	virtual ~EvaDisplayWidget();
 
 	/** 
@@ -65,14 +65,14 @@ public:
 	void showInfoFrame(bool showInfo = false);
 
 private:
-	//QGridLayout* wspageLoginLayout;
-	QGridLayout * layoutLogin;
-	QWidget     * wLogin;
-	QGridLayout * layoutTab;
-	QWidget     * wTab;
+	//TQGridLayout* wspageLoginLayout;
+	TQGridLayout * layoutLogin;
+	TQWidget     * wLogin;
+	TQGridLayout * layoutTab;
+	TQWidget     * wTab;
 	EvaLoginPageFrame * loginPage;
 	EvaTabWidget      *tab;
-	//QWidgetStack      * wsMainDisplay;
+	//TQWidgetStack      * wsMainDisplay;
 	
 	friend class EvaMainWindow;
 };

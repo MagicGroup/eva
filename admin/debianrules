@@ -9,14 +9,14 @@ chomp $origPwd;
 
 $kde_prefix	=	"/usr";
 $sysconfdir	=	"/etc";
-$kde_includedir	=	"$kde_prefix/include/kde";
+$kde_includedir	=	"$kde_prefix/include/tde";
 $infodir	=	"$kde_prefix/share/info";
 $mandir		=	"$kde_prefix/share/man";
 $qtdir		=	"/usr/share/tqt3";
 
 $kde_cgidir	=	"$kde_prefix/lib/cgi-bin";
 $kde_confdir	=	"$sysconfdir/trinity";
-$kde_htmldir	=	"$kde_prefix/share/doc/kde/HTML";
+$kde_htmldir	=	"$kde_prefix/share/doc/tde/HTML";
 
 if (defined $ENV{DEB_BUILD_OPTIONS} &&
     $ENV{DEB_BUILD_OPTIONS} =~ /\bnostrip\b/) {

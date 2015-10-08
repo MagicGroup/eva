@@ -31,14 +31,14 @@
 
 LoginPacket::LoginPacket()
 	: OutPacket(),
-	m_LoginMode(QQ_LOGIN_MODE_NORMAL),
+	m_LoginMode(TQQ_LOGIN_MODE_NORMAL),
 	m_NumProcess(1),
 	m_UUID(NULL)
 {
 }
 
 LoginPacket::LoginPacket(unsigned char loginMode)
-	: OutPacket(QQ_CMD_LOGIN, true),
+	: OutPacket(TQQ_CMD_LOGIN, true),
 	m_LoginMode(loginMode),
 	m_NumProcess(1),
 	m_UUID(NULL)
@@ -66,7 +66,7 @@ LoginPacket &LoginPacket::operator=(const LoginPacket &rhs)
 
 int LoginPacket::putBody(unsigned char *buf) 
 {
-	memcpy(buf, iniKey, QQ_KEY_LENGTH);
+	memcpy(buf, iniKey, TQQ_KEY_LENGTH);
 
 	int pos = 16;
 	
@@ -75,19 +75,19 @@ int LoginPacket::putBody(unsigned char *buf)
 		return 0;
 	}
 	
-	unsigned char *login = new unsigned char[QQ_LOGIN_DATA_LENGTH];
+	unsigned char *login = new unsigned char[TQQ_LOGIN_DATA_LENGTH];
 	EvaCrypt::encrypt(NULL, 0, getPasswordKey(), login, &pos);
 
-	memset(login + pos, 0, QQ_LOGIN_RESERVED_LENGTH);
-	pos += QQ_LOGIN_RESERVED_LENGTH;
+	memset(login + pos, 0, TQQ_LOGIN_RESERVED_LENGTH);
+	pos += TQQ_LOGIN_RESERVED_LENGTH;
 
-	memcpy(login+pos, QQ_Hash, 16); // md5 hash for qq.exe
+	memcpy(login+pos, TQQ_Hash, 16); // md5 hash for qq.exe
 	pos += 16;
 
 	// a little trick for the number of processes of qq.exe
 	unsigned char *tmp = new unsigned char[32];
 	memcpy(tmp, login, 16);
-	memcpy(tmp+16, QQ_Hash, 16);
+	memcpy(tmp+16, TQQ_Hash, 16);
 	char no_process = m_NumProcess;
 	for(int i=0; i<32;)
 		no_process ^= tmp[i++];
@@ -109,7 +109,7 @@ int LoginPacket::putBody(unsigned char *buf)
 	memcpy(login+pos, getLoginToken(), getLoginTokenLength());
 	pos += getLoginTokenLength();
 
-	*((unsigned short *)(login + pos)) = htons(QQ_LOGIN_APPEND_LENGTH);
+	*((unsigned short *)(login + pos)) = htons(TQQ_LOGIN_APPEND_LENGTH);
 	pos+=2;
 
 	memcpy(login+pos, login_appended_2_72, 71);
@@ -117,9 +117,9 @@ int LoginPacket::putBody(unsigned char *buf)
 
 
 	
-	memset(login+pos, 0, QQ_LOGIN_DATA_LENGTH - pos);
+	memset(login+pos, 0, TQQ_LOGIN_DATA_LENGTH - pos);
 // 				printf("login data:\n");
-// 				for(int i=0; i<QQ_LOGIN_DATA_LENGTH; i++){
+// 				for(int i=0; i<TQQ_LOGIN_DATA_LENGTH; i++){
 // 					if(!(i%8)) printf("\n%d: ",i);
 // 					char t = login[i];
 // 					printf("%2x ", (unsigned char)t);
@@ -128,13 +128,13 @@ int LoginPacket::putBody(unsigned char *buf)
 
 	unsigned char *encrypted = new unsigned char[MAX_PACKET_SIZE];
 	int enLen=200;
-	EvaCrypt::encrypt(login, QQ_LOGIN_DATA_LENGTH, iniKey, encrypted, &enLen);
+	EvaCrypt::encrypt(login, TQQ_LOGIN_DATA_LENGTH, iniKey, encrypted, &enLen);
 	
-	memcpy(buf+QQ_KEY_LENGTH, encrypted, enLen);
+	memcpy(buf+TQQ_KEY_LENGTH, encrypted, enLen);
 	
 	delete login;
 	delete encrypted;
-	return QQ_KEY_LENGTH + enLen;
+	return TQQ_KEY_LENGTH + enLen;
 }
 
 /* =========================================================== */
@@ -185,22 +185,22 @@ void LoginReplyPacket::parseBody()
 {
 	replyCode = decryptedBuf[0];
 	switch(replyCode) {
-	case QQ_LOGIN_REPLY_OK:
+	case TQQ_LOGIN_REPLY_OK:
 		{
 			// length of 16 bytes: 001-016, session key
 			setSessionKey(decryptedBuf+1);
 
 			// 4 bytes: 017-020,  user id(QQ number)
-			qqNum = ntohl( *((int *)(decryptedBuf + QQ_KEY_LENGTH + 1) ) );
+			qqNum = ntohl( *((int *)(decryptedBuf + TQQ_KEY_LENGTH + 1) ) );
 
 			// now we can set the file session key
-			char *fsbuf = new char[QQ_KEY_LENGTH + 4];
+			char *fsbuf = new char[TQQ_KEY_LENGTH + 4];
 			// copy the big endian qqNum directly
-			memcpy(fsbuf, decryptedBuf + QQ_KEY_LENGTH + 1 , 4); // qqNum in network bytes order
+			memcpy(fsbuf, decryptedBuf + TQQ_KEY_LENGTH + 1 , 4); // qqNum in network bytes order
 			// then, the session key
-			memcpy(fsbuf+4, getSessionKey(), QQ_KEY_LENGTH);
+			memcpy(fsbuf+4, getSessionKey(), TQQ_KEY_LENGTH);
 			// save it as the file session key
-			setFileSessionKey((unsigned char *)EvaUtil::doMd5(fsbuf, 4 + QQ_KEY_LENGTH));
+			setFileSessionKey((unsigned char *)EvaUtil::doMd5(fsbuf, 4 + TQQ_KEY_LENGTH));
 			delete []fsbuf;
 
 			// 021-024  user IP
@@ -242,7 +242,7 @@ void LoginReplyPacket::parseBody()
 			// 143 -183 unknow bytes
 			break;
 		}
-	case QQ_LOGIN_REPLY_REDIRECT:
+	case TQQ_LOGIN_REPLY_REDIRECT:
 		// redirect user to another server for balance reason
 		{
 			// 001-004 user qq number
@@ -253,8 +253,8 @@ void LoginReplyPacket::parseBody()
 			redirectedPort = ntohs(* ((short *)(decryptedBuf + 9)) );
 			break;
 		}
-	case QQ_LOGIN_REPLY_PWD_ERROR:
-	case QQ_LOGIN_REPLY_NEED_REACTIVATE:
+	case TQQ_LOGIN_REPLY_PWD_ERROR:
+	case TQQ_LOGIN_REPLY_NEED_REACTIVATE:
 		// message from server when password is wrong. the messege is encoded by "GB18030"
 		{
 			char *tmpMsg = new char[bodyLength];
@@ -264,7 +264,7 @@ void LoginReplyPacket::parseBody()
 			delete []tmpMsg;
 			break;
 		}
-	case QQ_LOGIN_REPLY_REDIRECT_EX:
+	case TQQ_LOGIN_REPLY_REDIRECT_EX:
 		// redirect user to another server for balance reason
 		{
 			// 001-004 user qq number
@@ -282,7 +282,7 @@ void LoginReplyPacket::parseBody()
 			printf("\n");
 			break;
 		}
-	case QQ_LOGIN_REPLY_PWD_ERROR_EX:
+	case TQQ_LOGIN_REPLY_PWD_ERROR_EX:
 		{
 			char *tmpMsg = new char[bodyLength];
 			memcpy(tmpMsg, decryptedBuf+1, bodyLength-1);
@@ -292,7 +292,7 @@ void LoginReplyPacket::parseBody()
 		}
 		break;
 	default:
-		replyCode = QQ_LOGIN_REPLY_MISC_ERROR;
+		replyCode = TQQ_LOGIN_REPLY_MISC_ERROR;
 		{
 			printf("login unknown reply(first byte is reply code)\n");
 			for(int i=0; i<bodyLength; i++){
@@ -309,7 +309,7 @@ void LoginReplyPacket::parseBody()
 /* =========================================================== */
 
 LogoutPacket::LogoutPacket()
-	: OutPacket(QQ_CMD_LOGOUT, false)
+	: OutPacket(TQQ_CMD_LOGOUT, false)
 {
  	sequence = 0xFFFF;
 }
@@ -332,14 +332,14 @@ int LogoutPacket::putBody(unsigned char *buf)
 		fprintf(stderr, "LogoutPacket->putBody: no password key avalible\n");
 		return 0;
 	}
-	memcpy(buf, pwKey, QQ_KEY_LENGTH);
-	return QQ_KEY_LENGTH;
+	memcpy(buf, pwKey, TQQ_KEY_LENGTH);
+	return TQQ_KEY_LENGTH;
 }
 
 /* =========================================================== */
 
 KeepAlivePacket::KeepAlivePacket()
-	: OutPacket(QQ_CMD_KEEP_ALIVE, true) 
+	: OutPacket(TQQ_CMD_KEEP_ALIVE, true) 
 {
 }
 

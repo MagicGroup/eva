@@ -18,30 +18,30 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include "evatextedit.h"
-#include <qevent.h>
+#include <ntqevent.h>
 
-EvaTextEdit::EvaTextEdit(const QString &text, const QString &context, QWidget *parent, const char *name):
+EvaTextEdit::EvaTextEdit(const TQString &text, const TQString &context, TQWidget *parent, const char *name):
 		KTextEdit(text, context, parent, name), isEnterSend(false)
 {
-	setAutoFormatting(QTextEdit::AutoNone);
-	setWrapPolicy(QTextEdit::AtWordOrDocumentBoundary);
+	setAutoFormatting(TQTextEdit::AutoNone);
+	setWrapPolicy(TQTextEdit::AtWordOrDocumentBoundary);
 }
 
-EvaTextEdit::EvaTextEdit(QWidget *parent, const char * name):
+EvaTextEdit::EvaTextEdit(TQWidget *parent, const char * name):
 		KTextEdit(parent, name), isEnterSend(false)
 {
-	setAutoFormatting(QTextEdit::AutoNone);
-	setWrapPolicy(QTextEdit::AtWordOrDocumentBoundary);
+	setAutoFormatting(TQTextEdit::AutoNone);
+	setWrapPolicy(TQTextEdit::AtWordOrDocumentBoundary);
 }
 
-void EvaTextEdit::keyPressEvent(QKeyEvent *e)
+void EvaTextEdit::keyPressEvent(TQKeyEvent *e)
 {
 
     int para;
     int index;	
     getCursorPosition(&para,&index);
-    if ( (e->key() == Qt::Key_Enter) || (e->key() == Qt::Key_Return) ) {
-	if ( (e->state() & Qt::ControlButton)==Qt::ControlButton)
+    if ( (e->key() == TQt::Key_Enter) || (e->key() == TQt::Key_Return) ) {
+	if ( (e->state() & TQt::ControlButton)==TQt::ControlButton)
         {
     	    if ( !isEnterSend )
     	    {
@@ -49,7 +49,7 @@ void EvaTextEdit::keyPressEvent(QKeyEvent *e)
         	return;
     	    }
     	}
-	else if ( (e->state() | Qt::KeyButtonMask) ) {
+	else if ( (e->state() | TQt::KeyButtonMask) ) {
     	    if (isEnterSend )
     	    {
         	emit keyPressed(e);
@@ -58,8 +58,8 @@ void EvaTextEdit::keyPressEvent(QKeyEvent *e)
 	}
     }
     KTextEdit::keyPressEvent(e);
-    if((e->key() == Qt::Key_Enter) || (e->key() == Qt::Key_Return) ){	
-        QString txt = text();
+    if((e->key() == TQt::Key_Enter) || (e->key() == TQt::Key_Return) ){	
+        TQString txt = text();
         txt.replace("</p>\n<p>", "<br />");
         setText(txt);
         setCursorPosition(para, index + 1);

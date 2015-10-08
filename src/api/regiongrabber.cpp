@@ -19,33 +19,33 @@
 
 #include "regiongrabber.h"
 
-#include <qpainter.h>
-#include <qpalette.h>
-#include <qstyle.h>
-#include <qtimer.h>
-#include <qtooltip.h>
+#include <ntqpainter.h>
+#include <ntqpalette.h>
+#include <ntqstyle.h>
+#include <ntqtimer.h>
+#include <ntqtooltip.h>
 
-#include <kglobalsettings.h>
-#include <klocale.h>
+#include <tdeglobalsettings.h>
+#include <tdelocale.h>
 
-SizeTip::SizeTip( QWidget *parent, const char *name )
-    : QLabel( parent, name, WStyle_Customize | WX11BypassWM |
+SizeTip::SizeTip( TQWidget *parent, const char *name )
+    : TQLabel( parent, name, WStyle_Customize | WX11BypassWM |
       WStyle_StaysOnTop | WStyle_NoBorder | WStyle_Tool )
 {
   setMargin( 10 );
   setIndent( 5 );
-  setFrameStyle( QFrame::Plain | QFrame::Box );
+  setFrameStyle( TQFrame::Plain | TQFrame::Box );
 
-  //setPalette( QToolTip::palette() );
-  setPalette( QPalette(Qt::yellow, QColor(20,190,255)));
-  QRect deskR = KGlobalSettings::desktopGeometry( QPoint( 0, 0 ) );
+  //setPalette( TQToolTip::palette() );
+  setPalette( TQPalette(TQt::yellow, TQColor(20,190,255)));
+  TQRect deskR = TDEGlobalSettings::desktopGeometry( TQPoint( 0, 0 ) );
   move(deskR.topLeft());
 }
 
-void SizeTip::setTip( const QRect &rect )
+void SizeTip::setTip( const TQRect &rect )
 {
-  QString des = "<font color=red>" + i18n("Press mouse left button<br>to grab screenshot.") + "</font><p>" + i18n("Size (W x H):");
-  QString tip = "<qt>" + des + QString("<b><font color=yellow>%1</font></b> x <b><font color=yellow>%2</font></b>").arg( rect.width() )
+  TQString des = "<font color=red>" + i18n("Press mouse left button<br>to grab screenshot.") + "</font><p>" + i18n("Size (W x H):");
+  TQString tip = "<qt>" + des + TQString("<b><font color=yellow>%1</font></b> x <b><font color=yellow>%2</font></b>").arg( rect.width() )
       .arg( rect.height() ) + "</qt>";
 
   setText( tip );
@@ -54,16 +54,16 @@ void SizeTip::setTip( const QRect &rect )
   positionTip( rect );
 }
 
-void SizeTip::positionTip( const QRect &rect )
+void SizeTip::positionTip( const TQRect &rect )
 {
-  QRect tipRect = geometry();
-  tipRect.moveTopLeft( QPoint( 0, 0 ) );
+  TQRect tipRect = geometry();
+  tipRect.moveTopLeft( TQPoint( 0, 0 ) );
 
   if ( rect.intersects( tipRect ) )
   {
-    QRect deskR = KGlobalSettings::desktopGeometry( QPoint( 0, 0 ) );
+    TQRect deskR = TDEGlobalSettings::desktopGeometry( TQPoint( 0, 0 ) );
 
-    tipRect.moveCenter( QPoint( deskR.width()/2, deskR.height()/2 ) );
+    tipRect.moveCenter( TQPoint( deskR.width()/2, deskR.height()/2 ) );
     if ( !rect.contains( tipRect, true ) && rect.intersects( tipRect ) )
       tipRect.moveBottomRight( geometry().bottomRight() );
   }
@@ -72,15 +72,15 @@ void SizeTip::positionTip( const QRect &rect )
 }
 
 RegionGrabber::RegionGrabber()
-  : QWidget( 0, 0 ),
+  : TQWidget( 0, 0 ),
     mouseDown( false ), sizeTip( 0L )
 {
-  sizeTip = new SizeTip( ( QWidget * )0L );
+  sizeTip = new SizeTip( ( TQWidget * )0L );
 
-//   tipTimer = new QTimer( this );
+//   tipTimer = new TQTimer( this );
 //   connect( tipTimer, SIGNAL( timeout() ), SLOT( updateSizeTip() ) );
 
-  QTimer::singleShot( 200, this, SLOT( initGrabber() ) );
+  TQTimer::singleShot( 200, this, SLOT( initGrabber() ) );
 }
 
 RegionGrabber::~RegionGrabber()
@@ -90,26 +90,26 @@ RegionGrabber::~RegionGrabber()
 
 void RegionGrabber::initGrabber()
 {
-  pixmap = QPixmap::grabWindow( qt_xrootwin() );
+  pixmap = TQPixmap::grabWindow( tqt_xrootwin() );
   setPaletteBackgroundPixmap( pixmap );
 
   showFullScreen();
 
   grabMouse( crossCursor );
-  sizeTip->setTip(QRect(0,0,0,0));
+  sizeTip->setTip(TQRect(0,0,0,0));
   sizeTip->show();
 }
 
-void RegionGrabber::mousePressEvent( QMouseEvent *e )
+void RegionGrabber::mousePressEvent( TQMouseEvent *e )
 {
   if ( e->button() == LeftButton )
   {
     mouseDown = true;
-    grabRect = QRect( e->pos(), e->pos() );
+    grabRect = TQRect( e->pos(), e->pos() );
   }
 }
 
-void RegionGrabber::mouseMoveEvent( QMouseEvent *e )
+void RegionGrabber::mouseMoveEvent( TQMouseEvent *e )
 {
   if ( mouseDown )
   {    
@@ -120,7 +120,7 @@ void RegionGrabber::mouseMoveEvent( QMouseEvent *e )
   }
 }
 
-void RegionGrabber::mouseReleaseEvent( QMouseEvent *e )
+void RegionGrabber::mouseReleaseEvent( TQMouseEvent *e )
 {
   mouseDown = false;
   drawRubber();
@@ -129,7 +129,7 @@ void RegionGrabber::mouseReleaseEvent( QMouseEvent *e )
   grabRect.setBottomRight( e->pos() );
   grabRect = grabRect.normalize();
 
-  QPixmap region = QPixmap::grabWindow( winId(), grabRect.x(), grabRect.y(),
+  TQPixmap region = TQPixmap::grabWindow( winId(), grabRect.x(), grabRect.y(),
       grabRect.width(), grabRect.height() );
 
   releaseMouse();
@@ -137,12 +137,12 @@ void RegionGrabber::mouseReleaseEvent( QMouseEvent *e )
   emit regionGrabbed( region );
 }
 
-void RegionGrabber::keyPressEvent( QKeyEvent *e )
+void RegionGrabber::keyPressEvent( TQKeyEvent *e )
 {
   if ( e->key() == Key_Escape )
   {
     releaseMouse();
-    emit regionGrabbed( QPixmap() );
+    emit regionGrabbed( TQPixmap() );
   }
   else
     e->ignore();
@@ -150,7 +150,7 @@ void RegionGrabber::keyPressEvent( QKeyEvent *e )
 
 void RegionGrabber::updateSizeTip()
 {
-  QRect rect = grabRect.normalize();
+  TQRect rect = grabRect.normalize();
 
   sizeTip->setTip( rect );
   //sizeTip->show();
@@ -158,14 +158,14 @@ void RegionGrabber::updateSizeTip()
 
 void RegionGrabber::drawRubber()
 {
-  QPainter p;
+  TQPainter p;
   p.begin( this );
   p.setRasterOp( NotROP );
-  p.setPen( QPen( color0, 1 ) );
+  p.setPen( TQPen( color0, 1 ) );
   p.setBrush( NoBrush );
 
-  style().drawPrimitive( QStyle::PE_FocusRect, &p, grabRect, colorGroup(),
-      QStyle::Style_Default, QStyleOption( colorGroup().base() ) );
+  style().drawPrimitive( TQStyle::PE_FocusRect, &p, grabRect, colorGroup(),
+      TQStyle::Style_Default, TQStyleOption( colorGroup().base() ) );
 
   p.end();
 }

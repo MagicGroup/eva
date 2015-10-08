@@ -28,7 +28,7 @@
 #include <cstring>
 
 EvaRequestStartPacket::EvaRequestStartPacket()
-	: EvaPicOutPacket(QQ_05_CMD_REQUEST_START, true), requestSend(true)
+	: EvaPicOutPacket(TQQ_05_CMD_REQUEST_START, true), requestSend(true)
 {
 	cryptPosition = 12;
 }

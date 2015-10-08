@@ -32,42 +32,42 @@
 #include "evafriendlist.h"
 #include "evausersetting.h"
 
-#include <qvariant.h>
-#include <qstringlist.h>
-#include <qtextcodec.h>
+#include <ntqvariant.h>
+#include <ntqstringlist.h>
+#include <ntqtextcodec.h>
 
 
 class EvaImageResource;
-class QCloseEvent;
+class TQCloseEvent;
 
-// the QStringList is used to hold all information about a user and has 37 QStrings only   --- yunfan
+// the TQStringList is used to hold all information about a user and has 37 TQStrings only   --- yunfan
 class EvaDetailsWindow : public EvaUserUIBase
 {
 	Q_OBJECT
 public:
-	EvaDetailsWindow(QStringList &user, QWidget* parent = 0, const char* name = 0, bool modal = FALSE, WFlags fl = 0);
+	EvaDetailsWindow(TQStringList &user, TQWidget* parent = 0, const char* name = 0, bool modal = FALSE, WFlags fl = 0);
 	~EvaDetailsWindow(); 
 	static void setImageResource( EvaImageResource *res ) { faces = res; }
 
 private:
 	static EvaImageResource* faces;
-	QStringList details;			//user basic info 
+	TQStringList details;			//user basic info 
 	int selectedFaceIndex;
 	bool m_IsModifyMemo;
 	bool m_IsMemoPage;
 	MemoItem m_Memo;
-	QTextCodec *codec;
-	const QQFriend *frd;
+	TQTextCodec *codec;
+	const TQQFriend *frd;
 	unsigned int id;
 	
 
 	const bool UpdateData( const bool );
-	const QString getClientKeyString();
+	const TQString getClientKeyString();
 
-	void closeEvent(QCloseEvent *e);
+	void closeEvent(TQCloseEvent *e);
 signals:
 	void requestUpdate( const unsigned int );
-	void requestQQShow(const unsigned int);
+	void requestTQQShow(const unsigned int);
 	
 	void requestDownloadMemo( const unsigned int );
 	void requestUploadMemo( const unsigned int, const MemoItem &);
@@ -76,18 +76,18 @@ signals:
 	
 public slots:
 	void slotUpdateClick();
-	void slotDetailsUpdated( QStringList list );
-	void slotUpdateQQShow();
+	void slotDetailsUpdated( TQStringList list );
+	void slotUpdateTQQShow();
 	
 	void slotFirstUpdate();
 	
 	void slotShopClicked();
 	void slotAlbumClicked();
-	void slotLinkClicked( const QString & url);
+	void slotLinkClicked( const TQString & url);
 	
-	void slotBuddyQQShowReady( const unsigned int id );
+	void slotBuddyTQQShowReady( const unsigned int id );
 	
-	void slotCurrentChanged( QWidget *wCurrentPage);
+	void slotCurrentChanged( TQWidget *wCurrentPage);
 	void slotDownloadMemo();
 	void slotUpdateMemo(const MemoItem &memo);
 	void slotUploadMemoReply(const bool);

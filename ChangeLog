@@ -445,7 +445,7 @@ Another year has gone!
 1. Fixed: searching Qun reply interpreted wrong
     File: src/libeva/evaqun.h/cpp
 
-2. Changed: the default udp server ip address, this one might be quicker :)
+2. Changed: the default udp server ip address, this one might be tquicker :)
     File: src/api/evaservers.cpp
 
 
@@ -543,7 +543,7 @@ Another year has gone!
 
 --------------------------------------------------------
 13th, January, 2006 yunfan
-1. Fixed: crashed when deleting item in quick reply list right after adding new item
+1. Fixed: crashed when deleting item in tquick reply list right after adding new item
     File: src/ui/evasyssettingwindow.cpp
 
 2. Added: user notificatioin if she/he sends message before client ready

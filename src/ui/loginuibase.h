@@ -21,73 +21,73 @@
 #ifndef FRMLOGIN_H
 #define FRMLOGIN_H
 
-#include <qvariant.h>
-#include <qdialog.h>
+#include <ntqvariant.h>
+#include <ntqdialog.h>
 
-class QVBoxLayout;
-class QHBoxLayout;
-class QGridLayout;
-class QSpacerItem;
-class QPushButton;
-class QToolButton;
-class QGroupBox;
-class QLabel;
-class QComboBox;
-class QLineEdit;
-class QCheckBox;
-class QFrame;
+class TQVBoxLayout;
+class TQHBoxLayout;
+class TQGridLayout;
+class TQSpacerItem;
+class TQPushButton;
+class TQToolButton;
+class TQGroupBox;
+class TQLabel;
+class TQComboBox;
+class TQLineEdit;
+class TQCheckBox;
+class TQFrame;
 
-class LoginUIBase : public QDialog
+class LoginUIBase : public TQDialog
 {
     Q_OBJECT
 
 public:
-    LoginUIBase( QWidget* parent = 0, const char* name = 0, bool modal = FALSE, WFlags fl = 0 );
+    LoginUIBase( TQWidget* parent = 0, const char* name = 0, bool modal = FALSE, WFlags fl = 0 );
     ~LoginUIBase();
 
-    QPushButton* cancelBtn;
-    QToolButton* tbNetSetup;
-    QGroupBox* groupBox1;
-    QLabel* textLabel1;
-    QLabel* textLabel2;
-    QComboBox* cbQQ;
-    QLineEdit* lePwd;
-    QCheckBox* chbRecordPwd;
-    QCheckBox* chbLoginMode;
-    QFrame* line1;
-    QLabel* lblType;
-    QComboBox* cbbLoginType;
-    QPushButton* loginBtn;
-    QFrame* fraNetSetup;
-    QLabel* tlProxyServer;
-    QLineEdit* leIP;
-    QLabel* tlProxyPort;
-    QLineEdit* lePort;
-    QLabel* tlUserName;
-    QLineEdit* leUserName;
-    QLabel* tlPassword;
-    QLineEdit* lePassword;
-    QLabel* lblLogo;
+    TQPushButton* cancelBtn;
+    TQToolButton* tbNetSetup;
+    TQGroupBox* groupBox1;
+    TQLabel* textLabel1;
+    TQLabel* textLabel2;
+    TQComboBox* cbQQ;
+    TQLineEdit* lePwd;
+    TQCheckBox* chbRecordPwd;
+    TQCheckBox* chbLoginMode;
+    TQFrame* line1;
+    TQLabel* lblType;
+    TQComboBox* cbbLoginType;
+    TQPushButton* loginBtn;
+    TQFrame* fraNetSetup;
+    TQLabel* tlProxyServer;
+    TQLineEdit* leIP;
+    TQLabel* tlProxyPort;
+    TQLineEdit* lePort;
+    TQLabel* tlUserName;
+    TQLineEdit* leUserName;
+    TQLabel* tlPassword;
+    TQLineEdit* lePassword;
+    TQLabel* lblLogo;
 
 public slots:
     virtual void loginClickSlot();
     virtual void cancelClickSlot();
 
 protected:
-    QGridLayout* groupBox1Layout;
-    QHBoxLayout* layout14;
-    QSpacerItem* spacer3;
-    QSpacerItem* spacer2;
-    QVBoxLayout* layout9;
-    QHBoxLayout* layout8;
-    QVBoxLayout* layout7;
-    QVBoxLayout* layout6;
-    QHBoxLayout* layout1;
-    QSpacerItem* spacer1;
-    QGridLayout* fraNetSetupLayout;
-    QVBoxLayout* layout13;
-    QHBoxLayout* layout12;
-    QHBoxLayout* layout11;
+    TQGridLayout* groupBox1Layout;
+    TQHBoxLayout* layout14;
+    TQSpacerItem* spacer3;
+    TQSpacerItem* spacer2;
+    TQVBoxLayout* layout9;
+    TQHBoxLayout* layout8;
+    TQVBoxLayout* layout7;
+    TQVBoxLayout* layout6;
+    TQHBoxLayout* layout1;
+    TQSpacerItem* spacer1;
+    TQGridLayout* fraNetSetupLayout;
+    TQVBoxLayout* layout13;
+    TQHBoxLayout* layout12;
+    TQHBoxLayout* layout11;
 
 protected slots:
     virtual void languageChange();
